@@ -4,7 +4,7 @@ import { serialize } from 'next-mdx-remote/serialize'
 import matter from 'gray-matter'
 import remarkMath from 'remark-math'
 // remark-gfm v3 exports as CJS default — import accordingly
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const remarkGfm = require('remark-gfm').default
 import rehypeKatex from 'rehype-katex'
 import type { MDXFrontmatter } from '@/types'
