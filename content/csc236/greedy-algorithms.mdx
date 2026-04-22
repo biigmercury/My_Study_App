@@ -1,0 +1,264 @@
+---
+title: "Greedy Algorithms"
+description: "Greedy algorithm design — the greedy choice property, activity selection, coin change, Huffman coding, minimum spanning trees, and when greedy fails."
+duration: "50 min"
+difficulty: "advanced"
+---
+
+Some optimisation problems have a beautiful property: you can always build the best solution by making the **locally best choice at each step**, without ever needing to go back and reconsider. Algorithms that exploit this property are called **greedy algorithms**. They are fast, elegant, and conceptually simple — but only correct when the problem actually satisfies the greedy conditions.
+
+---
+
+## What Is a Greedy Algorithm?
+
+A greedy algorithm works in **phases**. At each phase:
+
+1. Take the **best available option right now**, without regard for future consequences
+2. Hope that choosing a local optimum at each step produces a global optimum
+
+The key word is "hope" — greedy algorithms are not always correct. You must prove (or verify) that greedily picking the local best always leads to the globally best result.
+
+**When greedy works:** The problem has the **greedy choice property** — a globally optimal solution can always be reached by making a locally optimal (greedy) choice at each step.
+
+**Greedy algorithms are used for:**
+- Coin change (with the right coin system)
+- Activity selection (scheduling)
+- Huffman coding (data compression)
+- Minimum spanning trees (Prim's, Kruskal's)
+- Shortest paths (Dijkstra's algorithm)
+
+---
+
+## Two Conditions for a Correct Greedy Algorithm
+
+### 1. Greedy Choice Property
+
+A globally optimal solution can be assembled by making locally optimal (greedy) choices. Making the greedy choice never prevents you from reaching an optimal overall solution.
+
+### 2. Optimal Substructure
+
+Once a greedy choice is made, the remaining subproblem has an optimal structure — the optimal solution to the whole problem contains optimal solutions to its subproblems. (This is the same condition as dynamic programming.)
+
+**The difference from DP:** In DP, you evaluate all options for each subproblem. In greedy, you commit to the best local choice immediately, never reconsidering.
+
+---
+
+## Worked Example 1: Coin Change
+
+**Problem:** Make exactly N naira using the fewest possible coins. Available denominations: ₦5, ₦1, 25k, 10k, 1k.
+
+**Greedy strategy:** At each step, take the largest coin that does not exceed the remaining amount.
+
+### Worked Trace — Make ₦6.39
+
+| Step | Remaining | Largest coin that fits | Coins so far |
+|---|---|---|---|
+| 1 | ₦6.39 | ₦5 | [₦5] |
+| 2 | ₦1.39 | ₦1 | [₦5, ₦1] |
+| 3 | ₦0.39 | 25k | [₦5, ₦1, 25k] |
+| 4 | ₦0.14 | 10k | [₦5, ₦1, 25k, 10k] |
+| 5 | ₦0.04 | 1k | [₦5, ₦1, 25k, 10k, 1k] |
+| 6 | ₦0.03 | 1k | [..., 1k] |
+| 7 | ₦0.02 | 1k | [..., 1k] |
+| 8 | ₦0.01 | 1k | [..., 1k] |
+
+**Result:** 8 coins total. For this denomination system (Naira/Kobo), the greedy algorithm gives the **optimal solution**.
+
+### When Greedy Fails — A Counterexample
+
+In a fictional currency with denominations: **1 kron, 7 kron, 10 kron**.
+
+Make **15 krons**:
+- Greedy: 10 kron → 5 × 1 kron = **6 coins total**
+- Optimal: 7 kron + 7 kron + 1 kron = **3 coins total**
+
+The greedy algorithm gives the wrong answer here! This is why correctness must be proven per problem, not assumed.
+
+---
+
+## Worked Example 2: Activity Selection Problem
+
+**Problem:** You have a lecture hall and n activities, each with a start time sᵢ and finish time fᵢ. Activities conflict if they overlap. Select the **maximum number of non-conflicting activities** to schedule.
+
+**Greedy strategy:** Always select the activity that **finishes earliest** (leaving the most time for future activities).
+
+### Pseudocode
+
+```
+ActivitySelection(s[], f[], n):
+  sort activities by finish time
+  selected = {activity 1}       // first activity always selected
+  last = 1
+  for i = 2 to n:
+    if s[i] >= f[last]:         // starts after last selected finishes
+      selected = selected ∪ {i}
+      last = i
+  return selected
+```
+
+### Worked Trace
+
+Activities (already sorted by finish time):
+
+| Activity | Start | Finish |
+|---|---|---|
+| A1 | 1 | 4 |
+| A2 | 3 | 5 |
+| A3 | 0 | 6 |
+| A4 | 5 | 7 |
+| A5 | 3 | 9 |
+| A6 | 5 | 9 |
+| A7 | 6 | 10 |
+| A8 | 8 | 11 |
+| A9 | 8 | 12 |
+
+**Greedy selection:**
+1. Select A1 (finishes at 4). last = A1
+2. A2 starts at 3 < 4 → skip
+3. A3 starts at 0 < 4 → skip
+4. A4 starts at 5 ≥ 4 → **select A4** (finishes at 7). last = A4
+5. A5 starts at 3 < 7 → skip
+6. A6 starts at 5 < 7 → skip
+7. A7 starts at 6 < 7 → skip
+8. A8 starts at 8 ≥ 7 → **select A8** (finishes at 11). last = A8
+9. A9 starts at 8 < 11 → skip
+
+**Selected: {A1, A4, A8} — 3 activities.**
+
+This is the maximum possible — no other selection of non-conflicting activities gives more than 3.
+
+**Why greedy works here:** By always picking the earliest-finishing activity, we leave as much remaining time as possible for future selections. This is a proven optimal strategy for the activity selection problem.
+
+**Time complexity:** O(n log n) — dominated by sorting. Selection is O(n).
+
+---
+
+## Worked Example 3: Huffman Coding (Data Compression)
+
+**Problem:** Assign binary codes to characters so that frequently-used characters get shorter codes. Goal: minimise the total length of the encoded message.
+
+**Greedy strategy:** Build the code tree from the bottom up, always merging the **two least-frequent** nodes.
+
+### Algorithm
+
+```
+HuffmanCoding(characters, frequencies):
+  create a min-priority queue with one node per character
+  while queue has more than one node:
+    x = extract minimum frequency node
+    y = extract minimum frequency node
+    z = new internal node with frequency = freq[x] + freq[y]
+    z.left = x, z.right = y
+    insert z into queue
+  return the remaining node (root of Huffman tree)
+```
+
+### Worked Example
+
+Characters and frequencies: A=5, B=9, C=12, D=13, E=16, F=45
+
+**Step 1:** Extract A(5) and B(9), create AB(14). Queue: [C=12, D=13, AB=14, E=16, F=45]
+
+**Step 2:** Extract C(12) and D(13), create CD(25). Queue: [AB=14, E=16, CD=25, F=45]
+
+**Step 3:** Extract AB(14) and E(16), create ABE(30). Queue: [CD=25, ABE=30, F=45]
+
+**Step 4:** Extract CD(25) and ABE(30), create CDABE(55). Queue: [F=45, CDABE=55]
+
+**Step 5:** Extract F(45) and CDABE(55), create root(100).
+
+**Resulting codes:**
+- F: 0 (1 bit — most frequent, shortest code)
+- C: 100, D: 101 (3 bits)
+- A: 1100, B: 1101, E: 111 (3-4 bits — least frequent, longest codes)
+
+**Why greedy works:** Merging the two least-frequent nodes at every step minimises the total weighted path length (total bits in encoded message). This is proven optimal.
+
+---
+
+## Worked Example 4: Minimum Spanning Tree
+
+**Problem:** Given a weighted graph (cities and road costs), find the subset of roads that connects all cities with **minimum total cost**.
+
+### Kruskal's Algorithm (Greedy)
+
+```
+KruskalMST(graph):
+  sort all edges by weight
+  MST = empty set
+  for each edge (u, v) in sorted order:
+    if adding (u, v) does not create a cycle:
+      add (u, v) to MST
+  return MST
+```
+
+**Greedy choice:** Always add the cheapest edge that doesn't create a cycle.
+
+**Time complexity:** O(E log E) where E = number of edges.
+
+### Prim's Algorithm (Greedy)
+
+```
+PrimMST(graph, start):
+  MST = {start}
+  while MST does not include all vertices:
+    find cheapest edge (u, v) where u ∈ MST and v ∉ MST
+    add (u, v) to MST and add v to MST
+```
+
+**Greedy choice:** Always extend the current tree by the cheapest available edge crossing the tree boundary.
+
+Both Kruskal's and Prim's are proven optimal for MST — the greedy choice property holds because the globally minimum spanning tree always includes the minimum-weight edge crossing any cut.
+
+---
+
+## The Greedy Algorithm Template
+
+```
+GreedyAlgorithm(problem):
+  solution = empty
+  candidates = all possible choices
+  while not complete and candidates not empty:
+    pick the locally best candidate x from candidates
+    remove x from candidates
+    if x is feasible (does not violate constraints):
+      add x to solution
+  if solution is complete:
+    return solution
+  else:
+    return "no solution found"
+```
+
+---
+
+## Greedy vs Dynamic Programming
+
+| Feature | Greedy | Dynamic Programming |
+|---|---|---|
+| Decision style | Commit to local best immediately | Evaluate all options |
+| Reconsideration | Never looks back | Builds from all subproblem results |
+| Speed | Faster (usually O(n log n)) | Slower (usually O(n²) or O(nW)) |
+| Correctness | Only for specific problems | Correct for any DP problem |
+| Example | Activity selection, Huffman | Knapsack, Fibonacci |
+
+**When greedy fails but DP works:** 0/1 Knapsack. Greedy (take highest value-to-weight ratio first) does not always give the optimal selection. DP always does.
+
+<DiagramBlock chart={`graph LR
+    A["Optimisation problem"] --> B{Greedy choice<br/>property holds?}
+    B -->|Yes| C["Greedy Algorithm<br/>O(n log n) or better"]
+    B -->|No| D{Overlapping<br/>subproblems?}
+    D -->|Yes| E["Dynamic Programming<br/>O(n²) or O(nW)"]
+    D -->|No| F["Divide and Conquer"]
+`} />
+
+<Analogy>
+A greedy algorithm is like a hungry person at an all-you-can-eat buffet who always takes the largest item they can see on their plate. For some foods (like Naira coins), always taking the largest gets you to the target amount with fewest items. For others (like coins in weird denominations), this strategy backfires — you should have taken a medium-sized item earlier to set up a better combination later. The greedy approach only works when short-sightedness happens to align with long-term optimality.
+</Analogy>
+
+<Takeaway>
+Greedy algorithms make the locally best choice at each step, committing immediately without reconsideration. They are correct only when the problem satisfies the greedy choice property (local optima lead to global optima) and optimal substructure. When correct, they are usually very fast — O(n log n) or better. Key examples: coin change (standard denominations), activity selection (sort by finish time), Huffman coding (always merge two lightest), Kruskal's and Prim's MST (always pick cheapest safe edge). When greedy does not work (e.g., 0/1 Knapsack), use dynamic programming instead.
+</Takeaway>
+
+<ExamTip>
+Lecturers test: (1) trace through an activity selection example — sort by finish time first, then greedy select; (2) state the two conditions a problem must satisfy for greedy to work — greedy choice property AND optimal substructure; (3) show where greedy fails with a counterexample — the fictional coin denominations question is a classic; (4) compare greedy vs DP for a given problem — state which applies and why; (5) Huffman coding may appear as a trace problem — build the tree bottom-up always merging two smallest. Common mistake: applying greedy to 0/1 knapsack (it doesn't work — you need DP there).
+</ExamTip>

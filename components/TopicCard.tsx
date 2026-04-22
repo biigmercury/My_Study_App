@@ -1,0 +1,76 @@
+'use client'
+
+import Link from 'next/link'
+import type { Topic } from '@/types'
+
+interface TopicCardProps {
+  topic: Topic
+  courseCode: string
+  isCompleted: boolean
+  hasContent: boolean
+  onToggle: () => void
+}
+
+const difficultyColors = {
+  beginner: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
+  intermediate: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400',
+  advanced: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
+}
+
+export default function TopicCard({ topic, courseCode, isCompleted, hasContent, onToggle }: TopicCardProps) {
+  return (
+    <div className={`flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-brand-slate shadow-sm border transition-all ${
+      isCompleted
+        ? 'border-brand-royal/30 dark:border-brand-sky/30 bg-blue-50/50 dark:bg-blue-950/20'
+        : 'border-slate-200/60 dark:border-slate-700/40'
+    }`}>
+      <button
+        onClick={onToggle}
+        className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+          isCompleted
+            ? 'bg-brand-royal dark:bg-brand-sky border-brand-royal dark:border-brand-sky'
+            : 'border-slate-300 dark:border-slate-600 hover:border-brand-royal dark:hover:border-brand-sky'
+        }`}
+      >
+        {isCompleted && (
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
+      </button>
+
+      {hasContent ? (
+        <Link href={`/courses/${courseCode}/${topic.slug}`} className="flex-1 min-w-0">
+          <TopicContent topic={topic} isCompleted={isCompleted} />
+        </Link>
+      ) : (
+        <div className="flex-1 min-w-0 opacity-60">
+          <TopicContent topic={topic} isCompleted={isCompleted} />
+          <span className="text-[10px] text-slate-400 mt-0.5 block">Coming soon</span>
+        </div>
+      )}
+
+      {hasContent && (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-300 dark:text-slate-600 flex-shrink-0">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      )}
+    </div>
+  )
+}
+
+function TopicContent({ topic, isCompleted }: { topic: Topic; isCompleted: boolean }) {
+  return (
+    <>
+      <p className={`font-medium text-sm leading-tight ${isCompleted ? 'text-slate-500 dark:text-slate-400 line-through decoration-brand-royal/40' : 'text-slate-800 dark:text-slate-100'}`}>
+        {topic.title}
+      </p>
+      <div className="flex items-center gap-2 mt-1">
+        <span className="text-xs text-slate-400">{topic.duration}</span>
+        <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${difficultyColors[topic.difficulty]}`}>
+          {topic.difficulty}
+        </span>
+      </div>
+    </>
+  )
+}
