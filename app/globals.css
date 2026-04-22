@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-brand-soft text-brand-navy dark:bg-brand-navy dark:text-white;
+    @apply font-sans antialiased;
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Spinner */
+@layer utilities {
+  .border-3 {
+    border-width: 3px;
+  }
+}

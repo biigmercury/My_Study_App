@@ -1,0 +1,380 @@
+---
+title: "Graph Algorithms"
+description: "Graph representations, BFS and DFS traversals, shortest paths with Dijkstra's algorithm, and minimum spanning trees with Kruskal's and Prim's algorithms."
+duration: "60 min"
+difficulty: "advanced"
+---
+
+Graphs model relationships between objects — road networks, social connections, computer networks, dependency chains. Almost every real-world optimisation problem can be expressed as a graph problem. This topic covers how graphs are represented, how they are traversed, and how classic algorithms find shortest paths and minimum spanning trees.
+
+**Note on complexity analysis:** When analysing graph algorithms, n represents either the number of **vertices** (nodes) V or the number of **edges** E, depending on context. A graph with n vertices can have up to n² edges in the worst case (complete graph).
+
+---
+
+## Graph Fundamentals
+
+### What Is a Graph?
+
+A graph G = (V, E) consists of:
+- **V** — a set of vertices (nodes)
+- **E** — a set of edges (connections between vertices)
+
+**Types of graphs:**
+
+| Type | Description |
+|---|---|
+| Undirected | Edges have no direction — (u, v) = (v, u) |
+| Directed (Digraph) | Edges have direction — (u, v) ≠ (v, u) |
+| Weighted | Each edge has a numeric weight (distance, cost) |
+| Unweighted | Edges have no weight (or weight = 1) |
+| Cyclic | Contains at least one cycle |
+| Acyclic | Contains no cycles (DAG = Directed Acyclic Graph) |
+| Connected | Every vertex is reachable from every other vertex |
+
+### Graph Terminology
+
+- **Degree of a vertex:** Number of edges incident to it (undirected graph)
+- **In-degree / Out-degree:** For directed graphs — edges coming in / going out
+- **Path:** Sequence of vertices connected by edges
+- **Cycle:** A path that starts and ends at the same vertex
+- **Tree:** A connected acyclic undirected graph with n−1 edges
+- **Spanning tree:** A subgraph that connects all vertices with minimum edges (n−1 edges, no cycles)
+
+---
+
+## Graph Representations
+
+There are two standard ways to store a graph in memory. The choice affects time and space complexity of all operations.
+
+### 1. Adjacency Matrix
+
+A 2D array M where **M[i][j] = 1** if there is an edge from vertex i to vertex j, and 0 otherwise. For weighted graphs, store the weight instead of 1.
+
+```
+Example graph: 4 vertices, edges: (0,1), (0,2), (1,3), (2,3)
+
+Adjacency Matrix:
+      0  1  2  3
+  0 [ 0  1  1  0 ]
+  1 [ 1  0  0  1 ]
+  2 [ 1  0  0  1 ]
+  3 [ 0  1  1  0 ]
+```
+
+```c
+// Adjacency matrix representation
+int graph[4][4] = {
+    {0, 1, 1, 0},   // vertex 0 connects to 1 and 2
+    {1, 0, 0, 1},   // vertex 1 connects to 0 and 3
+    {1, 0, 0, 1},   // vertex 2 connects to 0 and 3
+    {0, 1, 1, 0}    // vertex 3 connects to 1 and 2
+};
+```
+
+**Space:** O(V²) — always V² cells regardless of edges
+**Check if edge exists:** O(1) — just look up M[i][j]
+**Find all neighbours of vertex v:** O(V) — scan row v
+**Best for:** Dense graphs (many edges), or when fast edge-lookup is needed
+
+### 2. Adjacency List
+
+An array of linked lists (or dynamic arrays). Each vertex has a list of its neighbours.
+
+```
+Same graph as above, adjacency list:
+  0: [1, 2]
+  1: [0, 3]
+  2: [0, 3]
+  3: [1, 2]
+```
+
+```c
+// Adjacency list representation using 2D array (simplified)
+// graph[v] stores list of vertices adjacent to v
+int graph[4][10];      // each vertex can have up to 10 neighbours
+int degree[4] = {0};   // current degree of each vertex
+
+// Add edge (0,1) undirected
+void addEdge(int u, int v) {
+    graph[u][degree[u]++] = v;  // add v to u's list
+    graph[v][degree[v]++] = u;  // add u to v's list (undirected)
+}
+```
+
+**Space:** O(V + E) — only stores actual edges
+**Check if edge exists:** O(degree(v)) — scan the list
+**Find all neighbours:** O(degree(v)) — iterate the list
+**Best for:** Sparse graphs (few edges), traversal algorithms
+
+---
+
+## Breadth-First Search (BFS)
+
+### The Idea
+
+BFS explores a graph **level by level** — visit all neighbours of the start vertex first (distance 1), then all their neighbours (distance 2), and so on. It uses a **queue** (FIFO) to track which vertices to visit next.
+
+BFS is the natural algorithm for finding **shortest paths** in unweighted graphs (it reaches every vertex via the shortest possible number of edges).
+
+### Pseudocode
+
+```
+BFS(graph, start):
+  create queue Q
+  mark start as visited
+  enqueue start
+  while Q is not empty:
+    v = dequeue from Q
+    process v (print, record, etc.)
+    for each neighbour w of v:
+      if w not visited:
+        mark w as visited
+        enqueue w
+```
+
+### Worked Example
+
+Graph: 6 vertices, edges: (A,B), (A,C), (B,D), (B,E), (C,F). Start at **A**.
+
+<DiagramBlock chart={`graph TD
+    A --> B
+    A --> C
+    B --> D
+    B --> E
+    C --> F
+`} />
+
+**Trace:**
+
+| Step | Queue | Visited | Action |
+|---|---|---|---|
+| Start | [A] | {A} | Enqueue A |
+| 1 | [B, C] | {A,B,C} | Dequeue A, enqueue neighbours B and C |
+| 2 | [C, D, E] | {A,B,C,D,E} | Dequeue B, enqueue D and E |
+| 3 | [D, E, F] | {A,B,C,D,E,F} | Dequeue C, enqueue F |
+| 4 | [E, F] | {A,B,C,D,E,F} | Dequeue D (no unvisited neighbours) |
+| 5 | [F] | {A,B,C,D,E,F} | Dequeue E (no unvisited neighbours) |
+| 6 | [] | {A,B,C,D,E,F} | Dequeue F (no unvisited neighbours) |
+
+**BFS order:** A → B → C → D → E → F
+
+**Shortest distances from A:**
+- A=0, B=1, C=1, D=2, E=2, F=2
+
+### Complexity
+
+**Time:** O(V + E) — each vertex is enqueued once, each edge is examined once
+
+**Space:** O(V) — the queue holds at most V vertices
+
+**Applications:**
+- Shortest path in unweighted graphs
+- Level-order traversal of trees
+- Finding connected components
+- Web crawling (explore links level by level)
+
+---
+
+## Depth-First Search (DFS)
+
+### The Idea
+
+DFS explores a graph by going **as deep as possible** along each path before backtracking. It uses a **stack** (or recursion) to track the current path.
+
+DFS is the basis for backtracking algorithms, cycle detection, topological sorting, and detecting strongly connected components.
+
+### Pseudocode (Recursive)
+
+```
+DFS(graph, v):
+  mark v as visited
+  process v
+  for each neighbour w of v:
+    if w not visited:
+      DFS(graph, w)   // go deeper before exploring siblings
+```
+
+### Pseudocode (Iterative with Stack)
+
+```
+DFS_iterative(graph, start):
+  create stack S
+  push start onto S
+  while S is not empty:
+    v = pop from S
+    if v not visited:
+      mark v as visited
+      process v
+      for each neighbour w of v:
+        if w not visited:
+          push w onto S
+```
+
+### Worked Example
+
+Same graph as BFS. Start at **A**. (Neighbours explored in alphabetical order.)
+
+**Trace (recursive):**
+- Visit A → go deeper to B → go deeper to D (leaf, backtrack) → go deeper to E (leaf, backtrack) → backtrack to A → go to C → go deeper to F (leaf, backtrack)
+
+**DFS order:** A → B → D → E → C → F
+
+**Compare with BFS order:** A → B → C → D → E → F
+
+BFS spreads wide (level by level). DFS dives deep (path by path).
+
+### DFS Applications
+
+1. **Cycle detection** — if DFS revisits a vertex already in the current path, a cycle exists
+2. **Topological sort** — order tasks by dependency (only in DAGs)
+3. **Backtracking** — explore all possibilities depth-first, undo (backtrack) when stuck
+4. **Connected components** — run DFS from each unvisited vertex; each separate DFS call finds one component
+5. **Maze solving** — DFS naturally explores all paths through a maze
+
+### Complexity
+
+**Time:** O(V + E) — same as BFS, each vertex and edge visited once
+
+**Space:** O(V) — recursion stack depth (or explicit stack size) is at most V
+
+---
+
+## BFS vs DFS Comparison
+
+| Feature | BFS | DFS |
+|---|---|---|
+| Data structure | Queue (FIFO) | Stack (LIFO) / Recursion |
+| Strategy | Level by level | Path by path |
+| Finds shortest path? | Yes (unweighted) | Not necessarily |
+| Memory usage | More (queue can be wide) | Less (only current path) |
+| Completeness | Complete | Complete |
+| Applications | Shortest paths, levels | Backtracking, cycles, topological sort |
+
+---
+
+## Dijkstra's Algorithm — Shortest Paths (Weighted Graphs)
+
+### The Idea
+
+BFS finds shortest paths in **unweighted** graphs. For **weighted** graphs (where edges have different costs), we use **Dijkstra's algorithm**.
+
+Dijkstra's is a **greedy algorithm**: always extend the path to the unvisited vertex with the **minimum total distance from the source**.
+
+### Pseudocode
+
+```
+Dijkstra(graph, source):
+  dist[source] = 0
+  dist[v] = ∞ for all other vertices v
+  priority queue Q = all vertices
+  while Q not empty:
+    u = extract vertex with minimum dist from Q
+    for each neighbour v of u:
+      alt = dist[u] + weight(u, v)
+      if alt < dist[v]:        // found a shorter path
+        dist[v] = alt          // update distance
+        prev[v] = u            // record path
+```
+
+### Worked Example
+
+Weighted graph: A→B(4), A→C(2), B→D(5), C→B(1), C→D(8), B→E(6), D→E(2)
+
+**Find shortest paths from A:**
+
+| Step | Visited | dist[A] | dist[B] | dist[C] | dist[D] | dist[E] |
+|---|---|---|---|---|---|---|
+| Start | {} | 0 | ∞ | ∞ | ∞ | ∞ |
+| Pick A (dist=0) | {A} | 0 | 4 | 2 | ∞ | ∞ |
+| Pick C (dist=2) | {A,C} | 0 | 3 | 2 | 10 | ∞ |
+| Pick B (dist=3) | {A,C,B} | 0 | 3 | 2 | 8 | 9 |
+| Pick D (dist=8) | {A,C,B,D} | 0 | 3 | 2 | 8 | 10→9? No, keep 9 |
+| Pick E (dist=9) | {A,C,B,D,E} | 0 | 3 | 2 | 8 | 9 |
+
+**Shortest paths from A:**
+- A→A: 0
+- A→C: 2
+- A→C→B: 3 (not A→B=4 directly!)
+- A→C→B→D: 8
+- A→C→B→E: 9
+
+### Complexity
+
+**Time:** O((V + E) log V) with a binary heap priority queue
+
+**Space:** O(V)
+
+**Constraint:** Dijkstra's only works with **non-negative edge weights**. For negative weights, use Bellman-Ford.
+
+---
+
+## Minimum Spanning Tree (MST)
+
+### The Problem
+
+Given a connected weighted undirected graph, find a **spanning tree** (subgraph connecting all V vertices with V−1 edges, no cycles) with **minimum total edge weight**.
+
+Applications: minimum cost to connect all cities with roads, minimum cable to wire all buildings in a network.
+
+### Kruskal's Algorithm (Greedy)
+
+**Strategy:** Sort all edges by weight. Add each edge if it does not create a cycle (use Union-Find to detect cycles).
+
+```
+KruskalMST(graph):
+  sort all edges by weight (ascending)
+  MST = {}
+  for each edge (u, v, weight) in sorted order:
+    if u and v are in different components:
+      add (u, v) to MST
+      merge the components of u and v
+  return MST
+```
+
+**Time:** O(E log E) — dominated by sorting
+
+### Worked Example — Kruskal's
+
+Graph vertices: A, B, C, D, E
+Edges sorted by weight: (A,B,1), (C,D,2), (B,C,3), (A,C,4), (B,D,5), (D,E,6), (A,E,8)
+
+| Step | Edge | Weight | Action |
+|---|---|---|---|
+| 1 | A-B | 1 | Add (connects A and B) |
+| 2 | C-D | 2 | Add (connects C and D) |
+| 3 | B-C | 3 | Add (connects {A,B} with {C,D}) |
+| 4 | A-C | 4 | Skip (A and C already connected) |
+| 5 | B-D | 5 | Skip (B and D already connected) |
+| 6 | D-E | 6 | Add (connects E to the tree) |
+
+**MST edges:** (A,B), (C,D), (B,C), (D,E) — total weight = 1+2+3+6 = **12**
+
+### Prim's Algorithm (Greedy)
+
+**Strategy:** Start from any vertex. Repeatedly add the cheapest edge connecting a tree vertex to a non-tree vertex.
+
+```
+PrimMST(graph, start):
+  MST = {start}
+  while MST does not include all vertices:
+    find minimum weight edge (u, v) where u ∈ MST and v ∉ MST
+    add v to MST
+    add edge (u, v) to MST edges
+  return MST
+```
+
+**Time:** O(E log V) with a priority queue
+
+**Both Kruskal's and Prim's always produce the same minimum cost** — they are two different greedy strategies that both achieve the globally optimal result.
+
+<Analogy>
+A graph is like a map of Nigerian cities connected by roads. BFS is like spreading news by radio — all cities one hop away hear it first (distance 1), then all cities two hops away (distance 2), and so on. DFS is like a traveller who drives as far as possible on one road before turning back and trying a different road. Dijkstra's is like a GPS finding the fastest route by always extending the shortest known path. Kruskal's MST is like a contractor who builds roads between Nigerian cities starting with the cheapest ones, skipping any road that would create a redundant connection.
+</Analogy>
+
+<Takeaway>
+Graphs (V, E) model relationships and are stored as adjacency matrices (O(V²) space, O(1) edge lookup) or adjacency lists (O(V+E) space, better for sparse graphs). BFS uses a queue for level-by-level traversal and finds shortest paths in unweighted graphs — O(V+E). DFS uses recursion/stack for depth-first traversal, enabling backtracking and cycle detection — O(V+E). Dijkstra's algorithm finds shortest paths in weighted graphs greedily — O((V+E) log V). Kruskal's and Prim's both find minimum spanning trees greedily — O(E log E) and O(E log V) respectively.
+</Takeaway>
+
+<ExamTip>
+Examiners test: (1) trace BFS on a given graph — show the queue contents and visited set at each step, result is level-order; (2) trace DFS — show the stack or recursion path, result is depth-first; (3) compare BFS vs DFS — data structure used, traversal order, applications; (4) Dijkstra's trace — show the distance table being updated step by step; (5) Kruskal's trace — sort edges, add without cycles; (6) state when you use which representation — adjacency matrix for dense graphs, adjacency list for sparse. Common confusion: BFS finds shortest paths only in UNWEIGHTED graphs. For weighted graphs, you need Dijkstra's. Also, Dijkstra's requires non-negative weights — state this constraint.
+</ExamTip>
