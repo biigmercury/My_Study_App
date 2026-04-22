@@ -1,12 +1,8 @@
-export const dynamic = 'force-dynamic'
-
 import { notFound } from 'next/navigation'
-import nextDynamic from 'next/dynamic'
 import Link from 'next/link'
 import { getCourse } from '@/lib/courses'
 import { getMDXContent } from '@/lib/content'
-
-const LessonReader = nextDynamic(() => import('@/components/LessonReader'), { ssr: false })
+import LessonReader from '@/components/LessonReader'
 
 interface LessonPageProps {
   params: { code: string; topic: string }
@@ -42,12 +38,13 @@ export default async function LessonPage({ params }: LessonPageProps) {
       </div>
 
       <LessonReader
-        source={mdx.source}
         frontmatter={mdx.frontmatter}
         courseCode={course.code}
         topicSlug={params.topic}
         courseAccent={course.accent}
-      />
+      >
+        {mdx.content}
+      </LessonReader>
     </div>
   )
 }

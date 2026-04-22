@@ -1,12 +1,11 @@
 import fs from 'fs'
 import path from 'path'
-import { serialize } from 'next-mdx-remote/serialize'
-import matter from 'gray-matter'
+import { compileMDX } from 'next-mdx-remote/rsc'
 import remarkMath from 'remark-math'
-// remark-gfm v3 exports as CJS default — import accordingly
-const remarkGfm = require('remark-gfm').default // eslint-disable-line
+import remarkGfm from 'remark-gfm'
 import rehypeKatex from 'rehype-katex'
 import type { MDXFrontmatter } from '@/types'
+import { mdxComponents } from '@/lib/mdx-components'
 
 const CONTENT_DIR = path.join(process.cwd(), 'content')
 
@@ -18,20 +17,20 @@ export async function getMDXContent(courseCode: string, topicSlug: string) {
   }
 
   const raw = fs.readFileSync(filePath, 'utf-8')
-  const { content, data } = matter(raw)
 
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      remarkPlugins: [remarkMath, remarkGfm],
-      rehypePlugins: [rehypeKatex as any],
+  const { content, frontmatter } = await compileMDX<MDXFrontmatter>({
+    source: raw,
+    components: mdxComponents,
+    options: {
+      parseFrontmatter: true,
+      mdxOptions: {
+        remarkPlugins: [remarkMath, remarkGfm],
+        rehypePlugins: [rehypeKatex as any],
+      },
     },
-    scope: data,
   })
 
-  return {
-    frontmatter: data as MDXFrontmatter,
-    source: mdxSource,
-  }
+  return { content, frontmatter }
 }
 
 export function getTopicSlugsForCourse(courseCode: string): string[] {

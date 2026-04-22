@@ -1,15 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { MDXRemote } from 'next-mdx-remote'
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { mdxComponents } from '@/lib/mdx-components'
 import { markTopicComplete, markTopicIncomplete, getCourseProgress } from '@/lib/progress'
 import QuizModal from '@/components/QuizModal'
 import type { MDXFrontmatter } from '@/types'
 
 interface LessonReaderProps {
-  source: MDXRemoteSerializeResult
+  children: React.ReactNode
   frontmatter: MDXFrontmatter
   courseCode: string
   topicSlug: string
@@ -22,7 +19,7 @@ const difficultyColors = {
   advanced: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
 }
 
-export default function LessonReader({ source, frontmatter, courseCode, topicSlug, courseAccent }: LessonReaderProps) {
+export default function LessonReader({ children, frontmatter, courseCode, topicSlug, courseAccent }: LessonReaderProps) {
   const [isCompleted, setIsCompleted] = useState(false)
   const [quizOpen, setQuizOpen] = useState(false)
 
@@ -98,7 +95,7 @@ export default function LessonReader({ source, frontmatter, courseCode, topicSlu
           prose-th:bg-slate-100 dark:prose-th:bg-slate-800 prose-th:font-semibold prose-th:text-slate-700 dark:prose-th:text-slate-300 prose-th:px-3 prose-th:py-2
           prose-td:px-3 prose-td:py-2 prose-td:text-slate-700 dark:prose-td:text-slate-300
         ">
-          <MDXRemote {...source} components={mdxComponents} />
+          {children}
         </div>
       </div>
 
