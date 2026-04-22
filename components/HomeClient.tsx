@@ -40,7 +40,7 @@ export default function HomeClient({ courses }: HomeClientProps) {
           <div className="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-white/5 translate-y-6 -translate-x-6" />
           <div className="relative p-5">
             <p className="text-white/80 text-sm mb-0.5">{getGreeting()},</p>
-            <h1 className="text-2xl font-black text-white">Scholar 👋</h1>
+            <h1 className="text-2xl font-black text-white">Mercury 👋</h1>
             <p className="text-white/70 text-xs mt-2">
               {new Date().toLocaleDateString('en-NG', { weekday: 'long', month: 'long', day: 'numeric' })}
             </p>
