@@ -5,6 +5,13 @@ import { markTopicComplete, markTopicIncomplete, getCourseProgress } from '@/lib
 import QuizModal from '@/components/QuizModal'
 import type { MDXFrontmatter } from '@/types'
 
+const QUIZ_PW_HASH = 'f21d987b2635411ab0f1bc7833d6c2e6c6a37292adb13707043237d88af003c6'
+
+async function sha256(text: string): Promise<string> {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
 interface LessonReaderProps {
   children: React.ReactNode
   frontmatter: MDXFrontmatter
@@ -22,11 +29,38 @@ const difficultyColors = {
 export default function LessonReader({ children, frontmatter, courseCode, topicSlug, courseAccent }: LessonReaderProps) {
   const [isCompleted, setIsCompleted] = useState(false)
   const [quizOpen, setQuizOpen] = useState(false)
+  const [pwModalOpen, setPwModalOpen] = useState(false)
+  const [pwInput, setPwInput] = useState('')
+  const [pwError, setPwError] = useState(false)
+  const [quizUnlocked, setQuizUnlocked] = useState(false)
 
   useEffect(() => {
     const progress = getCourseProgress(courseCode)
     setIsCompleted(progress.completedTopics.includes(topicSlug))
+    setQuizUnlocked(sessionStorage.getItem('quiz_unlocked') === '1')
   }, [courseCode, topicSlug])
+
+  const handleQuizClick = () => {
+    if (quizUnlocked) {
+      setQuizOpen(true)
+    } else {
+      setPwInput('')
+      setPwError(false)
+      setPwModalOpen(true)
+    }
+  }
+
+  const handlePwSubmit = async () => {
+    const hash = await sha256(pwInput)
+    if (hash === QUIZ_PW_HASH) {
+      sessionStorage.setItem('quiz_unlocked', '1')
+      setQuizUnlocked(true)
+      setPwModalOpen(false)
+      setQuizOpen(true)
+    } else {
+      setPwError(true)
+    }
+  }
 
   const toggleComplete = () => {
     if (isCompleted) {
@@ -70,7 +104,7 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
           {isCompleted ? '✓ Completed' : 'Mark Complete'}
         </button>
         <button
-          onClick={() => setQuizOpen(true)}
+          onClick={handleQuizClick}
           className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-brand-gradient text-white text-sm font-semibold shadow-sm shadow-blue-500/20"
         >
           <span>✨</span> Quiz Me
@@ -120,6 +154,40 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
         isOpen={quizOpen}
         onClose={() => setQuizOpen(false)}
       />
+
+      {pwModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div className="w-full max-w-sm bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl">
+            <h2 className="text-base font-bold text-slate-800 dark:text-white mb-1">Quiz Access</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Enter your password to generate a quiz.</p>
+            <input
+              type="password"
+              value={pwInput}
+              onChange={e => { setPwInput(e.target.value); setPwError(false) }}
+              onKeyDown={e => e.key === 'Enter' && handlePwSubmit()}
+              placeholder="Password"
+              autoFocus
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white text-sm outline-none focus:border-brand-royal dark:focus:border-brand-sky mb-1"
+            />
+            {pwError && <p className="text-xs text-red-500 mb-3">Incorrect password.</p>}
+            {!pwError && <div className="mb-3" />}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPwModalOpen(false)}
+                className="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-sm text-slate-600 dark:text-slate-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handlePwSubmit}
+                className="flex-1 py-2.5 rounded-xl bg-brand-gradient text-white text-sm font-semibold"
+              >
+                Unlock
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </article>
   )
 }
