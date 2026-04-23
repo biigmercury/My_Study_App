@@ -29,7 +29,7 @@ export default function DiagramBlock({ chart }: DiagramBlockProps) {
     <div className="my-6 flex justify-center overflow-x-auto bg-slate-50 dark:bg-slate-800/40 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
       <picture>
         <source srcSet={darkUrl} media="(prefers-color-scheme: dark)" />
-        <img src={lightUrl} alt="Diagram" className="max-w-full h-auto" loading="lazy" />
+        <img src={lightUrl} alt="Diagram" className="max-w-full h-auto" />
       </picture>
     </div>
   )

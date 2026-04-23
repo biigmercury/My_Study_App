@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism'
@@ -13,9 +13,15 @@ interface CodeBlockProps {
 
 export default function CodeBlock({ children, className, language }: CodeBlockProps) {
   const [copied, setCopied] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { resolvedTheme } = useTheme()
+
+  useEffect(() => { setMounted(true) }, [])
+
   const lang = language || className?.replace('language-', '') || 'text'
   const code = typeof children === 'string' ? children.trim() : ''
+  // Use oneLight until mounted so server and initial client render match (prevents hydration mismatch)
+  const style = mounted && resolvedTheme === 'dark' ? oneDark : oneLight
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code)
@@ -36,7 +42,7 @@ export default function CodeBlock({ children, className, language }: CodeBlockPr
       </div>
       <SyntaxHighlighter
         language={lang}
-        style={resolvedTheme === 'dark' ? oneDark : oneLight}
+        style={style}
         customStyle={{
           margin: 0,
           borderRadius: 0,
