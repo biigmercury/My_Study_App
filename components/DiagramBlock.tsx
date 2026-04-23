@@ -1,33 +1,44 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTheme } from 'next-themes'
 
 interface DiagramBlockProps {
   chart: string
 }
 
-let diagramCounter = 0
+let counter = 0
 
 export default function DiagramBlock({ chart }: DiagramBlockProps) {
   const ref = useRef<HTMLDivElement>(null)
   const { resolvedTheme } = useTheme()
-  const [id] = useState(() => `mermaid-${++diagramCounter}`)
 
   useEffect(() => {
     if (!ref.current) return
+    let cancelled = false
 
-    import('mermaid').then(({ default: mermaid }) => {
+    import('mermaid').then(async ({ default: mermaid }) => {
+      if (cancelled) return
+
       mermaid.initialize({
         startOnLoad: false,
         theme: resolvedTheme === 'dark' ? 'dark' : 'default',
         fontFamily: 'Inter, system-ui, sans-serif',
       })
 
-      ref.current!.innerHTML = `<div class="mermaid" id="${id}">${chart}</div>`
-      mermaid.run({ querySelector: `#${id}` }).catch(console.error)
+      try {
+        const id = `mermaid-${++counter}-${Date.now()}`
+        const { svg } = await mermaid.render(id, chart.trim())
+        if (!cancelled && ref.current) {
+          ref.current.innerHTML = svg
+        }
+      } catch (e) {
+        console.error('Mermaid render error:', e)
+      }
     })
-  }, [chart, resolvedTheme, id])
+
+    return () => { cancelled = true }
+  }, [chart, resolvedTheme])
 
   return (
     <div
