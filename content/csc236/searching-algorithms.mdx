@@ -255,7 +255,7 @@ Binary search dramatically outperforms linear search at scale:
     A["Search for key in array"] --> B{Is array sorted?}
     B -->|No| C["Linear Search O(n)"]
     B -->|Yes| D{Is array large?}
-    D -->|Small, simple| E["Linear Search O(n)"]
+    D -->|Small or unsorted| E["Linear Search O(n)"]
     D -->|Large dataset| F["Binary Search O(log n)"]
 `} />
 
