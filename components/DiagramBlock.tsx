@@ -23,7 +23,6 @@ export default function DiagramBlock({ chart }: DiagramBlockProps) {
           startOnLoad: false,
           theme: resolvedTheme === 'dark' ? 'dark' : 'default',
           fontFamily: 'Inter, system-ui, sans-serif',
-          securityLevel: 'loose',
         })
 
         // ID must start with a letter and contain no spaces

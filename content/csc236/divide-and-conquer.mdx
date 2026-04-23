@@ -20,12 +20,12 @@ Every divide-and-conquer algorithm follows three steps at each level of recursio
 An algorithm is traditionally called divide-and-conquer only if it makes **two or more recursive calls**. (Binary Search makes only one recursive call — it is divide-and-conquer in spirit, but technically a decrease-and-conquer algorithm.)
 
 <DiagramBlock chart={`graph TD
-    A["Original Problem size n"] --> B["Subproblem 1<br/>size n/b"]
-    A --> C["Subproblem 2<br/>size n/b"]
+    A["Original Problem size n"] --> B["Subproblem 1: size n/b"]
+    A --> C["Subproblem 2: size n/b"]
     A --> D["..."]
-    B --> E["Sub-sub<br/>problems"]
-    C --> F["Sub-sub<br/>problems"]
-    E --> G["Base cases<br/>(solve directly)"]
+    B --> E["Sub-subproblems"]
+    C --> F["Sub-subproblems"]
+    E --> G["Base cases: solve directly"]
     F --> G
     G --> H["Combine results upward"]
     H --> I["Final Solution"]

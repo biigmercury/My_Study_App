@@ -244,10 +244,10 @@ GreedyAlgorithm(problem):
 **When greedy fails but DP works:** 0/1 Knapsack. Greedy (take highest value-to-weight ratio first) does not always give the optimal selection. DP always does.
 
 <DiagramBlock chart={`graph LR
-    A["Optimisation problem"] --> B{Greedy choice<br/>property holds?}
-    B -->|Yes| C["Greedy Algorithm<br/>O(n log n) or better"]
-    B -->|No| D{Overlapping<br/>subproblems?}
-    D -->|Yes| E["Dynamic Programming<br/>O(n²) or O(nW)"]
+    A["Optimisation problem"] --> B{Greedy choice property?}
+    B -->|Yes| C["Greedy: O(n log n)"]
+    B -->|No| D{Overlapping subproblems?}
+    D -->|Yes| E["Dynamic Programming"]
     D -->|No| F["Divide and Conquer"]
 `} />
 
