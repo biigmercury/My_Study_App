@@ -1,12 +1,15 @@
-import { Buffer } from 'buffer'
-
 interface DiagramBlockProps {
   chart: string
 }
 
 function mermaidInkUrl(chart: string, theme: 'default' | 'dark'): string {
   const payload = JSON.stringify({ code: chart.trim(), mermaid: { theme } })
-  const encoded = Buffer.from(payload).toString('base64')
+  // base64url encoding: safe for URL path segments (no +, /, or = characters)
+  const encoded = Buffer.from(payload)
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '')
   return `https://mermaid.ink/img/${encoded}`
 }
 
