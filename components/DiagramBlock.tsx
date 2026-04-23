@@ -25,12 +25,17 @@ export default function DiagramBlock({ chart }: DiagramBlockProps) {
           fontFamily: 'Inter, system-ui, sans-serif',
         })
 
-        // ID must start with a letter and contain no spaces
-        const id = `md${Math.random().toString(36).slice(2, 10)}`
-        const { svg } = await mermaid.render(id, chart.trim())
-        container.innerHTML = svg
+        // mermaid.run() is the canonical v11 API:
+        // it reads el.textContent as the chart definition,
+        // renders SVG into el in-place, bypasses DOMPurify on markers.
+        const el = document.createElement('div')
+        el.textContent = chart.trim()
+        container.innerHTML = ''
+        container.appendChild(el)
+
+        await mermaid.run({ nodes: [el], suppressErrors: true })
       } catch (e) {
-        console.error('Mermaid render error:', e)
+        console.error('Mermaid error:', e)
       }
     }
 
