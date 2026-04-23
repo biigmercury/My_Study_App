@@ -70,9 +70,10 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-x-0 top-0 bottom-16 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="w-full max-w-[430px] bg-white dark:bg-brand-slate rounded-t-3xl max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-[430px] bg-white dark:bg-brand-slate rounded-t-3xl overflow-y-auto"
+        style={{ maxHeight: 'calc(100vh - 64px)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Handle */}
