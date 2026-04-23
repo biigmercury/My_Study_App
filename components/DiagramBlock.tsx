@@ -7,37 +7,35 @@ interface DiagramBlockProps {
   chart: string
 }
 
-let counter = 0
-
 export default function DiagramBlock({ chart }: DiagramBlockProps) {
   const ref = useRef<HTMLDivElement>(null)
   const { resolvedTheme } = useTheme()
 
   useEffect(() => {
-    if (!ref.current) return
-    let cancelled = false
+    if (!ref.current || !chart) return
+    const container = ref.current
 
-    import('mermaid').then(async ({ default: mermaid }) => {
-      if (cancelled) return
-
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: resolvedTheme === 'dark' ? 'dark' : 'default',
-        fontFamily: 'Inter, system-ui, sans-serif',
-      })
-
+    const render = async () => {
       try {
-        const id = `mermaid-${++counter}-${Date.now()}`
+        const { default: mermaid } = await import('mermaid')
+
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: resolvedTheme === 'dark' ? 'dark' : 'default',
+          fontFamily: 'Inter, system-ui, sans-serif',
+          securityLevel: 'loose',
+        })
+
+        // ID must start with a letter and contain no spaces
+        const id = `md${Math.random().toString(36).slice(2, 10)}`
         const { svg } = await mermaid.render(id, chart.trim())
-        if (!cancelled && ref.current) {
-          ref.current.innerHTML = svg
-        }
+        container.innerHTML = svg
       } catch (e) {
         console.error('Mermaid render error:', e)
       }
-    })
+    }
 
-    return () => { cancelled = true }
+    render()
   }, [chart, resolvedTheme])
 
   return (
