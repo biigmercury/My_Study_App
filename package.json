@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@google/generative-ai": "^0.24.1",
     "@tailwindcss/typography": "^0.5.15",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.11",
