@@ -1,0 +1,116 @@
+---
+title: "Macros"
+description: "Using compiler directives to stamp out repetitive code without the overhead of procedure calls."
+---
+
+# Macros
+
+A **Macro** looks very similar to a Procedure, but it behaves entirely differently under the hood. 
+
+When you use a Procedure (`CALL my_proc`), the CPU jumps to a single block of code in memory, runs it, and jumps back. When you use a Macro, the assembler takes the code inside the macro and **copy-pastes** it directly into your source code *before* it even compiles it into machine language. 
+
+Think of a Macro as an advanced text replacement tool. 
+
+---
+
+## 1. Macro Syntax
+
+Macros are defined using the `MACRO` and `ENDM` directives. Unlike procedures, macros can easily take parameters exactly like high-level language functions.
+
+```assembly
+MyMacro MACRO p1, p2
+    MOV AX, p1
+    MOV BX, p2
+ENDM
+```
+
+When the assembler sees `MyMacro 10, 20` in your code, it deletes that line and replaces it with:
+```assembly
+    MOV AX, 10
+    MOV BX, 20
+```
+
+## 2. Macro vs. Procedure Trade-offs
+
+*   **Execution Speed:** Macros are slightly faster because the CPU doesn't have to waste time jumping back and forth across memory (no `CALL` or `RET` overhead).
+*   **File Size (Memory):** If you use a 10-line macro 100 times, the assembler copy-pastes it 100 times, making your final executable file 1,000 lines larger! If you use a procedure 100 times, the code only exists once in the file.
+*   **Parameters:** Passing parameters to a macro is as easy as typing `MyMacro 10, 20`. Passing parameters to a procedure requires carefully PUSHing and POPping them on the Stack.
+
+## 3. The LOCAL Directive
+
+Because a macro is a direct copy-paste, you run into problems if your macro contains a jump label (e.g., `l1:`). If you use the macro twice, the assembler will complain that `l1:` is defined twice in your file (Duplicate Declaration). 
+
+To fix this, you must declare internal labels as `LOCAL`. This tells the compiler to automatically generate a unique, randomized name for the label every time it pastes the macro.
+
+```assembly
+MyMacro2 MACRO 
+    LOCAL label1       ; Mandotory for jump labels inside macros!
+    CMP AX, 2 
+    JE label1 
+    INC AX
+label1: 
+    ADD AX, 2 
+ENDM
+```
+
+---
+
+## Worked Examples
+
+### Example 1: Creating a Multi-Parameter Macro
+This program uses a macro to rapidly load three separate registers.
+
+```assembly
+include 'emu8086.inc' 
+
+; Define the macro at the TOP of the file
+MyLoadMacro MACRO p1, p2, p3 
+    MOV AX, p1 
+    MOV BX, p2 
+    MOV CX, p3 
+ENDM 
+
+ORG 100h 
+
+; Use the macro. The compiler replaces this line with the 3 MOV instructions.
+MyLoadMacro 10, 20, 16 
+
+; Use the macro again with different values.
+MyLoadMacro 66, 50, DX    
+
+ret 
+```
+
+### Example 2: Printing a String using a Macro
+A common use for macros is wrapping the `INT 21h` print interrupt.
+
+```assembly
+print_string MACRO text
+    LOCAL string_data, skip_data
+    
+    JMP skip_data       ; Jump over the data so the CPU doesn't try to execute the string!
+string_data DB text, '$'
+skip_data:
+    MOV DX, OFFSET string_data
+    MOV AH, 09h
+    INT 21h
+ENDM
+
+org 100h
+print_string "Hello World"
+ret
+```
+
+---
+
+## Key Takeaways
+*   **Macros = Copy & Paste.** They execute instantly but bloat your file size if used too often.
+*   **Procedures = Go To & Return.** They save file size but cost a tiny bit of CPU speed due to the jump overhead.
+*   The `LOCAL` directive is absolutely mandatory in macros if you are using jump labels inside them.
+
+---
+
+## Exam Tips
+> 🎓 **What Lecturers Typically Test**
+> *   **Macro vs Procedure Essay:** You are highly likely to be asked to "Differentiate between a Macro and a Procedure." Hit the three main points: How they expand (Inline insertion vs. Stack branching), Memory cost (High size cost vs. Low size cost), and Execution time (Faster vs Slower).
+> *   **Duplicate Labels Error:** If a question shows a macro with a loop inside it that errors out during compilation, the answer is that the programmer forgot the `LOCAL` directive for the loop label.

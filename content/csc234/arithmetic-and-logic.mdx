@@ -1,0 +1,133 @@
+---
+title: "Arithmetic and Logic Functions"
+description: "Performing mathematical calculations, logical bitwise operations, and understanding the Flags register."
+---
+
+# Arithmetic and Logic Functions
+
+Imagine you are doing math homework on a piece of paper. When you do an addition problem and the answer is negative, you draw a little minus sign to remind yourself. When the numbers get too big and you carry a one over to the next column, you make a little mark at the top of the page. 
+
+The CPU does exactly the same thing. It performs basic arithmetic (Add, Subtract, Multiply, Divide) and logical operations (AND, OR, XOR, NOT). As it does these operations, it updates a special internal checklist called the **Flags Register** to keep track of important properties of the result (e.g., "Was the result zero?", "Was there a carry over?"). 
+
+Understanding how instructions affect the data—and how they affect the Flags—is the core of building logic in assembly.
+
+---
+
+## 1. The Flags Register (Processor Status)
+
+The Flags register is a 16-bit register where each individual bit (a flag) is set to `1` (True) or `0` (False) based on the outcome of the most recent operation.
+
+*   **ZF (Zero Flag):** Set to 1 if the mathematical result was exactly zero.
+*   **SF (Sign Flag):** Set to 1 if the result is negative (i.e., the most significant bit is 1).
+*   **CF (Carry Flag):** Set to 1 if there is an unsigned overflow (e.g., adding `255 + 1` in an 8-bit register).
+*   **OF (Overflow Flag):** Set to 1 if there is a signed overflow (e.g., adding two large positive numbers yields a negative sign due to bit overflow).
+*   **PF (Parity Flag):** Set to 1 if there is an even number of '1' bits in the lowest 8 bits of the result.
+
+```mermaid
+block-beta
+  columns 6
+  space CF["CF: Carry"] ZF["ZF: Zero"] SF["SF: Sign"] OF["OF: Overflow"] space
+```
+
+## 2. Arithmetic Instructions
+
+The result of arithmetic instructions is always stored in the **first operand** (the destination).
+
+### ADD and SUB
+`ADD dest, src` adds the source to the destination. `SUB dest, src` subtracts the source from the destination.
+Supported operands: Register to Register, Memory to Register, Immediate to Register/Memory.
+*Both instructions affect all major flags (CF, ZF, SF, OF, PF).*
+
+### INC and DEC
+`INC dest` adds exactly 1. `DEC dest` subtracts exactly 1. 
+*Affects ZF, SF, OF. **Crucially, they DO NOT affect the Carry Flag (CF).***
+
+### MUL and IMUL
+Multiplication is unique because multiplying two 16-bit numbers can result in a 32-bit number. 
+*   `MUL src`: Unsigned multiplication. 
+*   `IMUL src`: Signed multiplication.
+
+The syntax only takes **one operand** (the multiplier). The other operand is implicitly the Accumulator (`AL` or `AX`).
+*   **If src is 8-bit:** $AX = AL \times src$
+*   **If src is 16-bit:** Result is split across DX (High word) and AX (Low word). $(DX:AX) = AX \times src$.
+
+### DIV and IDIV
+Division also takes only **one operand** (the divisor).
+*   **If src is 8-bit:** Divide AX by src. $AL = \text{Quotient}$, $AH = \text{Remainder}$.
+*   **If src is 16-bit:** Divide the 32-bit number in (DX:AX) by src. $AX = \text{Quotient}$, $DX = \text{Remainder}$.
+
+## 3. Logical Instructions
+
+Logical instructions operate on the individual bits of the operands.
+
+*   **AND:** Yields 1 only if *both* bits are 1. Used to mask (clear) specific bits to 0.
+*   **OR:** Yields 1 if *either* bit is 1. Used to set specific bits to 1.
+*   **XOR:** Yields 1 if the bits are *different*. Used to toggle bits. (Trick: `XOR AX, AX` is the fastest way to clear a register to 0).
+*   **NOT:** Flips all bits (0 becomes 1, 1 becomes 0). *Does not affect any flags!*
+
+### CMP (Compare)
+`CMP dest, src` is identical to `SUB dest, src`, but **it discards the numerical result**. Its only purpose is to perform the subtraction so it can update the Flags Register (like the Zero Flag) for later decision making.
+
+---
+
+## Worked Examples
+
+### Example 1: Logical Expressions
+Evaluate: $S = (X=Y) \text{ OR } (A \le D)$. Let $X=4, Y=4, A=9, D=7$.
+
+```assembly
+org 100h  
+include emu8086.inc  
+
+; 1. Evaluate X=Y
+mov bl, 0      ; Assume false (0)
+mov ax, 4      ; X = 4
+cmp ax, 4      ; Compare with Y = 4
+jne L1         ; If Not Equal, skip to L1
+mov bl, 1      ; They are equal, so set BL to True (1)
+
+; 2. Evaluate A <= D
+L1: 
+mov bh, 0      ; Assume false (0)
+mov ax, 9      ; A = 9
+cmp ax, 7      ; Compare with D = 7
+jnle L2        ; If Not Less or Equal, skip to L2
+mov bh, 1      ; It is <=, so set BH to True (1)
+
+; 3. The OR operation
+L2: 
+or bl, bh      ; BL = BL OR BH. (1 OR 0 = 1)
+mov al, bl     ; Move result to AL for printing
+call print_num   
+
+ret 
+define_print_num
+define_print_num_uns
+```
+*Step-by-step logic:* $(4=4)$ is True (`1`). $(9 \le 7)$ is False (`0`). `1 OR 0` results in `1`. The program prints `1`.
+
+### Example 2: Multiplication and Segment Registers
+You cannot do arithmetic directly on segment registers.
+```assembly
+; ILLEGAL: add ds, 10
+; LEGAL approach:
+mov ax, ds    ; Copy segment to general register
+add ax, 10    ; Perform math
+mov ds, ax    ; Copy back
+```
+
+---
+
+## Key Takeaways
+*   Math results are stored in the *destination* (the first operand).
+*   Multiplication and Division have implicit operands. You don't write `MUL AX, BX`; you just write `MUL BX`, and the CPU automatically uses AX.
+*   `CMP` does a hidden subtraction just to set the flags for the next instruction.
+*   `XOR REG, REG` zeroes out a register and is faster than `MOV REG, 0`.
+
+---
+
+## Exam Tips
+> 🎓 **What Lecturers Typically Test**
+> *   **Division Remainder:** A common question involves executing `DIV BX` and asking where the remainder is stored. Remember: Quotient in AX, Remainder in DX.
+> *   **Segment Register Math:** They will test if you know you cannot perform math directly on `DS`, `CS`, `SS`, or `ES`.
+> *   **Evaluating Boolean Logic:** You will frequently see questions like Example 1, where you must translate an algebraic Boolean statement into assembly jump logic. Practice this!

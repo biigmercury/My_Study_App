@@ -1,0 +1,101 @@
+---
+title: "Procedures"
+description: "Creating reusable subroutines using PROC, ENDP, and RET directives."
+---
+
+# Procedures
+
+Imagine you are writing a very long recipe for a complex cake. You realize that you need to make frosting three different times during the process. Instead of writing out the entire 10-step frosting instruction three separate times, you simply write it once at the bottom of the page and say "Make frosting here" in the main recipe. 
+
+In assembly language, that separate recipe is a **Procedure** (a reusable block of code). Procedures make your code significantly shorter, easier to read, and easier to debug because you aren't repeating the same lines over and over.
+
+---
+
+## 1. Defining a Procedure
+
+Procedures are defined using the `PROC` and `ENDP` directives. Crucially, a procedure must always end with a `RET` (Return) instruction to tell the CPU to go back to wherever it came from.
+
+```assembly
+my_proc PROC
+    ; Inside the procedure code
+    ADD AX, BX
+    RET         ; CRITICAL: Returns control to the caller
+my_proc ENDP
+```
+*(Note: `PROC` and `ENDP` are compiler directives, meaning they aren't real machine code. They just help organize the file for the assembler. `RET`, however, is a very real machine instruction.)*
+
+## 2. Calling a Procedure
+
+You trigger a procedure using the `CALL name` instruction. 
+
+Behind the scenes, the `CALL` instruction is doing two things instantly:
+1. It **PUSHes** the address of the very next line of code onto the Stack.
+2. It **JMPs** to the procedure label.
+
+When the CPU hits the `RET` instruction at the end of the procedure, it does the reverse:
+1. It **POPs** the address off the top of the Stack.
+2. It **JMPs** to that address, seamlessly resuming the main program.
+
+Because Procedures rely entirely on the Stack to remember where to return to, if you mess up the Stack inside your procedure (e.g., you Push something but forget to Pop it), the `RET` instruction will grab the wrong data, jump to an invalid memory location, and crash your program instantly!
+
+---
+
+## Worked Examples
+
+### Example 1: Basic Procedure Call
+This program uses a procedure to multiply AX by 3 repeatedly.
+
+```assembly
+ORG 100h    
+include emu8086.inc 
+
+MOV AX, 1 
+MOV BX, 3 
+
+CALL m2         ; Jumps to m2. After return, AX = 3
+CALL m2         ; AX = 3 * 3 = 9
+CALL m2         ; AX = 9 * 3 = 27
+
+CALL PRINT_NUM  ; Prints 27
+RET             ; Main program return to OS
+
+; --- Procedure Definition ---
+m2 PROC 
+    MUL BX      ; AX = AX * BX
+    RET         ; Returns to the line immediately after the CALL
+m2 ENDP 
+
+DEFINE_PRINT_NUM 
+DEFINE_PRINT_NUM_UNS 
+END 
+```
+
+### Example 2: Protecting Registers in Procedures
+If a procedure uses a register (like CX), it will overwrite whatever the main program had in CX. To be safe, a good procedure saves registers to the stack first and restores them before returning.
+
+```assembly
+my_safe_proc PROC
+    PUSH CX      ; Save original CX
+    
+    MOV CX, 10   ; Do local work with CX
+    ; ... other code ...
+    
+    POP CX       ; Restore original CX so the main program isn't affected
+    RET
+my_safe_proc ENDP
+```
+
+---
+
+## Key Takeaways
+*   Procedures are defined with `PROC` and `ENDP`.
+*   You trigger them with `CALL`.
+*   They must *always* end with `RET`.
+*   The `CALL` instruction implicitly uses the stack to save the return address.
+
+---
+
+## Exam Tips
+> 🎓 **What Lecturers Typically Test**
+> *   **Procedure Syntax:** Ensure you know that procedures require the sequence: `PROC`, `RET`, `ENDP`. Forgetting the `RET` instruction is a common error they look for in "Find the Bug" questions.
+> *   **Stack Interaction:** They may ask how `CALL` and `RET` work under the hood. You must explain that `CALL` pushes the return address to the stack, and `RET` pops it off.

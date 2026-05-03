@@ -1,0 +1,91 @@
+---
+title: "Common Functions in Assembly"
+description: "Using the emu8086.inc library to simplify complex output and input."
+---
+
+# Common Functions in Assembly
+
+Calling raw interrupts (like `INT 10h` or `INT 21h`) requires a lot of setup. To make life easier, modern assemblers often come with standard libraries. Think of this like buying pre-made cake mix instead of measuring out flour, sugar, and baking powder yourself. The `emu8086.inc` library provides **Macros** (pre-packaged code blocks) that handle the messy interrupt setups for you.
+
+In this session, we'll explore the macros built into the emu8086 emulator that make basic input and output significantly easier.
+
+---
+
+## 1. Using emu8086.inc
+
+To use these functions, you must place the following line at the top of your file (usually right after `ORG 100h`):
+`include 'emu8086.inc'`
+
+Additionally, for functions that are structured as Procedures (like `PRINT_NUM`), you must declare them at the very end of your file before the `END` statement using specific `DEFINE` macros.
+
+## 2. Common Library Functions
+
+### Display Functions
+*   **`PUTC char`:** Prints a single ASCII character at the cursor. Example: `PUTC 'A'`
+*   **`GOTOXY col, row`:** Moves the typing cursor to a specific X, Y coordinate on the screen.
+*   **`PRINT 'string'`:** Prints a whole sentence.
+*   **`PRINTN 'string'`:** Prints a sentence, then automatically hits "Enter" (Carriage Return) to drop to a new line.
+
+### Input and Output Procedures
+*   **`SCAN_NUM`:** Pauses the program, lets the user type a full multi-digit number, and stores that resulting number in the `CX` register.
+*   **`PRINT_NUM`:** Takes whatever math result is sitting in the `AX` register and prints it to the screen as a human-readable decimal number (signed).
+*   **`PRINT_NUM_UNS`:** Same as `PRINT_NUM` but prints the value as an unsigned number.
+
+---
+
+## Worked Examples
+
+### Example 1: Formatting Output with GOTOXY and PUTC
+This draws a simple structure using direct library macros.
+
+```assembly
+org 100h
+include 'emu8086.inc'
+
+gotoxy 10, 5    ; Move cursor to column 10, row 5
+putc '*'        ; Print a star
+
+gotoxy 10, 6    ; Move down one row
+print 'Hello'   ; Print text
+
+ret
+```
+
+### Example 2: Interactive Input using Library Macros
+This program asks the user for a number, reads it from the keyboard, and handles logic based on the input.
+
+```assembly
+ORG 100h 
+include 'emu8086.inc'   
+
+l1: 
+printn "Enter a number other than 8: "   
+call scan_num      ; User types a number. Result is saved in CX.
+mov ax, cx         ; Move user input into AX for checking
+
+cmp ax, 8          ; Did they type 8?
+jne l1             ; If Not Equal to 8, loop back to the start!
+
+printn " " 
+printn "You finally typed 8. Goodbye!"   
+
+ret                ; End program
+
+; Must define the library procedures used at the bottom
+define_scan_num 
+end 
+```
+
+---
+
+## Key Takeaways
+*   Library functions like `PRINTN` and `SCAN_NUM` are just heavily wrapped interrupt calls provided by the assembler to make learning easier.
+*   The result of `SCAN_NUM` always goes into the **CX** register.
+*   `PRINT_NUM` always prints whatever is currently in the **AX** register.
+
+---
+
+## Exam Tips
+> 🎓 **What Lecturers Typically Test**
+> *   **Register Knowledge:** If a question asks "How do you display the contents of BX?", you cannot just `call print_num`. You must first write `MOV AX, BX`, and *then* `call print_num`.
+> *   **Library Definitions:** If you write a program using `call print_num`, you will lose points if you forget to write `define_print_num` and `define_print_num_uns` at the very bottom of your code!
