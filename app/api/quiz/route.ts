@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
   const prompt = `You are an exam question generator for a 200-level Computer Science course at the University of Ibadan, Nigeria.
 
-Generate exactly 5 exam-style questions for:
+Generate exactly 20 exam-style questions for:
 - Course: ${course}
 - Topic: ${topicName}
 - Difficulty: ${difficulty}
@@ -52,7 +52,7 @@ Return ONLY valid JSON with no markdown, no extra text, no code fences. Use this
 }
 
 Rules:
-- Include at least 3 MCQ and 2 short_answer questions
+- Include exactly 15 MCQ and 5 short_answer questions
 - easy: recall, definitions, basic identification
 - medium: application, analysis, explain with examples
 - hard: synthesis, derivation, complex problem-solving, compare and contrast
@@ -63,7 +63,7 @@ Rules:
   try {
     const message = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 2048,
+      max_tokens: 8192,
       messages: [{ role: 'user', content: prompt }],
     })
 
