@@ -1,7 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { QuizRequest, QuizResponse, QuizQuestion } from '@/types'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 export async function POST(request: Request) {
   let body: QuizRequest
@@ -17,8 +15,8 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Invalid request parameters' }, { status: 400 })
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not configured' }, { status: 500 })
+  if (!process.env.GEMINI_API_KEY) {
+    return Response.json({ error: 'GEMINI_API_KEY not configured' }, { status: 500 })
   }
 
   const topicName = topic.replace(/-/g, ' ')
@@ -30,7 +28,7 @@ Generate exactly 20 exam-style questions for:
 - Topic: ${topicName}
 - Difficulty: ${difficulty}
 
-Return ONLY valid JSON with no markdown, no extra text, no code fences. Use this exact structure:
+Return ONLY valid JSON. Use this exact structure:
 {
   "questions": [
     {
@@ -61,13 +59,16 @@ Rules:
 - correctAnswer for MCQ must exactly match one of the options strings`
 
   try {
-    const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 8192,
-      messages: [{ role: 'user', content: prompt }],
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      generationConfig: {
+        responseMimeType: "application/json",
+      }
     })
 
-    const raw = (message.content[0] as { type: 'text'; text: string }).text.trim()
+    const result = await model.generateContent(prompt)
+    const raw = result.response.text()
 
     let parsed: { questions: QuizQuestion[] }
     try {
