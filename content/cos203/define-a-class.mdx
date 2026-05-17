@@ -1,0 +1,112 @@
+---
+title: Define a Class
+---
+
+# Object-Oriented Programming (OOP)
+
+OOP, or object-oriented programming, is a method of structuring a program by bundling related properties and behaviors into individual objects.
+
+Conceptually, objects are like the components of a system. Think of a program as a factory assembly line of sorts. At each step of the assembly line a system component processes some material, ultimately transforming raw material into a finished product.
+
+An object contains data, like the raw or preprocessed materials at each step on an assembly line, and behavior, like the action each assembly line component performs.
+
+## 10.1 Define a Class
+
+Primitive data structures—like numbers, strings, and lists—are designed to represent simple pieces of information, such as the cost of an apple, the name of a poem, or your favorite colors, respectively. What if you want to represent something more complex?
+
+For example, let’s say you want to track employees in an organization. You need to store some basic information about each employee, such as their name, age, position, and the year they started working.
+
+One way to do this is to represent each employee as a list:
+
+```python
+kirk = ["James Kirk", 34, "Captain", 2265]
+spock = ["Spock", 35, "Science Officer", 2254]
+mccoy = ["Leonard McCoy", "Chief Medical Officer", 2266]
+```
+
+There are a number of issues with this approach. First, it can make larger code files more difficult to manage. If you reference `kirk[0]` several lines away from where the `kirk` list is declared, will you remember that the element with index `0` is the employee's name? 
+
+Second, it can introduce errors if not every employee has the same number of elements in the list. In the `mccoy` list above, the age is missing, so `mccoy[1]` will return `"Chief Medical Officer"` instead of Dr. McCoy's age.
+
+A great way to make this type of code more manageable and more maintainable is to use **classes**.
+
+### Classes vs Instances
+
+Classes are used to create user-defined data structures. Classes define functions called **methods**, which identify the behaviors and actions that an object created from the class can perform with its data.
+
+In this chapter, you'll create a `Dog` class that stores some information about the characteristics and behaviors that an individual dog can have.
+
+A class is a blueprint for how something should be defined. It doesn't actually contain any data. The `Dog` class specifies that a name and an age are necessary for defining a dog, but it doesn't contain the name or age of any specific dog.
+
+While the class is the blueprint, an **instance** is an object that is built from a class and contains real data. An instance of the `Dog` class is not a blueprint anymore. It's an actual dog with a name, like Miles, who's four years old.
+
+Put another way, a class is like a form or questionnaire. An instance is like a form that has been filled out with information. Just like many people can fill out the same form with their own unique information, many instances can be created from a single class.
+
+### How to Define a Class
+
+All class definitions start with the `class` keyword, which is followed by the name of the class and a colon. Any code that is indented below the class definition is considered part of the class's body.
+
+Here's an example of a `Dog` class:
+
+```python
+class Dog:
+    pass
+```
+
+The body of the `Dog` class consists of a single statement: the `pass` keyword. `pass` is often used as a placeholder indicating where code will eventually go. It allows you to run this code without Python throwing an error.
+
+> [!NOTE]
+> Python class names are written in CapitalizedWords notation by convention. For example, a class for a specific breed of dog like the Jack Russell Terrier would be written as `JackRussellTerrier`.
+
+The `Dog` class isn't very interesting right now, so let's spruce it up a bit by defining some properties that all `Dog` objects should have. There are a number of properties that we can choose from, including name, age, coat color, and breed. To keep things simple, we'll just use name and age.
+
+The properties that all `Dog` objects must have are defined in a method called `.__init__()`. When a new `Dog` object is created, `.__init__()` sets the initial **state** of the object by assigning the values of the object's properties. That is, `.__init__()` initializes each new instance of the class.
+
+You can give `.__init__()` any number of parameters, but the first parameter will always be a variable called `self`. When a new class instance is created, the instance is automatically passed to the `self` parameter in `.__init__()` so that new **attributes** can be defined on the object.
+
+Let's update the `Dog` class with an `.__init__()` method that creates `.name` and `.age` attributes:
+
+```python
+class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+```
+
+Notice that the `.__init__()` method's signature is indented four spaces. The body of the method is indented by eight spaces. This indentation is vitally important. It tells Python that the `.__init__()` method belongs to the `Dog` class.
+
+In the body of `.__init__()`, there are two statements using the `self` variable:
+
+1.  `self.name = name` creates an attribute called `name` and assigns to it the value of the `name` parameter.
+2.  `self.age = age` creates an attribute called `age` and assigns to it the value of the `age` parameter.
+
+Attributes created in `.__init__()` are called **instance attributes**. An instance attribute's value is specific to a particular instance of the class. All `Dog` objects have a name and an age, but the values for the `name` and `age` attributes will vary depending on the `Dog` instance.
+
+On the other hand, **class attributes** are attributes that have the same value for all class instances. You can define a class attribute by assigning a value to a variable name outside of `.__init__()`.
+
+For example, the following `Dog` class has a class attribute called `species` with the value `"Canis familiaris"`:
+
+```python
+class Dog:
+    # Class attribute
+    species = "Canis familiaris"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+```
+
+Class attributes are defined directly beneath the first line of the class name and are indented by four spaces. They must always be assigned an initial value. When an instance of the class is created, class attributes are automatically created and assigned to their initial values.
+
+Use class attributes to define properties that should have the same value for every class instance. Use instance attributes for properties that vary from one instance to another.
+
+### Key Takeaways
+- **Classes** are blueprints for defining user-defined data structures.
+- **Instances** are objects created from a class, containing actual data.
+- The `.__init__()` method is used to initialize the object's initial state (its **instance attributes**).
+- **Class attributes** are shared across all instances of a class, whereas **instance attributes** are unique to each instance.
+
+### Exam Tips
+- Remember that the first parameter of any instance method, including `.__init__()`, must be `self`.
+- Class names should follow the `CapitalizedWords` (PascalCase) naming convention.
+- A `pass` statement can be used as a placeholder in empty class or method definitions to avoid syntax errors.

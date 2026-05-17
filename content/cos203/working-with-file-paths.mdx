@@ -1,0 +1,298 @@
+---
+title: Working With File Paths in Python
+---
+
+# Working With File Paths in Python
+
+Python's `pathlib` module is the main interface for working with file paths. You'll need to import the module before you can do anything with it.
+
+Open IDLE's interactive window and type the following to import `pathlib`:
+
+```python
+>>> import pathlib
+```
+
+The `pathlib` module contains a class called `Path` that is used to represent a file path.
+
+## Creating `Path` Objects
+
+There are several ways to create a new `Path` object:
+
+1.  From a string
+2.  With the `Path.home()` and `Path.cwd()` class methods
+3.  With the `/` operator
+
+The most straightforward way to create a `Path` object is from a string.
+
+### Creating `Path` Objects From Strings
+
+For instance, the following creates a `Path` object representing the macOS file path `"/Users/David/Documents/hello.txt"`:
+
+```python
+>>> path = pathlib.Path("/Users/David/Documents/hello.txt")
+```
+
+There's a problem, though, with Windows paths. On Windows, directories are separated by backslashes (`\`). Python interprets backslashes as the start of an **escape sequence** that represent a special character in the string, such as the newline character (`\n`).
+
+Attempting to create a `Path` object with the Windows file path `"C:\Users\David\Desktop\hello.txt"` raises an exception:
+
+```python
+>>> path = pathlib.Path("C:\Users\David\Desktop\hello.txt")
+SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes
+in position 2-3: truncated \UXXXXXXXX escape
+```
+
+There are two ways to get around this problem.
+
+First, you can use a forward slash (`/`) instead of a backslash (`\`) in your Windows file paths:
+
+```python
+>>> path = pathlib.Path("C:/Users/David/Desktop/hello.txt")
+```
+
+Python can interpret this just fine and will translate the path appropriately and automatically when interfacing with the Windows operating system.
+
+Second, you can turn the string into a `raw` string by prefixing it with an `r`:
+
+```python
+>>> path = pathlib.Path(r"C:\Users\David\Desktop\hello.txt")
+```
+
+This tells Python to ignore any escape sequences and just read the string as is.
+
+### Using `Path.home()` and `Path.cwd()`
+
+Besides creating a `Path` object from a string, the `Path` class has class methods that return the `Path` objects of special directories. Two of the most useful class methods are `Path.home()` and `Path.cwd()`.
+
+Every operating system has a special directory for storing data for the currently logged-in user. This directory is called the user's **home directory**. The location of this directory depends on the operating system:
+
+-   **Windows**: `C:\Users\<username>`
+-   **macOS**: `/Users/<username>`
+-   **Ubuntu Linux**: `/home/<username>`
+
+The `Path.home()` class method creates a `Path` object representing the home directory regardless of which operating system the code runs on:
+
+```python
+>>> home = pathlib.Path.home()
+```
+
+When you inspect the `home` variable on Windows, you'll see something like this:
+
+```python
+>>> home
+WindowsPath("C:/Users/David")
+```
+
+The `Path` object created is a subclass of `Path` called `WindowsPath`. On other operating systems, the `Path` object returned is a subclass called `PosixPath`.
+
+For example, on macOS, inspecting `home` will display something like the following:
+
+```python
+>>> home
+PosixPath("/Users/David")
+```
+
+For the rest of this section, `WindowsPath` objects will be shown in the example output. However, all of the examples will work with `PosixPath` objects.
+
+> [!NOTE]
+> `WindowsPath` and `PosixPath` objects share the same methods and attributes. From a programming standpoint, there's no difference between the two types of `Path` objects.
+
+The `Path.cwd()` class method returns a `Path` object representing the **current working directory**, or **CWD**. The current working directory is a dynamic reference to a directory that depends on where a process on the computer is currently working. It always represents your current location in the file system.
+
+When you run IDLE, the current working directory is usually set to the `Documents` directory in the current user's home directory:
+
+```python
+>>> pathlib.Path.cwd()
+WindowsPath("C:/Users/David/Documents")
+```
+
+This is not always the case, though. Moreover, the current working directory may change during the lifetime of a program.
+
+`Path.cwd()` is useful, but be careful when you use it. When you do, make sure you know exactly which directory the current working directory refers to.
+
+### Using the `/` Operator
+
+If you have an existing `Path` object, then you can use the `/` operator to extend the path with subdirectories or filenames.
+
+For example, the following creates a `Path` object representing a file named `hello.txt` in the `Documents` subdirectory of the current user's home directory:
+
+```python
+>>> home / "Desktop" / "hello.txt"
+WindowsPath('C:/Users/David/Desktop/hello.txt')
+```
+
+The `/` operator must always have a `Path` object on the left-hand side. The right-hand side can have a string representing a single file or directory, or it can have a string representing a path or other `Path` object.
+
+## Absolute vs Relative Paths
+
+A path that begins with the root directory in a file system is called an **absolute file path**. Not all file paths are absolute. A file path that is not absolute is called a **relative file path**.
+
+Here's an example of a `Path` object that references a relative path:
+
+```python
+>>> path = pathlib.Path("Photos/image.jpg")
+```
+
+Notice that the path string does not start with `C:\` or `/`.
+
+You can determine if a file path is absolute using `.is_absolute()`:
+
+```python
+>>> path.is_absolute()
+False
+```
+
+Relative paths only make sense when considered within the context of some other directory. They are perhaps most commonly used to describe the path to a file relative to the current working directory or the user's home directory.
+
+You can extend a relative path to an absolute path using the forward slash (`/`) operator:
+
+```python
+>>> home = pathlib.Path.home()
+>>> home / pathlib.Path("Photos/image.png")
+WindowsPath('C:/Users/David/Photos/image.png')
+```
+
+On the left of the forward slash (`/`), put an absolute path to the directory that contains the relative path. Then put the relative path on the right side of the forward slash.
+
+You won't always know how to construct an absolute path, though. In those cases, you can use `Path.resolve()`.
+
+When you call `.resolve()` on an existing `Path` object, a new `Path` object representing the absolute path is returned:
+
+```python
+>>> relative_path = pathlib.Path("/Users/David")
+>>> absolute_path = relative_path.resolve()
+>>> absolute_path
+WindowsPath('C:/Users/David')
+```
+
+`Path.resolve()` attempts to create as much of the absolute path as possible. Sometimes the relative path is ambiguous. In that case, `.resolve()` returns the relative path. In other words, `.resolve()` isn't guaranteed to return an absolute path.
+
+Once you create a `Path` object, you can inspect the various components of the file path that it refers to.
+
+## Accessing File Path Components
+
+All file paths contain a list of directories. The `.parents` attribute of a `Path` object returns an iterable containing a list of directories in the file path:
+
+```python
+>>> path = pathlib.Path.home() / "hello.txt"
+>>> path
+WindowsPath("C:/Users/David")
+>>> list(path.parents)
+[WindowsPath("C:/Users/David"), WindowsPath("C:/Users"),
+WindowsPath("C:/")]
+```
+
+Notice that the directories are returned in reverse order of how they appear in the file path. That is, the last directory in the path is the first directory in the list of parent directories.
+
+You can iterate over the parent directories in a `for` loop:
+
+```python
+>>> for directory in path.parents:
+...     print(directory)
+...
+C:\Users\David
+C:\Users
+C:\
+```
+
+The `.parent` attribute returns the name of the first parent directory in the file path as a string:
+
+```python
+>>> path.parent
+WindowsPath('C:/Users/David')
+```
+
+`.parent` is a shortcut for `.parents[0]`.
+
+If the file path is absolute, then you can access the root directory of the file path with the `.anchor` attribute:
+
+```python
+>>> path.anchor
+'C:\'
+```
+
+Note that `.anchor` returns a string, not another `Path` object.
+
+For relative paths, `.anchor` returns an empty string:
+
+```python
+>>> path = pathlib.Path("hello.txt")
+>>> path.anchor
+''
+```
+
+The `.name` attribute returns the name of the file or directory that the path points to:
+
+```python
+>>> home = pathlib.Path.home() # C:\Users\David
+>>> home.name
+'David'
+>>> path = home / "hello.txt"
+>>> path.name
+'hello.txt'
+```
+
+File names are broken down into two parts. The part to the left of the dot (`.`) is called the **stem**, and the part to the right of the dot is called the **suffix** or **file extension**.
+
+The `.stem` and `.suffix` attributes return strings containing each of these parts of the filename:
+
+```python
+>>> path.stem
+'hello'
+>>> path.suffix
+'.txt'
+```
+
+You might be wondering at this point how to actually *do* something with the `hello.txt` file. You'll learn how to read and write files in the next section. But before you open a file for reading, it's a good idea to know whether or not that file exists.
+
+## Checking Whether a File Path Exists
+
+You can create a `Path` object for a file path even if that path doesn't actually exist. Of course, file paths that don't represent actual files or directories aren't very useful unless you plan on creating them at some point.
+
+`Path` objects have an `.exists()` method that returns `True` or `False` depending on whether or not the file path exists on the machine executing the program.
+
+For instance, if you don't have a `hello.txt` file in your home directory, then calling `.exists()` on the `Path` object representing that file path returns `False`:
+
+```python
+>>> path = pathlib.Path.home() / "hello.txt"
+>>> path.exists()
+False
+```
+
+Using a text editor or some other means, create a blank text file called `hello.txt` in your home directory. Then rerun the above code example, making sure `path.exists()` returns `True`.
+
+You can check whether a file path refers to a file or a directory. To check if the path is a file, use the `.is_file()` method:
+
+```python
+>>> path.is_file()
+True
+```
+
+Note that `.is_file()` returns `False` if the file doesn't exist.
+
+Use the `.is_dir()` method to check if the file path refers to a directory:
+
+```python
+>>> # "hello.txt" is not a directory
+>>> path.is_dir()
+False
+
+>>> # home is a directory
+>>> home.is_dir()
+True
+```
+
+Working with file paths is an essential part of any programming project that reads or writes data from a hard drive or other storage device. Understanding the differences between file paths on different operating systems and how to work with `pathlib.Path` objects so that your programs can work on any operating system is an important and useful skill.
+
+### Key Takeaways
+- The `pathlib` module is the modern way to handle file paths in Python.
+- Use `Path.home()` to get the current user's home directory.
+- Use `Path.cwd()` to get the current working directory.
+- Use the `/` operator to easily construct complex paths (`home / "Desktop" / "hello.txt"`).
+- `path.resolve()` resolves a relative path into an absolute path.
+- Access path components via `.parent`, `.parents`, `.name`, `.stem`, and `.suffix`.
+- Check file existence with `.exists()`, `.is_file()`, or `.is_dir()`.
+
+### Exam Tips
+- Remember how to avoid Windows path syntax errors by using **raw strings** (`r"C:\path\to\file"`).
+- A path with `.name` returns the full filename, `.stem` returns just the name without the extension, and `.suffix` returns the extension.

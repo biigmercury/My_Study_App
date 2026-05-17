@@ -1,0 +1,106 @@
+---
+title: Files and the File System
+---
+
+# Files and the File System
+
+So far, you've written programs that get their input from one of two sources: the user or the program itself. Program output has been limited to displaying some text in IDLE's interactive window.
+
+These input and output methods aren't useful in several common scenarios, such as when:
+
+- The input values are unknown while writing the program
+- The program requires more data than a user can be expected to type in by themselves
+- Output must be shared with others after the program runs
+
+This is where files come in.
+
+## 12.1 Files and the File System
+
+You've likely been working with computer files for a long time. Even so, there are some things that programmers need to know about files that general users do not.
+
+In this section, you'll learn the concepts necessary to get started working with files in Python.
+
+### The Anatomy of a File
+
+There are many types of files, including text files, image files, audio files, and PDF files. Regardless of a file's type, though, a file is composed of a sequence of **bytes** called the **file contents**.
+
+A byte is an integer with a value between 0 and 255. Bytes are the values that are stored on a physical storage device when a file is saved. When you access a file on a computer, the bytes in the file are read in sequence from the disk.
+
+There's nothing about the file itself that dictates how to interpret its contents. As a programmer, you're responsible for converting bytes to the appropriate format when your program opens a file. This might sound difficult, but Python does a lot of the hard work for you.
+
+For example, Python can convert the numerical bytes of a text file into text characters for you. You don't need to know exactly how this conversion works. There are tools in the standard library for working with all sorts of file types, including images and audio files.
+
+To access a file from a storage device, you need to know which device the file is stored on, how to interact with that device, and where exactly on the device the file is located. This monumental task is managed by a **file system**.
+
+### The File System
+
+A computer's file system does two things:
+
+1.  It provides an abstract representation of the files stored on the computer and any devices connected to it.
+2.  It interfaces with devices to control the storage and retrieval of file data.
+
+Python interacts with the file system on your computer and is limited to whatever actions your file system allows.
+
+> [!IMPORTANT]
+> Different operating systems use different file systems. This is important to keep in mind when writing code that will be run on different operating systems.
+
+The file system manages communication between the computer and the physical storage device. That's good news! It means that, as a Python programmer, you don't need to worry about things like accessing physical storage or spinning a hard disk.
+
+### The File System Hierarchy
+
+File systems organize files in a hierarchy of **directories**, which are also known as **folders**. At the top of the hierarchy is a directory called the **root directory**. All other files and directories in the file system are contained in the root directory.
+
+> [!IMPORTANT]
+> On Windows, every disk drive has its own file hierarchy with the root directory represented by the filename. macOS and Linux are different in that each drive is represented as a subdirectory of a single root directory.
+
+Every file has a **filename** that must be unique from any other file in the same directory. Directories can also contain other directories called **subdirectories** or **subfolders**.
+
+The following directory tree visualizes the hierarchy of files and directories in an example file system:
+
+```text
+root/
+├── app/
+│   ├── program.py
+│   └── data.txt
+└── photos/
+    ├── cats/
+    │   ├── lion.jpg
+    │   └── siamese.png
+    └── dogs/
+        ├── dachshound.jpg
+        └── jack_russel.gif
+```
+
+In this file system, the root folder is called `root/`. It has two subdirectories called `app/` and `photos/`. The `app/` subdirectory contains a `program.py` file and a `data.txt` file. The `photos/` directory has two subdirectories called `cats/` and `dogs/` that both contain two image files.
+
+### File Paths
+
+To locate a file in a file system, you can list the directories in order, starting with the root directory, followed by the name of the file. A string with the file location represented in this manner is called a **file path**.
+
+For example, the file path for the `jack_russel.gif` file in the above file system is `root/photos/dogs/jack_russel.gif`.
+
+How you write file paths depends on your operating system. Here are three examples of file paths on Windows, macOS, and Linux:
+
+1.  **Windows**: `C:\Users\David\Documents\hello.txt`
+2.  **macOS**: `/Users/David/Documents/hello.txt`
+3.  **Ubuntu Linux**: `/home/David/Documents/hello.txt`
+
+All three of these file paths locate a text file named `hello.txt` that is stored in the `Documents` subfolder of the user directory for a user named `David`. As you can see, there are some pretty big differences between file paths from one operating system to another.
+
+On macOS and Ubuntu Linux, the operating system uses a **virtual file system** that organizes all files and directories for all devices on the system under a single root directory, usually represented by a forward slash symbol (`/`). Files and folders from external storage devices are usually located in a subdirectory called `media/`.
+
+On Windows, there is no universal root directory. Each device has a separate file system with a unique root directory that is named with a **drive letter** followed by a colon (`:`) and a backslash symbol (`\`). Typically, the hard drive on which the operating system is installed is assigned the letter `C`, so the root directory of the file system for that drive is `C:\`.
+
+The other major difference between Windows, macOS, and Ubuntu file paths is that directories in a Windows file path are separated by backslashes (`\`), whereas directories in macOS and Ubuntu file paths are separated by forward slashes (`/`).
+
+When you write programs that need to run on multiple operating systems, it's critical that you handle the differences in file paths appropriately. In versions of Python greater than 3.4, the standard library contains a module called `pathlib` that helps take the pain out of handling file paths across operating systems.
+
+### Key Takeaways
+- Files are fundamentally just **sequences of bytes**. 
+- A **file system** provides an abstraction for data storage and manages communication with physical hardware.
+- The **root directory** sits at the top of the file hierarchy.
+- **File paths** differ significantly between Windows (`\` and drive letters like `C:`) and POSIX systems like Linux/macOS (`/`).
+
+### Exam Tips
+- Understand the difference in path separators (`\` for Windows, `/` for macOS/Linux).
+- Be prepared to define what a file path is and the purpose of the root directory.

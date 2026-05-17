@@ -1,0 +1,265 @@
+---
+title: Working With Packages
+---
+
+# Working With Packages
+
+Modules allow you to divide a program into individual files that can be reused as needed. Related code can be organized into a single module and kept separate from other code.
+
+Packages take this organizational structure one step further by allowing you to group related modules under a single namespace.
+
+In this section, you'll learn how to create your own Python package and import code from that package into another module.
+
+## Creating Packages
+
+A **package** is a folder that contains one or more Python modules. It must also contain a special module called `__init__.py`. Here's an example of a package to illustrate this structure:
+
+```
+mypackage/
+├── __init__.py
+├── module1.py
+└── module2.py
+```
+
+The `__init__.py` module doesn't need to contain any code! It only needs to exist so that Python recognizes the `mypackage/` folder as a Python package.
+
+Using your computer's file explorer or whatever tool you're comfortable with, create a new folder somewhere on your computer called `packages_example/`. Inside that folder, create another folder called `mypackage/`.
+
+The `packages_example/` folder is called the **project folder**, or **project root folder**, because it contains all the files or folders in the `packages_examples` project. The `mypackage/` folder will eventually become a Python package. It isn't one right now because it doesn't contain any modules.
+
+Create a new file called `main.py` in the `packages_example/` folder.
+
+Create a file named `__init__.py` in the `mypackage/` subfolder of your `packages_example` folder.
+
+Finally, create two more files: `module1.py` and `module2.py`, in your `mypackage/` folder.
+
+Now that we've created the package structure, let's add some code. In the `module1.py` file, add the following function:
+
+```python
+# module1.py
+def greet(name):
+    print(f"Hello, {name}!")
+```
+
+In the `module2.py` file add the following:
+
+```python
+# module2.py
+def depart(name):
+    print(f"Goodbye, {name}!")
+```
+
+Make sure you save both of the `module1.py` and `module2.py` files! You're now ready to import and use these modules in the `main.py` module.
+
+## Importing Modules From Packages
+
+In your `main.py` file, add the following code:
+
+```python
+# main.py
+import mypackage
+
+mypackage.module1.greet("Pythonista")
+mypackage.module2.depart("Pythonista")
+```
+
+Save `main.py` and run the module. In the interactive window, an `AttributeError` is raised:
+
+```python
+Traceback (most recent call last):
+  File "\MacHomeDocumentspackages_examplemain.py", line 5, in <module>
+    mypackage.module1.greet("Pythonista")
+AttributeError: module 'mypackage' has no attribute 'module1'
+```
+
+When you import the `mypackage` module, the `module1` and `module2` namespaces aren't imported automatically—you need to import them, too.
+
+Change the import statement at the top of `main.py`:
+
+```python
+# main.py
+import mypackage.module1 # <-- Change this line
+
+# Leave the below code unchanged
+mypackage.module1.greet("Pythonista")
+mypackage.module2.depart("Pythonista")
+```
+
+Now save and run the `main.py` module. You should see the following output in the interactive window:
+
+```python
+Hello, Pythonista!
+Traceback (most recent call last):
+  File "\MacHomeDocumentspackages_examplemain.py", line 6, in <module>
+    mypackage.module2.depart("Pythonista")
+AttributeError: module 'mypackage' has no attribute 'module2'
+```
+
+You can tell that `mypackage.module1.greet()` was called because `Hello, Pythonista!` is displayed in the interactive window. However, `mypackage.module2.depart()` was not called. That line raised an attribute error because the only module imported from `mypackage` so far is `module1`.
+
+To import `module2`, add the following `import` statement to the top of your `main.py` file:
+
+```python
+# main.py
+import mypackage.module1
+import mypackage.module2 # <-- Add this line
+
+# Leave the below code unchanged
+mypackage.module1.greet("Pythonista")
+mypackage.module2.depart("Pythonista")
+```
+
+Now when you save and run `main.py`, both `greet()` and `depart()` get called:
+
+```
+Hello, Pythonista!
+Goodbye, Pythonista!
+```
+
+In general, modules are imported from packages using **dotted module names** with the following format:
+
+`import <package_name>.<module_name>`
+
+First, type the name of the package, followed by a dot (`.`) and the name of the module you want to import.
+
+> [!IMPORTANT]
+> Just like module file names, package folder names must be valid Python identifiers. They may contain only uppercase and lowercase letters, numbers, and underscores (`_`), and they may not start with a digit.
+
+As with modules, there are several variations on the `import` statement that you can use when importing packages.
+
+## Import Statement Variations for Packages
+
+There are three variations of the `import` statement that you learned for importing names from modules. These three variations translate to the following four variations for importing modules from packages:
+
+1.  `import <package>`
+2.  `import <package> as <other_name>`
+3.  `from <package> import <module>`
+4.  `from <package> import <module> as <other_name>`
+
+These variations work much the same as their counterparts.
+
+For instance, instead of importing `mypackage.module1` and `mypackage.module2` on separate lines, you can import both on the same line. Change your `main.py` file to the following:
+
+```python
+# main.py
+from mypackage import module1, module2
+
+module1.greet("Pythonista")
+module2.depart("Pythonista")
+```
+
+When you save and run the module, the same output as before is displayed in the interactive window.
+
+You can change the name of an imported module using the `as` keyword:
+
+```python
+# main.py
+from mypackage import module1 as m1, module2 as m2
+
+m1.greet("Pythonista")
+m2.depart("Pythonista")
+```
+
+You can also import individual names from a package module. For instance, you can rewrite `main.py` to the following without changing what gets printed when you save and run the module:
+
+```python
+# main.py
+from mypackage.module1 import greet
+from mypackage.module2 import depart
+
+greet("Pythonista")
+depart("Pythonista")
+```
+
+With so many ways to import packages, it's natural to wonder which way is best.
+
+## Guidelines for Importing Packages
+
+The same guidelines for importing names from modules apply to importing modules from packages. You should prefer that imports be as explicit as possible so that the modules and names imported into the calling module have the appropriate context.
+
+In general, the following format is the most explicit:
+
+`import <package>.<module>`
+
+To access names from module, type something like the following:
+
+`<package>.<module>.<name>`
+
+This way, when you encounter names from the imported module, there's no question where those names come from. But sometimes package and module names are long, and you find yourself typing `<package>.<module>` over and over again in your code.
+
+The following format allows you to skip the package name and import just the module name into the calling module's namespace:
+
+`from <package> import <module>`
+
+Now you can just type `<module>.<name>` to access a name from the module. While this no longer tells you which package the name comes from, it does keep the context of the module apparent.
+
+Finally, the following format is generally ambiguous and should only be used when there's no risk of importing a name from a module that clashes with a name in the calling module:
+
+`from <package>.<module> import <name>`
+
+Now that you've seen how to import modules from packages, let's take a quick look at how to nest packages inside other packages.
+
+## Importing Modules From Subpackages
+
+A package is just a folder containing one or more Python modules, one of which must be named `__init__.py`. So it's entirely possible to have the following package structure:
+
+```
+mypackage/
+├── mysubpackage/
+│   ├── __init__.py
+│   └── module3.py
+├── __init__.py
+├── module1.py
+└── module2.py
+```
+
+A package nested inside another package is called a **subpackage**. For example, the `mysubpackage` folder is a subpackage of `mypackage` because it contains an `__init__.py` module as well as a second module called `module3.py`.
+
+Using your computer's file explorer or some other tool, create the `mysubpackage/` folder on your computer. Make sure you place the folder inside the `mypackage/` folder you created earlier.
+
+In IDLE, create the files `__init__.py` and `module3.py` and save both modules to the `mysubpackage/` folder.
+
+In your `module3.py` file, add the following code:
+
+```python
+# module3.py
+people = ["John", "Paul", "George", "Ringo"]
+```
+
+Now open the `main.py` file in your root `packages_examples/` project folder. Remove any existing code and replace it with the following:
+
+```python
+# main.py
+from mypackage.module1 import greet
+from mypackage.mysubpackage.module3 import people
+
+for person in people:
+    greet(person)
+```
+
+The `people` list from the `module3` module inside `mysubpackage` is imported via the dotted module name `mypackage.mysubpackage.module3`.
+
+Now save and run `main.py`. The following output is displayed in the interactive window:
+
+```
+Hello, John!
+Hello, Paul!
+Hello, George!
+Hello, Ringo!
+```
+
+Subpackages are great for organizing code inside very large packages. They help keep the folder structure of a package clean and organized.
+
+However, deeply nested subpackages introduce long dotted module names. You can imagine how much typing it would take to import a module from a subpackage of a subpackage of a subpackage of a package.
+
+It's good practice to keep your subpackages at most one or two levels deep.
+
+### Key Takeaways
+- A **package** is a folder containing Python modules and an `__init__.py` file.
+- The `__init__.py` file signals to Python that the folder should be treated as a package.
+- Modules inside a package are accessed using **dotted syntax**: `import mypackage.module1`.
+- You can create **subpackages** by nesting folders, as long as each has an `__init__.py` file.
+
+### Exam Tips
+- Without `__init__.py`, Python will not recognize the folder as a package (in pre-Python 3.3). Although Python 3.3+ supports namespace packages without `__init__.py`, it is standard practice and often required to include it to ensure correct behavior.
+- Be able to trace the dotted paths (e.g., `mypackage.mysubpackage.mymodule`).

@@ -1,0 +1,265 @@
+---
+title: Working With Modules
+---
+
+# Working With Modules
+
+As you gain experience writing code, you'll eventually work on projects that are so large that keeping all the code in a single file becomes cumbersome.
+
+Instead of writing a single file, you can put related code into separate files called **modules**. Individual modules can be put together like building blocks to create a larger application.
+
+## 11.1 Working With Modules
+
+A **module** is a file containing Python code that can be reused in other Python code files.
+
+Technically, every Python file that you've created while reading this book is a module, but you haven't seen how to use code from one module inside another.
+
+There are four main advantages to breaking a program into modules:
+1.  **Simplicity**: Modules are focused on a single problem.
+2.  **Maintainability**: Small files are better than large files.
+3.  **Reusability**: Modules reduce duplicate code.
+4.  **Scoping**: Modules have their own **namespaces**.
+
+In this section, you'll explore modules in more detail. You'll learn how to create them with IDLE, how to import one module into another, and how modules create namespaces.
+
+## Creating Modules
+
+Open IDLE and start a new editor window. In the editor window, define a function, `add()`, that returns the sum of its two parameters:
+
+```python
+# adder.py
+def add(x, y):
+    return x + y
+```
+
+Save the file as `adder.py` in a new directory on your computer called `myproject/`. `adder.py` is a Python module! It's not a complete program, but not all modules need to be.
+
+Now open another new editor window and type the following code:
+
+```python
+# main.py
+value = add(2, 2)
+print(value)
+```
+
+Save the file as `main.py` in the same `myproject/` folder you just created. Then run the module.
+
+When the module runs, you'll see a `NameError` displayed in IDLE's interactive window:
+
+```python
+Traceback (most recent call last):
+  File "//Documents/myproject/main.py", line 1, in <module>
+    value = add(2, 2)
+NameError: name 'add' is not defined
+```
+
+It makes sense that a `NameError` occurs because `add()` is defined in `adder.py` and not in `main.py`. In order to use `add()` in `main.py`, you must first import the `adder` module.
+
+## Importing One Module Into Another
+
+In the editor window for `main.py`, add the following line to the top of the file:
+
+```python
+# main.py
+import adder # <-- Add this line
+
+# Leave the code below unchanged
+value = add(2, 2)
+print(value)
+```
+
+When you import one module into another, the contents of the imported module become available in the other. The module with the `import` statement is called the **calling module**. In this example, `adder.py` is the imported module and `main.py` is the calling module.
+
+Press Save and run the module. The `NameError` exception is still raised. That's because `add()` can only be accessed from the `adder` namespace.
+
+A **namespace** is a collection of names, such as variable names, function names, and class names. Every Python module has its own namespace.
+
+Variables, functions, and classes in a module can be accessed from within the same module by just typing their name. That's how you've been doing it throughout this book so far. However, this doesn't work for imported modules.
+
+To access a name in an imported module from the calling module, type the imported module's name followed by a dot (`.`) and the name you want to use:
+
+`<module>.<name>`
+
+For instance, to use `add()` in the `adder` module, you need to type `adder.add()`.
+
+> [!IMPORTANT]
+> The name used to import a module is the same as the module's filename. For this reason, module filenames must be valid Python identifiers. That means they may only contain uppercase and lowercase letters, numbers, and underscores (`_`), and they may not start with a digit.
+
+Update the code in `main.py` as follows:
+
+```python
+# main.py
+import adder
+
+value = adder.add(2, 2) # <-- Change this line
+print(value)
+```
+
+Save the file and run the module. The value `4` is printed in the interactive window.
+
+When you type `import <module>` at the beginning of a file, the module's entire namespace is imported. Any new variables or functions added to `adder.py` will be accessible in `main.py` without you having to import anything new.
+
+Open the editor window for `adder.py` and add the following function below `add()`:
+
+```python
+# adder.py
+# Leave this code unchanged
+def add(x, y):
+    return x + y
+
+def double(x): # <-- Add this function
+    return x + x
+```
+
+Save the file. Then open the editor window for `main.py` and add the following code:
+
+```python
+# main.py
+import adder
+
+value = adder.add(2, 2)
+double_value = adder.double(value) # <-- Add this line
+print(double_value) # <-- Change this line
+```
+
+Now save and run `main.py`. When the module runs, the value `8` is displayed in the interactive window. Since `double()` already exists in the `adder` namespace, no `NameError` is raised.
+
+## Import Statement Variations
+
+The `import` statement is flexible. There are two variations that you should know about:
+
+1.  `import <module> as <other_name>`
+2.  `from <module> import <name>`
+
+Let's look at each of these variations in detail.
+
+### `import <module> as <other_name>`
+
+You can change the name of an import using the `as` keyword:
+
+`import <module> as <other_name>`
+
+When you import a module this way, the module's namespace is accessed through `<other_name>` instead of `<module>`.
+
+For example, change the `import` statement in `main.py` to the following:
+
+```python
+# main.py
+import adder as a # <-- Change this line
+
+# Leave the code below unchanged
+value = adder.add(2, 2)
+double_value = adder.double(value)
+print(double_value)
+```
+
+Save the file and run. A `NameError` is raised because the `adder` name is no longer recognized because the module has been imported with the name `a` instead of `adder`.
+
+To make `main.py` work, you need to replace `adder.add()` and `adder.double()` with `a.add()` and `a.double()`:
+
+```python
+import adder as a
+
+value = a.add(2, 2) # <-- Change this line
+double_value = a.double(value) # <-- Change this line, too
+print(double_value)
+```
+
+Now save the file and run the module. No `NameError` is raised, and the value `8` is displayed.
+
+### `from <module> import <name>`
+
+Instead of importing the entire namespace, you can import only a specific name from a module. To do this, replace the `import` statement with the following:
+
+`from <module> import <name>`
+
+For example, in `main.py`, change the `import` statement to the following:
+
+```python
+# main.py
+from adder import add # <-- Change this line
+
+value = adder.add(2, 2)
+double_value = adder.double(2, 2)
+print(double_value)
+```
+
+A `NameError` exception is raised. The traceback tells you that the name `adder` is undefined. Only the name `add` is imported from `adder.py` and is placed in the `main.py` module's local namespace. That means you can use `add()` without having to type `adder.add()`.
+
+Replace `adder.add()` and `adder.double()` in `main.py` with `add()` and `double()`:
+
+```python
+# main.py
+from adder import add
+
+value = add(2, 2) # <-- Change this line
+double_value = double(value) # <-- Change this line, too
+print(double_value)
+```
+
+Now save and run. Another `NameError` is raised telling you that the name `double` isn't defined, which proves that only the `add` name was imported from the `adder` module.
+
+You can import the `double` name by adding it to the `import` statement in `main.py`:
+
+```python
+# main.py
+from adder import add, double # <-- Change this line
+
+# Leave the code below unchanged
+value = add(2, 2)
+double_value = double(value)
+print(double_value)
+```
+
+Save and run the module. Now the module runs without producing a `NameError`. The value `8` is displayed.
+
+## Summary of Import Statements
+
+| Import Statement | Result |
+| :--- | :--- |
+| `import <module>` | Import the entire namespace of `<module>` into the name `<module>`. Import module names can be accessed from the calling module with `<module>.<name>`. |
+| `import <module> as <other_name>` | Import the entire namespace of `<modules>` into the name `<other_name>`. Import module names can be accessed from the calling module with `<other_name>.<name>`. |
+| `from <module> import <name1>, <name2>` | Import only the names `<name1>`, `<name2>`, etc., from `<module>`. The names are added to the calling module's local namespace and can be accessed directly. |
+
+## Why Use Namespaces?
+
+Namespaces in code provide the same advantages as grouping things in real life. They:
+1.  **Group** names into logical containers.
+2.  **Prevent clashes** between duplicate names.
+3.  **Provide context** to names.
+
+In general, `import <module>` is the preferred approach because it keeps the imported module's namespace completely separate from the calling module's namespace. Moreover, every name from the imported module is accessed from the calling module with the `<module>.<name>` format, which immediately tells you in which module the name originates.
+
+There are two reasons you might use the `import <module> as <other_name>` format:
+1.  The module name is long, and you wish to import an abbreviated version of it.
+2.  The module name clashes with an existing name in the calling module.
+
+Importing specific names from a module is generally the least preferred way to import code from a module. The imported names are added directly to the calling module's namespace, completely removing them from the context of the calling module.
+
+Sometimes, modules contain a single function or class that has the same name as the module. For example, there is a module in the Python standard library called `datetime` that contains a class called `datetime`.
+
+```python
+import datetime as dt
+
+dt.datetime(2020, 2, 2)
+```
+
+It's also common to import the `datetime` class directly into the calling module's namespace:
+
+```python
+from datetime import datetime
+
+datetime(2020, 2, 2)
+```
+
+Always use good judgment when importing modules so that you preserve the most context possible.
+
+### Key Takeaways
+- Modules allow breaking a large program into smaller, maintainable files.
+- Each module has its own isolated **namespace**.
+- `import <module>` creates a separate namespace.
+- `from <module> import <name>` imports variables directly into the current namespace.
+
+### Exam Tips
+- Understand the difference between `import X` and `from X import Y`. The latter could potentially overwrite an existing variable named `Y` in your namespace.
+- Know the naming conventions for modules (they must be valid Python identifiers, no dashes).

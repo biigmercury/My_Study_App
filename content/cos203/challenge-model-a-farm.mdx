@@ -1,0 +1,73 @@
+---
+title: Challenge Model a Farm
+---
+
+# Challenge: Model a Farm
+
+In this assignment, you'll create a simplified model of a farm. As you work through this assignment, keep in mind that there are a number of correct answers.
+
+The focus of this assignment is less about the Python class syntax and more about software design in general, which is highly subjective. This assignment is intentionally left open-ended to encourage you to think about how you would organize your code into classes.
+
+Before you write any code, grab a pen and paper and sketch out a model of your farm, identifying classes, attributes, and methods. Think about inheritance. How can you prevent code duplication? Take the time to work through as many iterations as you feel are necessary.
+
+The actual requirements are open to interpretation, but try to adhere to these guidelines:
+
+1.  You should have at least four classes: the parent `Animal` class and at least three child animal classes that inherit from `Animal`.
+2.  Each class should have a few attributes and at least one method that models some behavior appropriate for a specific animal or all animals—walking, running, eating, sleeping, and so on.
+3.  Keep it simple. Utilize inheritance. Make sure you output details about the animals and their behaviors.
+
+## Example Solution Architecture
+
+While there are many solutions to this, a clean architecture looks like this:
+
+```python
+class Animal:
+    def __init__(self, name, age, species):
+        self.name = name
+        self.age = age
+        self.species = species
+
+    def speak(self, sound):
+        return f"{self.name} says {sound}!"
+
+    def sleep(self):
+        return f"{self.name} is sleeping..."
+
+class Cow(Animal):
+    def __init__(self, name, age):
+        super().__init__(name, age, "Cow")
+
+    def speak(self, sound="Moo"):
+        return super().speak(sound)
+
+class Pig(Animal):
+    def __init__(self, name, age):
+        super().__init__(name, age, "Pig")
+
+    def speak(self, sound="Oink"):
+        return super().speak(sound)
+
+class Chicken(Animal):
+    def __init__(self, name, age):
+        super().__init__(name, age, "Chicken")
+
+    def speak(self, sound="Cluck"):
+        return super().speak(sound)
+
+# Testing the model
+betsy = Cow("Betsy", 5)
+porky = Pig("Porky", 3)
+clucky = Chicken("Clucky", 1)
+
+print(betsy.speak())
+print(porky.sleep())
+print(clucky.speak())
+```
+
+### Key Takeaways
+- System design is an iterative process. Using inheritance correctly eliminates code duplication.
+- When creating child classes, `super().__init__()` can be used to set attributes that are handled by the parent class, enforcing a consistent structure while allowing for custom defaults.
+
+### Exam Tips
+- You may be asked to design a quick class hierarchy on the spot. Always identify the common denominator properties (e.g., all animals have a name and age) and place them in the parent class.
+- Place specific default values (like species names or sounds) in the child classes.
