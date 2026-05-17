@@ -4,225 +4,134 @@ title: Read and Write CSV Data
 
 # Read and Write CSV Data
 
-Suppose you have a temperature sensor in your house that records the temperature every four hours. Over the course of a day, it takes six temperature readings.
+Plain text files (`.txt`) are great for storing raw paragraphs, like a diary entry or an error log. But in the real world of software engineering, data is usually highly structured. We have spreadsheets filled with rows and columns of users, financial transactions, and inventory.
 
-You can store each temperature reading in a list:
+To store tabular, spreadsheet-style data in a plain text file, the software industry uses a format called **CSV (Comma-Separated Values)**. 
+
+## What is a CSV File?
+
+A CSV file is a text file where each line represents a single "row" of a spreadsheet, and the "columns" are separated by commas.
+
+If you had a spreadsheet of employees, the underlying CSV text would look exactly like this:
+
+```text
+Name,Department,Salary
+Alice,Engineering,85000
+Bob,Sales,62000
+Charlie,HR,55000
+```
+
+> **Real World Analogy:** Think of a CSV file as a cheap, flat-pack bookshelf from IKEA. It doesn't look like a bookshelf when it's in the box (it's just text separated by commas). But because the pieces are cut precisely and separated by cardboard dividers (the commas), it is incredibly easy for you to unpack it and assemble it into a beautiful, structured shelf (a Python dictionary or list).
+
+Technically, you could read a CSV file using standard `.read()` and `.split(",")` string methods. But managing the commas, stripping out whitespace, and ignoring commas that might be inside a person's name (e.g., "Smith, John") is a nightmare. 
+
+Instead, Python provides a built-in `csv` module that handles all the heavy lifting.
+
+## Reading Simple CSV Files
+
+To interact with CSV data, we must first `import csv`. 
+
+If our CSV file does *not* have a header row (e.g., just a list of raw temperatures like `68, 70, 72`), we use `csv.reader`.
 
 ```python
->>> temperature_readings = [68, 65, 68, 70, 74, 72]
+import csv
+from pathlib import Path
+
+csv_path = Path("temperatures.csv")
+
+# We open the file normally
+with csv_path.open(mode="r", encoding="utf-8", newline="") as file:
+    
+    # We hand the raw file to the csv.reader
+    # The reader parses the commas and returns a list for every row!
+    reader_object = csv.reader(file)
+    
+    for row in reader_object:
+        print(row) 
+        # Output: ['68', '70', '72']
 ```
 
-Each day the sensor generates a new list of numbers. To store these values to a file, you can write the values from each day on a new line in a text file and separate each value with a comma.
+> **CRITICAL RULE:** Whenever you open a file to use with the `csv` module, you **must** pass `newline=""` to the `.open()` method. If you forget this on a Windows machine, the `csv` module and Windows will fight over how to handle line-breaks, resulting in double-spaced or corrupted output files.
+
+## Reading Complex CSV Files (DictReader)
+
+If your CSV file *does* have a header row (like our Employee example: `Name,Department,Salary`), using the basic `csv.reader` is annoying because you have to remember that `row[0]` is the name, and `row[2]` is the salary.
+
+Instead, we use the incredibly powerful `csv.DictReader`. It reads the first line of the file, realizes those are column headers, and converts every subsequent row into a Python **Dictionary**!
+
+```mermaid
+flowchart LR
+    CSV[Name,Role\nAlice,CEO] -->|csv.DictReader| Dict[{"Name": "Alice", "Role": "CEO"}]
+```
+
+### Worked Example 1: Reading Employee Data
 
 ```python
->>> from pathlib import Path
->>> file_path = Path.home() / "temperatures.csv"
->>> with file_path.open(mode="a", encoding="utf-8") as file:
-...     file.write(str(temperature_readings[0]))
-...     for temp in temperature_readings[1:]:
-...         file.write(f",{temp}")
-...
+import csv
+from pathlib import Path
+
+employee_path = Path("employees.csv")
+
+with employee_path.open(mode="r", encoding="utf-8", newline="") as file:
+    
+    # DictReader automatically uses the first row as the Dictionary Keys!
+    reader = csv.DictReader(file)
+    
+    for row in reader:
+        # We can access data using the column names! Much easier to read.
+        name = row["Name"]
+        salary = row["Salary"]
+        print(f"{name} makes ${salary}")
 ```
 
-This creates a file in your home directory called `temperatures.csv` and opens it in append mode. On a new line at the end of the file, the first value in the `temperature_readings` list is written to the file. Then each remaining value in the list is written, preceded by a comma, to the same line.
+**Data Type Warning:** The CSV module is a text parser. It does not know if `85000` is a number or a word. It will ALWAYS return strings. If you want to do math on the salary, you must manually convert it: `int(row["Salary"])`.
 
-The final string of text written to the file is `"68,65,68,70,74,72"`. You can verify this by reading the text in the file:
+## Writing Complex CSV Files (DictWriter)
+
+Writing structured data out to a file is just as easy using `csv.DictWriter`. You provide a list of dictionaries, tell it what the column headers should be, and it handles the commas and formatting automatically.
+
+### Worked Example 2: Saving User Data
+
+Let's say we have a list of new users that we need to save to a database file.
 
 ```python
->>> with file_path.open(mode="r", encoding="utf-8") as file:
-...     text = file.read()
-...
->>> text
-'68,65,68,70,74,72'
+import csv
+from pathlib import Path
+
+# Our structured data
+new_users = [
+    {"username": "cool_guy_99", "score": 150},
+    {"username": "gamer_girl", "score": 300}
+]
+
+output_path = Path("high_scores.csv")
+
+with output_path.open(mode="w", encoding="utf-8", newline="") as file:
+    
+    # 1. We setup the DictWriter, and we MUST tell it what the column names are.
+    headers = ["username", "score"]
+    writer = csv.DictWriter(file, fieldnames=headers)
+    
+    # 2. We command the writer to write the header row at the top of the file
+    writer.writeheader()
+    
+    # 3. We command the writer to dump all our dictionary data into the file
+    writer.writerows(new_users)
 ```
 
-This format is called **comma-separated values**, or **CSV**. The `temperatures.csv` file is called a **CSV file**.
-
-CSV files are a great way to store records of sequential data because you can recover each row of the CSV value as a list:
-
-```python
->>> temperatures = text.split(",")
->>> temperatures
-['68', '65', '68', '70', '74', '72']
+The resulting `high_scores.csv` file will perfectly formatted:
+```text
+username,score
+cool_guy_99,150
+gamer_girl,300
 ```
 
-The values in the `temperatures` list are strings, not integers like the values originally written to the file. This is because values read from a text file are always read as strings.
+## Key Takeaways
+- **CSV (Comma-Separated Values)** is the global standard for storing tabular spreadsheet data in plain text.
+- The built-in `csv` module parses commas and quotes perfectly, saving you from writing brittle string manipulation code.
+- Always include `newline=""` in your `.open()` method when using the `csv` module to prevent platform-specific formatting corruption.
+- Use `csv.DictReader` and `csv.DictWriter` to process spreadsheet rows as Python Dictionaries, allowing you to access data via column names rather than list indexes.
 
-You can convert the strings to integers using a list comprehension:
-
-```python
->>> int_temperatures = [int(temp) for temp in temperatures]
->>> int_temperatures
-[68, 65, 68, 70, 74, 72]
-```
-
-Reading and writing CSV files is so common that the Python standard library has a module called `csv` to lessen the workload required for working with CSV files. 
-
-## The `csv` Module
-
-The `csv` module can be used to read and write CSV files. 
-
-To get started, import the `csv` module:
-
-```python
->>> import csv
-```
-
-### Writing CSV Files With `csv.writer`
-
-Create a list of lists containing three days' worth of temperature readings:
-
-```python
->>> daily_temperatures = [
-...     [68, 65, 68, 70, 74, 72],
-...     [67, 67, 70, 72, 72, 70],
-...     [68, 70, 74, 76, 74, 73],
-... ]
-```
-
-Now open the `temperatures.csv` file in write mode:
-
-```python
->>> file_path = Path.home() / "temperatures.csv"
->>> file = file_path.open(mode="w", encoding="utf-8", newline="")
-```
-
-> [!IMPORTANT]
-> In the above example, notice that the `newline` parameter in `.open()` is set to `""`. This is because the `csv` module does its own newline conversions. If you don't specify `newline=""` when opening the file, then some systems, such as Windows, will interpret newlines incorrectly and insert a second newline after each line in the file.
-
-Now create a new CSV writer object by passing the file object `file` to `csv.writer()`:
-
-```python
->>> writer = csv.writer(file)
-```
-
-`csv.writer()` returns a CSV writer object with methods for writing data to the CSV file. You can use the `writer.writerow()` method to write a list to a new row in the CSV file:
-
-```python
->>> for temp_list in daily_temperatures:
-...     writer.writerow(temp_list)
-```
-
-Now close the file:
-
-```python
->>> file.close()
-```
-
-If you open the `temperatures.csv` file in a text editor, then you'll see the following text in the file:
-
-```
-68,65,68,70,74,72
-67,67,70,72,72,70
-68,70,74,76,74,73
-```
-
-Here's what the code looks like using the `with` statement, which is highly recommended:
-
-```python
-with file_path.open(mode="w", encoding="utf-8", newline="") as file:
-    writer = csv.writer(file)
-    for temp_list in daily_temperatures:
-        writer.writerow(temp_list)
-```
-
-The main advantage of using `csv.writer` to write to a CSV file is that you don't need to worry about converting values to strings before writing them to the file. The `csv.writer` object handles this for you, which results in shorter and cleaner code.
-
-The `.writerow()` method writes a single row to the CSV file, but you can write multiple rows at once using `.writerows()`. This shortens the code even more when your data is already in a list of lists:
-
-```python
-with file_path.open(mode="w", encoding="utf-8", newline="") as file:
-    writer = csv.writer(file)
-    writer.writerows(daily_temperatures)
-```
-
-### Reading CSV Files With `csv.reader`
-
-To read a CSV file with the `csv` module, you use the `csv.reader` class:
-
-```python
->>> file = file_path.open(mode="r", encoding="utf-8", newline="")
->>> reader = csv.reader(file)
-```
-
-`csv.reader()` returns a CSV reader object that can be used to iterate over the rows of the CSV file:
-
-```python
->>> for row in reader:
-...     print(row)
-...
-['68', '65', '68', '70', '74', '72']
-['67', '67', '70', '72', '72', '70']
-['68', '70', '74', '76', '74', '73']
->>> file.close()
-```
-
-Each row of the CSV file is returned as a list of strings. To recover the `daily_temperatures` list of lists, you'll need to convert each list of strings to a list of integers using a list comprehension.
-
-Here's a full example that opens the CSV file in a `with` statement, reads each row in the CSV file, converts the list of strings to a list of integers, and stores each list of integers in a list of lists called `daily_temperatures`:
-
-```python
->>> daily_temperatures = []
->>> with file_path.open(mode="r", encoding="utf-8", newline="") as file:
-...     reader = csv.reader(file)
-...     for row in reader:
-...         int_row = [int(value) for value in row]
-...         daily_temperatures.append(int_row)
-```
-
-## Reading and Writing CSV Files With Headers
-
-Sometimes, CSV files are more complex than a file with rows of values that all have the same type. Each row may represent a record with various fields, and the first row in the file may be a **header row** with the names of the fields.
-
-Here's an example of a CSV file with a header row containing multiple data types:
-
-```
-name,department,salary
-Lee,Operations,75000.00
-Jane,Engineering,85000.00
-Diego,Sales,80000.00
-```
-
-It's possible to read CSV files such as the one above using `csv.reader()`, but you have to keep track of the header row, and each row is returned as a list without the field names attached to it. It makes more sense to return each row as a dictionary whose keys are the field names and whose values are the field values in the row. This is precisely what `csv.DictReader` objects do!
-
-```python
->>> file_path = Path.home() / "employees.csv"
->>> with file_path.open(mode="r", encoding="utf-8", newline="") as file:
-...     reader = csv.DictReader(file)
-...     for row in reader:
-...         print(row)
-...
-{'name': 'Lee', 'department': 'Operations', 'salary': '75000.00'}
-{'name': 'Jane', 'department': 'Engineering', 'salary': '85000.00'}
-{'name': 'Diego', 'department': 'Sales', 'salary': '80000.00'}
-```
-
-When you create a `DictReader` object, the first row of the CSV file is assumed to contain the field names. These values get stored in a list and are assigned to the `DictReader` instance's `.fieldnames` attribute.
-
-You can write CSV files with headers using the `csv.DictWriter` class, which writes dictionaries with shared keys to rows in a CSV file.
-
-```python
->>> people = [
-...     {"name": "Veronica", "age": 29},
-...     {"name": "Audrey", "age": 32},
-...     {"name": "Sam", "age": 24},
-... ]
-
->>> file_path = Path.home() / "people.csv"
->>> with file_path.open(mode="w", encoding="utf-8", newline="") as file:
-...     writer = csv.DictWriter(file, fieldnames=["name", "age"])
-...     writer.writeheader()
-...     writer.writerows(people)
-```
-
-The `.writeheader()` method writes the header row to the CSV file. With the header written, you can write the data in the `people` list to the CSV file using `.writerows()`.
-
-### Key Takeaways
-- The built-in `csv` module drastically simplifies parsing CSV data compared to doing `.split(",")` manually.
-- **Always** use `newline=""` when opening files intended for the `csv` module to prevent duplicate newline issues on Windows.
-- Use `csv.reader` and `csv.writer` when dealing with simple rows of data (lists of values).
-- Use `csv.DictReader` and `csv.DictWriter` when your CSV has a header row, to parse and write each row as a Python dictionary.
-
-### Exam Tips
-- Keep in mind that `csv.reader` always reads everything as strings. You will need to explicitly cast numbers (e.g., using `int(value)` or `float(value)`).
-- When initializing `csv.DictWriter`, you **must** supply the `fieldnames` parameter to define the column order.
+## Exam Tips
+- **The String Trap:** If an exam question shows a script that reads a CSV and attempts to calculate the sum of a column (`total = total + row["Salary"]`), the script will crash. Remember that `DictReader` returns **strings**. You must cast to an integer or float first.
+- **Header Order:** When creating a `DictWriter`, the `fieldnames` list determines the left-to-right order of the columns in the final file. You must supply this argument, or the writer won't know how to format the data.

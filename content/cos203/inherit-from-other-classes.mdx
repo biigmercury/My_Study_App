@@ -4,232 +4,167 @@ title: Inherit From Other Classes
 
 # Inherit From Other Classes
 
-Inheritance is the process by which one class takes on the attributes and methods of another. Newly formed classes are called **child classes**, and the classes that child classes are derived from are called **parent classes**.
+In the world of software engineering, one of our primary goals is **DRY**: *Don't Repeat Yourself*. If you find yourself writing the exact same code in multiple places, there is usually a better way to structure your program.
 
-Child classes can override or extend the attributes and methods of parent classes. In other words, child classes inherit all of the parent's attributes and methods but can also specify attributes and methods that are unique to themselves.
+In Object-Oriented Programming, the most powerful tool for eliminating duplicate code is **Inheritance**. Inheritance allows a new class (the **Child Class**) to absorb, or inherit, all the attributes and methods of an existing class (the **Parent Class**). 
 
-Although the analogy isn't perfect, you can think of object inheritance sort of like genetic inheritance. You may have inherited your hair color from your mother. It's an attribute you were born with. Let's say you decide to color your hair purple. Assuming your mother doesn't have purple hair, you've just **overridden** the hair color attribute that you inherited from your mom.
+> **Real World Analogy:** Think of genetic inheritance. You inherit baseline traits from your parents—like eye color, height, and bone structure. However, you are not a perfect clone. You might dye your hair (overriding an inherited trait), or you might learn to play the guitar (extending your capabilities with a brand new behavior your parents don't possess). Class inheritance works exactly the same way.
 
-You also inherit, in a sense, your language from your parents. If your parents speak English, then you'll also speak English. Now imagine you decide to learn a second language, like German. In this case you've **extended** your attributes because you've added an attribute that your parents don't have.
+## The Mechanics of Inheritance
 
-## Dog Park Example
+Let's imagine we are building a simulation of a farm. We have cows, pigs, and chickens. All of these are animals. They all have names, ages, and the ability to sleep.
 
-Pretend for a moment that you're at a dog park. There are many dogs of different breeds at the park, all engaging in various dog behaviors.
+Without inheritance, we would have to write the `__init__` and `sleep` methods three separate times. With inheritance, we write the common logic once in a parent class, and the child classes get to use it for free.
 
-Suppose now that you want to model the dog park with Python classes. The `Dog` class that you wrote in the previous section can distinguish dogs by name and age but not by breed.
-
-You could modify the `Dog` class in the editor window by adding a `.breed` attribute:
+### Worked Example 1: The Basic Hierarchy
 
 ```python
-class Dog:
-    species = "Canis familiaris"
-
-    def __init__(self, name, age, breed):
-        self.name = name
-        self.age = age
-        self.breed = breed
-```
-
-Now you can model the dog park by instantiating a bunch of different dogs in the interactive window:
-
-```python
->>> miles = Dog("Miles", 4, "Jack Russell Terrier")
->>> buddy = Dog("Buddy", 9, "Dachshund")
->>> jack = Dog("Jack", 3, "Bulldog")
->>> jim = Dog("Jim", 5, "Bulldog")
-```
-
-Each breed of dog has slightly different behaviors. For example, bulldogs have a low bark that sounds like *woof*, but dachshunds have a higher-pitched bark that sounds more like *yap*.
-
-Using just the `Dog` class, you must supply a string for the `sound` argument of `.speak()` every time you call it on a `Dog` instance:
-
-```python
->>> buddy.speak("Yap")
-'Buddy says Yap'
-
->>> jim.speak("Woof")
-'Jim says Woof'
-```
-
-Passing a string to every call to `.speak()` is repetitive and inconvenient. Moreover, the string representing the sound that each `Dog` instance makes should be determined by its `.breed` attribute, but here you have to manually pass the correct string to `.speak()` every time it's called.
-
-You can simplify the experience of working with the `Dog` class by creating a child class for each breed of dog. This allows you to extend the functionality that each child class inherits, including specifying a default argument for `.speak()`.
-
-## Parent Classes vs Child Classes
-
-Let's create a child class for each of the three breeds mentioned above: Jack Russell Terrier, Dachshund, and Bulldog.
-
-For reference, here's the full definition of the `Dog` class:
-
-```python
-class Dog:
-    species = "Canis familiaris"
-
+# 1. We define the Parent Class with the common denominator traits.
+class Animal:
     def __init__(self, name, age):
         self.name = name
         self.age = age
 
-    def __str__(self):
-        return f"{self.name} is {self.age} years old"
+    def sleep(self):
+        return f"{self.name} is catching some Z's."
 
-    def speak(self, sound):
-        return f"{self.name} says {sound}"
-```
+# 2. We define the Child Class. 
+# We put the Parent Class name inside parentheses to establish inheritance.
+class Cow(Animal):
+    pass # 'pass' means we aren't adding anything new right now.
 
-Remember, to create a child class, you create new class with its own name and then put the name of the parent class in parentheses. The following creates three new child classes of the `Dog` class:
-
-```python
-class JackRussellTerrier(Dog):
-    pass
-
-class Dachshund(Dog):
-    pass
-
-class Bulldog(Dog):
+class Pig(Animal):
     pass
 ```
 
-With the child classes defined, you can now instantiate some dogs of specific breeds:
-
-```python
->>> miles = JackRussellTerrier("Miles", 4)
->>> buddy = Dachshund("Buddy", 9)
->>> jack = Bulldog("Jack", 3)
->>> jim = Bulldog("Jim", 5)
-```
-
-Instances of child classes inherit all of the attributes and methods of the parent class:
-
-```python
->>> miles.species
-'Canis familiaris'
-
->>> buddy.name
-'Buddy'
-
->>> print(jack)
-Jack is 3 years old
-
->>> jim.speak("Woof")
-'Jim says Woof'
-```
-
-You can see which class an object belongs to using the built-in `type()`:
-
-```python
->>> type(miles)
-<class '__main__.JackRussellTerrier'>
-```
-
-What if you want to determine if `miles` is also an instance of the `Dog` class? You can do this with the built-in `isinstance()`:
-
-```python
->>> isinstance(miles, Dog)
-True
-```
-
-Notice that `isinstance()` takes two arguments, an object and a class. In the example above, `isinstance()` checks if `miles` is an instance of the `Dog` class and returns `True`.
-
-The `miles`, `buddy`, `jack`, and `jim` objects are all `Dog` instances, but `miles` is not a `Bulldog` instance, and `jack` is not a `Dachshund` instance:
-
-```python
->>> isinstance(miles, Bulldog)
-False
-
->>> isinstance(jack, Dachshund)
-False
-```
-
-More generally, all objects created from a child class are instances of the parent class, although they may not be instances of other child classes.
-
-## Extend the Functionality of a Parent Class
-
-Since different breeds of dogs have slightly different barks, you want to provide a default value for the `sound` argument of their respective `.speak()` methods. To do this, you need to override `.speak()` in the class definition for each breed.
-
-To override a method defined on the parent class, you define a method with the same name on the child class. Here's what that looks like for the `JackRussellTerrier` class:
-
-```python
-class JackRussellTerrier(Dog):
-    def speak(self, sound="Arf"):
-        return f"{self.name} says {sound}"
-```
-
-Now `.speak()` is defined on the `JackRussellTerrier` class with the default argument for `sound` set to `"Arf"`. You can now call `.speak()` on a `JackRussellTerrier` instance without passing an argument to `sound`:
-
-```python
->>> miles = JackRussellTerrier("Miles", 4)
->>> miles.speak()
-'Miles says Arf'
-```
-
-Sometimes dogs make different barks, so if Miles gets angry and growls, you can still call `.speak()` with a different sound:
-
-```python
->>> miles.speak("Grrr")
-'Miles says Grrr'
-```
-
-One thing to keep in mind about class inheritance is that changes to the parent class automatically propagate to child classes. This occurs as long as the attribute or method being changed isn't overridden in the child class.
-
-For example, in the editor window, change the string returned by `.speak()` in the `Dog` class:
-
-```python
-class Dog:
-    # Leave other attributes and methods as they are
+```mermaid
+classDiagram
+    class Animal {
+        +String name
+        +Integer age
+        +sleep()
+    }
+    class Cow {
+    }
+    class Pig {
+    }
     
-    # Change the string returned by .speak()
-    def speak(self, sound):
-        return f"{self.name} barks: {sound}"
+    Animal <|-- Cow : Inherits
+    Animal <|-- Pig : Inherits
 ```
 
-Now, when you create a new `Bulldog` instance named `jim`, `jim.speak()` returns the new string:
+Even though `Cow` and `Pig` look completely empty, they are secretly full of functionality. Because they inherit from `Animal`, they can do everything an `Animal` can do.
 
 ```python
->>> jim = Bulldog("Jim", 5)
->>> jim.speak("Woof")
-'Jim barks: Woof'
+# We instantiate a Cow just like we would an Animal
+bessie = Cow("Betsy", 5)
+
+# Bessie has a name and can sleep, even though we never explicitly wrote that code in the Cow class!
+print(bessie.name)    # Output: Betsy
+print(bessie.sleep()) # Output: Betsy is catching some Z's.
 ```
 
-However, calling `.speak()` on a `JackRussellTerrier` instance won't show the new style of output:
+## Overriding Parent Methods
+
+Sometimes, a child class inherits a behavior from the parent, but the child wants to perform that behavior differently. We can achieve this by **overriding** the method. To override a method, you simply define a method in the child class with the exact same name as the method in the parent class.
+
+### Worked Example 2: Customizing the Behaviors
+
+Let's add a `speak` method to our `Animal` class, and then let the child classes decide how they specifically want to speak.
 
 ```python
->>> miles = JackRussellTerrier("Miles", 4)
->>> miles.speak()
-'Miles says Arf'
+class Animal:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def speak(self):
+        return "The animal makes a generic noise."
+
+class Cow(Animal):
+    # This completely overrides the parent's speak method
+    def speak(self):
+        return f"{self.name} says MOO!"
+
+class Pig(Animal):
+    # This completely overrides the parent's speak method
+    def speak(self):
+        return f"{self.name} says OINK!"
+
+generic_animal = Animal("Creature", 10)
+bessie = Cow("Betsy", 5)
+
+print(generic_animal.speak()) # Output: The animal makes a generic noise.
+print(bessie.speak())         # Output: Betsy says MOO!
 ```
 
-Sometimes it makes sense to completely override a method from a parent class. But in this instance, we don't want the `JackRussellTerrier` class to lose any changes that might be made to the formatting of the output string of `Dog.speak()`.
+Because Python looks for methods in the child class first, it finds `Cow.speak()` and executes it, completely ignoring the generic `Animal.speak()` method.
 
-To do this, you still need to define a `.speak()` method on the child `JackRussellTerrier` class. But instead of explicitly defining the output string, you need to call the `Dog` class's `.speak()` inside the child class's `.speak()` method using the same arguments that you passed to `JackRussellTerrier.speak()`.
+## Using `super()`
 
-You can access the parent class from inside a method of a child class by using `super()`:
+Overriding is great, but sometimes we don't want to completely destroy the parent's logic—we just want to build on top of it. We can do this using the `super()` function. 
+
+`super()` acts as a direct hotline to the parent class. It allows a child class to explicitly execute the parent's version of a method.
+
+A very common use case for `super()` is when we want to add a new attribute to a child class's `__init__` method, but we still want the parent class to handle the heavy lifting of the shared attributes.
+
+### Worked Example 3: Extending the Constructor
+
+Let's say a `Pig` needs an extra attribute called `mud_level`, which tracks how dirty the pig is.
 
 ```python
-class JackRussellTerrier(Dog):
-    def speak(self, sound="Arf"):
-        return super().speak(sound)
+class Animal:
+    def __init__(self, name, age):
+        # The parent handles the shared attributes
+        self.name = name
+        self.age = age
+
+class Pig(Animal):
+    # We define a new __init__ that accepts name, age, AND mud_level
+    def __init__(self, name, age, mud_level):
+        
+        # Instead of manually setting self.name and self.age, 
+        # we hand those off to the parent class using super()!
+        super().__init__(name, age)
+        
+        # Now we handle the Pig-specific attribute
+        self.mud_level = mud_level
+
+porky = Pig("Porky", 3, "Very Dirty")
+
+print(porky.name)      # Handled by Animal: Porky
+print(porky.mud_level) # Handled by Pig: Very Dirty
 ```
 
-When you call `super().speak(sound)` inside `JackRussellTerrier`, Python searches the parent class, `Dog`, for a `.speak()` method and calls it with the variable `sound`.
+By using `super().__init__(name, age)`, the `Pig` class passes the buck to `Animal`, ensuring that if `Animal` ever changes how it handles names and ages, `Pig` will automatically inherit the update. It is the pinnacle of clean, maintainable architecture.
+
+## Checking Types
+
+When using inheritance, it's often useful to check what kind of object you are dealing with. 
+
+- `type(object)` tells you the exact, specific class of an object.
+- `isinstance(object, Class)` tells you if the object is an instance of a class, **OR** an instance of any of its parent classes.
 
 ```python
->>> miles = JackRussellTerrier("Miles", 4)
->>> miles.speak()
-'Miles barks: Arf'
+bessie = Cow("Betsy", 5)
+
+# type checks for exact matches
+print(type(bessie) == Cow)    # True
+print(type(bessie) == Animal) # False! Her exact type is Cow, not Animal.
+
+# isinstance checks the whole family tree
+print(isinstance(bessie, Cow))    # True
+print(isinstance(bessie, Animal)) # True! A Cow is a type of Animal.
 ```
 
-Now when you call `miles.speak()`, you'll see output reflecting the new formatting in the `Dog` class.
+## Key Takeaways
+- **Inheritance** allows a child class to absorb the attributes and methods of a parent class, promoting code reuse (DRY).
+- Define inheritance by placing the parent class inside parentheses: `class Child(Parent):`.
+- **Overriding** occurs when a child class implements a method with the same name as the parent class, replacing the parent's logic.
+- **`super()`** gives the child class a way to call the parent's methods, allowing the child to build upon existing logic rather than rewriting it.
+- `isinstance()` is the preferred way to check an object's type, as it respects the inheritance hierarchy.
 
-> [!IMPORTANT]
-> In the above examples, the class hierarchy is very simple: the `JackRussellTerrier` class has a single parent class, `Dog`. In real-world examples, the class hierarchy can get quite complicated. `super()` does much more than just search the parent class for a method or an attribute. It traverses the entire class hierarchy for a matching method or attribute. If you aren't careful, `super()` can have surprising results.
-
-### Key Takeaways
-- **Inheritance** allows a child class to take on the attributes and methods of a parent class.
-- You can create a child class by passing the parent class name in parentheses during definition: `class ChildClass(ParentClass):`.
-- Child classes can **override** parent methods by defining a method with the exact same name.
-- Child classes can **extend** behavior and utilize parent logic by calling `super().method_name()`.
-- Use `isinstance(obj, ClassName)` to verify if an object is an instance of a specific class or its parent class.
-
-### Exam Tips
-- Overriding a method completely replaces the parent method. If you want to augment the parent method, you must explicitly call `super()`.
-- Know how to differentiate `type(obj)` which returns the exact class, and `isinstance(obj, Class)` which returns `True` even if `Class` is a parent class.
+## Exam Tips
+- **The `super()` syntax:** Be very careful with syntax in exams. `super().__init__(args)` requires parentheses after `super`, and you do *not* pass `self` into the parent's `__init__`.
+- If an exam asks how to prevent duplicate code across three similar classes, the answer is to abstract the commonalities into a parent class and use inheritance.
+- Remember that changes to a parent class automatically cascade down to all child classes (unless the child has overridden the behavior).

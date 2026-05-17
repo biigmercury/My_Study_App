@@ -4,345 +4,142 @@ title: Common File System Operations
 
 # Common File System Operations
 
-Now that you know how to work with file paths using the `pathlib` module, let's take a look at some common file operations and how to perform them in Python.
+In the previous topic, we learned how to use `pathlib` to point at specific locations on our computer's hard drive. However, merely pointing at things isn't very useful. We need to be able to actually manipulate the file system.
 
-## Creating Directories and Files
+In this topic, we will use Python to act like a virtual assistant—creating folders, creating files, moving data around, searching for specific documents, and deleting the trash.
 
-To create a new directory, use the `Path.mkdir()` method. In IDLE's interactive window, type the following:
+> **Real World Analogy:** If learning file paths was like learning how to read a map to find an empty plot of land, learning file system operations is like learning how to bring in the construction crew to pour the foundation, build the house, and eventually demolish it.
 
-```python
->>> from pathlib import Path
->>> new_dir = Path.home() / "new_directory"
->>> new_dir.mkdir()
-```
+## 1. Creating Folders (Directories)
 
-After importing the `Path` class, you create a new path to a directory called `new_directory/` in your home folder and assign this path to the `new_dir` variable. Then you use `.mkdir()` to create the new directory.
+To create a new folder on your computer, we use the `.mkdir()` (Make Directory) method on a Path object.
 
-You can now check that the new directory exists and is, in fact, a directory:
+### Worked Example 1: Creating a Directory safely
 
 ```python
->>> new_dir.exists()
-True
->>> new_dir.is_dir()
-True
+from pathlib import Path
+
+# 1. We create the Path object pointing to where we WANT the folder to be.
+new_folder_path = Path.home() / "my_new_project"
+
+# 2. We command Python to create the folder on the hard drive.
+# exist_ok=True prevents the program from crashing if the folder already exists.
+new_folder_path.mkdir(exist_ok=True)
 ```
 
-If you try to create a directory that already exists, then you get an error:
+**The Missing Parents Problem:**
+What happens if you try to create a deeply nested folder, like `Path.home() / "folder_A" / "folder_B" / "folder_C"`, but `folder_A` doesn't exist yet? 
+
+Python will panic and throw a `FileNotFoundError`. You cannot create a room inside a house if the house hasn't been built! To solve this, we tell `.mkdir()` to automatically build any missing parent folders using `parents=True`.
 
 ```python
->>> new_dir.mkdir()
-Traceback (most recent call last):
-  File "<pyshell#32>", line 1, in <module>
-    new_dir.mkdir()
-  File "C:\Users\David\AppData\Local\Programs\Python\
-  Python\lib\pathlib.py", line 1266, in mkdir
-    self._accessor.mkdir(self, mode)
-FileExistsError: [WinError 183] Cannot create a file when
-that file already exists: 'C:\\Users\\David\\new_directory'
+deep_folder = Path.home() / "folder_A" / "folder_B" / "folder_C"
+
+# This builds folder_A, then folder_B, then folder_C all at once!
+deep_folder.mkdir(parents=True, exist_ok=True)
 ```
 
-When you call `.mkdir()`, Python attempts to create the `new_directory/` folder again. Since the directory already exists, this operation fails and a `FileExistsError` exception is raised.
+## 2. Creating Files
 
-What if you want to create a new directory only if it doesn't already exist, and you also want to avoid raising the `FileExistsError` if the directory does exist?
+Creating an empty file is very similar to creating a folder. We point to the location, and then we use the `.touch()` method.
 
-In that case, you can set the `exist_ok` parameter of `.mkdir()` to `True`:
+*(The term "touch" comes from old Linux commands, originally meant to update the timestamp on a file, but commonly used to create new, empty files).*
 
 ```python
->>> new_dir.mkdir(exist_ok=True)
+# 1. Set the path
+my_file_path = deep_folder / "notes.txt"
+
+# 2. Create the file
+my_file_path.touch()
+
+print(my_file_path.exists()) # Output: True
 ```
 
-When you execute `.mkdir()` with the `exist_ok` parameter set to `True`, the directory is created only if it doesn't already exist. If it does already exist, then nothing happens.
+Unlike `.mkdir()`, the `.touch()` method does *not* have a `parents=True` parameter. If you try to touch a file inside a folder that doesn't exist, the program will crash. You must always `mkdir()` the parent folder before you `touch()` the file.
 
-Setting `exist_ok` to `True` when calling `.mkdir()` is equivalent to the following code:
+## 3. Searching for Files (Iteration and Globbing)
+
+If a folder has hundreds of files in it, we often want to write a script to look through them all to find specific data.
+
+### Basic Iteration
+To simply list everything directly inside a single folder, we use `.iterdir()`. This returns a list of Path objects for every file and folder inside.
 
 ```python
->>> if not new_dir.exists():
-...     new_dir.mkdir()
+my_folder = Path.home() / "Documents"
+
+# Loop through every item in the folder
+for item in my_folder.iterdir():
+    print(item.name)
 ```
 
-Although the above code works just fine, setting the `exist_ok` parameter to `True` is shorter and doesn't sacrifice readability.
+### Searching with Glob
+`.iterdir()` is a blunt instrument. What if we *only* want to find PDF files? We use **Globbing**. 
 
-Now let's see what happens if you try to create a subdirectory within a directory that doesn't exist:
+Globbing uses wildcard characters (like the asterisk `*`) to act as placeholders. The pattern `*.pdf` means "I don't care what the name of the file is, as long as it ends in .pdf".
 
 ```python
->>> nested_dir = new_dir / "folder_a" / "folder_b"
->>> nested_dir.mkdir()
-Traceback (most recent call last):
-  File "<pyshell#38>", line 1, in <module>
-    nested_dir.mkdir()
-  File "C:\Users\David\AppData\Local\Programs\Python\
-  Python\lib\pathlib.py", line 1266, in mkdir
-    self._accessor.mkdir(self, mode)
-FileNotFoundError: [WinError 3] The system cannot find the path
-specified: 'C:\\Users\\David\\new_directory\\folder_a\\folder_b'
+# .glob() searches the immediate folder for matching patterns
+for pdf_file in my_folder.glob("*.pdf"):
+    print(f"Found a PDF: {pdf_file.name}")
 ```
 
-The problem is that the parent directory `folder_a/` doesn't exist. Typically, to create a directory, all of the parent directories of the target directory (in this case `folder_b/`) in the path must already exist.
+### Recursive Searching with RGlob
+The biggest limitation of `.iterdir()` and `.glob()` is that they are "shallow." They only look in the immediate folder. If you have a PDF hidden three folders deep, they won't see it.
 
-To create any parent directories needed to create the target directory, set the optional `parents` parameter of `.mkdir()` to `True`:
+To search a folder, and every folder inside that folder, and every folder inside *that* folder, we use **Recursive Globbing** via `.rglob()`.
 
 ```python
->>> nested_dir.mkdir(parents=True)
+# .rglob() searches the current folder AND all sub-folders infinitely deep!
+for any_pdf_anywhere in my_folder.rglob("*.pdf"):
+    print(f"Found a deeply hidden PDF: {any_pdf_anywhere}")
 ```
 
-Now `.mkdir()` creates the parent directory, `folder_a/`, so that the target directory, `folder_b/`, can be created.
+## 4. Moving and Deleting
 
-Putting all this together, you get the following common pattern for creating directories:
+### Moving Files
+To move a file, we use the `.replace()` method. You call the method on the original file path, and pass the new destination path as the argument.
+
+```mermaid
+flowchart LR
+    Source[C:/folder_A/data.txt] --> | .replace() | Dest[C:/folder_B/data.txt]
+```
+
+### Worked Example 2: Moving a File
 
 ```python
-path.mkdir(parents=True, exist_ok=True)
+from pathlib import Path
+
+source_file = Path.home() / "Downloads" / "report.txt"
+destination = Path.home() / "Documents" / "report.txt"
+
+# Assuming source_file exists, this moves it to the destination
+# WARNING: If the destination file already exists, it will be silently OVERWRITTEN.
+source_file.replace(destination)
 ```
 
-When you set both the `parents` and `exist_ok` parameters to `True`, the entire path is created if needed, and no exception is raised if the path already exists.
+### Deleting Files and Folders
+Deleting data via Python bypasses your computer's Recycle Bin. Once the code executes, the data is gone forever. **Use extreme caution.**
 
-This pattern is useful, but it may not be the right approach in every situation. For example, if a user inputs a nonexistent path, then you may wish to instead catch an exception so you can ask the user to verify the path that they entered. They might have just mistyped the name of an existing directory!
-
-Now let's look at how to create files. Create a new `Path` object called `file_path` for the path `new_directory/file1.txt`:
+- **To delete a single file:** Use `.unlink()`.
+- **To delete an empty folder:** Use `.rmdir()`.
 
 ```python
->>> file_path = new_dir / "file1.txt"
+trash_file = Path.home() / "Downloads" / "junk.txt"
+
+# Delete the file
+# missing_ok=True prevents a crash if the file was already deleted
+trash_file.unlink(missing_ok=True)
 ```
 
-There's no file called `file1.txt` in `new_directory/`, so the path doesn't exist yet:
-
-```python
->>> file_path.exists()
-False
-```
-
-You can create the file using the `Path.touch()` method:
-
-```python
->>> file_path.touch()
-```
-
-This creates a new file called `file1.txt` in the `new_directory/` folder. It doesn't contain any data yet, but the file exists:
-
-```python
->>> file_path.exists()
-True
->>> file_path.is_file()
-True
-```
-
-Unlike `.mkdir()`, the `.touch()` method does not raise an exception if the path being created already exists:
-
-```python
->>> # Calling .touch() a second time doesn't raise an exception
->>> file_path.touch()
-```
-
-When you create a file using `.touch()`, the file doesn't contain any data.
-
-You can't create a file in a directory that doesn't exist:
-
-```python
->>> file_path = new_dir / "folder_c" / "file2.txt"
->>> file_path.touch()
-Traceback (most recent call last):
-  File "<pyshell#47>", line 1, in <module>
-    file_path.touch()
-  File "C:\Users\David\AppData\Local\Programs\Python\
-  Python\lib\pathlib.py", line 1256, in touch
-    fd = self._raw_open(flags, mode)
-  File "C:\Users\David\AppData\Local\Programs\Python\
-  Python\lib\pathlib.py", line 1063, in _raw_open
-    return self._accessor.open(self, flags, mode)
-FileNotFoundError: [Errno 2] No such file or directory:
-'C:\\Users\\David\\new_directory\\folder_c\\file2.txt'
-```
-
-The `FileNotFoundError` is raised because the `new_directory/` folder has no `folder_c/` subfolder.
-
-Unlike `.mkdir()`, the `.touch()` method has no `parents` parameter that you can set to automatically create parent directories. This means that you need to first create any necessary directories before calling `.touch()` to create the file.
-
-For instance, you can use `.parent` to get the path to the parent folder for `file2.txt` and then call `.mkdir()` to create the directory:
-
-```python
->>> file_path.parent.mkdir()
-```
-
-Since `.parent` returns a `Path` object, you can chain the `.mkdir()` method to write the entire operation on a single line of code.
-
-With the `folder_c/` directory created, you can successfully create the file:
-
-```python
->>> file_path.touch()
-```
-
-Now that you know how to create files and directories, let's look at how to get the contents of a directory.
-
-## Iterating Over Directory Contents
-
-Using `pathlib`, you can iterate over the contents of a directory. You might need to do this in order to process all the files in a directory.
-
-Everything in a directory is either a file or a subdirectory. The `Path.iterdir()` method returns an iterator over `Path` objects representing each item in the directory.
-
-To use `.iterdir()`, you first need a `Path` representing a directory. Let's use the `new_directory/` folder that you previously created in your home directory and assigned to the `new_dir` variable:
-
-```python
->>> for path in new_dir.iterdir():
-...     print(path)
-...
-C:\Users\David\new_directory\file1.txt
-C:\Users\David\new_directory\folder_a
-C:\Users\David\new_directory\folder_c
-```
-
-Right now, this `new_directory/` folder contains three items:
-1.  A file called `file1.txt`
-2.  A directory called `folder_c/`
-3.  A directory called `folder_a/`
-
-`.iterdir()` returns an iterable, so you can convert it to a list:
-
-```python
->>> list(new_dir.iterdir())
-[WindowsPath('C:/Users/David/new_directory/file1.txt'),
-WindowsPath('C:/Users/David/new_directory/folder_a'),
-WindowsPath('C:/Users/David/new_directory/folder_c')]
-```
-
-You won't often need to convert this to a list. Generally, you'll use `.iterdir()` in a `for` loop like you did in the first example.
-
-Notice that `.iterdir()` returns only those items that are directly contained in the `new_directory/` folder. That is, you can't see the path to the file that exists in the `folder_c/` directory.
-
-## Searching for Files in a Directory
-
-Sometimes you only need to iterate over files of a certain type or files with certain naming schemes. You can use the `Path.glob()` method on a path representing a directory to get an iterable over directory contents that meet some criteria.
-
-It might seem strange that a method that searches for files is called `.glob()`, but there's a historical reason behind this name. In early versions of the Unix operating system, a program called `glob` was used to expand file path patterns to full file paths.
-
-The `.glob()` method does something similar. You pass to the method a string containing a pattern with a wildcard character, and `.glob()` returns a list of file paths that match the pattern.
-
-A **wildcard character** is a special character that acts as a placeholder in a **pattern**. It's replaced by other characters to create a concrete file path. For example, in the pattern `"*.txt"`, the asterisk (`*`) is a wildcard character that can be replaced by any number of other characters.
-
-The pattern `"*.txt"` matches any file path that ends with `.txt`. That is, if replacing the `*` in the pattern with every character in a file path up to the last four characters results in the original file path, then that file path is a **match** for the pattern `"*.txt"`.
-
-Let's look at an example using the `new_directory/` folder previously assigned to the `new_dir` variable:
-
-```python
->>> for path in new_dir.glob("*.txt"):
-...     print(path)
-...
-C:\Users\David\new_directory\file1.txt
-```
-
-Like `.iterdir()`, the `.glob()` method returns an iterable of paths, but this time only those paths that match the pattern `"*.txt"` are returned. Note that `.glob()` returns only the paths that are directly contained in the folder on which it is called.
-
-### The `*` Wildcard
-
-The `*` wildcard matches any number of characters in a file path pattern. For example, the pattern `"*.py"` matches all file paths that end in `.py`.
-
-You can use the `*` wildcard multiple times in a single pattern:
-
-```python
->>> list(new_dir.glob("*1*"))
-[WindowsPath('C:/Users/David/new_directory/file1.txt'),
-WindowsPath('C:/Users/David/new_directory/program1.py')]
-```
-
-The pattern `"*1*"` matches any file path containing the number 1 with any number of characters before and after it.
-
-### The `?` Wildcard
-
-The `?` wildcard character matches a single character in a pattern. For example, the pattern `"program?.py"` will match any file path that starts with the word `program` and is followed by a single character and then `.py`.
-
-You can also combine the `*` and `?` wildcards:
-
-```python
->>> list(new_dir.glob("*1.??"))
-```
-
-### The `[]` Wildcard
-
-The `[]` wildcard works kind of like the `?` wildcard because it matches only a single character. The difference is that, instead of matching any single character like `?` does, `[]` matches only those characters that are between the square brackets.
-
-For example, the pattern `"program[13].py"` matches any path containing the word `program`, followed by either a `1` or a `3` and the extension `.py`.
-
-### Recursive Matching With the `**` Wildcard
-
-The major limitation you've seen with both `.iterdir()` and `.glob()` is that they return only those paths that are directly contained in the folder on which they're called.
-
-There's a special wildcard character `**` that makes the pattern recursive. The common way to use it is to prefix your pattern with `"**/"`. This tells `.glob()` to match your pattern both in the current directory and in any of its subdirectories.
-
-For example, the pattern `"**/*.txt"` matches both `file1.txt` and `folder_c/file2.txt`:
-
-```python
->>> list(new_dir.glob("**/*.txt"))
-[WindowsPath('C:/Users/David/new_directory/file1.txt'),
-WindowsPath('C:/Users/David/new_directory/folder_c/file2.txt')]
-```
-
-There's also a shorthand method of recursive matching called `.rglob()`. To use it, pass the pattern without the `"**/"` prefix:
-
-```python
->>> list(new_dir.rglob("*.py"))
-```
-
-## Moving and Deleting Files and Folders
-
-Sometimes you need to move a file or directory to a new location or delete a file or directory altogether. You can do this using `pathlib`, but keep in mind that doing so can result in the loss of data, so these operations must be made with extreme care.
-
-To move a file or directory, use the `.replace()` method. For example, the following moves the `file1.txt` file in the `new_directory/` folder to the `folder_a/` subfolder:
-
-```python
->>> source = new_dir / "file1.txt"
->>> destination = new_dir / "folder_a" / "file1.txt"
->>> source.replace(destination)
-WindowsPath('C:/Users/David/new_directory/folder_a/file1.txt')
-```
-
-Here, you call `.replace()` on the source path. You pass the destination path to `.replace()` as a single argument. Notice that `.replace()` returns the path to the new location of the file.
-
-> [!IMPORTANT]
-> If the destination path already exists, then `.replace()` overwrites the destination with the source file without raising any kind of exception. This can cause undesired loss of data if you aren't careful.
-> You may want to first check if the destination file exists and move the file only if it doesn't:
-> ```python
-> if not destination.exists():
->     source.replace(destination)
-> ```
-
-To delete a file, use the `.unlink()` method:
-
-```python
->>> file_path = new_dir / "program1.py"
->>> file_path.unlink()
-```
-
-If the path that you call `.unlink()` on doesn't exist, then a `FileNotFoundError` exception is raised. If you want to ignore the exception, then set the optional `missing_ok` parameter to `True`:
-
-```python
->>> file_path.unlink(missing_ok=True)
-```
-
-> [!CAUTION]
-> When you delete a file, it's gone forever. Make sure you really want to delete it before you proceed!
-
-You can use `.unlink()` only with paths representing files. To remove a directory instead, you can use the `.rmdir()` method. Keep in mind that the folder must be empty. Otherwise, the operation will raise an `OSError` exception:
-
-```python
->>> folder_d = new_dir / "folder_d"
->>> folder_d.rmdir()
-OSError: [WinError 145] The directory is not empty:
-'C:\\Users\\David\\new_directory\\folder_d'
-```
-
-If you need to delete an entire directory even if it's non-empty, then `pathlib` won't help you much. However, the built-in `shutil` module includes a `rmtree()` function that you can use to delete directories populated with files.
-
-```python
->>> import shutil
->>> folder_a = new_dir / "folder_a"
->>> shutil.rmtree(folder_a)
-```
-
-### Key Takeaways
-- **Creating Directories:** Use `path.mkdir()`. Use `parents=True` to create intermediate directories and `exist_ok=True` to ignore errors if the directory exists.
-- **Creating Files:** Use `path.touch()`. The parent directories must already exist.
-- **Iterating:** Use `path.iterdir()` for shallow iteration. Use `path.glob("*.txt")` to search for files, or `path.rglob("*.txt")` to recursively search through subdirectories.
-- **Moving:** Use `source.replace(destination)`. Be careful, this can overwrite existing files.
-- **Deleting:** Use `path.unlink()` for files and `path.rmdir()` for empty directories. For non-empty directories, use `shutil.rmtree()`.
-
-### Exam Tips
-- `.touch()` does not fail if the file exists, it simply updates its modification time.
-- `shutil.rmtree()` is the only way to delete a non-empty directory. `Path.rmdir()` will fail if the directory has contents.
+If you try to use `.rmdir()` on a folder that contains files, Python will refuse to do it and throw an `OSError` to protect you from accidentally deleting a massive directory tree. If you truly need to delete a folder full of files, you must use the `shutil.rmtree()` function from the built-in `shutil` module.
+
+## Key Takeaways
+- **Creating Data:** Use `.mkdir(parents=True, exist_ok=True)` for robust folder creation. Use `.touch()` to spawn empty files.
+- **Searching:** Use `.glob("*.ext")` to search a single folder for specific file types. Use `.rglob("*.ext")` to search deeply through all subfolders.
+- **Moving:** Use `.replace(destination)` to move files, but beware that it will ruthlessly overwrite existing files at the destination.
+- **Deleting:** Use `.unlink()` for files and `.rmdir()` for empty folders. Deletions are permanent!
+
+## Exam Tips
+- **The `.touch()` trap:** Remember that `.touch()` cannot create missing parent folders. You must create the folders first.
+- **Glob Patterns:** If asked how to find every python file regardless of how deep it is in the project, the answer is always recursive globbing: `path.rglob("*.py")`.
+- **Replacing Directories:** The argument passed to `.replace()` must be the full path including the file name. `source.replace(Path("C:/folder"))` is incorrect; it must be `source.replace(Path("C:/folder/file.txt"))`.
