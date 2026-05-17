@@ -4,296 +4,131 @@ title: Reading and Writing Files
 
 # Reading and Writing Files
 
-Files are abundant in the modern world. They're the medium in which data is digitally stored and transferred. Chances are, you've opened dozens, if not hundreds, of files just today.
+In the previous topics, we learned how to interact with the file system—navigating folders, searching for files, and creating empty files. But an empty file isn't very useful. In this topic, we will learn how to open a file up, pour data into it, and read data out of it. 
 
-In this section, you'll learn how to read and write files with Python.
+We will specifically focus on **Text Files** (files that contain plain text, often ending in `.txt`). 
 
-## What Is a File?
+## The Three Steps of File Interaction
 
-A **file** is a sequence of bytes and a **byte** is a number between 0 and 255. That is, a file is a sequence of integer values.
+Whenever you want to interact with the contents of a file, you must follow a strict three-step process. 
 
-The bytes in a file must be **decoded** into something meaningful in order to understand the contents of the file.
+> **Real World Analogy:** Think of reading a file like reading a locked diary. 
+> 1. First, you must unlock and **Open** the diary.
+> 2. Second, you **Read** the pages or **Write** new entries.
+> 3. Third, you must lock and **Close** the diary so the secrets are safe and no one else accidentally writes in it.
 
-Python has standard library modules for working with text, CSV, and audio files. There are a number of third-party packages available for working with other file types.
+If you forget step 3 and leave the file open, your program can lock up system resources, cause memory leaks, or accidentally corrupt the file.
 
-In this section, you'll learn how to work with plain text files.
+### Worked Example 1: The Manual Way
 
-## Understanding Text Files
-
-Text files are files that contain only text. They're perhaps the easiest files to work with. There are two issues, though, that can be frustrating when working with text files:
-
-1.  Character encoding
-2.  Line endings
-
-Before jumping into reading and writing text files, let's look at what these issues are so that you know how to deal with them effectively.
-
-### Character Encoding
-
-Text files are stored on disk as a sequence of bytes. Each byte, or group of bytes in some cases, represents a different character in the file.
-
-When text files are written, characters typed on the keyboard are converted into bytes in a process called **encoding**. When a text file is read, the bytes are **decoded** back into text.
-
-The integer a character is associated with is determined by the file's **character encoding**. There are many character encodings. Here are four of the most widely used character encodings:
-
-1.  ASCII
-2.  UTF-8
-3.  UTF-16
-4.  UTF-32
-
-Some character encodings, such as ASCII and UTF-8, encode characters the same way. For example, numbers and English letters are encoded the same way in both ASCII and UTF-8.
-
-The difference between ASCII and UTF-8 is that UTF-8 can encode more characters. ASCII can't encode characters like `ñ` or `ü`, but UTF-8 can. This means that you can decode ASCII-encoded text with UTF-8, but you can't always decode UTF-8-encoded text with ASCII.
-
-> [!IMPORTANT]
-> Serious problems may occur when different encodings are used to encode and decode text. For instance, text encoded as UTF-8 that is decoded with UTF-16 may be interpreted as an entirely different language than originally intended!
-
-Knowing which encoding a file uses is important, but it isn't always obvious. On modern Windows computers, text files are usually encoded with UTF-16 or UTF-8. On macOS and Ubuntu Linux, the default character encoding is usually UTF-8.
-
-For the remainder of this section, we'll assume that the character encoding of all text files that we work with is UTF-8. If you encounter problems, then you may need to alter the examples to use a different encoding.
-
-### Line Endings
-
-Each line in a text file ends with one or two characters that indicate the line has ended. These characters aren't usually displayed in a text editor, but they exist as bytes in the file data.
-
-The two characters used to represent line endings are the **carriage return** and **line feed** characters. In Python strings, these characters are represented by the escape sequences `\r` and `\n`, respectively.
-
-On Windows, line endings are represented by default with both a carriage return and a line feed. On macOS and most Linux distributions, line endings are represented with just a single line feed character.
-
-When you read a Windows file on macOS or Linux, you'll sometimes see extra blank lines between lines of text. This is because the carriage return also represents a line ending on macOS and Linux.
-
-In practice, the differences between line endings on different operating systems is rarely problematic. Python can handle line ending conversions for you automatically, so you don't have to worry about it too often.
-
-## Python File Objects
-
-Files are represented in Python with **file objects**, which are instances of classes designed to work with different types of files.
-
-Python has a couple of different types of file objects:
-
-1.  **Text file objects** are used for interacting with text files.
-2.  **Binary file objects** are used for working directly with the bytes contained in files.
-
-Text file objects handle encoding and decoding bytes for you. All you need to do is specify which character encoding to use. Binary file objects, on the other hand, do not perform any kind of encoding or decoding.
-
-There are two ways to create a file object in Python:
-
-1.  The `Path.open()` method
-2.  The built-in `open()` function
-
-Let's look at each of these.
-
-### The `Path.open()` Method
-
-To use the `Path.open()` method, you first need a `Path` object. In IDLE's interactive window, execute the following:
+Let's look at how to perform the three steps manually.
 
 ```python
->>> from pathlib import Path
->>> path = Path.home() / "hello.txt"
->>> path.touch()
->>> file = path.open(mode="r", encoding="utf-8")
+from pathlib import Path
+
+# Step 0: Set up the path
+my_path = Path("C:/data/log.txt")
+
+# Step 1: Open the file. 
+# "w" stands for "Write Mode". It prepares the file to receive text.
+file_object = my_path.open(mode="w", encoding="utf-8")
+
+# Step 2: Write to the file.
+file_object.write("Hello, World!")
+
+# Step 3: CLOSE the file! (Critical)
+file_object.close()
 ```
 
-First, you create a `Path` object for the `hello.txt` file and assign it to the `path` variable. Then `path.touch()` creates the file in your home directory. Finally, `.open()` returns a new file object representing the `hello.txt` file and assigns it to the `file` variable.
+### The Magic of the `with` Statement
 
-Two keyword parameters are used to open the file:
+Humans are forgetful. Programmers often forget to type `file_object.close()`, which leads to crashed servers and corrupted data. Furthermore, if the program crashes during Step 2, Step 3 will never execute, leaving the file locked open forever.
 
-1.  The `mode` parameter determines in which mode the file should be opened. The `"r"` argument opens the file in **read mode**.
-2.  The `encoding` parameter determines the character encoding used to decode the file. The argument `"utf-8"` represents UTF-8 character encoding.
+To solve this, Python gives us the **Context Manager**, built using the `with` statement. The `with` statement automatically handles Step 1 and Step 3 for us. It guarantees that the file will be closed the exact millisecond the block of code finishes—even if the program crashes!
 
-You can inspect the `file` variable to see that it's assigned to a text file object:
+### Worked Example 2: The Pythonic Way (`with` statement)
+
+You should **always** use the `with` statement when opening files.
 
 ```python
->>> file
-<_io.TextIOWrapper name='C:\Users\David\hello.txt' mode='r'
-encoding='utf-8'>
+from pathlib import Path
+
+my_path = Path("C:/data/log.txt")
+
+# We open the file and assign the connection to the variable 'my_file'
+with my_path.open(mode="r", encoding="utf-8") as my_file:
+    # Inside this indented block, the file is open and ready.
+    # "r" stands for "Read Mode". We suck the text out of the file.
+    contents = my_file.read()
+    print(contents)
+
+# Once we un-indent, Python AUTOMATICALLY closes the file for us!
+print("File reading complete and safely closed.")
 ```
 
-Text file objects are instances of the `TextIOWrapper` class. You'll never need to instantiate this class directly since you can create it with the `Path.open()` method.
+## Opening Modes
 
-There are a number of different modes you can use to open a file:
+When you open a file, you must declare your intentions. Are you reading? Are you writing? You do this by passing a single letter to the `mode` parameter.
 
-| Mode | Description |
-| :--- | :--- |
-| `"r"` | Creates a text file object for reading and raises an error if the file can't be opened |
-| `"w"` | Creates a text file object for writing and overwrites all existing data in the file |
-| `"a"` | Creates a text file object for appending data to the end of a file |
-| `"rb"` | Creates a binary file object for reading and raises an error if the file can't be opened |
-| `"wb"` | Creates a binary file object for writing and overwrites all existing data in the file |
-| `"ab"` | Creates a binary file object for appending data to the end of the file |
+| Mode | Name | Description | Warning |
+| :--- | :--- | :--- | :--- |
+| `"r"` | **Read** | Extracts data from the file. | Will crash if the file does not exist. |
+| `"w"` | **Write** | Pours data into the file. | **DESTROYS** any existing data in the file before writing! |
+| `"a"` | **Append** | Adds data to the end of the file. | Safe! Keeps existing data intact. |
 
-When you create a file object with `.open()`, Python maintains a link to the file resource until you either explicitly tell Python to close the file or the program ends.
+```mermaid
+flowchart TD
+    Start[Open File] --> ModeCheck{Which Mode?}
+    ModeCheck --> |"r"| Read[Read Data Out]
+    ModeCheck --> |"w"| Write[Nuke old data, Write New]
+    ModeCheck --> |"a"| Append[Keep old data, Add to bottom]
+```
 
-> [!CAUTION]
-> You should always explicitly tell Python to close a file. Forgetting to close opened files is like littering. When your program stops running, it shouldn't leave unnecessary waste lying around the system.
+## Reading Methods
 
-To close a file, use the file object's `.close()` method:
+When reading a file (`mode="r"`), you have a few options for how you want to extract the text.
+
+1. **`.read()`**: Sucks out the entire file as one massive, single string. Great for small files.
+2. **`.readlines()`**: Reads the file line-by-line, returning a Python List where each item is a line of text. Great if you need to loop over records.
 
 ```python
->>> file.close()
+with my_path.open(mode="r", encoding="utf-8") as file:
+    # Returns a list: ["Line 1\n", "Line 2\n"]
+    lines = file.readlines() 
+    
+    for line in lines:
+        print(line)
 ```
 
-Using `Path.open()` is the preferred way to open a file when you have an existing `Path` object, but there's also a built-in function called `open()` that you can use to open a file.
+## Writing Methods
 
-### The Built-in `open()` Function
+When writing (`mode="w"`) or appending (`mode="a"`), you also have options.
 
-The built-in `open()` function works almost exactly like the `Path.open()` method, except that its first parameter is a string containing the path to the file you want to open.
+1. **`.write("text")`**: Writes a single string into the file.
+2. **`.writelines(list)`**: Takes a list of strings, and writes them all into the file. 
+
+*Warning: `.writelines()` does NOT automatically add new lines. You must manually include `\n` at the end of your strings if you want them on separate lines!*
 
 ```python
->>> file_path = "C:/Users/David/hello.txt"
->>> file = open(file_path, mode="r", encoding="utf-8")
+new_data = ["Line 1\n", "Line 2\n", "Line 3\n"]
+
+# We use "a" to append, so we don't destroy whatever is already there
+with my_path.open(mode="a", encoding="utf-8") as file:
+    file.writelines(new_data)
 ```
 
-To close the file, use the file object's `.close()` method:
+## The Encoding Parameter
 
-```python
->>> file.close()
-```
+You probably noticed `encoding="utf-8"` in every example. As discussed in the previous topic, files are just numbers. An **Encoding** is the translation dictionary that tells Python how to turn those numbers back into letters. 
 
-For the most part, you'll use the `Path.open()` method to open a file from an existing `pathlib.Path` object. However, if you don't need all of the functionality of the `pathlib` module, then `open()` is a great way to quickly create a file object.
+`UTF-8` is the global standard for text. If you do not specify an encoding, Windows will often default to an archaic Windows-specific encoding, which will cause your program to crash if it encounters an emoji or a foreign character. Always specify `encoding="utf-8"`.
 
-## The `with` Statement
+## Key Takeaways
+- The golden rule of file interaction is: **Open, Read/Write, Close.**
+- Always use the **`with` statement** to open files. It acts as an automatic safety net that guarantees the file is closed.
+- Know your modes: `"r"` (Read), `"w"` (Write/Overwrite), `"a"` (Append).
+- Always declare `encoding="utf-8"` to prevent cross-platform character corruption.
 
-When you open a file, your program accesses data external to the program itself. The operating system must manage the connection between your program and the physical file. When you call a file object's `.close()` method, the operating system knows to close the connection.
-
-If your program crashes between the time a file is opened and when it's closed, then the system resources used by the connection may live on until the operating system realizes they're no longer needed.
-
-To ensure that file system resources are cleaned up even if a program crashes, you can open a file in a `with` statement. The pattern for using the `with` statement looks like this:
-
-```python
-with path.open(mode="r", encoding="utf-8") as file:
-    # Do something with file
-```
-
-The `with` statement has two parts: a header and a body. The header always starts with the `with` keyword and ends with a colon (`:`). The return value of `path.open()` is assigned to the variable name after the `as` keyword.
-
-After the `with` statement header is an indented block of code. When code execution leaves the indented block, the file object assigned to `file` is closed automatically, even if an exception is raised during execution of the code inside of the block.
-
-`with` statements also work with the built-in `open()`:
-
-```python
-with open(file_path, mode="r", encoding="utf-8") as file:
-    # Do something with file
-```
-
-There really is no reason *not* to open files in a `with` statement. It's considered the Pythonic way of working with files. 
-
-## Reading Data From a File
-
-Using a text editor, open the `hello.txt` file in your home directory that you previously created and type the text `Hello, World` into it. Then save the file.
-
-In IDLE's interactive window, type the following:
-
-```python
->>> path = Path.home() / "hello.txt"
->>> with path.open(mode="r", encoding="utf-8") as file:
-...     text = file.read()
-...
->>> type(text)
-<class 'str'>
->>> text
-'Hello, World'
-```
-
-The file object created by `path.open()` is assigned to the `file` variable. Inside of the `with` block, the file object's `.read()` method reads the text from the file and assigns the result to the variable `text`.
-
-If there are multiple lines of text in the file, then each line in the string is separated with a newline character (`\n`). In a text editor, open the `hello.txt` file again and put the text `"Hello again"` on the second line.
-
-```python
->>> with path.open(mode="r", encoding="utf-8") as file:
-...     text = file.read()
-...
->>> text
-'Hello, World\nHello again'
-```
-
-Instead of reading the entire file at once, you can process each line of the file one at a time:
-
-```python
->>> with path.open(mode="r", encoding="utf-8") as file:
-...     for line in file.readlines():
-...         print(line)
-...
-Hello, World
-
-Hello again
-```
-
-The `.readlines()` method returns an iterable of lines from the file. At each step of the `for` loop, the next line of text in the file is returned and printed.
-
-Notice the extra blank line between the two lines of text. This isn't caused by line endings in the file. It happens because `print()` automatically inserts a newline character at the end of every string it prints.
-
-To print the two lines without the extra blank line, set the `print()` function's optional `end` parameter to an empty string:
-
-```python
->>> with path.open(mode="r", encoding="utf-8") as file:
-...     for line in file.readlines():
-...         print(line, end="")
-...
-Hello, World
-Hello again
-```
-
-You'll often want to use `.readlines()` instead of `.read()`. For example, each line in a file might represent a single record. You can use `.readlines()` to loop over the lines and process them as needed.
-
-## Writing Data to a File
-
-To write data to a plain text file, you pass a string to a file object's `.write()` method. The file object must be opened in **write mode** by passing the value `"w"` to the `mode` parameter.
-
-For instance, the following writes the text `"Hi there!"` to the `hello.txt` file in your home directory:
-
-```python
->>> with path.open(mode="w", encoding="utf-8") as file:
-...     file.write("Hi there!")
-...
-9
-```
-
-Notice that the integer 9 is displayed after the `with` block executes. That's because `.write()` returns the number of characters it writes.
-
-When the text `"Hi there!"` is written to the `hello.txt` file, any existing contents are overwritten. It's as if you deleted the old `hello.txt` file and created a new one.
-
-> [!IMPORTANT]
-> When you set `mode="w"` in `.open()`, the contents of the original file are overwritten. This results in the loss of all of the original data in the file!
-
-You can append data to the end of a file by opening the file in **append mode** (`"a"`):
-
-```python
->>> with path.open(mode="a", encoding="utf-8") as file:
-...     file.write("\nHello")
-...
-6
-```
-
-When a file is opened in append mode, new data is written to the end of the file and old data is left intact.
-
-You can write multiple lines to a file at the same time using the `.writelines()` method. First, create a list of strings:
-
-```python
->>> lines_of_text = [
-...     "Hello from Line 1\n",
-...     "Hello from Line 2\n",
-...     "Hello from Line 3 \n",
-... ]
->>> with path.open(mode="w", encoding="utf-8") as file:
-...     file.writelines(lines_of_text)
-```
-
-Each string in `lines_of_text` is written to the file. Notice that each string ends with the newline character (`\n`). That's because `.writelines()` doesn't automatically write each string on a new line.
-
-If you want to write to a path with parent folders that may not exist, then call the `.mkdir()` method with the `parents` parameter set to `True` before opening the file in write mode:
-
-```python
->>> path.parent.mkdir(parents=True)
->>> with path.open(mode="w", encoding="utf-8") as file:
-...     file.write("Hello!")
-```
-
-### Key Takeaways
-- Use **encoding** to correctly read and write files (e.g., `utf-8`).
-- The `with` statement ensures files are automatically and cleanly closed.
-- Modes: `"r"` (read), `"w"` (write, overwrites), `"a"` (append).
-- Read methods: `.read()` (entire file as string), `.readlines()` (list of strings for each line).
-- Write methods: `.write()` (writes a string), `.writelines()` (writes a list of strings, requires `\n` at the end of each).
-
-### Exam Tips
-- The default behavior of `print()` adds a newline (`\n`). Since `readlines()` includes the `\n` from the file, this leads to double-spacing unless you pass `end=""` to `print()`.
-- Always remember that `"w"` mode **destroys** the existing contents of the file. Use `"a"` to add to an existing file.
+## Exam Tips
+- **The "W" Trap:** An extremely common exam question asks what happens when you open a file with existing data using `mode="w"`. The answer is that the existing data is immediately and permanently deleted. To save the data, you must use `"a"`.
+- **New Lines:** Remember that `.writelines()` does not act like `print()`. It does not add newlines for you. You must manually provide the `\n` characters.
