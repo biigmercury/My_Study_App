@@ -1,0 +1,123 @@
+---
+title: Challenge Create a High Scores List
+---
+
+# Challenge: Create a High Scores List
+
+In the chapter 12 `practice_files` folder, there is a CSV file called `scores.csv` containing data about game players and their scores. The first few lines of the file look like this:
+
+```
+name, score
+LLCoolDave,23
+LLCoolDave,27
+red,12
+LLCoolDave,26
+tom123,26
+```
+
+Write a program that reads the data from this CSV file and creates a new file called `high_scores.csv` in which each row contains the player's name and their highest score.
+
+The output CSV file should look like this:
+
+```
+name,high_score
+LLCoolDave,27
+red,12
+tom123,26
+O_O,7
+Misha46,25
+Empiro,23
+MaxxT,25
+L33tH4x,42
+johnsmith,30
+```
+
+## Solution Guide
+
+This challenge tests your ability to read CSV files with headers using `csv.DictReader`, manage state (high scores per user) using a dictionary, and then write the results back out to a new CSV using `csv.DictWriter`.
+
+### Step 1: Read the Existing CSV
+You'll want to use `csv.DictReader` to parse the file. You will need an empty dictionary to keep track of the highest score seen so far for each player. 
+
+```python
+import csv
+from pathlib import Path
+
+scores_path = Path("path/to/scores.csv")
+high_scores = {}
+
+with scores_path.open("r", encoding="utf-8", newline="") as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        name = row["name"]
+        score = int(row[" score"]) # Note: There might be a leading space in the column name!
+        
+        # Check if the player is in the dict, or if this score is higher
+        if name not in high_scores or score > high_scores[name]:
+            high_scores[name] = score
+```
+
+> [!NOTE]
+> Sometimes CSV files have spaces after the commas. In `scores.csv`, the column name is actually `" score"` (with a space), so `row[" score"]` is required unless you use `.strip()` or `skipinitialspace=True` in the `DictReader`.
+
+### Step 2: Format Data for Writing
+`csv.DictWriter` expects a list of dictionaries. We need to convert our `high_scores` dictionary (`{"LLCoolDave": 27, "red": 12}`) into a list of dictionaries (`[{"name": "LLCoolDave", "high_score": 27}, ...]`).
+
+```python
+output_data = []
+for name, score in high_scores.items():
+    output_data.append({"name": name, "high_score": score})
+```
+
+### Step 3: Write the New CSV
+Open `high_scores.csv` in `"w"` mode and use `csv.DictWriter`.
+
+```python
+output_path = Path("path/to/high_scores.csv")
+
+with output_path.open("w", encoding="utf-8", newline="") as file:
+    writer = csv.DictWriter(file, fieldnames=["name", "high_score"])
+    writer.writeheader()
+    writer.writerows(output_data)
+```
+
+### Full Solution
+
+```python
+import csv
+from pathlib import Path
+
+def process_scores(input_str, output_str):
+    input_path = Path(input_str)
+    output_path = Path(output_str)
+    
+    high_scores = {}
+    
+    # Read the data
+    with input_path.open("r", encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            name = row["name"]
+            score = int(row[" score"]) # Account for the space in the header
+            if name not in high_scores or score > high_scores[name]:
+                high_scores[name] = score
+                
+    # Format the data
+    output_data = [{"name": name, "high_score": score} for name, score in high_scores.items()]
+    
+    # Write the data
+    with output_path.open("w", encoding="utf-8", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=["name", "high_score"])
+        writer.writeheader()
+        writer.writerows(output_data)
+
+if __name__ == "__main__":
+    process_scores("path/to/scores.csv", "path/to/high_scores.csv")
+```
+
+### Key Takeaways
+- Using `DictReader` lets you pull values via column names rather than remembering index positions.
+- Data parsed from a CSV file is **always a string**. You must manually cast it to an `int` before comparing which score is larger.
+
+### Exam Tips
+- Forgetting `newline=""` on Windows is a classic mistake when dealing with the `csv` module that results in double-spaced output files. Always use it!

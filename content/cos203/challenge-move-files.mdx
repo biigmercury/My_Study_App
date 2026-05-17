@@ -1,0 +1,84 @@
+---
+title: Challenge Move All Image Files to a New Directory
+---
+
+# Challenge: Move All Image Files to a New Directory
+
+In the chapter 12 `practice_files` folder, there is a subfolder called `documents/`. The directory contains several files and subfolders. Some of the files are images ending with the `.png`, `.gif`, or `.jpg` file extension.
+
+Create a new folder in the `practice_files` folder called `images/`, and move all image files to that folder. When you're done, the new folder should have four files in it:
+
+1.  `image1.png`
+2.  `image2.gif`
+3.  `image3.png`
+4.  `image4.jpg`
+
+## Solution Guide
+
+This challenge tests your ability to use `pathlib` for directory creation, recursive file searching, and moving files. 
+
+### Step 1: Set up the Paths
+First, define the paths for your working directories. Let's assume you have a `Path` object pointing to the `practice_files` folder.
+
+```python
+from pathlib import Path
+
+# Set up the paths
+practice_dir = Path("path/to/practice_files")
+documents_dir = practice_dir / "documents"
+images_dir = practice_dir / "images"
+```
+
+### Step 2: Create the Target Directory
+Use `.mkdir()` to create the `images/` directory. Be sure to use `exist_ok=True` so your script won't crash if you run it multiple times.
+
+```python
+images_dir.mkdir(exist_ok=True)
+```
+
+### Step 3: Find and Move the Files
+You need to find all `.png`, `.gif`, and `.jpg` files. Because they can be nested inside subfolders of `documents/`, you should use `.rglob()` (recursive globbing).
+
+You can loop through each file extension and perform the move:
+
+```python
+for extension in ["*.png", "*.gif", "*.jpg"]:
+    # Recursively find all files matching the extension
+    for file_path in documents_dir.rglob(extension):
+        # Create the destination path using the original filename
+        destination_path = images_dir / file_path.name
+        
+        # Move the file
+        file_path.replace(destination_path)
+        print(f"Moved {file_path.name} to {images_dir}")
+```
+
+### Full Solution
+
+```python
+from pathlib import Path
+
+def sort_images(practice_dir_str):
+    practice_dir = Path(practice_dir_str)
+    documents_dir = practice_dir / "documents"
+    images_dir = practice_dir / "images"
+
+    # Create the target directory safely
+    images_dir.mkdir(exist_ok=True)
+
+    # Move files with specific extensions
+    for extension in ["*.png", "*.gif", "*.jpg"]:
+        for file_path in documents_dir.rglob(extension):
+            destination_path = images_dir / file_path.name
+            file_path.replace(destination_path)
+
+if __name__ == "__main__":
+    sort_images("path/to/practice_files")
+```
+
+### Key Takeaways
+- `.rglob()` is incredibly useful for finding files deep inside a folder structure.
+- Constructing the `destination_path` requires combining the target directory (`images_dir`) with the file's name (`file_path.name`).
+
+### Exam Tips
+- Remember that `.replace()` requires a full destination path (including the file name), not just the destination directory. `file_path.replace(images_dir)` would raise an error or attempt to replace the directory itself.

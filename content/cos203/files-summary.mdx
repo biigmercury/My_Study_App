@@ -1,0 +1,33 @@
+---
+title: Summary and Additional Resources (Files)
+---
+
+# Summary and Additional Resources (Files)
+
+In this chapter, you learned about the file system and file paths and how to work with them using the Python standard library's `pathlib` module. You saw how to create new `Path` objects, how to access path components, and how to create, move, and delete files and folders.
+
+You also learned how to read and write plain text files using the `Path.open()` method and built-in `open()` function as well as how to work with comma-separated value, or CSV, files using the Python standard library's `csv` module.
+
+## Interactive Quiz
+
+This chapter comes with a free online quiz to check your learning progress. You can access the quiz using your phone or computer at the following web address:
+
+`realpython.com/quizzes/pybasics-files`
+
+## Additional Resources
+
+To get even more practice working with files, check out these resources:
+
+- "Reading and Writing Files in Python (Guide)"
+- "Working With Files in Python"
+
+For links and additional resources to further deepen your Python skills, visit `realpython.com/python-basics/resources`
+
+### Key Takeaways
+- **File operations** are simplified significantly with the `pathlib` module.
+- Always use the **`with` statement** context manager when opening files to ensure resources are properly closed and cleaned up, even in the event of an error.
+- **CSV files** can be handled easily utilizing the standard library's `csv` module, particularly with `DictReader` and `DictWriter` for dealing with table headers.
+
+### Exam Tips
+- Be able to trace what `.parent`, `.stem`, and `.suffix` return for a given file path.
+- Remember the differences between file opening modes: `"r"` (read), `"w"` (write/overwrite), and `"a"` (append).
