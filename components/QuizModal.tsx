@@ -39,7 +39,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
       const data = await res.json()
       setQuestions(data.questions)
     } catch {
-      setError('Could not generate quiz. Check your API key in .env.local.')
+      setError('Could not generate quiz. Check your internet connection and try again.')
     } finally {
       setLoading(false)
     }
