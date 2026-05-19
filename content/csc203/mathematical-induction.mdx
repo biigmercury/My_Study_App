@@ -1,8 +1,120 @@
 ---
-title: "Mathematical Induction"
-description: "Content coming soon"
-duration: "35 min"
-difficulty: "intermediate"
+title: Mathematical Induction
 ---
 
-Content for this topic hasn't been added yet. Drop your course materials and this page will be updated with full study notes, worked examples, and exam tips.
+# Mathematical Induction
+
+Imagine a line of dominoes spaced perfectly apart, stretching into infinity. If you push the first domino over, you know with absolute certainty that every single domino in that infinite line will eventually fall. 
+
+This physical intuition is the exact basis for **Mathematical Induction**. 
+
+Induction is a specialized proof technique used to prove that a specific property $P(n)$ is true for **all natural numbers** $n$. It is incredibly powerful, but note: induction cannot be used to *discover* new formulas, it can only be used to *prove* formulas you already suspect are true.
+
+## The Principle of Mathematical Induction
+
+To prove that $P(n)$ is true for all natural numbers $n$, you must complete exactly two steps.
+
+### Step 1: The Basis Step
+You must prove that $P(0)$ is true. 
+*(Analogy: You must prove that you can physically knock over the very first domino).*
+
+### Step 2: The Inductive Step
+You must prove that IF $P(n)$ is true, THEN $P(n+1)$ must also be true. 
+*(Analogy: You must prove that the dominoes are spaced closely enough that IF any random domino falls, it will perfectly strike the one immediately next to it).*
+
+If you prove both steps, the conclusion is absolute: $P(n)$ must be true for all $n \in \mathbb{N}$.
+
+---
+
+### Worked Example 1: Proving Gauss's Formula
+
+Let's prove the formula for the sum of an arithmetic sequence:
+$1 + 2 + 3 + ... + n = \frac{n(n + 1)}{2}$
+
+**Step 1: Basis Step**
+Let's check if the formula works for the smallest possible value, $n = 1$.
+Left side: $1$
+Right side: $\frac{1(1 + 1)}{2} = \frac{2}{2} = 1$.
+The basis step is **True**.
+
+**Step 2: Inductive Step**
+We **assume** the formula is true for some generic integer $k$:
+$1 + 2 + ... + k = \frac{k(k + 1)}{2}$  *(This is called the Inductive Hypothesis).*
+
+Now, we must prove it works for the next integer, $k + 1$. We add $(k+1)$ to both sides:
+$1 + 2 + ... + k + (k + 1) = \frac{k(k + 1)}{2} + (k + 1)$
+
+Let's use algebra to simplify the right side by finding a common denominator:
+$$ = \frac{k(k + 1)}{2} + \frac{2(k + 1)}{2} $$
+$$ = \frac{k^2 + k + 2k + 2}{2} $$
+$$ = \frac{k^2 + 3k + 2}{2} $$
+$$ = \frac{(k + 1)(k + 2)}{2} $$
+
+Notice that our final result $\frac{(k+1)(k+2)}{2}$ is exactly the original Gauss formula, but with all the $n$'s replaced by $(k+1)$! 
+
+We have successfully proven that if step $k$ works, step $k+1$ works. **Proof complete.**
+
+---
+
+## The Second Principle (Strong Induction)
+
+Sometimes, knowing that the *previous* domino fell isn't enough information to prove that the *next* domino will fall. You might need to know that *all* the previous dominoes fell. 
+
+This requires **Strong Induction**.
+
+1. **Basis Step:** Show that $P(0)$ is true.
+2. **Inductive Step:** Show that if $P(0)$ AND $P(1)$ AND ... $P(n)$ are all true, then $P(n+1)$ is true.
+
+### Worked Example 2: Strong Induction on Primes
+**Theorem:** Every integer $> 1$ can be written as the product of primes.
+1. **Basis Step:** $P(2)$ is true. 2 is prime, so it is the product of itself.
+2. **Inductive Step:** Assume $P(2), P(3), ... P(n)$ are all true. We must evaluate $n+1$.
+   - **Case A:** If $n+1$ is prime, it is trivially true.
+   - **Case B:** If $n+1$ is composite, it can be factored into two smaller integers: $n+1 = a \cdot b$. Because $a$ and $b$ are smaller than $n+1$, our *strong induction hypothesis* guarantees that both $a$ and $b$ can be written as prime products. Therefore, $a \cdot b$ is just a larger prime product! **Proof complete.**
+
+---
+
+## Recursive Definitions
+
+Induction allows us to prove things infinitely. **Recursion** allows us to *build* things infinitely. In a recursive definition, an object is defined in terms of itself.
+
+### 1. Recursively Defined Sequences
+The most famous recursive sequence is the **Fibonacci Sequence**. Instead of using a complex closed-form formula, we define it recursively:
+- **Base conditions:** $f(0) = 0$, $f(1) = 1$
+- **Recursive step:** $f(n) = f(n-1) + f(n-2)$
+
+To find $f(3)$, the sequence calls itself: $f(2) + f(1)$. It keeps spiraling down until it hits the hardcoded base conditions.
+
+### 2. Recursively Defined Sets
+To build a set recursively, you provide two things:
+1. An initial set of core elements.
+2. Rules for constructing new elements from the elements already inside the set.
+
+**Example:** Let's define set $S$.
+- *Initial element:* $3 \in S$
+- *Construction rule:* If $x \in S$ and $y \in S$, then $(x + y) \in S$.
+This recursive definition perfectly constructs the set of all positive integers divisible by 3!
+
+### 3. Recursive Algorithms
+An algorithm is recursive if it solves a problem by shrinking the input down to a smaller instance of the exact same problem.
+
+**Example: Recursive Euclidean Algorithm**
+```pascal
+procedure gcd(a, b: nonnegative integers with a < b)
+if a = 0 then gcd(a, b) := b
+else gcd(a, b) := gcd(b mod a, a)
+```
+Notice how the `gcd` function calls `gcd` from inside itself. 
+
+> **Important Constraint:** For *every* recursive algorithm, there is an equivalent iterative (loop-based) algorithm. Recursive algorithms are often shorter and more elegant for humans to read, but iterative algorithms are almost always more efficient in terms of computer memory and processing time.
+
+---
+
+### Key Takeaways
+- **Mathematical Induction** requires a Basis Step (proving the starting point) and an Inductive Step (proving $k \rightarrow k+1$).
+- **Strong Induction** assumes that *all* previous steps are true, not just the immediately preceding one.
+- **Recursion** defines sequences, sets, or algorithms by referring back to smaller instances of themselves until they hit a defined base case.
+
+### Exam Tips
+- **The Inductive Hypothesis:** In the inductive step, explicitly writing down "Assume $P(k)$ is true: [write formula here]" is usually worth partial credit on its own. It clearly communicates to the grader that you understand the mechanics of the proof technique, even if your algebra gets messy later on.
+- **Missing Base Cases in Recursion:** If an exam asks you to write a recursive function, the most common error is forgetting the base case (`if n == 0 return 1`). Without a base case, a recursive function will loop infinitely and crash.
