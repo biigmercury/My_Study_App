@@ -1,0 +1,150 @@
+---
+title: Mathematical Reasoning
+---
+
+# Mathematical Reasoning
+
+In the sciences, we form hypotheses and conduct experiments to gather evidence. But in mathematics, evidence is not enough. To establish a mathematical truth, we must construct an airtight, undeniable **Proof**.
+
+We need mathematical reasoning for two main reasons:
+1. To determine whether an existing mathematical argument is correct or incorrect.
+2. To construct our own mathematical arguments from scratch.
+
+This formalized logic is the exact foundation upon which Artificial Intelligence systems (like expert systems and inference engines) are built.
+
+## The Terminology of Proofs
+
+Before we begin proving things, we must understand the vocabulary of the mathematical courtroom.
+
+- **Axiom:** A basic, fundamental assumption that requires no proof (e.g., "$1 = 1$").
+- **Theorem:** A major mathematical statement that can be shown to be true.
+- **Lemma:** A "mini-theorem". It's a stepping stone result used only to help prove a larger theorem.
+- **Corollary:** A proposition that follows instantly and obviously from a theorem that was just proven.
+- **Conjecture:** A statement whose truth value is currently unknown. (Once someone proves it, it graduates to become a Theorem).
+- **Fallacy:** A case of incorrect, flawed reasoning.
+
+---
+
+## Rules of Inference
+
+A proof consists of a sequence of statements. But how do we link one statement to the next? We use **Rules of Inference**. These are logically sound templates that guarantee that if our premises are true, our conclusion *must* be true.
+
+We write them in a column, with a line representing "therefore" ($\therefore$).
+
+### 1. Modus Ponens (Law of Detachment)
+If $p$ is true, and $p \rightarrow q$ is true, then $q$ must be true.
+$$
+\begin{array}{l}
+p \\
+p \rightarrow q \\
+\hline
+\therefore q
+\end{array}
+$$
+
+### 2. Modus Tollens
+If $p \rightarrow q$ is true, but $q$ is false, then $p$ must be false.
+$$
+\begin{array}{l}
+\neg q \\
+p \rightarrow q \\
+\hline
+\therefore \neg p
+\end{array}
+$$
+
+### 3. Hypothetical Syllogism
+The chain reaction rule.
+$$
+\begin{array}{l}
+p \rightarrow q \\
+q \rightarrow r \\
+\hline
+\therefore p \rightarrow r
+\end{array}
+$$
+
+### 4. Disjunctive Syllogism
+Process of elimination. If one of two options must be true, and option A is false, option B must be the true one.
+$$
+\begin{array}{l}
+p \lor q \\
+\neg p \\
+\hline
+\therefore q
+\end{array}
+$$
+
+---
+
+## Arguments and Validity
+
+An **Argument** consists of one or more hypotheses (premises) and a conclusion.
+An argument is **Valid** if, whenever all its hypotheses are true, its conclusion is guaranteed to be true.
+
+> **CRITICAL DISTINCTION:** An argument can be *Valid* but still have an *Incorrect* conclusion! How? If the logic structure is valid, but the starting hypothesis is a lie.
+
+**Example of a Valid but Incorrect Argument:**
+- Hypothesis 1: "If 101 is divisible by 3, then $101^2$ is divisible by 9." ($p \rightarrow q$)
+- Hypothesis 2: "101 is divisible by 3." ($p$)
+- Conclusion: "Consequently, $101^2$ is divisible by 9." ($\therefore q$)
+
+The structure here is perfect **Modus Ponens**. The logic is **Valid**. However, the conclusion is completely **Incorrect** because Hypothesis 2 is mathematically false!
+
+---
+
+## Rules of Inference for Quantified Statements
+
+When dealing with $\forall$ (For All) and $\exists$ (There Exists), we have special rules to move between universal claims and specific instances.
+
+1. **Universal Instantiation:** If a rule applies to everything ($\forall x P(x)$), it must apply to a specific item $c$ ($P(c)$).
+   - *Example: All UMB students are geniuses. George is a UMB student. Therefore, George is a genius.*
+2. **Universal Generalization:** If you can prove a property holds for an arbitrary, generic element $c$, you can claim it holds for everything ($\forall x P(x)$).
+3. **Existential Instantiation:** If you know that $\exists x P(x)$, you can assume there is some specific element $c$ that satisfies the property, even if you don't know its exact identity.
+4. **Existential Generalization:** If you know $P(c)$ is true for a specific $c$, you can zoom out and claim $\exists x P(x)$.
+
+---
+
+## Methods of Proving Theorems
+
+### 1. Direct Proof
+To prove an implication $p \rightarrow q$, you **assume $p$ is true**, and then use algebra and inference rules to logically arrive at $q$.
+
+**Theorem:** "If $n$ is odd, then $n^2$ is odd."
+**Proof:**
+1. Assume $n$ is odd. 
+2. By mathematical definition, an odd number can be written as $n = 2k + 1$ (where $k$ is an integer).
+3. We square it: $n^2 = (2k + 1)^2$.
+4. Expand: $n^2 = 4k^2 + 4k + 1$.
+5. Factor out a 2 from the first terms: $n^2 = 2(2k^2 + 2k) + 1$.
+6. Since $(2k^2 + 2k)$ is just another integer, the result is in the form $2(\text{integer}) + 1$.
+7. Thus, $n^2$ is odd. **Proof complete.**
+
+### 2. Indirect Proof (Proof by Contrapositive)
+Sometimes assuming $p$ doesn't give you enough mathematical material to work with. Recall from logic that $p \rightarrow q$ is logically equivalent to its **Contrapositive**: $\neg q \rightarrow \neg p$.
+
+To prove $p \rightarrow q$ indirectly, you **assume $q$ is false**, and prove that $p$ must also be false.
+
+**Theorem:** "If $3n + 2$ is odd, then $n$ is odd."
+*(Trying to isolate $n$ from $3n+2$ using direct proof involves messy fractions. Let's use indirect proof).*
+**Proof:**
+1. We prove the contrapositive: "If $n$ is EVEN, then $3n+2$ is EVEN."
+2. Assume $n$ is even. 
+3. By definition, $n = 2k$.
+4. Substitute into the equation: $3(2k) + 2$.
+5. Simplify: $6k + 2$.
+6. Factor out a 2: $2(3k + 1)$.
+7. Since it is in the form $2(\text{integer})$, the result is even. 
+8. Since the contrapositive is true, the original theorem is true. **Proof complete.**
+
+---
+
+### Key Takeaways
+- **Rules of Inference** are the grammatical rules of logic. Modus Ponens and Modus Tollens are the most critical tools for chaining thoughts together.
+- A **Valid** argument structure does not guarantee a correct conclusion if your starting premises are false.
+- A **Direct Proof** assumes $P$ and calculates $Q$.
+- An **Indirect Proof** proves the contrapositive: assuming $\neg Q$ and calculating $\neg P$.
+
+### Exam Tips
+- **Recognizing Fallacies:** The two most common exam fallacies are the *Fallacy of Affirming the Conclusion* (assuming $q$ and trying to prove $p$) and the *Fallacy of Denying the Hypothesis* (assuming $\neg p$ and trying to prove $\neg q$). Neither of these are valid inference rules!
+- **Odd/Even Definitions:** In any proof involving odd or even numbers, your absolute first step must be converting the English word into algebra: $Even = 2k$, $Odd = 2k + 1$. You cannot do math on the word "odd".

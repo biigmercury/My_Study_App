@@ -1,0 +1,128 @@
+---
+title: Number Theory
+---
+
+# Number Theory
+
+Number theory is the branch of pure mathematics devoted to the study of **Integers** ($\mathbb{Z}$) and their properties. While it might sound abstract, the principles of number theory (specifically prime numbers and modular arithmetic) form the absolute bedrock of modern modern cybersecurity and cryptography.
+
+## Divisibility
+
+If $a$ and $b$ are integers with $a \neq 0$, we say that **$a$ divides $b$** if there is an integer $c$ such that $b = ac$.
+
+- **Notation:** $a \mid b$ means "$a$ divides $b$".
+- If $a \mid b$, we say that $a$ is a **factor** of $b$, and $b$ is a **multiple** of $a$.
+- If $a$ does not divide $b$, we write $a \nmid b$.
+
+### Core Divisibility Theorems
+For integers $a, b,$ and $c$:
+1. If $a \mid b$ and $a \mid c$, then $a \mid (b + c)$. *(Example: $3 \mid 6$ and $3 \mid 9$, so $3 \mid 15$)*.
+2. If $a \mid b$, then $a \mid bc$ for all integers $c$. *(Example: $5 \mid 10$, so $5 \mid 20$ and $5 \mid 30$)*.
+3. If $a \mid b$ and $b \mid c$, then $a \mid c$. *(Example: $4 \mid 8$ and $8 \mid 24$, so $4 \mid 24$)*.
+
+---
+
+## Primes and The Fundamental Theorem
+
+A positive integer $p > 1$ is called **prime** if its only positive factors are $1$ and $p$. If an integer is greater than 1 and is not prime, it is called **composite**.
+
+The most critical rule in this entire discipline is **The Fundamental Theorem of Arithmetic**:
+> Every positive integer can be written *uniquely* as the product of primes, where the prime factors are written in order of increasing size.
+
+- $15 = 3 \cdot 5$
+- $48 = 2 \cdot 2 \cdot 2 \cdot 2 \cdot 3 = 2^4 \cdot 3$
+
+*(Note: If $n$ is a composite integer, then $n$ must have a prime divisor less than or equal to $\sqrt{n}$.)*
+
+---
+
+## The Division Algorithm
+
+When we divide two integers, we are left with a quotient and a remainder. 
+
+Let $a$ be an integer and $d$ be a positive integer. There exist unique integers $q$ and $r$, with $0 \le r < d$, such that:
+$$ a = dq + r $$
+
+- $a$ is the **dividend**
+- $d$ is the **divisor**
+- $q$ is the **quotient**
+- $r$ is the **remainder**
+
+**Example:** Divide 17 by 5. 
+$17 = 5 \cdot 3 + 2$. (Quotient is 3, Remainder is 2).
+
+> **The Negative Trap:** What happens when we divide $-11$ by $3$? By definition, the remainder $r$ **cannot be negative** ($0 \le r < d$). Therefore, $-11 = 3 \cdot (-4) + 1$. The remainder is 1!
+
+---
+
+## Greatest Common Divisor & Least Common Multiple
+
+### Greatest Common Divisor ($gcd$)
+The $gcd(a, b)$ is the largest integer $d$ that divides both $a$ and $b$.
+- If $gcd(a, b) = 1$, we say $a$ and $b$ are **Relatively Prime**. 
+
+### Least Common Multiple ($lcm$)
+The $lcm(a, b)$ is the smallest positive integer that is divisible by both $a$ and $b$.
+
+### The Unifying Theorem
+There is a beautiful, symmetric relationship between these two concepts:
+$$ a \cdot b = gcd(a, b) \cdot lcm(a, b) $$
+
+---
+
+## The Euclidean Algorithm
+
+If we need to find the $gcd$ of two massive numbers like $287$ and $91$, listing out all their prime factors is too difficult. We use the **Euclidean Algorithm**, which recursively divides the numbers until the remainder is zero.
+
+**Find $gcd(287, 91)$:**
+1. Divide the larger by the smaller: $287 = 91 \cdot 3 + 14$. 
+   - *(This tells us $gcd(287, 91) = gcd(91, 14)$)*
+2. Shift the numbers left and repeat: $91 = 14 \cdot 6 + 7$.
+   - *(This tells us $gcd(91, 14) = gcd(14, 7)$)*
+3. Shift and repeat: $14 = 7 \cdot 2 + 0$.
+4. Once the remainder hits $0$, the last non-zero remainder ($7$) is your $gcd$!
+
+---
+
+## Modular Arithmetic
+
+We denote $a \bmod m$ as the **remainder** when $a$ is divided by $m$.
+- $9 \bmod 4 = 1$
+- $9 \bmod 3 = 0$
+
+### Congruences
+Let $a$ and $b$ be integers, and $m$ be a positive integer. We say that $a$ is **congruent** to $b$ modulo $m$ if $m$ divides $(a - b)$. 
+
+We write this as: $a \equiv b \pmod m$
+
+In simple terms, $a$ and $b$ are congruent if they have the exact same remainder when divided by $m$.
+- Is $46 \equiv 68 \pmod{11}$? Yes, because $11 \mid (46 - 68)$, and $11 \mid -22$.
+
+---
+
+## Representations of Integers
+
+Humans count in Base-10 (decimal). Computers count in Base-2 (binary) or Base-16 (hexadecimal). We can represent any positive integer $n$ in any base $b$ uniquely using the expansion:
+
+$$ n = a_k b^k + a_{k-1} b^{k-1} + ... + a_1 b + a_0 $$
+
+**Example: Hexadecimal ($b=16$)**
+$(3A0F)_{16} = 3 \cdot 16^3 + 10 \cdot 16^2 + 0 \cdot 16^1 + 15 \cdot 16^0 = (14863)_{10}$
+
+### Binary Addition Algorithm
+Adding binary numbers works exactly like elementary school addition, including the "carry" bit.
+- $0 + 0 = 0$
+- $0 + 1 = 1$
+- $1 + 1 = 0$ (with a carry of 1)
+- $1 + 1 + 1 = 1$ (with a carry of 1)
+
+---
+
+### Key Takeaways
+- **The Division Algorithm** is the bedrock of modular arithmetic. The remainder can NEVER be negative.
+- The **Euclidean Algorithm** is an incredibly fast way to find the GCD of massive numbers through repeated division.
+- **Congruence** ($a \equiv b \pmod m$) simply means $a$ and $b$ have the identical remainder when divided by $m$.
+
+### Exam Tips
+- **Pairwise Relatively Prime:** A set of integers is "pairwise relatively prime" if *every possible pair* within the set has a GCD of 1. $\{15, 17, 27\}$ is NOT pairwise relatively prime because $gcd(15, 27) = 3$. 
+- **Binary Conversion:** To convert decimal to binary, repeatedly divide by 2. The *remainders* (read from bottom to top) form the binary string.

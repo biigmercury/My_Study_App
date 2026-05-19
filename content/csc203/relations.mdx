@@ -1,0 +1,112 @@
+---
+title: Relations
+---
+
+# Relations
+
+Functions are very strict. They demand that every input has exactly one output. But the real world is messy. A single person might own three different cars, or a person might own zero cars. We cannot model this using functions.
+
+To describe flexible relationships between elements of sets, we use **Relations**. 
+
+A binary relation $R$ from a set $A$ to a set $B$ is simply a subset of the Cartesian Product $A \times B$. If an element $a$ is related to $b$, we write $(a, b) \in R$, or more simply, $aRb$.
+
+> **Real World Analogy:** Let $A$ be a set of People, and $B$ be a set of Cars. 
+> $R$ is the relation "Drives". 
+> If Carl drives a BMW and a Mercedes, our relation subset includes $(Carl, BMW)$ and $(Carl, Mercedes)$. This breaks the rules of functions (Carl has two outputs), but it is a perfectly valid mathematical relation.
+
+*(Note: Because a function is just a strict subset of $A \times B$, **all functions are relations**, but not all relations are functions).*
+
+---
+
+## Properties of Relations on a Set
+
+When a relation maps elements from set $A$ back onto the same set $A$ (like the relationship "is a sibling of" among a set of people), we can analyze its internal properties.
+
+### 1. Reflexive
+A relation is reflexive if every element relates to itself. 
+- $\forall a \in A, (a,a) \in R$
+- *Example:* The relation $\le$. Every number is less than or equal to itself ($5 \le 5$).
+
+### 2. Symmetric
+A relation is symmetric if the relationship always goes both ways.
+- If $(a, b) \in R$, then $(b, a) \in R$.
+- *Example:* The relation "is a sibling of". If Alice is Bob's sibling, Bob is inherently Alice's sibling. 
+
+### 3. Antisymmetric
+A relation is antisymmetric if two *different* elements never relate to each other in both directions.
+- If $(a, b) \in R$ and $(b, a) \in R$, then $a$ must equal $b$.
+- *Example:* The relation $\le$. If $x \le y$ and $y \le x$, the only mathematical possibility is that $x = y$. 
+
+### 4. Transitive
+A relation is transitive if relationships chain together.
+- If $(a, b) \in R$ and $(b, c) \in R$, then $(a, c) \in R$.
+- *Example:* "Is an ancestor of". If Alice is the ancestor of Bob, and Bob is the ancestor of Charlie, then Alice is the ancestor of Charlie.
+
+---
+
+## Representing Relations
+
+Listing out hundreds of ordered pairs $(a, b)$ is tedious. We have two highly visual ways to represent relations.
+
+### 1. Zero-One Matrices
+We can represent a relation $R$ from set $A$ to set $B$ using a grid (matrix).
+- If $(a_i, b_j) \in R$, we put a `1` in that cell.
+- If they are not related, we put a `0`.
+
+**Visualizing Properties via Matrices:**
+- **Reflexive:** The main diagonal (top-left to bottom-right) is entirely 1s.
+- **Symmetric:** The matrix is a perfect mirror image of itself across the main diagonal.
+
+### 2. Directed Graphs (Digraphs)
+We draw dots (vertices) for every element in the set, and draw an arrow (edge) from $a$ to $b$ if $(a, b) \in R$. 
+- If $(a, a) \in R$, we draw an arrow pointing right back to itself. This is called a **loop**.
+
+---
+
+## Equivalence Relations and Classes
+
+If a relation represents "equality" or "similarity" between objects, it is called an **Equivalence Relation**.
+
+To be an equivalence relation, a relation must possess exactly three properties:
+1. **Reflexive** (everything is similar to itself)
+2. **Symmetric** (if A is similar to B, B is similar to A)
+3. **Transitive** (if A is similar to B, and B to C, then A is similar to C)
+
+### Equivalence Classes and Partitions
+An equivalence relation shatters a set into isolated groups called **Equivalence Classes**. Elements in the same class are all equivalent to each other.
+
+> **Example:** Let our set be all English words. Our relation is "starts with the same letter". This is an equivalence relation. 
+> The equivalence class for "Apple", denoted $[Apple]$, contains "Aardvark", "Ape", "Axe", etc. 
+> The class $[Banana]$ contains "Bear", "Bat", etc.
+
+Notice that these classes form a **Partition**. A partition divides a set into disjoint (non-overlapping) subsets such that their union covers the entire original set. Every word belongs to exactly one letter class.
+
+---
+
+## Databases and n-ary Relations
+
+Relations aren't limited to two elements. An **n-ary relation** maps $n$ elements together into tuples $(a_1, a_2, ..., a_n)$. 
+
+This is the exact mathematical foundation of the **Relational Data Model**, which powers almost all modern databases (like SQL).
+- An $n$-ary relation is a **Table**.
+- An $n$-tuple is a **Record** (a row in the database).
+- The domains $A_1, A_2$ are the **Fields** (the columns, like "Name", "ID", "Major").
+
+### Primary Keys
+A domain is a **Primary Key** if its value uniquely identifies the entire row. In a university database, "Major" cannot be a primary key (thousands of students share the CS major). "Student ID" IS a primary key, because no two students share the same ID.
+
+### Database Operations
+1. **Projection:** Deleting columns. If a table has Name, ID, Major, and GPA, a projection operation could strip away Major and GPA, leaving a new relation containing only Name and ID.
+2. **Join:** Combining two tables. If Table 1 has (Name, ID, Major) and Table 2 has (Major, Department Head), a Join operation merges them where the "Major" fields match, creating a massive relation (Name, ID, Major, Department Head).
+
+---
+
+### Key Takeaways
+- **Relations** map elements between sets without the strict rules of Functions.
+- Relations on a set can be categorized as **Reflexive**, **Symmetric**, **Antisymmetric**, and **Transitive**.
+- An **Equivalence Relation** must be Reflexive, Symmetric, and Transitive. It perfectly shatters a set into disjoint **Partitions**.
+- Modern SQL Databases are simply applied **n-ary relations**. 
+
+### Exam Tips
+- **Symmetric vs Antisymmetric:** A common misconception is that these are opposites. They are not! A relation can be BOTH symmetric and antisymmetric (e.g., the equality relation $=$), or NEITHER. Treat them as completely independent checklists. 
+- **Proving Equivalence:** If an exam asks you to prove a relation is an Equivalence Relation, you must explicitly write out the proofs for Reflexive, Symmetric, and Transitive in three distinct steps. Missing one step will fail the proof.

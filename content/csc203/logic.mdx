@@ -1,0 +1,127 @@
+---
+title: Logic
+---
+
+# Propositional Logic
+
+Imagine you are a judge in a courtroom. You can only deal with statements that are either definitively **True** or definitively **False**. If someone says "Please sit down," or "What time is it?", you cannot assign a truth value to those statements.
+
+In mathematics and computer science, **Logic** is the foundational system we use for reasoning. It is built entirely upon **Propositions**.
+
+A **Proposition** is a declarative statement that is exactly one of two things: True (T) or False (F). It cannot be both, and it cannot be neither. In digital circuitry, we represent True as `1` and False as `0`.
+
+### Worked Example 1: Identifying Propositions
+
+Let's look at a few sentences and determine if they are propositions.
+
+1. **"Elephants are bigger than mice."**
+   - Is it a declarative statement? Yes.
+   - Is it True or False? It is True. 
+   - **Conclusion:** It is a proposition.
+
+2. **"Today is January 1 and 99 < 5."**
+   - Is it a statement? Yes.
+   - Is it True or False? Because 99 is not less than 5, the entire statement is False.
+   - **Conclusion:** It is a proposition.
+
+3. **"Please do not fall asleep."**
+   - Is it a statement? No, it is a command/request.
+   - **Conclusion:** It is NOT a proposition.
+
+---
+
+## Propositional Functions (Open Sentences)
+
+Sometimes we have statements that have "blanks" in them, represented by variables. 
+
+Consider the statement: "$y > 5$". 
+
+Is this a proposition? The answer is **No**. We cannot tell if it is true or false until we know what the value of $y$ is. If $y = 10$, it is true. If $y = 2$, it is false. 
+
+We call this a **Propositional Function** or an **Open Sentence**. We usually write it as $P(y)$, where $P$ is the "predicate" (the property of being greater than 5) and $y$ is the variable.
+
+---
+
+## Combining Propositions (Logical Operators)
+
+Just like we can combine numbers using addition and multiplication, we can combine simple propositions to form **Compound Propositions** using **Logical Operators** (also called connectives). 
+
+Let's assume $p$ and $q$ are propositions.
+
+### 1. Negation (NOT)
+The negation operator simply flips the truth value. If $p$ is True, $\neg p$ is False.
+- **Symbol:** $\neg p$ (read as "not p")
+
+### 2. Conjunction (AND)
+The conjunction is only true if **BOTH** parts are true. If even one part is false, the whole thing is false.
+- **Symbol:** $p \land q$ (read as "p and q")
+
+### 3. Disjunction (OR)
+The disjunction is true if **AT LEAST ONE** part is true. It is only false when both parts are false.
+- **Symbol:** $p \lor q$ (read as "p or q")
+
+### 4. Exclusive Or (XOR)
+The exclusive OR is true if **EXACTLY ONE** part is true. If both are true, or both are false, the XOR is false.
+- **Symbol:** $p \oplus q$ (read as "p xor q")
+
+### 5. Implication (If-Then)
+The implication is a conditional statement. It is only false in one specific scenario: when the hypothesis ($p$) is true, but the conclusion ($q$) is false. Think of it like a broken promise.
+- **Symbol:** $p \rightarrow q$ (read as "if p, then q")
+
+### 6. Biconditional (If and only if)
+The biconditional is true when both $p$ and $q$ have the **exact same truth value** (both true or both false).
+- **Symbol:** $p \leftrightarrow q$ (read as "p if and only if q")
+
+We can visualize all of these using a **Truth Table**:
+
+| $p$ | $q$ | $\neg p$ | $p \land q$ | $p \lor q$ | $p \oplus q$ | $p \rightarrow q$ | $p \leftrightarrow q$ |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| T | T | F | T | T | F | T | T |
+| T | F | F | F | T | T | **F** | F |
+| F | T | T | F | T | T | T | F |
+| F | F | T | F | F | F | T | T |
+
+---
+
+## Tautologies and Contradictions
+
+When we build massive, complex logical statements, sometimes we create structures that have special properties regardless of what $p$ and $q$ are.
+
+- **Tautology:** A statement that is **always true**, no matter what.
+  - Example: $R \lor (\neg R)$ (It is raining, or it is not raining. This is an absolute universal truth).
+- **Contradiction:** A statement that is **always false**.
+  - Example: $R \land (\neg R)$ (It is raining AND it is not raining. This is impossible).
+
+---
+
+## Quantification
+
+Earlier we discussed Propositional Functions like $P(x) : x > 5$. To turn a propositional function back into a concrete proposition (which is strictly true or false), we use **Quantifiers**.
+
+### Universal Quantification ($\forall$)
+This asserts that the predicate is true for **every single element** in a specific universe.
+- **Notation:** $\forall x P(x)$
+- **Translation:** "For all $x$, $P(x)$ is true."
+- **Example:** If $S(x)$ means "$x$ is a student" and $G(x)$ means "$x$ is a genius", then $\forall x (S(x) \rightarrow G(x))$ translates to "For all $x$, if $x$ is a student, then $x$ is a genius" (or simply: "All students are geniuses").
+
+### Existential Quantification ($\exists$)
+This asserts that the predicate is true for **at least one element** in the universe.
+- **Notation:** $\exists x P(x)$
+- **Translation:** "There exists an $x$ such that $P(x)$ is true."
+- **Example:** $\exists x (S(x) \land G(x))$ translates to "There exists an $x$ such that $x$ is a student AND $x$ is a genius" (or simply: "At least one student is a genius").
+
+### Disproof by Counterexample
+If someone makes a bold universal claim like $\forall x P(x)$ ("All birds can fly"), you don't need to check every bird to prove them wrong. You only need to find **one** object $c$ where $P(c)$ is false. 
+
+If I point to a Penguin, I have provided a **counterexample**. The universal claim is instantly destroyed.
+
+---
+
+### Key Takeaways
+- **Propositions** are the atoms of logic. They must evaluate to strictly True or False.
+- **Logical Operators** ($\land$, $\lor$, $\rightarrow$, etc.) allow us to build complex expressions. The Implication ($p \rightarrow q$) is the trickiest—it is only false when True implies False.
+- **Quantifiers** ($\forall$, $\exists$) bind variables in open sentences, allowing us to make sweeping claims about a universe of discourse.
+
+### Exam Tips
+- **The Implication Trap:** Lecturers love to test $F \rightarrow F$ on truth tables. Remember that a False hypothesis implying a False conclusion evaluates to **True**. (e.g. "If pigs fly, then 1=2" is technically a true statement in logic!).
+- **De Morgan's Laws for Quantifiers:** If you are asked to negate a quantifier, flip the quantifier and negate the inside. The negation of "All students are geniuses" ($\neg \forall x P(x)$) is "There is at least one student who is NOT a genius" ($\exists x \neg P(x)$). Do not say "No students are geniuses"!

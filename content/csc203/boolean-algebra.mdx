@@ -1,8 +1,121 @@
 ---
-title: "Boolean Algebra"
-description: "Content coming soon"
-duration: "30 min"
-difficulty: "intermediate"
+title: Boolean Algebra
 ---
 
-Content for this topic hasn't been added yet. Drop your course materials and this page will be updated with full study notes, worked examples, and exam tips.
+# Boolean Algebra
+
+In the late 1800s, mathematician George Boole formalized a system of logic using 1s and 0s. Half a century later, scientists realized that this mathematical abstraction perfectly described the behavior of electrical circuits. 
+
+**Boolean Algebra** provides the rules for working with the set $B = \{0, 1\}$. It is the fundamental architecture underlying all modern digital computers and VLSI (Very Large Scale Integration) chip design.
+
+## The Three Core Operations
+
+Boolean algebra relies on three primary operations, which perfectly mirror the Propositional Logic we learned at the start of the course.
+
+### 1. Complementation (NOT)
+Denoted by a bar over the variable ($\bar{x}$) or a minus sign ($-x$). It flips the bit.
+- $-0 = 1$
+- $-1 = 0$
+- *Logic Equivalent:* Negation ($\neg$)
+
+### 2. Boolean Sum (OR)
+Denoted by a plus sign ($+$). It yields $1$ if **at least one** variable is $1$.
+- $0 + 0 = 0$
+- $0 + 1 = 1$
+- $1 + 0 = 1$
+- $1 + 1 = 1$ *(Note: This is NOT binary addition! 1+1 does not equal 10. It is a logical OR).*
+- *Logic Equivalent:* Disjunction ($\lor$)
+
+### 3. Boolean Product (AND)
+Denoted by a multiplication dot ($\cdot$) or simply writing variables next to each other ($xy$). It yields $1$ only if **both** variables are $1$.
+- $0 \cdot 0 = 0$
+- $0 \cdot 1 = 0$
+- $1 \cdot 0 = 0$
+- $1 \cdot 1 = 1$
+- *Logic Equivalent:* Conjunction ($\land$)
+
+---
+
+## Boolean Functions and Expressions
+
+A **Boolean Variable** $x$ can only assume the values 0 or 1.
+A **Boolean Function** takes in multiple boolean variables and outputs a single 0 or 1. 
+
+We define these functions using **Boolean Expressions**, combining variables using our three operators: e.g., $F(x,y,z) = x(y + -z)$.
+
+### Minterm Expansion (Sum of Products)
+If you are given a truth table, how do you derive the mathematical formula for the function? We use **Minterms**. 
+
+A minterm is a product (AND) of all variables in the function, where variables are complemented (NOT) if they are 0 in the table. 
+
+**To find the formula from a truth table:**
+1. Look ONLY at the rows where the function outputs a `1`.
+2. For each of those rows, create a minterm.
+3. Add (OR) all the minterms together.
+
+**Example Table:**
+| x | y | F(x,y) |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+1. Row 1 outputs a 1. $x=0, y=0$. The minterm is: $(-x)(-y)$.
+2. Row 3 outputs a 1. $x=1, y=0$. The minterm is: $x(-y)$.
+3. The final function formula is the sum: **$F(x,y) = (-x)(-y) + x(-y)$**.
+
+---
+
+## Duality and Identities
+
+Because Boolean Algebra is a formal mathematical structure, it obeys strict algebraic laws (Associative, Commutative, Distributive, etc.). 
+
+One of the most fascinating features of Boolean Algebra is the **Duality Principle**. 
+The dual of an expression is obtained by:
+1. Swapping every $+$ with a $\cdot$
+2. Swapping every $\cdot$ with a $+$
+3. Swapping every $0$ with a $1$
+4. Swapping every $1$ with a $0$
+
+*(You do NOT touch the complements/NOTs!).*
+
+**Example:** The dual of $x(y + z)$ is $x + yz$. 
+
+**The Power of Duality:** If an equation is a proven mathematical identity in Boolean Algebra, **its dual is also guaranteed to be a true identity**. 
+- We know the absorption law is true: $x(x + y) = x$.
+- If we take the dual of both sides, we instantly discover a brand new law without having to prove it: $x + xy = x$.
+
+---
+
+## Logic Gates
+
+Everything we've discussed so far exists purely as math on paper. **Logic Gates** are the physical, electronic hardware components that actually execute this math. 
+
+Hardware engineers wire these gates together to build circuits that compute Boolean Functions.
+
+### 1. Inverter (NOT Gate)
+- **Shape:** A triangle with a small circle at the tip. 
+- Takes one input, flips it, and outputs the result.
+
+### 2. OR Gate
+- **Shape:** A curved, shield-like shape coming to a point.
+- Takes two inputs. Outputs power (1) if either input has power.
+
+### 3. AND Gate
+- **Shape:** A flat back with a rounded, dome-like front.
+- Takes two inputs. Outputs power (1) ONLY if both inputs have power.
+
+By chaining these physical gates together, we can compute expressions like $xy + (-x)y$. We pass $x$ and $y$ into an AND gate. We pass $x$ through an Inverter, then pass it and $y$ into another AND gate. Finally, we wire the outputs of both AND gates into a massive OR gate to get the final result. Billions of these gates, wired together, form the CPU you are using right now.
+
+---
+
+### Key Takeaways
+- **Boolean Algebra** operates exclusively on 0s and 1s using Complementation (NOT), Sums (OR), and Products (AND).
+- You can reverse-engineer any Truth Table into a formula using the **Minterm Expansion** method (Sum of Products).
+- The **Duality Principle** allows you to instantly derive new boolean laws by swapping $+$ and $\cdot$, and $0$ and $1$.
+- **Logic Gates** are the physical electronic circuits that execute Boolean algebra in the real world.
+
+### Exam Tips
+- **The Dual vs The Complement:** The most common mistake students make is confusing the Dual with the Complement (Negation). When finding a Dual, you DO NOT touch the variables themselves. The dual of $x$ is $x$. The dual of $-x$ is $-x$. Only the operators and the $1/0$ constants swap.
+- **Boolean Sum vs Binary Addition:** Remember that $1 + 1 = 1$ in Boolean Algebra. If you write $10$ on an exam, you will lose points for treating it like base-2 binary math!
