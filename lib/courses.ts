@@ -354,10 +354,10 @@ export const COURSES: Course[] = [
     topics: [
       { slug: 'introduction-to-statistics', title: 'Introduction to Statistics', duration: '40 min', difficulty: 'beginner' },
       { slug: 'descriptive-statistics-and-order-of-operations', title: 'Descriptive Statistics and Order of Operations', duration: '45 min', difficulty: 'beginner' },
-      { slug: 'combinatorial-methods', title: 'Combinatorial Methods', duration: '50 min', difficulty: 'intermediate' },
+      { slug: 'combinatorial-methods', title: 'Combinatorial methods', duration: '50 min', difficulty: 'intermediate' },
       { slug: 'probability-and-rules-of-probability', title: 'Probability and Rules of Probability', duration: '50 min', difficulty: 'intermediate' },
-      { slug: 'counting-techniques', title: 'Counting Techniques', duration: '45 min', difficulty: 'intermediate' },
-      { slug: 'conditional-probability-and-independence', title: 'Conditional Probability and Independence', duration: '55 min', difficulty: 'advanced' },
+      { slug: 'counting-techniques', title: 'Counting techniques', duration: '45 min', difficulty: 'intermediate' },
+      { slug: 'conditional-probability-and-independence', title: 'Conditional Probability and Independent Events', duration: '55 min', difficulty: 'advanced' },
     ],
   },
   {
