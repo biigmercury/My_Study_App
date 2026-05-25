@@ -41,6 +41,9 @@ export const mdxComponents: MDXComponents = {
         </code>
       )
     }
+    if (className === 'language-mermaid') {
+      return <DiagramBlock chart={children as string} />
+    }
     return <CodeBlock className={className}>{children as string}</CodeBlock>
   },
 }
