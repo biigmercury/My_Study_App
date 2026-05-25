@@ -1,8 +1,266 @@
 ---
-title: "Probability Distributions"
-description: "Content coming soon"
-duration: "45 min"
-difficulty: "intermediate"
+title: Probability Distributions
 ---
 
-Content for this topic hasn't been added yet. Drop your course materials and this page will be updated with full study notes, worked examples, and exam tips.
+# Probability Distributions
+
+So far, probability has been about events — yes or no, happened or didn't happen. A probability distribution takes the next step: it describes **all possible values a random quantity can take** and **how probable each value is**. It gives you the complete picture of a random variable's behaviour.
+
+---
+
+## Random Variables
+
+A **random variable** $X$ is a variable whose value is determined by the outcome of a random experiment. Unlike ordinary variables in algebra, a random variable's value is uncertain before the experiment — it is a function that maps outcomes in the sample space to numbers.
+
+> **Examples:**
+> - Roll a die → $X$ = the number shown. $X$ can be 1, 2, 3, 4, 5, or 6.
+> - Toss a coin 10 times → $X$ = number of heads. $X$ can be 0, 1, 2, ..., 10.
+> - Measure a patient's blood pressure → $X$ = the reading in mmHg. $X$ can be any positive real number.
+
+### Discrete Random Variables
+Have a **countable** number of possible values (can be finite or countably infinite).
+- Examples: number of defective items, number of customers in a queue, die roll outcome
+
+### Continuous Random Variables
+Can take any value in a **continuous range** — uncountably infinite possible values.
+- Examples: temperature, time, weight, voltage, height
+
+---
+
+## Discrete Distributions: The PMF and CDF
+
+### Probability Mass Function (PMF)
+
+For a discrete random variable $X$, the **probability mass function** (PMF) gives the probability of each specific value:
+
+$$f(x) = P(X = x)$$
+
+For a valid PMF:
+1. $f(x) \geq 0$ for all $x$ — probabilities can't be negative
+2. $\sum_{\text{all } x} f(x) = 1$ — all probabilities sum to 1
+
+### Worked Example 1: Ships Arriving at a Harbour
+
+The number of ships $X$ arriving at a harbour on any day has this distribution:
+
+| $x$ | 10 | 11 | 12 | 13 | 14 |
+|-----|----|----|----|----|-----|
+| $P(X=x)$ | 0.4 | 0.2 | 0.2 | 0.1 | 0.1 |
+
+Verify: $0.4 + 0.2 + 0.2 + 0.1 + 0.1 = 1.0$ ✓
+
+**(a)** $P(X = 14) = 0.1$
+
+**(b)** $P(X \geq 12) = P(12) + P(13) + P(14) = 0.2 + 0.1 + 0.1 = 0.4$
+
+**(c)** $P(X \leq 11) = P(10) + P(11) = 0.4 + 0.2 = 0.6$
+
+### Cumulative Distribution Function (CDF)
+
+The **cumulative distribution function** $F(x) = P(X \leq x)$ gives the probability that $X$ takes a value **at most $x$**.
+
+For the ships example:
+
+| $x$ | $F(x) = P(X \leq x)$ |
+|-----|----------------------|
+| 10 | 0.4 |
+| 11 | 0.6 |
+| 12 | 0.8 |
+| 13 | 0.9 |
+| 14 | 1.0 |
+
+The CDF always:
+- Starts at 0 (or reaches 0 for the smallest possible value)
+- Ends at 1 (at the largest possible value or as $x \to \infty$)
+- Is **non-decreasing** (never goes down)
+
+---
+
+## Continuous Distributions: The PDF and CDF
+
+For continuous random variables, individual values have probability zero (you cannot ask "what is the probability $X$ is exactly 2.0000000?"). Instead, probabilities are defined for **ranges** — they are **areas under a curve**.
+
+### Probability Density Function (PDF)
+
+The **probability density function** $f(x)$ satisfies:
+
+1. $f(x) \geq 0$ for all $x$
+2. The total area under the curve equals 1: $\int_{-\infty}^{\infty} f(x)\, dx = 1$
+3. $P(a \leq X \leq b) = \int_a^b f(x)\, dx$ — probability = area under the curve
+
+> **Critical distinction:** For continuous variables, $P(X = a) = 0$ for any specific value $a$. Only probabilities over intervals make sense. This means $P(a \leq X \leq b) = P(a < X < b)$ (endpoints don't matter).
+
+### Worked Example 2: Exponential Distribution
+
+A random variable $X$ has PDF:
+$$f(x) = e^{-x}, \quad x > 0 \quad (\text{zero elsewhere})$$
+
+Verify it is valid: $\int_0^{\infty} e^{-x}\, dx = \left[-e^{-x}\right]_0^{\infty} = (0) - (-1) = 1$ ✓
+
+**Find** $P(1 \leq X \leq 2)$:
+$$P(1 \leq X \leq 2) = \int_1^2 e^{-x}\, dx = \left[-e^{-x}\right]_1^2 = (-e^{-2}) - (-e^{-1}) = e^{-1} - e^{-2}$$
+$$= 0.3679 - 0.1353 = 0.2326$$
+
+### Worked Example 3: Uniform Distribution
+
+A continuous uniform random variable on $[a, b]$:
+$$f(x) = \frac{1}{b-a}, \quad a \leq x \leq b$$
+
+All values in the interval are equally likely.
+
+For the uniform distribution on $[0, 1]$: $f(x) = 1$
+
+$P(1/4 \leq X \leq 1/2) = \int_{1/4}^{1/2} 1 \, dx = \frac{1}{2} - \frac{1}{4} = \frac{1}{4}$
+
+The interval has length $1/4$ and the total interval has length 1, so the probability is simply the proportion: $\frac{1/4}{1} = 1/4$.
+
+---
+
+## The Binomial Distribution
+
+The **binomial distribution** arises when you repeat the same experiment $n$ times independently, where each trial results in either "success" (with probability $p$) or "failure" (with probability $1-p$).
+
+Let $X$ = number of successes in $n$ trials.
+
+### PMF of the Binomial Distribution:
+$$\boxed{f(x) = P(X = x) = \binom{n}{x} p^x (1-p)^{n-x}, \quad x = 0, 1, 2, \ldots, n}$$
+
+Where:
+- $n$ = number of trials
+- $p$ = probability of success on each trial
+- $x$ = number of successes (what we're finding the probability of)
+- $\binom{n}{x}$ = number of ways to choose which $x$ trials are successes
+
+**Why this formula:** There are $\binom{n}{x}$ ways to arrange $x$ successes among $n$ trials. Each such arrangement has probability $p^x(1-p)^{n-x}$ (multiply probabilities since trials are independent).
+
+**Mean and Variance of Binomial:**
+$$\mu = E(X) = np$$
+$$\sigma^2 = Var(X) = np(1-p)$$
+
+### Worked Example 4: Quality Control
+
+A manufacturing process produces 10% defective items. A sample of 7 items is inspected. Find the probability of:
+(a) Exactly 2 defective items
+(b) At most 1 defective item
+(c) At least 1 defective item
+
+Here $n = 7$, $p = 0.10$, $q = 1-p = 0.90$.
+
+**(a) $P(X = 2)$:**
+$$P(X=2) = \binom{7}{2}(0.1)^2(0.9)^5 = 21 \times 0.01 \times 0.59049 = 0.1240$$
+
+**(b) $P(X \leq 1) = P(X=0) + P(X=1)$:**
+
+$P(X=0) = \binom{7}{0}(0.1)^0(0.9)^7 = 1 \times 1 \times 0.4783 = 0.4783$
+
+$P(X=1) = \binom{7}{1}(0.1)^1(0.9)^6 = 7 \times 0.1 \times 0.5314 = 0.3720$
+
+$P(X \leq 1) = 0.4783 + 0.3720 = 0.8503$
+
+**(c) $P(X \geq 1) = 1 - P(X = 0) = 1 - 0.4783 = 0.5217$**
+
+---
+
+## The Poisson Distribution
+
+The **Poisson distribution** models the number of events occurring in a fixed interval of time or space, when events occur independently at a constant average rate $\lambda$.
+
+### PMF of the Poisson Distribution:
+$$\boxed{f(x) = P(X = x) = \frac{e^{-\lambda} \lambda^x}{x!}, \quad x = 0, 1, 2, \ldots}$$
+
+Where:
+- $\lambda$ (lambda) = average number of events in the interval (this is both the mean and variance)
+- $e \approx 2.71828$ (Euler's number)
+- $x$ = number of events we want the probability for
+
+**Mean and Variance of Poisson:**
+$$\mu = E(X) = \lambda, \quad \sigma^2 = Var(X) = \lambda$$
+
+For the Poisson distribution, the mean equals the variance — a unique and testable property.
+
+> **Real-world uses:** Number of phone calls arriving at a call centre per hour, number of typos per page, number of accidents on a road per day, radioactive decay counts.
+
+### Worked Example 5: Hospital Emergency Arrivals
+
+On average, 3 patients arrive at an emergency room per hour. Find the probability that:
+(a) Exactly 5 patients arrive in a given hour
+(b) No patients arrive in a given hour
+(c) More than 2 patients arrive
+
+Here $\lambda = 3$.
+
+**(a) $P(X = 5)$:**
+$$P(X=5) = \frac{e^{-3} \times 3^5}{5!} = \frac{0.04979 \times 243}{120} = \frac{12.099}{120} = 0.1008$$
+
+**(b) $P(X = 0)$:**
+$$P(X=0) = \frac{e^{-3} \times 3^0}{0!} = \frac{0.04979 \times 1}{1} = 0.0498$$
+
+**(c) $P(X > 2) = 1 - P(X \leq 2) = 1 - [P(0) + P(1) + P(2)]$**
+
+$P(X=1) = \frac{e^{-3} \times 3}{1} = 3 \times 0.04979 = 0.1494$
+
+$P(X=2) = \frac{e^{-3} \times 9}{2} = 4.5 \times 0.04979 = 0.2240$
+
+$P(X \leq 2) = 0.0498 + 0.1494 + 0.2240 = 0.4232$
+
+$P(X > 2) = 1 - 0.4232 = 0.5768$
+
+---
+
+## Checking Validity of a PMF
+
+A function $f(x)$ is a valid probability mass function **if and only if**:
+1. $f(x) \geq 0$ for all $x$
+2. $\sum_{\text{all } x} f(x) = 1$
+
+### Worked Example 6: Is This a Valid PMF?
+
+Check whether $f(x) = \frac{7}{x}$ for $x = \binom{7}{x}$ for $x = 0, 1, 2, 3$ — this was from the course slides:
+
+**(a)** $f(x) = 0.25$ for $x = 9, 10, 11, 12$
+
+Sum: $0.25 \times 4 = 1.0$ ✓, and all values $\geq 0$ ✓. **Valid PMF.**
+
+**(b)** $f(x) = \frac{3-x}{2}$ for $x = 1, 2, 3, 4$
+
+| $x$ | $f(x)$ |
+|-----|--------|
+| 1 | 1.0 |
+| 2 | 0.5 |
+| 3 | 0.0 |
+| 4 | -0.5 |
+
+$f(4) = -0.5 < 0$. **Not valid** — probabilities cannot be negative.
+
+**(c)** $f(x) = \frac{x^2 + x + 1}{25}$ for $x = 0, 1, 2, 3$
+
+| $x$ | $f(x)$ |
+|-----|--------|
+| 0 | 1/25 |
+| 1 | 3/25 |
+| 2 | 7/25 |
+| 3 | 13/25 |
+
+Sum: $(1 + 3 + 7 + 13)/25 = 24/25 \neq 1$. **Not valid** — does not sum to 1.
+
+---
+
+> **Key Takeaways**
+>
+> - A **random variable** assigns a numerical value to each outcome of a random experiment
+> - **Discrete:** countable values; described by a PMF $f(x) = P(X=x)$, which must be $\geq 0$ and sum to 1
+> - **Continuous:** uncountably many values; described by a PDF where area under the curve gives probability; individual points have probability zero
+> - The **CDF** $F(x) = P(X \leq x)$ works for both discrete and continuous distributions; it is always non-decreasing and goes from 0 to 1
+> - **Binomial:** $n$ independent trials, each success/failure with probability $p$; PMF: $\binom{n}{x}p^x(1-p)^{n-x}$; mean $= np$
+> - **Poisson:** counts of rare events over fixed intervals at rate $\lambda$; PMF: $\frac{e^{-\lambda}\lambda^x}{x!}$; mean = variance = $\lambda$
+
+---
+
+> **Exam Tips**
+>
+> - **Identifying the distribution type:** Binomial = fixed number of trials with success/failure outcomes. Poisson = counting events over time/space with a known rate. Continuous uniform = all values in an interval equally likely.
+> - For binomial problems, the exam often asks for "at least one" or "at most two" — always use the complement approach for "at least one": $1 - P(X=0)$.
+> - **Poisson property to memorise:** $E(X) = Var(X) = \lambda$. A proof question asks you to show this; for the Poisson distribution, computing $\sum x \cdot \frac{e^{-\lambda}\lambda^x}{x!}$ telescopes neatly to give $\lambda$.
+> - A PMF validity check is a common MCQ/short answer question. Check both conditions: non-negativity and sum = 1.
+> - For the binomial, when $p$ is small and $n$ is large (say $n > 20$, $p < 0.05$), the Poisson with $\lambda = np$ is a good approximation — this connection may appear in MCQs.
+> - **CDF interpretation:** $F(3) = P(X \leq 3)$. If asked for $P(X > 3)$, compute $1 - F(3)$. If asked for $P(2 \leq X \leq 5)$, compute $F(5) - F(1)$ for discrete distributions.

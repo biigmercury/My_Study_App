@@ -1,0 +1,244 @@
+---
+title: Mathematical Expectation
+---
+
+# Mathematical Expectation
+
+When you flip a coin many times, you expect about half to be heads. When a factory runs indefinitely, it expects to produce a certain number of defects per day. **Mathematical expectation** formalises this intuition: it gives you the **long-run average value** of a random variable over many repeated experiments.
+
+Expectation — also called the **mean** or **expected value** — is the single most important summary statistic of a random variable. It tells you where the distribution is centred.
+
+---
+
+## The Mean (Expected Value) of a Random Variable
+
+**Definition 5.1:** Let $X$ be a random variable with probability distribution $f(x)$.
+
+The **mean** or **expected value** of $X$, denoted $\mu_X$ or $E(X)$, is:
+
+$$\boxed{E(X) = \begin{cases}
+\displaystyle\sum_{\text{all } x} x \cdot f(x) & \text{if } X \text{ is discrete} \\[12pt]
+\displaystyle\int_{-\infty}^{\infty} x \cdot f(x)\, dx & \text{if } X \text{ is continuous}
+\end{cases}}$$
+
+**Interpretation:** $E(X)$ is the **probability-weighted average** of all possible values. If you repeated the experiment a huge number of times, the average of all observed values would converge to $E(X)$.
+
+> **Analogy:** Imagine a perfectly balanced see-saw with masses placed at various positions. The expected value is the **balance point** — the position where the see-saw would be perfectly level if you placed all the probability "weight" at the corresponding positions.
+
+---
+
+## Worked Example 1: Defective Computers (Discrete)
+
+A school randomly purchases 2 computers from a batch of 8 (3 defective, 5 non-defective). Let $X$ = number of defective computers purchased.
+
+The probability distribution is:
+
+| $x$ | 0 | 1 | 2 |
+|-----|---|---|---|
+| $f(x)$ | $\frac{10}{28}$ | $\frac{15}{28}$ | $\frac{3}{28}$ |
+
+(These come from hypergeometric counting: $C(3,x) \times C(5, 2-x) / C(8,2)$)
+
+**Expected value:**
+$$E(X) = \sum_{x=0}^{2} x \cdot f(x) = (0)\left(\frac{10}{28}\right) + (1)\left(\frac{15}{28}\right) + (2)\left(\frac{3}{28}\right)$$
+
+$$= 0 + \frac{15}{28} + \frac{6}{28} = \frac{21}{28} = \frac{3}{4} = 0.75 \text{ computers}$$
+
+**Interpretation:** On average, you expect to purchase 0.75 defective computers. Of course you can't have 0.75 computers — the expected value is a long-run average, not a prediction for a single purchase.
+
+---
+
+## Worked Example 2: Electronic Device Lifespan (Continuous)
+
+The lifespan $X$ (in hours) of a certain electronic device has PDF:
+
+$$f(x) = \begin{cases} \dfrac{20000}{x^3} & x > 100 \\ 0 & \text{elsewhere} \end{cases}$$
+
+**Find the expected lifespan:**
+$$E(X) = \int_{-\infty}^{\infty} x \cdot f(x)\, dx = \int_{100}^{\infty} x \cdot \frac{20000}{x^3}\, dx = \int_{100}^{\infty} \frac{20000}{x^2}\, dx$$
+
+$$= 20000 \left[-\frac{1}{x}\right]_{100}^{\infty} = 20000 \left(0 - \left(-\frac{1}{100}\right)\right) = 20000 \times \frac{1}{100} = 200 \text{ hours}$$
+
+**Interpretation:** This type of device is expected to last, on average, 200 hours.
+
+---
+
+## Expected Value of a Function of $X$
+
+You often need the expected value of some function $g(X)$, not just $X$ itself.
+
+**Theorem 5.1:** The mean of $g(X)$ is:
+
+$$E[g(X)] = \begin{cases}
+\displaystyle\sum_{\text{all } x} g(x) \cdot f(x) & \text{if } X \text{ is discrete} \\[12pt]
+\displaystyle\int_{-\infty}^{\infty} g(x) \cdot f(x)\, dx & \text{if } X \text{ is continuous}
+\end{cases}$$
+
+### Worked Example 3: $g(X) = (X-1)^2$
+
+Using the defective computer distribution from Example 1, find $E[(X-1)^2]$:
+
+$$E[(X-1)^2] = \sum_{x=0}^{2} (x-1)^2 \cdot f(x)$$
+
+$$= (0-1)^2 \cdot \frac{10}{28} + (1-1)^2 \cdot \frac{15}{28} + (2-1)^2 \cdot \frac{3}{28}$$
+
+$$= (1)\frac{10}{28} + (0)\frac{15}{28} + (1)\frac{3}{28} = \frac{10}{28} + 0 + \frac{3}{28} = \frac{13}{28}$$
+
+---
+
+## The Variance of a Random Variable
+
+The expected value tells you the centre. But two distributions can have the same mean while being completely different in spread. **Variance** measures how spread out the distribution is.
+
+**Definition 5.2:** The **variance** of $X$, denoted $\sigma^2_X$ or $Var(X)$, is the expected squared deviation from the mean:
+
+$$\boxed{Var(X) = E\left[(X - \mu)^2\right] = \begin{cases}
+\displaystyle\sum_{\text{all } x} (x - \mu)^2 f(x) & \text{discrete} \\[12pt]
+\displaystyle\int_{-\infty}^{\infty} (x - \mu)^2 f(x)\, dx & \text{continuous}
+\end{cases}}$$
+
+The **standard deviation** is: $\sigma_X = \sqrt{Var(X)}$
+
+### Computational Shortcut (Theorem 5.2)
+
+$$\boxed{Var(X) = E(X^2) - [E(X)]^2}$$
+
+This is almost always faster in calculations:
+1. Compute $E(X)$ (the mean)
+2. Compute $E(X^2)$ using the formula for $E[g(X)]$ with $g(X) = X^2$
+3. Subtract the square of the mean
+
+**Why this works:**
+$$E[(X-\mu)^2] = E[X^2 - 2\mu X + \mu^2] = E(X^2) - 2\mu E(X) + \mu^2 = E(X^2) - 2\mu^2 + \mu^2 = E(X^2) - \mu^2$$
+
+### Worked Example 4: Variance Calculation
+
+A discrete random variable $X$ has distribution:
+
+| $x$ | 0 | 1 | 2 | 3 |
+|-----|---|---|---|---|
+| $f(x)$ | 0.51 | 0.38 | 0.10 | 0.01 |
+
+**Method 1 — Shortcut:**
+
+$E(X) = 0(0.51) + 1(0.38) + 2(0.10) + 3(0.01) = 0 + 0.38 + 0.20 + 0.03 = 0.61$
+
+$E(X^2) = 0^2(0.51) + 1^2(0.38) + 2^2(0.10) + 3^2(0.01) = 0 + 0.38 + 0.40 + 0.09 = 0.87$
+
+$Var(X) = E(X^2) - [E(X)]^2 = 0.87 - (0.61)^2 = 0.87 - 0.3721 = 0.4979$
+
+**Method 2 — Definition:**
+
+$Var(X) = \sum (x - 0.61)^2 f(x)$
+
+$= (-0.61)^2(0.51) + (0.39)^2(0.38) + (1.39)^2(0.10) + (2.39)^2(0.01)$
+
+$= (0.3721)(0.51) + (0.1521)(0.38) + (1.9321)(0.10) + (5.7121)(0.01)$
+
+$= 0.1898 + 0.0578 + 0.1932 + 0.0571 = 0.4979$ ✓
+
+---
+
+## Properties of Expectation: Linear Operations
+
+### Theorem 5.3 — Linear Transformation
+
+If $X$ is a random variable with mean $\mu = E(X)$, and $a$, $b$ are constants:
+
+$$E(aX + b) = a E(X) + b$$
+
+**Corollaries:**
+- $E(b) = b$ — the expected value of a constant is the constant itself
+- $E(aX) = a E(X)$ — a constant multiplier comes out of the expectation
+
+### Theorem 5.4 — Variance of a Linear Transformation
+
+$$Var(aX + b) = a^2 Var(X)$$
+
+**Key insight:** Adding a constant $b$ shifts the distribution but does **not** change the spread — it has no effect on variance. Multiplying by $a$ stretches/shrinks the distribution — variance scales by $a^2$.
+
+### Theorem 5.5 — Expectation is Linear
+
+For any random variables $X_1, X_2, \ldots, X_n$ and constants $a_1, \ldots, a_n$:
+
+$$E(a_1 X_1 + a_2 X_2 + \cdots + a_n X_n) = a_1 E(X_1) + a_2 E(X_2) + \cdots + a_n E(X_n)$$
+
+This holds regardless of whether $X_1, \ldots, X_n$ are independent.
+
+### Theorem 5.6 — Variance of a Linear Combination (Independent Variables)
+
+If $X_1, X_2, \ldots, X_n$ are **independent** random variables:
+
+$$Var(a_1 X_1 + a_2 X_2 + \cdots + a_n X_n) = a_1^2 Var(X_1) + a_2^2 Var(X_2) + \cdots + a_n^2 Var(X_n)$$
+
+**Note:** The independence condition is required for the variance formula, but NOT for the expectation formula.
+
+**Special case for two independent variables:**
+$$Var(X \pm Y) = Var(X) + Var(Y)$$
+
+---
+
+## Worked Example 5: Linear Combinations
+
+Two independent random variables satisfy: $E(X) = 2$, $Var(X) = 4$, $E(Y) = 7$, $Var(Y) = 1$.
+
+Find:
+
+**(a)** $E(3X + 7)$ and $Var(3X + 7)$
+
+$$E(3X + 7) = 3E(X) + 7 = 3(2) + 7 = 13$$
+$$Var(3X + 7) = 3^2 Var(X) = 9 \times 4 = 36$$
+
+**(b)** $E(5X + 2Y - 2)$ and $Var(5X + 2Y - 2)$
+
+$$E(5X + 2Y - 2) = 5E(X) + 2E(Y) - 2 = 5(2) + 2(7) - 2 = 10 + 14 - 2 = 22$$
+
+Since $X$ and $Y$ are independent:
+$$Var(5X + 2Y - 2) = 5^2 Var(X) + 2^2 Var(Y) = 25(4) + 4(1) = 100 + 4 = 104$$
+
+*Note: Adding or subtracting a constant has no effect on variance.*
+
+---
+
+## Worked Example 6: Continuous Variable Mean and Variance
+
+A continuous random variable $X$ has PDF:
+
+$$f(x) = \begin{cases} 2(1-x) & 0 < x < 1 \\ 0 & \text{elsewhere} \end{cases}$$
+
+Find $E(X)$ and $Var(X)$.
+
+**Step 1 — Mean:**
+$$E(X) = \int_0^1 x \cdot 2(1-x)\, dx = 2\int_0^1 (x - x^2)\, dx = 2\left[\frac{x^2}{2} - \frac{x^3}{3}\right]_0^1$$
+
+$$= 2\left(\frac{1}{2} - \frac{1}{3}\right) = 2 \times \frac{1}{6} = \frac{1}{3}$$
+
+**Step 2 — $E(X^2)$:**
+$$E(X^2) = \int_0^1 x^2 \cdot 2(1-x)\, dx = 2\int_0^1 (x^2 - x^3)\, dx = 2\left[\frac{x^3}{3} - \frac{x^4}{4}\right]_0^1$$
+
+$$= 2\left(\frac{1}{3} - \frac{1}{4}\right) = 2 \times \frac{1}{12} = \frac{1}{6}$$
+
+**Step 3 — Variance:**
+$$Var(X) = E(X^2) - [E(X)]^2 = \frac{1}{6} - \left(\frac{1}{3}\right)^2 = \frac{1}{6} - \frac{1}{9} = \frac{3}{18} - \frac{2}{18} = \frac{1}{18}$$
+
+---
+
+> **Key Takeaways**
+>
+> - $E(X) = \sum x f(x)$ (discrete) or $\int x f(x) dx$ (continuous) — the probability-weighted average
+> - $Var(X) = E[(X-\mu)^2] = E(X^2) - [E(X)]^2$ — the shortcut formula is almost always faster
+> - $E(aX + b) = aE(X) + b$ — linearity of expectation (no independence needed)
+> - $Var(aX + b) = a^2 Var(X)$ — constants shift (no effect on variance), multipliers scale variance by the square
+> - For **independent** variables: $Var(X \pm Y) = Var(X) + Var(Y)$
+> - Standard deviation $\sigma = \sqrt{Var(X)}$ — brings units back to the original scale
+
+---
+
+> **Exam Tips**
+>
+> - **Always use the shortcut** $Var(X) = E(X^2) - [E(X)]^2$ in exams — the definition formula $E[(X-\mu)^2]$ requires more arithmetic and is more error-prone.
+> - **Common exam pattern:** "Find $E(X)$, $E(X^2)$, $Var(X)$, and $SD(X)$" — these four are almost always asked together. Do them in exactly that order.
+> - For **$E[g(X)]$** where $g$ is something like $g(X) = 2X^2 - 3X + 1$: use linearity — $E[2X^2 - 3X + 1] = 2E(X^2) - 3E(X) + 1$. Do NOT compute $E[g(X)]$ as $g(E(X))$ — this is **wrong** unless $g$ is linear.
+> - **$Var(aX - b) = a^2 Var(X)$** — subtracting a constant has the same zero effect on variance as adding one.
+> - For **two independent variables**, $Var(X - Y) = Var(X) + Var(Y)$ (not minus — you always **add** variances when combining independent variables, regardless of sign).
+> - The **conditional** on independence matters: if variables are not stated to be independent, you cannot use the additive variance formula.
