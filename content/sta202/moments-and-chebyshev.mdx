@@ -4,45 +4,55 @@ title: Moments and Chebyshev's Theorem
 
 # Moments and Chebyshev's Theorem
 
-The mean and variance describe where a distribution is centred and how spread out it is. But they only tell part of the story. **Moments** are a family of descriptive measures that capture additional features of a distribution — its asymmetry (skewness) and the heaviness of its tails (kurtosis). **Chebyshev's theorem** then gives a universal guarantee about how much data must lie close to the mean — for any distribution whatsoever.
+The mean tells you where a distribution is centred. The variance tells you how spread out it is. But two distributions can have exactly the same mean and variance while looking completely different — one might be perfectly symmetric, another might lean heavily to the right; one might be sharply peaked, another almost flat. **Moments** are the complete family of descriptive measures that capture all of these features systematically.
+
+The idea borrows from physics. In mechanics, the "moment" of a mass distribution describes how mass is arranged relative to a pivot point. The first moment gives the centre of mass. The second moment describes how mass is spread around that centre. The third moment describes tilt. The fourth describes how much mass is concentrated at the extremes. In probability, the same mathematics applies — replace "mass" with "probability."
+
+**Chebyshev's theorem** adds something remarkable on top of all this: regardless of the shape of any distribution at all, it guarantees a precise minimum fraction of observations within $k$ standard deviations of the mean.
 
 ---
 
-## Moments of a Random Variable
+## Raw Moments (Moments About the Origin)
 
-A **moment** is an expected value of a power of $X$ (or a centred version of $X$). There are two types: moments about the origin, and moments about the mean.
-
-### Moments About the Origin (Raw Moments)
-
-The **$r$-th moment about the origin** (also called the $r$-th raw moment) is:
+The **$r$-th raw moment** of $X$ is the expected value of $X^r$:
 
 $$\mu'_r = E(X^r) = \begin{cases}
 \displaystyle\sum_{\text{all } x} x^r f(x) & \text{discrete} \\[10pt]
 \displaystyle\int_{-\infty}^{\infty} x^r f(x)\, dx & \text{continuous}
 \end{cases}$$
 
-The **first raw moment** is just the mean: $\mu'_1 = E(X) = \mu$.
+The term "about the origin" means we raise $X$ to a power without first subtracting the mean.
 
-The **second raw moment** $\mu'_2 = E(X^2)$ is used to compute variance: $Var(X) = \mu'_2 - (\mu'_1)^2$.
+| Raw moment | Notation | What it equals |
+|-----------|----------|----------------|
+| First | $\mu'_1$ | $E(X) = \mu$ (the mean) |
+| Second | $\mu'_2$ | $E(X^2)$ — used to compute variance |
+| Third | $\mu'_3$ | $E(X^3)$ — used to derive skewness |
+| Fourth | $\mu'_4$ | $E(X^4)$ — used to derive kurtosis |
 
-### Moments About the Mean (Central Moments)
+---
 
-The **$r$-th moment about the mean** (central moment) is:
+## Central Moments (Moments About the Mean)
+
+The **$r$-th central moment** measures the expected value of $(X - \mu)^r$ — we measure deviations from the mean, not from the origin:
 
 $$\mu_r = E\left[(X - \mu)^r\right] = \begin{cases}
 \displaystyle\sum_{\text{all } x} (x - \mu)^r f(x) & \text{discrete} \\[10pt]
 \displaystyle\int_{-\infty}^{\infty} (x - \mu)^r f(x)\, dx & \text{continuous}
 \end{cases}$$
 
-Key central moments:
-- $\mu_1 = E(X - \mu) = 0$ — always zero (deviations from the mean cancel)
-- $\mu_2 = E[(X - \mu)^2] = Var(X) = \sigma^2$ — the variance
-- $\mu_3$ — related to **skewness** (asymmetry of the distribution)
-- $\mu_4$ — related to **kurtosis** (how heavy-tailed the distribution is)
+The first four central moments each describe something specific about the shape:
 
-### Relationship Between Raw and Central Moments
+- $\mu_1 = 0$: always zero — positive and negative deviations from the mean cancel exactly
+- $\mu_2 = \sigma^2$: the variance — how spread the distribution is around its mean
+- $\mu_3$: measures **skewness** — whether the distribution leans left or right
+- $\mu_4$: measures **kurtosis** — how heavy or light the tails are compared to normal
 
-The central moments can be expressed in terms of raw moments. These are the formulas you may need to derive or apply in exams:
+---
+
+## Converting Raw Moments to Central Moments
+
+Computing central moments directly requires integrating $(x - \mu)^r f(x)$, which is messy. The standard method is to compute raw moments first, then use these conversion formulas (derived by expanding $(X - \mu'_1)^r$ with the binomial theorem):
 
 $$\mu_1 = 0$$
 
@@ -52,166 +62,203 @@ $$\mu_3 = \mu'_3 - 3\mu'_2 \mu'_1 + 2(\mu'_1)^3$$
 
 $$\mu_4 = \mu'_4 - 4\mu'_3 \mu'_1 + 6\mu'_2 (\mu'_1)^2 - 3(\mu'_1)^4$$
 
-The general pattern uses the **binomial theorem** to expand $(X - \mu)^r = (X - \mu'_1)^r$.
+The pattern of coefficients (1, 3, 2 for $\mu_3$; 1, 4, 6, 3 for $\mu_4$) comes from Pascal's triangle with alternating signs.
 
 ---
 
-## Worked Example 1: Computing Raw and Central Moments
+## Worked Example 1: All Four Moments for a Continuous Distribution
 
 A continuous random variable $X$ has PDF:
 
-$$f(x) = \frac{3}{4}x(2-x), \quad 0 < x < 2 \quad (\text{zero elsewhere})$$
+$$f(x) = \frac{3}{4}x(2-x), \quad 0 < x < 2$$
 
-Verify: $\frac{3}{4}\int_0^2 x(2-x)\, dx = \frac{3}{4}\left[x^2 - \frac{x^3}{3}\right]_0^2 = \frac{3}{4}\left(4 - \frac{8}{3}\right) = \frac{3}{4} \times \frac{4}{3} = 1$ ✓
+**Verify the PDF is valid:**
+$$\frac{3}{4}\int_0^2 x(2-x)\, dx = \frac{3}{4}\left[x^2 - \frac{x^3}{3}\right]_0^2 = \frac{3}{4}\left(4 - \frac{8}{3}\right) = \frac{3}{4} \times \frac{4}{3} = 1 \checkmark$$
 
-**First raw moment $\mu'_1 = E(X)$:**
-$$\mu'_1 = \frac{3}{4}\int_0^2 x^2(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^2 - x^3)\, dx = \frac{3}{4}\left[\frac{2x^3}{3} - \frac{x^4}{4}\right]_0^2 = \frac{3}{4}\left(\frac{16}{3} - 4\right) = \frac{3}{4} \times \frac{4}{3} = 1$$
+**Step 1: Compute the four raw moments**
 
-**Second raw moment $\mu'_2 = E(X^2)$:**
-$$\mu'_2 = \frac{3}{4}\int_0^2 x^3(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^3 - x^4)\, dx = \frac{3}{4}\left[\frac{x^4}{2} - \frac{x^5}{5}\right]_0^2 = \frac{3}{4}\left(8 - \frac{32}{5}\right) = \frac{3}{4} \times \frac{8}{5} = \frac{6}{5}$$
+$$\mu'_1 = \frac{3}{4}\int_0^2 x^2(2-x)\, dx = \frac{3}{4}\left[\frac{2x^3}{3} - \frac{x^4}{4}\right]_0^2 = \frac{3}{4}\left(\frac{16}{3} - 4\right) = \frac{3}{4} \times \frac{4}{3} = 1$$
 
-**Third raw moment $\mu'_3 = E(X^3)$:**
-$$\mu'_3 = \frac{3}{4}\int_0^2 x^4(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^4 - x^5)\, dx = \frac{3}{4}\left[\frac{2x^5}{5} - \frac{x^6}{6}\right]_0^2 = \frac{3}{4}\left(\frac{64}{5} - \frac{64}{6}\right) = \frac{3}{4} \times \frac{64}{30} = \frac{8}{5}$$
+$$\mu'_2 = \frac{3}{4}\int_0^2 x^3(2-x)\, dx = \frac{3}{4}\left[\frac{x^4}{2} - \frac{x^5}{5}\right]_0^2 = \frac{3}{4}\left(8 - \frac{32}{5}\right) = \frac{3}{4} \times \frac{8}{5} = \frac{6}{5}$$
 
-**Fourth raw moment $\mu'_4 = E(X^4)$:**
-$$\mu'_4 = \frac{3}{4}\int_0^2 x^5(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^5 - x^6)\, dx = \frac{3}{4}\left[\frac{x^6}{3} - \frac{x^7}{7}\right]_0^2 = \frac{3}{4}\left(\frac{64}{3} - \frac{128}{7}\right) = \frac{3}{4} \times \frac{64}{21} = \frac{16}{7}$$
+$$\mu'_3 = \frac{3}{4}\int_0^2 x^4(2-x)\, dx = \frac{3}{4}\left[\frac{2x^5}{5} - \frac{x^6}{6}\right]_0^2 = \frac{3}{4}\left(\frac{64}{5} - \frac{64}{6}\right) = \frac{3}{4} \times \frac{64}{30} = \frac{8}{5}$$
 
-**Deriving central moments:**
+$$\mu'_4 = \frac{3}{4}\int_0^2 x^5(2-x)\, dx = \frac{3}{4}\left[\frac{x^6}{3} - \frac{x^7}{7}\right]_0^2 = \frac{3}{4}\left(\frac{64}{3} - \frac{128}{7}\right) = \frac{3}{4} \times \frac{64}{21} = \frac{16}{7}$$
 
-$\mu_1 = 0$ (always)
+**Step 2: Convert to central moments**
 
-$\mu_2 = \mu'_2 - (\mu'_1)^2 = \dfrac{6}{5} - 1 = \dfrac{1}{5}$
+$$\mu_1 = 0$$
 
-$\mu_3 = \mu'_3 - 3\mu'_2\mu'_1 + 2(\mu'_1)^3 = \dfrac{8}{5} - 3\left(\dfrac{6}{5}\right)(1) + 2(1) = \dfrac{8}{5} - \dfrac{18}{5} + \dfrac{10}{5} = 0$
+$$\mu_2 = \mu'_2 - (\mu'_1)^2 = \frac{6}{5} - 1 = \frac{1}{5}$$
 
-The third central moment is zero because this distribution is symmetric about $\mu = 1$.
+$$\mu_3 = \mu'_3 - 3\mu'_2\mu'_1 + 2(\mu'_1)^3 = \frac{8}{5} - 3\left(\frac{6}{5}\right)(1) + 2(1) = \frac{8-18+10}{5} = 0$$
+
+$$\mu_4 = \mu'_4 - 4\mu'_3\mu'_1 + 6\mu'_2(\mu'_1)^2 - 3(\mu'_1)^4 = \frac{16}{7} - 4\left(\frac{8}{5}\right) + 6\left(\frac{6}{5}\right) - 3 = \frac{16}{7} + \frac{4}{5} - 3 = \frac{80 + 28 - 105}{35} = \frac{3}{35}$$
+
+$\mu_3 = 0$ is expected: the PDF $\frac{3}{4}x(2-x)$ is a parabola symmetric about $x = 1 = \mu$, so the distribution has no skew.
 
 ---
 
-## Worked Example 2: First Four Moments for a Discrete Distribution
+## Worked Example 2: All Four Moments for a Discrete Distribution
 
 A discrete random variable $X$ has PMF:
 
-| $x$ | -1 | 0 | 1 |
-|-----|-----|---|---|
-| $f(x)$ | 1/4 | 1/2 | 1/4 |
+| $x$ | $-1$ | $0$ | $1$ |
+|-----|------|-----|-----|
+| $f(x)$ | $1/4$ | $1/2$ | $1/4$ |
 
-**First four raw moments:**
+**Raw moments:**
 
-$\mu'_1 = E(X) = (-1)(1/4) + (0)(1/2) + (1)(1/4) = -1/4 + 0 + 1/4 = 0$
+$$\mu'_1 = (-1)(1/4) + (0)(1/2) + (1)(1/4) = 0$$
 
-$\mu'_2 = E(X^2) = (-1)^2(1/4) + (0)^2(1/2) + (1)^2(1/4) = 1/4 + 0 + 1/4 = 1/2$
+$$\mu'_2 = (1)(1/4) + (0)(1/2) + (1)(1/4) = \frac{1}{2}$$
 
-$\mu'_3 = E(X^3) = (-1)^3(1/4) + 0 + (1)^3(1/4) = -1/4 + 1/4 = 0$
+$$\mu'_3 = (-1)(1/4) + 0 + (1)(1/4) = 0$$
 
-$\mu'_4 = E(X^4) = (-1)^4(1/4) + 0 + (1)^4(1/4) = 1/4 + 1/4 = 1/2$
+$$\mu'_4 = (1)(1/4) + 0 + (1)(1/4) = \frac{1}{2}$$
 
-**Central moments** (since $\mu = \mu'_1 = 0$, raw and central moments are the same here):
+Since $\mu = \mu'_1 = 0$, the central moments are the same as the raw moments here:
 
-$\mu_1 = 0, \quad \mu_2 = 1/2, \quad \mu_3 = 0, \quad \mu_4 = 1/2$
+$$\mu_1 = 0, \quad \mu_2 = \frac{1}{2}, \quad \mu_3 = 0, \quad \mu_4 = \frac{1}{2}$$
+
+The distribution is symmetric about zero, so all odd central moments are zero.
 
 ---
 
-## Worked Example 3: Deriving Central from Raw Moments
+## Worked Example 3: Converting Raw to Central Moments
 
-A random variable has: $\mu'_1 = 2$, $\mu'_2 = 5$, $\mu'_3 = 14$, $\mu'_4 = 46$.
+Given: $\mu'_1 = 2$, $\mu'_2 = 5$, $\mu'_3 = 14$, $\mu'_4 = 46$. Find all four central moments.
 
-Find the first four central moments.
+$$\mu_1 = 0$$
 
-$\mu_1 = 0$ (always)
+$$\mu_2 = 5 - (2)^2 = 1 \quad \Rightarrow \quad \sigma = 1$$
 
-$\mu_2 = \mu'_2 - (\mu'_1)^2 = 5 - 4 = 1$
+$$\mu_3 = 14 - 3(5)(2) + 2(2)^3 = 14 - 30 + 16 = 0$$
 
-$\mu_3 = \mu'_3 - 3\mu'_2\mu'_1 + 2(\mu'_1)^3 = 14 - 3(5)(2) + 2(8) = 14 - 30 + 16 = 0$
-
-$\mu_4 = \mu'_4 - 4\mu'_3\mu'_1 + 6\mu'_2(\mu'_1)^2 - 3(\mu'_1)^4$
-$= 46 - 4(14)(2) + 6(5)(4) - 3(16)$
-$= 46 - 112 + 120 - 48 = 6$
+$$\mu_4 = 46 - 4(14)(2) + 6(5)(4) - 3(16) = 46 - 112 + 120 - 48 = 6$$
 
 ---
 
 ## Skewness and Kurtosis
 
-Moments give us descriptors beyond the mean and variance:
+Once you have the central moments, two standardised shape measures follow directly.
 
-### Skewness (Third Standardised Moment)
-$$\beta_1 = \frac{\mu_3}{\sigma^3} = \frac{\mu_3}{(\mu_2)^{3/2}}$$
+### Skewness
 
-- $\beta_1 = 0$: distribution is symmetric about the mean
-- $\beta_1 > 0$: positively skewed (right tail is longer)
-- $\beta_1 < 0$: negatively skewed (left tail is longer)
+Skewness measures whether the distribution leans left or right — whether it has a longer tail on one side.
 
-### Kurtosis (Fourth Standardised Moment)
-$$\beta_2 = \frac{\mu_4}{\sigma^4} = \frac{\mu_4}{(\mu_2)^2}$$
+$$\gamma_1 = \frac{\mu_3}{(\mu_2)^{3/2}} = \frac{\mu_3}{\sigma^3}$$
 
-- $\beta_2 = 3$: normal distribution (mesokurtic)
-- $\beta_2 > 3$: leptokurtic (heavy tails, sharper peak)
-- $\beta_2 < 3$: platykurtic (lighter tails, flatter peak)
+```mermaid
+flowchart LR
+    A["γ₁ < 0\nNegative skew\nLeft tail longer\nMean < Median"]
+    B["γ₁ = 0\nSymmetric\nMean = Median"]
+    C["γ₁ > 0\nPositive skew\nRight tail longer\nMean > Median"]
+    A --- B --- C
+```
+
+> **Real-world analogy:** Salary distributions are positively skewed ($\gamma_1 > 0$). Most people earn around the median, but a small number of very high earners create a long right tail. The mean salary gets pulled well above the median because of those outliers — that is positive skew in action.
+
+### Kurtosis
+
+Kurtosis measures how heavy or light the tails are relative to the normal distribution.
+
+$$\beta_2 = \frac{\mu_4}{(\mu_2)^2} = \frac{\mu_4}{\sigma^4}$$
+
+| $\beta_2$ | Name | Meaning |
+|-----------|------|---------|
+| $= 3$ | Mesokurtic | Normal distribution (the baseline) |
+| $> 3$ | Leptokurtic | Sharper peak, heavier tails — more extreme values |
+| $< 3$ | Platykurtic | Flatter peak, lighter tails — fewer extreme values |
+
+> **Real-world analogy:** Daily stock market returns are leptokurtic ($\beta_2 > 3$). Compared to a bell curve, there are more ordinary days clustered near zero, but also more sudden crash or surge days in the extreme tails. The normal distribution underestimates the frequency of financial disasters — which is why kurtosis matters in risk management.
+
+---
+
+## Worked Example 4: Computing Skewness and Kurtosis
+
+**Using results from Example 3:** $\mu_2 = 1$ (so $\sigma = 1$), $\mu_3 = 0$, $\mu_4 = 6$.
+
+$$\gamma_1 = \frac{\mu_3}{\sigma^3} = \frac{0}{1} = 0 \quad \text{(perfectly symmetric)}$$
+
+$$\beta_2 = \frac{\mu_4}{\sigma^4} = \frac{6}{1} = 6 \quad \text{(leptokurtic — heavier tails than normal)}$$
+
+**Using results from Example 1:** $\mu_2 = 1/5$ (so $\sigma^2 = 1/5$), $\mu_3 = 0$, $\mu_4 = 3/35$.
+
+$$\gamma_1 = \frac{0}{(1/5)^{3/2}} = 0 \quad \text{(symmetric, as expected)}$$
+
+$$\beta_2 = \frac{3/35}{(1/5)^2} = \frac{3/35}{1/25} = \frac{3 \times 25}{35} = \frac{15}{7} \approx 2.14 \quad \text{(platykurtic)}$$
+
+$\beta_2 \approx 2.14 < 3$ makes physical sense: the distribution is bounded between 0 and 2, so it cannot produce extreme values. It is inherently flatter-tailed than the normal distribution.
 
 ---
 
 ## Chebyshev's Theorem
 
-Chebyshev's theorem is remarkable: it makes a probabilistic guarantee about **any distribution** without knowing its shape. It says that for any random variable with finite mean $\mu$ and standard deviation $\sigma$:
+Chebyshev's theorem is remarkable: it makes a probabilistic guarantee about **any distribution** without knowing its shape. For any random variable with finite mean $\mu$ and standard deviation $\sigma$:
 
-$$\boxed{P(\left|X - \mu\right| \geq k\sigma) \leq \frac{1}{k^2}}$$
+$$\boxed{P\!\left(\left|X - \mu\right| \geq k\sigma\right) \leq \frac{1}{k^2}}$$
 
 Equivalently:
 
-$$\boxed{P(\left|X - \mu\right| < k\sigma) \geq 1 - \frac{1}{k^2}}$$
+$$\boxed{P\!\left(\left|X - \mu\right| < k\sigma\right) \geq 1 - \frac{1}{k^2}}$$
 
-**Reading:** The probability that $X$ falls **within $k$ standard deviations of the mean** is at least $1 - \frac{1}{k^2}$, for any $k > 1$.
+In words: the probability that $X$ falls **within $k$ standard deviations of the mean** is at least $1 - \frac{1}{k^2}$, for any $k > 1$.
 
-> **Analogy:** Imagine you're told someone's height but you don't know whether they're from a tall or short population. Chebyshev's theorem says: regardless of the distribution of heights, **at least 75%** of the population falls within 2 standard deviations of the mean (since $1 - 1/4 = 3/4 = 75\%$). It's a conservative but universally valid guarantee.
+> **Analogy:** Suppose you know nothing about how exam scores are distributed — not normal, not uniform, not anything specific. Chebyshev's theorem still tells you that at least 75% of students must score within 2 standard deviations of the mean ($1 - 1/4 = 75\%$). It is a floor guarantee, valid for every distribution that has a finite mean and variance.
 
-| $k$ | Guaranteed % within $k\sigma$ of mean |
-|-----|---------------------------------------|
-| $k = 2$ | at least $1 - 1/4 = 75\%$ |
-| $k = 3$ | at least $1 - 1/9 \approx 88.9\%$ |
-| $k = 4$ | at least $1 - 1/16 = 93.75\%$ |
-| $k = 5$ | at least $1 - 1/25 = 96\%$ |
+| $k$ | Guaranteed minimum within $k\sigma$ of mean |
+|-----|---------------------------------------------|
+| $k = 2$ | $1 - 1/4 = 75\%$ |
+| $k = 3$ | $1 - 1/9 \approx 88.9\%$ |
+| $k = 4$ | $1 - 1/16 = 93.75\%$ |
+| $k = 5$ | $1 - 1/25 = 96\%$ |
 
-### Worked Example 4: Applying Chebyshev's Theorem
+Note: these are **lower bounds**. If the distribution is known to be normal, the empirical rule gives tighter bounds (68%, 95%, 99.7% for $k = 1, 2, 3$).
 
-A random variable $X$ has mean $\mu = 12$ and variance $\sigma^2 = 9$ (so $\sigma = 3$). Find the probability that $X$ ranges between 6 and 18 using Chebyshev's theorem.
+### Worked Example 5: Applying Chebyshev's Theorem
 
-**Step 1:** Identify the interval $[6, 18]$ in terms of $k\sigma$ from the mean:
-$$6 = \mu - k\sigma = 12 - 3k \implies k = 2$$
-$$18 = \mu + k\sigma = 12 + 3(2) = 18 \checkmark$$
+A random variable $X$ has $\mu = 12$ and $\sigma^2 = 9$ (so $\sigma = 3$). Find the lower bound on $P(6 \leq X \leq 18)$.
 
-So we want $P(6 \leq X \leq 18) = P(|X - 12| \leq 6) = P(|X - 12| < 2 \times 3)$
+**Step 1: Express the interval in terms of $k\sigma$.**
 
-**Step 2:** Apply Chebyshev's theorem with $k = 2$:
-$$P(|X - \mu| < k\sigma) \geq 1 - \frac{1}{k^2} = 1 - \frac{1}{4} = \frac{3}{4} = 0.75$$
+The interval $[6, 18]$ is symmetric about $\mu = 12$. The half-width is $18 - 12 = 6$. Since $\sigma = 3$:
+$$k\sigma = 6 \implies k = 2$$
 
-Therefore, $P(6 \leq X \leq 18) \geq 0.75$. At least 75% of the values lie in this interval.
+**Step 2: Apply Chebyshev's theorem.**
 
-### Worked Example 5: Finding $k$ from an Interval
+$$P(|X - 12| < 2 \times 3) \geq 1 - \frac{1}{4} = \frac{3}{4}$$
 
-A random variable has $\mu = 50$ and $\sigma^2 = 25$. Use Chebyshev's theorem to find the minimum probability that $X$ falls between 35 and 65.
+Therefore $P(6 \leq X \leq 18) \geq 0.75$. At least 75% of values lie in this interval.
 
-$\sigma = 5$.
+### Worked Example 6: Finding $k$ from an Interval
 
-$|65 - 50| = 15 = k \times 5 \implies k = 3$
+A random variable has $\mu = 50$ and $\sigma^2 = 25$ (so $\sigma = 5$). Find the minimum probability that $X$ lies between 35 and 65.
 
-$P(35 \leq X \leq 65) \geq 1 - \frac{1}{9} = \frac{8}{9} \approx 0.889$
+The half-width is $65 - 50 = 15$. So $k\sigma = 15 \implies k = 15/5 = 3$.
+
+$$P(35 \leq X \leq 65) \geq 1 - \frac{1}{9} = \frac{8}{9} \approx 0.889$$
+
+At least 88.9% of values fall in this interval.
 
 ---
 
 > **Key Takeaways**
 >
-> - **Raw moments:** $\mu'_r = E(X^r)$. The first raw moment is the mean; the second raw moment is used to compute variance.
-> - **Central moments:** $\mu_r = E[(X-\mu)^r]$. The second central moment is the variance. $\mu_1 = 0$ always.
-> - The shortcut formula $\mu_2 = \mu'_2 - (\mu'_1)^2$ converts between raw and central moments
-> - Higher moments ($\mu_3$, $\mu_4$) describe skewness and kurtosis — the shape of the distribution
-> - **Chebyshev's theorem:** $P(|X - \mu| < k\sigma) \geq 1 - 1/k^2$ — works for **any** distribution with finite mean and variance; gives a lower bound on the probability of being within $k$ standard deviations
+> - **Raw moments** $\mu'_r = E(X^r)$: compute these first; $\mu'_1$ is the mean, $\mu'_2$ feeds into variance
+> - **Central moments** $\mu_r = E[(X-\mu)^r]$: $\mu_1 = 0$ always; $\mu_2 = \sigma^2$; $\mu_3$ is skewness-related; $\mu_4$ is kurtosis-related
+> - **Conversion**: use the four formulas to convert raw → central (faster than computing central moments directly)
+> - **Skewness** $\gamma_1 = \mu_3/\sigma^3$: zero = symmetric; positive = right tail longer; negative = left tail longer
+> - **Kurtosis** $\beta_2 = \mu_4/\sigma^4$: 3 = normal (reference); above 3 = leptokurtic (heavy tails); below 3 = platykurtic (light tails)
+> - **Chebyshev's theorem**: $P(|X - \mu| < k\sigma) \geq 1 - 1/k^2$ — valid for any distribution with finite mean and variance
 
 ---
 
 > **Exam Tips**
 >
-> - **Exam questions on moments** typically ask: "Find the first four moments about the origin, and the first four moments about the mean." Do them in this order — compute all four $\mu'_r$ first, then convert to $\mu_r$ using the formulas.
-> - **The conversion formulas are testable in "show that" format.** The key one is $\mu_3 = \mu'_3 - 3\mu'_2\mu'_1 + 2(\mu'_1)^3$ — derive it from the binomial expansion of $(X - \mu'_1)^3$.
-> - For **Chebyshev's theorem**, the question will give you $\mu$ and $\sigma^2$ (or $\sigma$) and an interval. Your job is to find $k$ by computing how many standard deviations from the mean the endpoints are, then apply $1 - 1/k^2$.
-> - Chebyshev gives a **lower bound** — the actual probability may be higher. If the distribution is known to be normal, you can use the empirical rule (68-95-99.7) for a tighter bound.
-> - A common trap: if asked for $P(|X - \mu| \geq k\sigma)$, the answer is $\leq 1/k^2$ (the probability of being **far** from the mean is small). Don't confuse the direction.
+> - **The standard exam question** is: "Find the first four moments about the origin, and hence the first four moments about the mean." Always do raw moments first, then convert — never attempt central moments from scratch by integrating $(x - \mu)^r f(x)$.
+> - **The $\mu_3$ and $\mu_4$ conversion formulas are memorisable** if you notice the pattern: coefficients 1, 3, 2 for $\mu_3$; and 1, 4, 6, 3 for $\mu_4$ with alternating signs. These are binomial coefficients.
+> - **Skewness and kurtosis follow from the central moments** — they are just standardised versions. Once you have $\mu_2$, $\mu_3$, $\mu_4$, computing $\gamma_1$ and $\beta_2$ is one more step.
+> - **For Chebyshev questions**, the setup is always the same: find the half-width of the interval, divide by $\sigma$ to get $k$, then compute $1 - 1/k^2$. The trap is forgetting to check that the interval is symmetric about $\mu$ — if it is not, Chebyshev applies to the shorter half-width.
+> - **Chebyshev gives a lower bound, not the exact probability.** If the question asks "using Chebyshev, find a lower bound for..." then $1 - 1/k^2$ is your answer. If it asks "find the exact probability..." you need the actual distribution — Chebyshev cannot give that.
+> - A common "show that" question: derive $\mu_3 = \mu'_3 - 3\mu'_2\mu'_1 + 2(\mu'_1)^3$ by expanding $E[(X - \mu'_1)^3]$ using the binomial theorem and applying linearity of expectation.
