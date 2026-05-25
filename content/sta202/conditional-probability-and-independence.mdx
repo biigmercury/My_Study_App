@@ -115,7 +115,7 @@ To check if two events are independent, verify whether $P(A \cap B) = P(A) \time
 If they are equal → **independent**.  
 If they are not equal → **dependent** (one event affects the other).
 
-### Worked Example 3: Card Draw — Are Events Independent?
+### Worked Example 3: Card Draw (Testing for Independence)
 
 From a 52-card deck, one card is drawn. Let:
 - $A$ = card is a heart
@@ -188,12 +188,12 @@ A person tests positive. What is the probability they actually have the disease?
 - $P(T^+ \mid D) = 0.92$ (sensitivity)
 - $P(T^+ \mid \bar{D}) = 1 - 0.87 = 0.13$ (false positive rate = 1 - specificity)
 
-**Step 1 — Find total $P(T^+)$ using the Law of Total Probability:**
+**Step 1: Find total $P(T^+)$ using the Law of Total Probability:**
 $$P(T^+) = P(T^+ \mid D) \cdot P(D) + P(T^+ \mid \bar{D}) \cdot P(\bar{D})$$
 $$= (0.92)(0.04) + (0.13)(0.96)$$
 $$= 0.0368 + 0.1248 = 0.1616$$
 
-**Step 2 — Apply Bayes' Theorem:**
+**Step 2: Apply Bayes' Theorem:**
 $$P(D \mid T^+) = \frac{P(T^+ \mid D) \cdot P(D)}{P(T^+)} = \frac{(0.92)(0.04)}{0.1616} = \frac{0.0368}{0.1616} \approx 0.228$$
 
 **Interpretation:** Even though the test is quite accurate (92% sensitive, 87% specific), if someone tests positive, there is only a **22.8% chance** they actually have the disease. This seems counterintuitive but makes sense: with only 4% prevalence, most positive tests are false positives because there are so many more disease-free people.
@@ -209,12 +209,12 @@ A factory has three machines producing bolts:
 
 A bolt is selected and found to be defective. What is the probability it came from Machine 2?
 
-**Step 1 — Total probability of defect:**
+**Step 1: Total probability of defect:**
 $$P(\text{Defect}) = P(D \mid M_1)P(M_1) + P(D \mid M_2)P(M_2) + P(D \mid M_3)P(M_3)$$
 $$= (0.02)(0.50) + (0.03)(0.30) + (0.05)(0.20)$$
 $$= 0.010 + 0.009 + 0.010 = 0.029$$
 
-**Step 2 — Bayes' Theorem:**
+**Step 2: Bayes' Theorem:**
 $$P(M_2 \mid \text{Defect}) = \frac{P(D \mid M_2) \cdot P(M_2)}{P(\text{Defect})} = \frac{(0.03)(0.30)}{0.029} = \frac{0.009}{0.029} \approx 0.310$$
 
 There is a 31% probability the defective bolt came from Machine 2.

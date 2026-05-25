@@ -47,7 +47,7 @@ The median is the **middle value** when data is arranged in order from smallest 
 
 > **Analogy:** If 5 people stand in a line ordered by height, the median is the height of the person standing in the middle (3rd position). Two people are shorter, two are taller.
 
-**Strength:** Not affected by outliers — it is the preferred measure for skewed data (e.g., income distributions, house prices).
+**Strength:** Not affected by outliers. It is the preferred measure for skewed data (e.g., income distributions, house prices).
 
 ### 3. The Mode
 
@@ -67,11 +67,11 @@ The mode is the value that **appears most frequently** in a dataset. A dataset c
 
 Statistical formulas often involve multiple operations on the same data. Getting the **order of operations** wrong is one of the most common sources of calculation errors. Dr Oyamakin's course follows this specific order:
 
-1. **Parentheses first** — everything inside $( \; )$ is done first
-2. **Exponents second** — squaring or raising to other powers
-3. **Multiplication and Division third** — left to right
-4. **Summation ($\Sigma$) fourth** — add up the values
-5. **Addition and Subtraction last** — left to right
+1. **Parentheses first**: everything inside $( \; )$ is done first
+2. **Exponents second**: squaring or raising to other powers
+3. **Multiplication and Division third**: left to right
+4. **Summation ($\Sigma$) fourth**: add up the values
+5. **Addition and Subtraction last**: left to right
 
 The key conflict that trips students up is the difference between:
 
@@ -88,7 +88,7 @@ These almost always give different answers. A variance formula will typically us
 
 **Data:** Test scores of 7 students: $\{45, 62, 62, 70, 74, 81, 90\}$
 
-**Step 1 — Sort the data:** Already sorted: $45, 62, 62, 70, 74, 81, 90$
+**Step 1: Sort the data.** Already sorted: $45, 62, 62, 70, 74, 81, 90$
 
 **Mean:**
 $$\bar{x} = \frac{45 + 62 + 62 + 70 + 74 + 81 + 90}{7} = \frac{484}{7} \approx 69.14$$
@@ -183,10 +183,10 @@ $$s = \sqrt{s^2} \quad \text{(sample)}$$
 
 **Data:** Voltage readings from 5 circuits (Volts): $\{10, 12, 14, 16, 18\}$
 
-**Step 1 — Find the sample mean:**
+**Step 1: Find the sample mean:**
 $$\bar{x} = \frac{10+12+14+16+18}{5} = \frac{70}{5} = 14 \text{ V}$$
 
-**Step 2 — Find each deviation from the mean $(x - \bar{x})$ and square it:**
+**Step 2: Find each deviation from the mean $(x - \bar{x})$ and square it:**
 
 | $x$ | $x - \bar{x}$ | $(x - \bar{x})^2$ |
 |-----|--------------|------------------|
@@ -199,10 +199,10 @@ $$\bar{x} = \frac{10+12+14+16+18}{5} = \frac{70}{5} = 14 \text{ V}$$
 
 The sum of deviations is always 0 — a useful check that your mean is correct.
 
-**Step 3 — Sample variance:**
+**Step 3: Sample variance:**
 $$s^2 = \frac{\Sigma(x - \bar{x})^2}{n-1} = \frac{40}{5-1} = \frac{40}{4} = 10 \text{ V}^2$$
 
-**Step 4 — Standard deviation:**
+**Step 4: Standard deviation:**
 $$s = \sqrt{10} \approx 3.16 \text{ V}$$
 
 **Verify with computational shortcut:**

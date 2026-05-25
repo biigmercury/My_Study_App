@@ -111,18 +111,18 @@ Three diets are tested for weight loss. 78 people are randomly assigned: 24 to D
 | $\bar{x}$ (kg) | 3.30 | 3.03 | 5.15 | 3.85 |
 | $s$ | 2.24 | 2.52 | 2.40 | 2.55 |
 
-**Step 1 — SS Between:**
+**Step 1: SS Between**
 $$SS_B = 24(3.30-3.85)^2 + 27(3.03-3.85)^2 + 27(5.15-3.85)^2$$
 $$= 24(0.3025) + 27(0.6724) + 27(1.6900)$$
 $$= 7.26 + 18.16 + 45.63 = 71.05$$
 
-**Step 2 — SS Within** (from the individual data — we compute from group SDs):
+**Step 2: SS Within** (computed from group standard deviations):
 $$SS_W = (n_1-1)s_1^2 + (n_2-1)s_2^2 + (n_3-1)s_3^2$$
 $$= 23(2.24)^2 + 26(2.52)^2 + 26(2.40)^2$$
 $$= 23(5.018) + 26(6.350) + 26(5.760)$$
 $$= 115.41 + 165.10 + 149.76 = 430.27$$
 
-**Step 3 — ANOVA Table:**
+**Step 3: ANOVA Table**
 
 | Source | SS | df | MS | F |
 |--------|----|----|----|---|
@@ -130,7 +130,7 @@ $$= 115.41 + 165.10 + 149.76 = 430.27$$
 | Within | 430.27 | 75 | 5.74 | |
 | Total | 501.32 | 77 | | |
 
-**Step 4 — Decision:**
+**Step 4: Decision**
 $F = 6.20$. At $\alpha = 0.05$ with $(2, 75)$ df, $F_{crit} \approx 3.12$.
 
 Since $6.20 > 3.12$, **reject $H_0$** — not all three diets produce the same mean weight loss.

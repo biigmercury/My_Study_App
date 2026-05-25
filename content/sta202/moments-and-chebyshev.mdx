@@ -56,28 +56,35 @@ The general pattern uses the **binomial theorem** to expand $(X - \mu)^r = (X - 
 
 ---
 
-## Worked Example 1: Computing All Four Raw Moments
+## Worked Example 1: Computing Raw and Central Moments
 
 A continuous random variable $X$ has PDF:
 
-$$f(x) = \frac{1}{6}(2x + 1), \quad 0 < x < 1 \quad (\text{zero elsewhere})$$
+$$f(x) = \frac{3}{4}x(2-x), \quad 0 < x < 2 \quad (\text{zero elsewhere})$$
 
-First verify: $\int_0^1 \frac{1}{6}(2x+1)\, dx = \frac{1}{6}\left[x^2 + x\right]_0^1 = \frac{1}{6}(1+1) = \frac{2}{6} \neq 1$... 
-
-Let me use the distribution from the course materials: $f(x) = \frac{k}{1+x^2}$, $0 < x < 1$.
-
-Actually, let me use a cleaner example. Given $f(x) = \frac{3}{4}x(2-x)$, $0 < x < 2$:
+Verify: $\frac{3}{4}\int_0^2 x(2-x)\, dx = \frac{3}{4}\left[x^2 - \frac{x^3}{3}\right]_0^2 = \frac{3}{4}\left(4 - \frac{8}{3}\right) = \frac{3}{4} \times \frac{4}{3} = 1$ ✓
 
 **First raw moment $\mu'_1 = E(X)$:**
-$$\mu'_1 = \int_0^2 x \cdot \frac{3}{4}x(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^2 - x^3)\, dx$$
-$$= \frac{3}{4}\left[\frac{2x^3}{3} - \frac{x^4}{4}\right]_0^2 = \frac{3}{4}\left(\frac{16}{3} - \frac{16}{4}\right) = \frac{3}{4} \times \frac{16}{12} \times (4-3) = \frac{3}{4} \times \frac{16}{12} = 1$$
+$$\mu'_1 = \frac{3}{4}\int_0^2 x^2(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^2 - x^3)\, dx = \frac{3}{4}\left[\frac{2x^3}{3} - \frac{x^4}{4}\right]_0^2 = \frac{3}{4}\left(\frac{16}{3} - 4\right) = \frac{3}{4} \times \frac{4}{3} = 1$$
 
 **Second raw moment $\mu'_2 = E(X^2)$:**
-$$\mu'_2 = \frac{3}{4}\int_0^2 x^2(2x - x^2)\, dx = \frac{3}{4}\int_0^2 (2x^3 - x^4)\, dx$$
-$$= \frac{3}{4}\left[\frac{x^4}{2} - \frac{x^5}{5}\right]_0^2 = \frac{3}{4}\left(8 - \frac{32}{5}\right) = \frac{3}{4} \times \frac{8}{5} = \frac{6}{5}$$
+$$\mu'_2 = \frac{3}{4}\int_0^2 x^3(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^3 - x^4)\, dx = \frac{3}{4}\left[\frac{x^4}{2} - \frac{x^5}{5}\right]_0^2 = \frac{3}{4}\left(8 - \frac{32}{5}\right) = \frac{3}{4} \times \frac{8}{5} = \frac{6}{5}$$
 
-**Variance using shortcut:**
-$$Var(X) = \mu_2 = \mu'_2 - (\mu'_1)^2 = \frac{6}{5} - 1^2 = \frac{1}{5}$$
+**Third raw moment $\mu'_3 = E(X^3)$:**
+$$\mu'_3 = \frac{3}{4}\int_0^2 x^4(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^4 - x^5)\, dx = \frac{3}{4}\left[\frac{2x^5}{5} - \frac{x^6}{6}\right]_0^2 = \frac{3}{4}\left(\frac{64}{5} - \frac{64}{6}\right) = \frac{3}{4} \times \frac{64}{30} = \frac{8}{5}$$
+
+**Fourth raw moment $\mu'_4 = E(X^4)$:**
+$$\mu'_4 = \frac{3}{4}\int_0^2 x^5(2-x)\, dx = \frac{3}{4}\int_0^2 (2x^5 - x^6)\, dx = \frac{3}{4}\left[\frac{x^6}{3} - \frac{x^7}{7}\right]_0^2 = \frac{3}{4}\left(\frac{64}{3} - \frac{128}{7}\right) = \frac{3}{4} \times \frac{64}{21} = \frac{16}{7}$$
+
+**Deriving central moments:**
+
+$\mu_1 = 0$ (always)
+
+$\mu_2 = \mu'_2 - (\mu'_1)^2 = \dfrac{6}{5} - 1 = \dfrac{1}{5}$
+
+$\mu_3 = \mu'_3 - 3\mu'_2\mu'_1 + 2(\mu'_1)^3 = \dfrac{8}{5} - 3\left(\dfrac{6}{5}\right)(1) + 2(1) = \dfrac{8}{5} - \dfrac{18}{5} + \dfrac{10}{5} = 0$
+
+The third central moment is zero because this distribution is symmetric about $\mu = 1$.
 
 ---
 
@@ -188,16 +195,6 @@ $\sigma = 5$.
 $|65 - 50| = 15 = k \times 5 \implies k = 3$
 
 $P(35 \leq X \leq 65) \geq 1 - \frac{1}{9} = \frac{8}{9} \approx 0.889$
-
-### Worked Example 6: Chebyshev from the Exam
-
-Given $\mu = 12$ and $\sigma^2 = 9$, find $P(6 \leq X \leq 18)$ using Chebyshev.
-
-The interval is symmetric about $\mu = 12$: from $12 - 6 = 6$ to $12 + 6 = 18$, so $k\sigma = 6$, giving $k = 6/3 = 2$.
-
-$$P(|X - 12| \geq 6) \leq \frac{1}{4}$$
-
-$$P(6 \leq X \leq 18) = P(|X - 12| \leq 6) \geq 1 - \frac{1}{4} = \frac{3}{4}$$
 
 ---
 
