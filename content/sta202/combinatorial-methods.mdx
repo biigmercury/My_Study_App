@@ -1,81 +1,236 @@
 ---
-title: "Combinatorial methods"
-description: "Permutations, combinations, factorials, and multinomial counting."
-duration: "50 min"
-difficulty: "intermediate"
+title: Combinatorial Methods
 ---
 
-Combinatorics answers: "How many possible outcomes are there?" This is crucial before probability, because
-\[
-P(E)=\frac{\text{favorable outcomes}}{\text{total outcomes}}
-\]
-needs correct counting.
+# Combinatorial Methods
 
-## Core formulas
+Before you can calculate probabilities in many real-world situations, you need to be able to **count**. How many possible outcomes are there? How many ways can an event occur? Combinatorial methods give you systematic techniques to answer these questions — without having to list everything out.
 
-Factorial:
-\[
-n! = n(n-1)(n-2)\cdots 2\cdot 1
-\]
+This topic covers three core tools: the **Multiplication Principle**, **Permutations**, and **Combinations**. Each answers a slightly different type of counting question.
 
-Permutation (order matters):
-\[
-{}^nP_r = \frac{n!}{(n-r)!}
-\]
+---
 
-Combination (order does not matter):
-\[
-{}^nC_r = \frac{n!}{r!(n-r)!}
-\]
+## The Fundamental Counting Principle (Multiplication Principle)
 
-Multinomial count:
-\[
-\frac{n!}{n_1!n_2!\cdots n_k!},\quad \sum n_i=n
-\]
+**Theorem 1.0 (Two-step version):** If an operation consists of two steps, of which the first can be done in $n_1$ ways and the second can be done in $n_2$ ways (for each choice of the first), then the whole operation can be done in $n_1 \times n_2$ ways.
 
-## Worked Example 1: permutations
+**Theorem 1.1 (General version):** If an operation consists of $k$ steps, performed in sequence, where the $i$-th step can be done in $n_i$ ways (regardless of how previous steps were done), then the total number of ways is:
 
-From 8 students, choose president, secretary, treasurer.
+$$N = n_1 \times n_2 \times n_3 \times \cdots \times n_k$$
 
-\[
-{}^8P_3=\frac{8!}{5!}=8\times 7\times 6=336
-\]
+> **Analogy:** If you have 3 shirts and 4 trousers, the number of outfits is $3 \times 4 = 12$. Each shirt can be paired with each trouser independently.
 
-## Worked Example 2: combinations
+### Worked Example 1: True/False Test
 
-Choose 4 lab assistants from 10 candidates:
-\[
-{}^{10}C_4=\frac{10!}{4!6!}=\frac{10\cdot 9\cdot 8\cdot 7}{4\cdot 3\cdot 2\cdot 1}=210
-\]
+A true-false test has 20 questions. How many different ways can it be answered?
 
-## Worked Example 3: multinomial
+Each question has 2 choices (True or False), and there are 20 questions — each independent of the others.
 
-How many arrangements of ENGINEER?
-Letters: E appears 3 times, N,G,I,R each once (8 letters total):
-\[
-\frac{8!}{3!}=\frac{40320}{6}=6720
-\]
+$$N = \underbrace{2 \times 2 \times 2 \times \cdots \times 2}_{20 \text{ times}} = 2^{20} = 1{,}048{,}576$$
 
-## Visual decision tree
+Only one of these corresponds to all answers correct, and only one to all answers wrong.
+
+### Worked Example 2: Vacation Planning
+
+Someone wants to travel by bus, train, or plane to one of 5 destinations. How many different travel plans are possible?
+
+$$N = n_1 \times n_2 = 5 \text{ (destinations)} \times 3 \text{ (transport modes)} = 15 \text{ ways}$$
+
+---
+
+## Factorials
+
+Before permutations and combinations, you need the **factorial** function:
+
+$$n! = n \times (n-1) \times (n-2) \times \cdots \times 2 \times 1$$
+
+For example:
+$$5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$$
+$$4! = 24, \quad 3! = 6, \quad 2! = 2, \quad 1! = 1$$
+
+By definition:
+$$\boxed{0! = 1}$$
+
+This is not arbitrary — it makes the combinatorial formulas work correctly at edge cases.
+
+---
+
+## Permutations: Order Matters
+
+A **permutation** is an arrangement of objects where the **order of selection matters**. Choosing A then B is different from choosing B then A.
+
+### Permutations of all $n$ objects
+
+The number of ways to arrange all $n$ distinct objects in a sequence:
+$$n! = n \times (n-1) \times \cdots \times 1$$
+
+> *Example:* How many ways can you arrange the letters A, B, C, D?
+> $$4! = 24 \text{ ways}$$
+
+### Permutations of size $r$ from $n$ objects
+
+The number of ways to choose and arrange $r$ objects from $n$ distinct objects, where order matters:
+
+$$P(n, r) = {}_nP_r = \frac{n!}{(n-r)!} = n(n-1)(n-2)\cdots(n-r+1)$$
+
+Where:
+- $n$ = total number of objects available
+- $r$ = number of objects being selected and arranged
+- $(n-r)!$ = the factorial of the items not selected (which "cancel out")
+
+**Why this formula works:** You are filling $r$ positions in sequence. The 1st position has $n$ choices, the 2nd has $n-1$ (one used), the 3rd has $n-2$, and so on down to the $r$-th position which has $n-r+1$ choices.
+
+$$P(n,r) = n \times (n-1) \times \cdots \times (n-r+1)$$
+
+Multiply top and bottom by $(n-r)!$ and you get $\frac{n!}{(n-r)!}$.
+
+### Worked Example 3: Club Elections
+
+4 names are drawn from 24 club members for the offices of **President, Vice-President, Treasurer, and Secretary**. How many different ways can this be done?
+
+The order matters here — being President is different from being Secretary.
+
+$$P(24, 4) = \frac{24!}{(24-4)!} = \frac{24!}{20!} = 24 \times 23 \times 22 \times 21$$
+
+$$= 24 \times 23 \times 22 \times 21 = 255{,}024 \text{ ways}$$
+
+### Worked Example 4: Arranging Letters with Repetition
+
+How many distinct arrangements are there of the letters in the word **STATISTICS**?
+
+The word has 10 letters: S appears 3 times, T appears 3 times, I appears 2 times, A appears once, C appears once.
+
+When objects repeat, divide by the factorial of each repeated group (otherwise you count identical arrangements multiple times):
+
+$$\text{Arrangements} = \frac{10!}{3! \times 3! \times 2! \times 1! \times 1!} = \frac{3{,}628{,}800}{6 \times 6 \times 2 \times 1 \times 1} = \frac{3{,}628{,}800}{72} = 50{,}400$$
+
+This is the **multinomial coefficient** concept — when arranging $n$ objects with repetition, where $n_1$ are of type 1, $n_2$ of type 2, etc.:
+
+$$\binom{n}{n_1, n_2, \ldots, n_k} = \frac{n!}{n_1! \times n_2! \times \cdots \times n_k!}$$
+
+---
+
+## Combinations: Order Does NOT Matter
+
+A **combination** is a selection of objects where the **order does not matter**. Choosing A and B is the same as choosing B and A — they are the same subset.
+
+The number of ways to choose $r$ objects from $n$ distinct objects (without regard to order):
+
+$$C(n, r) = \binom{n}{r} = {}_nC_r = \frac{n!}{r!(n-r)!}$$
+
+This is also called a **binomial coefficient**, denoted $\binom{n}{r}$ (read "n choose r").
+
+**Relationship between permutations and combinations:**
+
+Every combination of $r$ objects can be arranged in $r!$ different orders. So:
+
+$$P(n,r) = C(n,r) \times r! \implies C(n,r) = \frac{P(n,r)}{r!} = \frac{n!}{r!(n-r)!}$$
+
+> **Key insight:** Permutations and combinations differ only by $r!$ — the factor for counting different orderings. If you have already computed the permutation, just divide by $r!$ to get the combination.
+
+### Worked Example 5: Committee Selection
+
+From a committee of 10 people, we want to select a sub-committee of 3 (no titles, just membership). How many ways?
+
+Order does not matter — {Alice, Bob, Carol} is the same committee as {Carol, Alice, Bob}.
+
+$$C(10, 3) = \binom{10}{3} = \frac{10!}{3!(10-3)!} = \frac{10!}{3! \times 7!} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = \frac{720}{6} = 120 \text{ ways}$$
+
+### Worked Example 6: Lottery
+
+In a lottery, you pick 6 numbers from 1 to 49. How many possible ticket combinations are there?
+
+$$C(49, 6) = \binom{49}{6} = \frac{49!}{6! \times 43!} = \frac{49 \times 48 \times 47 \times 46 \times 45 \times 44}{720} = 13{,}983{,}816$$
+
+Over 13 million possible combinations — which is why lotteries make money.
+
+---
+
+## Permutations vs Combinations: A Decision Guide
 
 ```mermaid
 flowchart TD
-A[Counting Problem] --> B{Does order matter?}
-B -->|Yes| C[Use permutation nPr]
-B -->|No| D[Use combination nCr]
-D --> E{Repeated groups?}
-E -->|Yes| F[Use multinomial]
-E -->|No| G[Standard nCr]
+    A[Selecting r objects from n distinct objects] --> B{Does ORDER matter?}
+    B -->|Yes| C[Use PERMUTATION<br/>nPr = n! / (n-r)!<br/>Example: Assigning roles/offices]
+    B -->|No| D[Use COMBINATION<br/>nCr = n! / r!(n-r)!<br/>Example: Choosing a team/committee]
 ```
 
-## Analogy
+**Order matters (use permutation) when:**
+- Selecting people for specific titled positions (President, VP, etc.)
+- Arranging objects in a specific sequence (passwords, codes, races)
+- The same people in different arrangements count as different outcomes
 
-If combinations are "who comes to the party," permutations are "who sits on which seat."
+**Order does not matter (use combination) when:**
+- Selecting a group (committee, team, sample) with no roles
+- Choosing items from a menu (the order you list them doesn't change the meal)
+- Drawing cards from a deck (a hand of {A, K, Q} is the same regardless of draw order)
 
-> **Key Takeaway**
-> First decide whether order matters. That one choice prevents most counting mistakes.
+---
+
+## The Binomial Theorem
+
+The binomial theorem tells you how to expand $(x + y)^n$ without multiplying it out $n$ times:
+
+$$(x + y)^n = \sum_{r=0}^{n} \binom{n}{r} x^{n-r} y^r$$
+
+$$= \binom{n}{0}x^n + \binom{n}{1}x^{n-1}y + \binom{n}{2}x^{n-2}y^2 + \cdots + \binom{n}{n}y^n$$
+
+The coefficient of $x^{n-r}y^r$ is $\binom{n}{r}$ — this is why $\binom{n}{r}$ is called a **binomial coefficient**.
+
+### Worked Example 7: Expanding $(x+y)^4$
+
+$$\binom{4}{0} = 1, \quad \binom{4}{1} = 4, \quad \binom{4}{2} = 6, \quad \binom{4}{3} = 4, \quad \binom{4}{4} = 1$$
+
+$$(x+y)^4 = x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4$$
+
+### Key Identities from the Binomial Theorem
+
+**Sum of all binomial coefficients:**
+$$\sum_{r=0}^{n} \binom{n}{r} = 2^n$$
+(Set $x = y = 1$ in the binomial theorem)
+
+**Pascal's Identity:**
+$$\binom{n}{r} = \binom{n-1}{r} + \binom{n-1}{r-1}$$
+
+This says: each binomial coefficient equals the sum of the two above it in Pascal's triangle.
+
+**Vandermonde's Identity:**
+$$\sum_{r=0}^{k} \binom{m}{r}\binom{n}{k-r} = \binom{m+n}{k}$$
+
+---
+
+## Multinomial Coefficients
+
+When expanding $(x_1 + x_2 + \cdots + x_k)^n$, the coefficient of $x_1^{r_1} x_2^{r_2} \cdots x_k^{r_k}$ (where $r_1 + r_2 + \cdots + r_k = n$) is the **multinomial coefficient**:
+
+$$\binom{n}{r_1, r_2, \ldots, r_k} = \frac{n!}{r_1! \times r_2! \times \cdots \times r_k!}$$
+
+### Worked Example 8: Multinomial Coefficient
+
+What is the coefficient of $x_1^3 x_2^1 x_3^2$ in the expansion of $(x_1 + x_2 + x_3)^6$?
+
+Here $n = 6$, $r_1 = 3$, $r_2 = 1$, $r_3 = 2$, and $r_1 + r_2 + r_3 = 6$ ✓
+
+$$\binom{6}{3, 1, 2} = \frac{6!}{3! \times 1! \times 2!} = \frac{720}{6 \times 1 \times 2} = 60$$
+
+---
+
+> **Key Takeaways**
+>
+> - The **Multiplication Principle**: for sequential independent steps, multiply the number of choices at each step. $N = n_1 \times n_2 \times \cdots \times n_k$
+> - **Permutation** $P(n,r) = \frac{n!}{(n-r)!}$: use when selecting $r$ items from $n$ and the **order matters**
+> - **Combination** $C(n,r) = \frac{n!}{r!(n-r)!}$: use when selecting $r$ items from $n$ and the **order does not matter**
+> - The relationship: $P(n,r) = r! \times C(n,r)$ — permutations count all orderings of each combination
+> - The **Binomial Theorem** expands $(x+y)^n$ using binomial coefficients; the sum of all binomial coefficients $= 2^n$
+> - $0! = 1$ by definition — this is required to make the formulas work for edge cases
+
+---
 
 > **Exam Tips**
-> - Very common trick: students use \({}^nC_r\) when role positions are different.
-> - Simplify factorials by cancellation before multiplying.
-> - Check repeated items in word-arrangement questions.
+>
+> - The most commonly tested confusion is **permutation vs combination**. Ask: "If I swap two selected items, does the result change?" If yes, it is a permutation. If no, it is a combination.
+> - **Committees/teams/groups (no titles)** → Combination. **Positions/rankings/sequences** → Permutation.
+> - In a typical exam question: "From 10 students, choose 3 for a prize. How many ways?" — no titles, so $C(10,3) = 120$. "Choose 3 for 1st, 2nd, 3rd prize" — different prizes = different positions, so $P(10,3) = 720$.
+> - When objects **repeat** in an arrangement, use the multinomial formula: $\frac{n!}{n_1! n_2! \cdots n_k!}$
+> - For the Binomial Theorem, you may be asked to find the **coefficient of a specific term** like $x^3 y^5$ in $(x+y)^8$. The coefficient of $x^{n-r}y^r$ is $\binom{n}{r}$, so for $x^3 y^5$ in $(x+y)^8$: $r=5$, coefficient $= \binom{8}{5} = 56$.
+> - **Pascal's Identity** $\binom{n}{r} = \binom{n-1}{r} + \binom{n-1}{r-1}$ is a common "show that" proof question.

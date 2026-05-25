@@ -1,8 +1,234 @@
 ---
-title: "Descriptive Statistics"
-description: "Content coming soon"
-duration: "35 min"
-difficulty: "beginner"
+title: Descriptive Statistics
 ---
 
-Content for this topic hasn't been added yet. Drop your course materials and this page will be updated with full study notes, worked examples, and exam tips.
+# Descriptive Statistics
+
+Once you have collected data, the very first thing you need to do is **describe it**. Descriptive statistics are the tools that let you summarise and communicate a dataset concisely — what is the centre? How spread out are the values? What does a typical observation look like?
+
+Think of descriptive statistics as making a "portrait" of your data. Before you draw any conclusions or run any tests, you need to understand what you are actually working with.
+
+---
+
+## Measures of Central Tendency
+
+A measure of central tendency tells you where the **middle** of your data is — the "typical" or "representative" value. There are three: mean, median, and mode.
+
+### 1. The Mean (Average)
+
+The mean is the sum of all values divided by the number of values. It is the most widely used measure of centre.
+
+**For a population (all $N$ values):**
+$$\mu = \frac{\sum_{i=1}^{N} X_i}{N}$$
+
+**For a sample (a subset of $n$ values):**
+$$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}$$
+
+Where:
+- $\mu$ (mu) = population mean
+- $\bar{x}$ (x-bar) = sample mean
+- $\Sigma X$ = sum of all values
+- $N$ = number of values in the population
+- $n$ = number of values in the sample
+
+> **Analogy:** Imagine 5 people sharing a prize pool. The mean is what each person would get if the money were split equally. It balances the total.
+
+**Strengths:** Uses every data point; best for symmetric data.  
+**Weakness:** Heavily affected by extreme values (outliers).
+
+### 2. The Median
+
+The median is the **middle value** when data is arranged in order from smallest to largest. It divides the distribution exactly in half: 50% of values are below it, 50% above it.
+
+**To find the median:**
+1. Sort the data in ascending order
+2. If $n$ is **odd**: the median is the middle value — position $\frac{n+1}{2}$
+3. If $n$ is **even**: the median is the average of the two middle values — positions $\frac{n}{2}$ and $\frac{n}{2}+1$
+
+> **Analogy:** If 5 people stand in a line ordered by height, the median is the height of the person standing in the middle (3rd position). Two people are shorter, two are taller.
+
+**Strength:** Not affected by outliers — it is the preferred measure for skewed data (e.g., income distributions, house prices).
+
+### 3. The Mode
+
+The mode is the value that **appears most frequently** in a dataset. A dataset can have:
+- **No mode** (all values appear equally)
+- **One mode** (unimodal)
+- **Two modes** (bimodal)
+- **More than two modes** (multimodal)
+
+> **Analogy:** If you sell shoes, the mode is the size you sell most often. It is the most "popular" value.
+
+**Strength:** Can be used with nominal data (e.g., "most common blood type").
+
+---
+
+## Order of Operations in Statistical Formulas
+
+Statistical formulas often involve multiple operations on the same data. Getting the **order of operations** wrong is one of the most common sources of calculation errors. Dr Oyamakin's course follows this specific order:
+
+1. **Parentheses first** — everything inside $( \; )$ is done first
+2. **Exponents second** — squaring or raising to other powers
+3. **Multiplication and Division third** — left to right
+4. **Summation ($\Sigma$) fourth** — add up the values
+5. **Addition and Subtraction last** — left to right
+
+The key conflict that trips students up is the difference between:
+
+$$\Sigma X^2 \quad \text{vs} \quad (\Sigma X)^2$$
+
+- $\Sigma X^2$: **Square first, then sum.** Apply the exponent to each $X$ individually, then add them up.
+- $(\Sigma X)^2$: **Sum first, then square.** Add up all the $X$ values first, then square the total.
+
+These almost always give different answers. A variance formula will typically use both.
+
+---
+
+## Worked Example 1: Mean, Median, Mode
+
+**Data:** Test scores of 7 students: $\{45, 62, 62, 70, 74, 81, 90\}$
+
+**Step 1 — Sort the data:** Already sorted: $45, 62, 62, 70, 74, 81, 90$
+
+**Mean:**
+$$\bar{x} = \frac{45 + 62 + 62 + 70 + 74 + 81 + 90}{7} = \frac{484}{7} \approx 69.14$$
+
+**Median:**
+$n = 7$ (odd), so median is at position $\frac{7+1}{2} = 4\text{th}$ position.
+The 4th value is $\mathbf{70}$.
+$$\text{Median} = 70$$
+
+**Mode:**
+The value $62$ appears twice; all others appear once.
+$$\text{Mode} = 62$$
+
+---
+
+## Worked Example 2: Computing $\Sigma X$, $\Sigma X^2$, $(\Sigma X)^2$
+
+**Data:** $X = \{2, 4, 6, 8\}$
+
+**$\Sigma X$ (sum of all values):**
+$$\Sigma X = 2 + 4 + 6 + 8 = 20$$
+
+**$\Sigma X^2$ (square each value first, then sum):**
+$$\Sigma X^2 = 2^2 + 4^2 + 6^2 + 8^2 = 4 + 16 + 36 + 64 = 120$$
+
+**$(\Sigma X)^2$ (sum first, then square):**
+$$(\Sigma X)^2 = (20)^2 = 400$$
+
+Notice: $120 \neq 400$.
+
+---
+
+## Worked Example 3: Even-Numbered Dataset
+
+**Data:** Daily temperature readings (°C): $\{18, 21, 23, 25, 27, 30\}$
+
+$n = 6$ (even).
+
+**Mean:**
+$$\bar{x} = \frac{18 + 21 + 23 + 25 + 27 + 30}{6} = \frac{144}{6} = 24 \text{°C}$$
+
+**Median:**
+For $n=6$ (even), median is the average of the $\frac{6}{2} = 3\text{rd}$ and $\frac{6}{2}+1 = 4\text{th}$ values.
+
+3rd value: 23, 4th value: 25.
+$$\text{Median} = \frac{23 + 25}{2} = \frac{48}{2} = 24 \text{°C}$$
+
+In this case, mean and median happen to agree — this suggests the data is fairly symmetric.
+
+**Mode:** Each value appears once, so there is **no mode**.
+
+---
+
+## Measures of Dispersion (Spread)
+
+Central tendency tells you where the data is centred. But two datasets can have the same mean while being completely different in how spread out they are. We need **measures of dispersion**.
+
+### Range
+$$\text{Range} = \text{Maximum} - \text{Minimum}$$
+
+Simple but sensitive to outliers — one extreme value can make the range misleadingly large.
+
+### Variance
+
+Variance measures how far each value is from the mean, on average. We square the differences to avoid positive and negative deviations cancelling each other out.
+
+**Population variance:**
+$$\sigma^2 = \frac{\Sigma(X - \mu)^2}{N}$$
+
+**Sample variance:**
+$$s^2 = \frac{\Sigma(x - \bar{x})^2}{n - 1}$$
+
+We divide by $n-1$ (not $n$) for sample variance because using $n$ would systematically underestimate the true population variance. The $n-1$ is called the **degrees of freedom**.
+
+**Computational shortcut (equivalent formula for sample variance):**
+$$s^2 = \frac{\Sigma x^2 - \frac{(\Sigma x)^2}{n}}{n-1}$$
+
+This shortcut is much faster when you have the raw data.
+
+### Standard Deviation
+
+The standard deviation is simply the **square root of the variance**. It brings the units back to the original scale of measurement.
+
+$$\sigma = \sqrt{\sigma^2} \quad \text{(population)}$$
+$$s = \sqrt{s^2} \quad \text{(sample)}$$
+
+> **Analogy:** If you measure incomes in dollars, variance is in "dollars squared" — not very interpretable. Standard deviation converts it back to dollars. A standard deviation of ₦5,000 is immediately understandable; a variance of 25,000,000 ₦² is not.
+
+---
+
+## Worked Example 4: Variance and Standard Deviation
+
+**Data:** Voltage readings from 5 circuits (Volts): $\{10, 12, 14, 16, 18\}$
+
+**Step 1 — Find the sample mean:**
+$$\bar{x} = \frac{10+12+14+16+18}{5} = \frac{70}{5} = 14 \text{ V}$$
+
+**Step 2 — Find each deviation from the mean $(x - \bar{x})$ and square it:**
+
+| $x$ | $x - \bar{x}$ | $(x - \bar{x})^2$ |
+|-----|--------------|------------------|
+| 10  | $10 - 14 = -4$ | 16 |
+| 12  | $12 - 14 = -2$ | 4 |
+| 14  | $14 - 14 = 0$ | 0 |
+| 16  | $16 - 14 = 2$ | 4 |
+| 18  | $18 - 14 = 4$ | 16 |
+| **Sum** | **0** | **40** |
+
+The sum of deviations is always 0 — a useful check that your mean is correct.
+
+**Step 3 — Sample variance:**
+$$s^2 = \frac{\Sigma(x - \bar{x})^2}{n-1} = \frac{40}{5-1} = \frac{40}{4} = 10 \text{ V}^2$$
+
+**Step 4 — Standard deviation:**
+$$s = \sqrt{10} \approx 3.16 \text{ V}$$
+
+**Verify with computational shortcut:**
+$\Sigma x^2 = 100 + 144 + 196 + 256 + 324 = 1020$
+$(\Sigma x)^2 = (70)^2 = 4900$
+
+$$s^2 = \frac{1020 - \frac{4900}{5}}{4} = \frac{1020 - 980}{4} = \frac{40}{4} = 10 \checkmark$$
+
+---
+
+> **Key Takeaways**
+>
+> - **Mean**: Sum ÷ Count. Uses all values. Best for symmetric data. Pulled by outliers.
+> - **Median**: Middle value when sorted. Not affected by outliers. Best for skewed data.
+> - **Mode**: Most frequent value. The only measure usable for nominal data.
+> - **Order of operations**: Always square before summing for $\Sigma X^2$; sum before squaring for $(\Sigma X)^2$. These are different.
+> - **Standard deviation** tells you how far a "typical" value sits from the mean — the bigger it is, the more spread out your data.
+> - **Sample variance uses $n-1$** in the denominator (degrees of freedom). Using $n$ instead is a common exam error.
+
+---
+
+> **Exam Tips**
+>
+> - When computing the mean from a **frequency table**, multiply each value by its frequency, sum those products, then divide by the total frequency: $\bar{x} = \frac{\Sigma f \cdot x}{\Sigma f}$.
+> - For **grouped data**, use the midpoint of each class interval as your $x$ value.
+> - The exam will often give you a list of values and ask for mean, median, **and** mode in the same question. Sort the data first — it makes finding the median and mode immediate.
+> - **Which measure to use?** If the data is skewed or has outliers (e.g., income, house prices), use the median. If it is roughly symmetric and no extreme outliers, use the mean.
+> - Lecturers at UI frequently test **$\Sigma X^2$** and **$(\Sigma X)^2$** in the same calculation. Always label which you are computing. A common trap question: "Compute $\Sigma X^2 - \frac{(\Sigma X)^2}{n}$" — the subtraction happens at the end, not inside the summation.
+> - The **computational shortcut for variance** is faster in exams than the definition formula. Memorise: $s^2 = \frac{\Sigma x^2 - \frac{(\Sigma x)^2}{n}}{n-1}$

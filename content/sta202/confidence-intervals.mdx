@@ -1,0 +1,180 @@
+---
+title: Confidence Intervals
+---
+
+# Confidence Intervals
+
+A hypothesis test gives you a yes/no answer: "Is the mean different from some value?" But often you want more: "What values could the mean plausibly be?" A **confidence interval** is the answer to that question. It gives you a **range of plausible values for a population parameter**, along with a stated level of confidence.
+
+---
+
+## The Sampling Uncertainty Problem
+
+Every sample gives you a different estimate. If you took 100 different samples of 50 people and computed the mean height each time, you'd get 100 different numbers. No single sample mean is exactly equal to the true population mean.
+
+> **Analogy:** You're trying to guess the weight of a stone without a perfect scale. Each attempt gives a slightly different reading. A confidence interval says: "Based on my measurements, I'm 95% confident the true weight is between 2.3 kg and 2.7 kg." It acknowledges the uncertainty.
+
+---
+
+## What a Confidence Interval Actually Means
+
+A **95% confidence interval** is NOT saying "there's a 95% chance the true parameter is in this interval." The true parameter is fixed — it either is or isn't in the interval.
+
+The correct interpretation: **if you repeated this sampling process and computed a CI each time, 95% of those intervals would contain the true parameter value.**
+
+Or practically: you can be 95% confident that the particular interval you computed contains the true parameter.
+
+---
+
+## Confidence Interval for a Population Mean
+
+### When Population $\sigma$ is Known (Z-interval)
+
+$$\bar{x} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$
+
+Where:
+- $\bar{x}$ = sample mean
+- $z_{\alpha/2}$ = critical value from standard normal for the chosen confidence level
+- $\sigma$ = known population standard deviation
+- $n$ = sample size
+
+**Common critical values:**
+
+| Confidence Level | $\alpha$ | $z_{\alpha/2}$ |
+|-----------------|---------|---------------|
+| 90% | 0.10 | 1.645 |
+| 95% | 0.05 | 1.960 |
+| 99% | 0.01 | 2.576 |
+
+### When Population $\sigma$ is Unknown (t-interval)
+
+In practice, $\sigma$ is almost never known — you use the sample standard deviation $s$ instead. This introduces extra uncertainty, handled by the **t-distribution**:
+
+$$\boxed{\bar{x} \pm t_{\alpha/2, \nu} \cdot \frac{s}{\sqrt{n}}}$$
+
+Where:
+- $s$ = sample standard deviation
+- $\nu = n - 1$ = degrees of freedom
+- $t_{\alpha/2, \nu}$ = critical value from t-distribution with $\nu$ degrees of freedom
+
+The t-critical value is larger than the corresponding Z-critical value (heavier tails), but converges to $z_{\alpha/2}$ as $n \to \infty$.
+
+**Margin of Error (ME):**
+$$ME = t_{\alpha/2, \nu} \cdot \frac{s}{\sqrt{n}}$$
+
+The CI can be written as: $\bar{x} \pm ME$, giving an interval $(\bar{x} - ME, \; \bar{x} + ME)$.
+
+---
+
+## Worked Example 1: CI for a Mean (σ Unknown)
+
+A random sample of 25 steel rods has mean diameter $\bar{x} = 20.4$ mm and standard deviation $s = 0.5$ mm. Construct a 95% confidence interval for the true mean diameter.
+
+**Given:** $n = 25$, $\bar{x} = 20.4$, $s = 0.5$, confidence level = 95%, $\alpha = 0.05$.
+
+**Degrees of freedom:** $\nu = 25 - 1 = 24$
+
+**Critical value:** $t_{0.025, 24} = 2.064$ (from t-table)
+
+**Margin of error:**
+$$ME = 2.064 \times \frac{0.5}{\sqrt{25}} = 2.064 \times 0.1 = 0.2064$$
+
+**95% Confidence Interval:**
+$$20.4 \pm 0.2064 \implies (20.19, \; 20.61)$$
+
+**Interpretation:** We are 95% confident that the true mean diameter of all steel rods from this production line is between 20.19 mm and 20.61 mm.
+
+---
+
+## Worked Example 2: CI for Difference in Means (Independent Groups)
+
+From the weight loss study in Hypothesis Testing: drug group ($n_1 = 18$, $\bar{x}_1 = 5.01$, $s_1 = 2.722$) and placebo ($n_2 = 19$, $\bar{x}_2 = 1.36$, $s_2 = 2.148$).
+
+**95% CI for $\mu_{\text{drug}} - \mu_{\text{placebo}}$:**
+
+From the output, the 95% CI is $(2.016, \; 5.280)$.
+
+**Interpretation:** We are 95% confident that the drug produces between 2.0 kg and 5.3 kg more weight loss than the placebo, on average.
+
+Since the interval does **not contain 0**, this confirms the significant difference found in the hypothesis test.
+
+---
+
+## Worked Example 3: CI for a Proportion
+
+A survey of 200 students found that 130 own smartphones. Construct a 95% CI for the proportion of all students who own smartphones.
+
+**Sample proportion:** $\hat{p} = \frac{130}{200} = 0.65$
+
+**Standard error of proportion:**
+$$SE = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\frac{0.65 \times 0.35}{200}} = \sqrt{0.001138} = 0.03373$$
+
+**95% CI:**
+$$\hat{p} \pm z_{\alpha/2} \times SE = 0.65 \pm 1.96 \times 0.03373 = 0.65 \pm 0.0661$$
+
+$$\implies (0.584, \; 0.716)$$
+
+**Interpretation:** We are 95% confident that between 58.4% and 71.6% of all students own smartphones.
+
+---
+
+## Factors Affecting the Width of a Confidence Interval
+
+The width of a CI is $2 \times ME = 2 \times t_{\alpha/2} \times \frac{s}{\sqrt{n}}$.
+
+| Change | Effect on CI Width |
+|--------|-------------------|
+| Increase confidence level (e.g. 95% → 99%) | **Wider** (larger critical value) |
+| Increase sample size $n$ | **Narrower** (more data = more precision) |
+| Increase variability (larger $s$) | **Wider** (more spread = less precision) |
+
+> **The precision-confidence trade-off:** You can have a very narrow CI or a very high confidence level, but not both unless you increase your sample size. A 99% CI is wider than a 95% CI for the same data.
+
+---
+
+## Determining Required Sample Size
+
+Sometimes the question is reversed: "How large a sample do I need to achieve a certain margin of error?" For a CI for a mean:
+
+$$n = \left(\frac{z_{\alpha/2} \cdot \sigma}{ME}\right)^2$$
+
+**Always round up to the nearest integer** — if $n = 38.2$, use $n = 39$.
+
+### Worked Example 4: Required Sample Size
+
+A researcher wants to estimate the mean reading time of an article with a 95% CI and a margin of error of at most 2 minutes. Historical data suggests $\sigma \approx 8$ minutes.
+
+$$n = \left(\frac{1.96 \times 8}{2}\right)^2 = (7.84)^2 = 61.47$$
+
+**Round up:** $n = 62$ participants are needed.
+
+---
+
+## Connection Between CIs and Hypothesis Tests
+
+There is a direct duality between confidence intervals and two-tailed hypothesis tests:
+
+- If the 95% CI for $\mu$ **does not include** $\mu_0$, then the two-tailed hypothesis test at $\alpha = 0.05$ **rejects $H_0: \mu = \mu_0$**
+- If the 95% CI **includes** $\mu_0$, the test **fails to reject $H_0$**
+
+> **Practical advantage:** The CI gives you more information than the hypothesis test — it tells you not just whether to reject $H_0$ but what values are plausible.
+
+---
+
+> **Key Takeaways**
+>
+> - A confidence interval provides a **range of plausible values** for a population parameter, not a single point estimate
+> - **t-interval** (unknown $\sigma$): $\bar{x} \pm t_{\alpha/2, n-1} \cdot \frac{s}{\sqrt{n}}$ — use this in almost all practical scenarios
+> - **Correct interpretation:** 95% CI means 95% of such intervals computed from repeated samples would contain the true parameter
+> - Wider intervals come from higher confidence levels or more variable data. Narrower intervals come from larger samples.
+> - If a 95% CI for a difference excludes 0, the difference is statistically significant at $\alpha = 0.05$
+
+---
+
+> **Exam Tips**
+>
+> - The **most common error** in CI questions is using the Z-table when $\sigma$ is unknown (you need the t-table) or forgetting to use $n-1$ degrees of freedom.
+> - When the question says "estimate with 95% confidence", the CI formula is the answer. When the question says "test whether..." at 5% significance, the hypothesis test is the answer. These are different questions even though they are related.
+> - **For proportions**, use $z$ (not $t$) if $np \geq 5$ and $n(1-p) \geq 5$.
+> - If asked to "interpret the CI", always state the confidence level, describe the parameter (e.g., "population mean weight loss"), and give the direction ("between X and Y units"). Don't just read out numbers.
+> - The **margin of error** is a useful concept to know: $ME = t_{\alpha/2} \times SE$. Halving the margin of error requires **quadrupling** the sample size (because $SE \propto 1/\sqrt{n}$).

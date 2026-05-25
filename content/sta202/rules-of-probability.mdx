@@ -1,0 +1,183 @@
+---
+title: Rules of Probability
+---
+
+# Rules of Probability
+
+Now that you understand sample spaces and events, you need rules that tell you how to **calculate probabilities of combined events** — events that involve "or", "not", and combinations of several outcomes. These rules are the algebraic laws of probability.
+
+---
+
+## Rule 1: The Additive Rule (For Mutually Exclusive Events)
+
+**If two events $A$ and $B$ are mutually exclusive** (i.e., $A \cap B = \emptyset$, they cannot both happen at the same time), then:
+
+$$P(A \cup B) = P(A) + P(B)$$
+
+In words: the probability that $A$ **or** $B$ occurs equals the sum of their individual probabilities — because there is no overlap to worry about.
+
+**Extended version** — for any number of mutually exclusive events $A_1, A_2, \ldots, A_k$:
+
+$$P(A_1 \cup A_2 \cup \cdots \cup A_k) = P(A_1) + P(A_2) + \cdots + P(A_k)$$
+
+### Worked Example 1: Rolling a Die
+
+A fair die is rolled. What is the probability of rolling a 2 or a 5?
+
+Events $A = \{2\}$ and $B = \{5\}$ are mutually exclusive (a die can't show both simultaneously).
+
+$$P(2 \text{ or } 5) = P(2) + P(5) = \frac{1}{6} + \frac{1}{6} = \frac{2}{6} = \frac{1}{3}$$
+
+---
+
+## Rule 2: The General Additive Rule
+
+What if $A$ and $B$ are **not** mutually exclusive? They might share some outcomes. If you simply add $P(A) + P(B)$, you **double-count** the outcomes in the intersection $A \cap B$.
+
+The general rule corrects for this:
+
+$$\boxed{P(A \cup B) = P(A) + P(B) - P(A \cap B)}$$
+
+**Why the subtraction?** When you add $P(A)$ and $P(B)$, the outcomes in $A \cap B$ are counted once in $P(A)$ and again in $P(B)$ — twice total. Subtracting $P(A \cap B)$ restores the correct count.
+
+> **Analogy:** Imagine counting how many students study Maths or Physics. If you add the Maths class size and Physics class size, you've double-counted the students who take both. So you subtract those students once.
+
+**Note:** For mutually exclusive events, $P(A \cap B) = 0$, so the general rule reduces to Rule 1. The general rule always works.
+
+### Worked Example 2: University Sports Competition
+
+Two cities, Ibadan and Zaria, are competing for a spot in the final 5 of NUGA (Nigerian University Games).
+
+- $P(\text{Ibadan in final 5}) = 0.20$
+- $P(\text{Zaria in final 5}) = 0.35$
+- $P(\text{Both Ibadan and Zaria in final 5}) = 0.08$
+
+What is the probability that **Ibadan or Zaria** (or both) will be in the final 5?
+
+$$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+$$= 0.20 + 0.35 - 0.08$$
+$$= 0.47$$
+
+There is a 47% chance that at least one of Ibadan or Zaria makes the final 5.
+
+### Worked Example 3: Playing Cards
+
+A single card is drawn at random from a standard 52-card deck. What is the probability of drawing a **heart** or a **face card** (Jack, Queen, King)?
+
+- $P(\text{Heart}) = \frac{13}{52}$ (13 hearts in the deck)
+- $P(\text{Face card}) = \frac{12}{52}$ (12 face cards: 3 per suit × 4 suits)
+- $P(\text{Heart AND Face card}) = \frac{3}{52}$ (3 face cards that are hearts: J♥, Q♥, K♥)
+
+$$P(\text{Heart or Face}) = \frac{13}{52} + \frac{12}{52} - \frac{3}{52} = \frac{22}{52} = \frac{11}{26} \approx 0.423$$
+
+---
+
+## Rule 3: The Complement Rule
+
+For any event $A$, the event $A$ either occurs or it does not — there is no third option. This means $A$ and $\bar{A}$ (the complement of $A$) are:
+- **Mutually exclusive:** $A \cap \bar{A} = \emptyset$
+- **Exhaustive:** $A \cup \bar{A} = S$
+
+Therefore:
+$$P(A) + P(\bar{A}) = P(S) = 1$$
+
+$$\boxed{P(\bar{A}) = 1 - P(A)}$$
+
+This is one of the most useful rules in probability. Whenever it is **easier to compute the probability of the complement**, use this rule and subtract from 1.
+
+> **Analogy:** If the probability it rains tomorrow is 0.3, then the probability it does **not** rain is $1 - 0.3 = 0.7$.
+
+### Worked Example 4: Complement in Practice
+
+A bag contains 5 red balls, 3 blue balls, and 2 green balls (10 total). One ball is drawn randomly. What is the probability that it is **not** red?
+
+**Direct:** $P(\text{not red}) = P(\text{blue or green}) = \frac{3+2}{10} = \frac{5}{10} = 0.5$
+
+**Using complement:** $P(\text{not red}) = 1 - P(\text{red}) = 1 - \frac{5}{10} = 0.5$ ✓
+
+### Worked Example 5: At Least One
+
+When rolling a fair die twice, what is the probability of getting **at least one 6**?
+
+"At least one 6" is the complement of "no 6s at all."
+
+**Step 1:** $P(\text{no 6 on one roll}) = \frac{5}{6}$
+
+**Step 2:** $P(\text{no 6 on either roll}) = \frac{5}{6} \times \frac{5}{6} = \frac{25}{36}$
+
+(Rolls are independent, so multiply — see the next topic for independence.)
+
+**Step 3:** $P(\text{at least one 6}) = 1 - \frac{25}{36} = \frac{11}{36} \approx 0.306$
+
+> This technique — computing "at least one" via the complement — is extremely common in exams.
+
+---
+
+## Summary of the Rules
+
+| Situation | Formula |
+|-----------|---------|
+| Mutually exclusive events | $P(A \cup B) = P(A) + P(B)$ |
+| General (any two events) | $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ |
+| Complement | $P(\bar{A}) = 1 - P(A)$ |
+
+```mermaid
+flowchart TD
+    A[Need P of A or B] --> B{Are A and B<br/>mutually exclusive?}
+    B -->|Yes: A∩B = ∅| C[P(A∪B) = P(A) + P(B)]
+    B -->|No: A∩B ≠ ∅| D[P(A∪B) = P(A) + P(B) − P(A∩B)]
+    E[Need P of 'not A'] --> F[P(Ā) = 1 − P(A)]
+```
+
+---
+
+## Worked Example 6: Three Events
+
+Given three events $A$, $B$, $C$ from some sample space, with:
+- $P(A) = 0.3$, $P(B) = 0.4$, $P(C) = 0.2$
+- $P(A \cap B) = 0.1$, $P(A \cap C) = 0.05$, $P(B \cap C) = 0.08$
+- $P(A \cap B \cap C) = 0.02$
+
+Find $P(A \cup B \cup C)$.
+
+**General rule for three events** (inclusion-exclusion principle):
+$$P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) + P(A \cap B \cap C)$$
+
+$$= 0.3 + 0.4 + 0.2 - 0.1 - 0.05 - 0.08 + 0.02 = 0.69$$
+
+The pattern: add individual events, subtract pairwise intersections, add back the triple intersection.
+
+---
+
+## Worked Example 7: Using Multiple Rules
+
+A student takes an exam with 4 multiple choice questions, each with 5 options. What is the probability of getting **at least 1 question correct** by pure random guessing?
+
+$$P(\text{at least 1 correct}) = 1 - P(\text{all wrong})$$
+
+For each question, $P(\text{wrong}) = \frac{4}{5}$.
+
+$$P(\text{all 4 wrong}) = \left(\frac{4}{5}\right)^4 = \frac{256}{625}$$
+
+$$P(\text{at least 1 correct}) = 1 - \frac{256}{625} = \frac{369}{625} \approx 0.590$$
+
+Even with random guessing, there is a ~59% chance of getting at least one right.
+
+---
+
+> **Key Takeaways**
+>
+> - **Additive Rule (mutually exclusive):** $P(A \cup B) = P(A) + P(B)$ — no overlap, just add
+> - **General Additive Rule:** $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ — always works, accounts for the overlap
+> - **Complement Rule:** $P(\bar{A}) = 1 - P(A)$ — use this whenever "not" or "at least one" appears; it is often simpler to compute the complement
+> - The general additive rule reduces to the mutually exclusive version when $P(A \cap B) = 0$
+
+---
+
+> **Exam Tips**
+>
+> - The **"at least one"** phrasing almost always signals the complement approach: $P(\text{at least one}) = 1 - P(\text{none})$. Do not try to sum up all the cases where at least one occurs — use the complement.
+> - **The forgetting-to-subtract trap:** When events overlap and you use $P(A) + P(B)$ without subtracting $P(A \cap B)$, you will overcount. Always check whether the events can occur simultaneously.
+> - **Verify your answer:** A probability must always be between 0 and 1. If you get a negative number or a value greater than 1, you made an error — go back and check.
+> - For **"or" questions with mutually exclusive events**, you can just add. "What is the probability of rolling a 1 or a 2?" → $\frac{1}{6} + \frac{1}{6} = \frac{1}{3}$. These are mutually exclusive because a die can only show one face.
+> - The **inclusion-exclusion formula** for three events is occasionally tested: add all three, subtract all pairwise intersections, add back the triple intersection. The pattern continues for more events.
