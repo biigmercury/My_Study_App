@@ -14,14 +14,13 @@ The idea borrows from physics. In mechanics, the "moment" of a mass distribution
 
 ## Raw Moments (Moments About the Origin)
 
-The **$r$-th raw moment** of $X$ is the expected value of $X^r$:
+The **$r$-th raw moment** of $X$ is the expected value of $X^r$. The term "about the origin" means we raise $X$ to a power without subtracting the mean first.
 
-$$\mu'_r = E(X^r) = \begin{cases}
-\displaystyle\sum_{\text{all } x} x^r f(x) & \text{discrete} \\[10pt]
-\displaystyle\int_{-\infty}^{\infty} x^r f(x)\, dx & \text{continuous}
-\end{cases}$$
+For **discrete** $X$:
+$$\mu'_r = E(X^r) = \sum_{\text{all } x} x^r \, f(x)$$
 
-The term "about the origin" means we raise $X$ to a power without first subtracting the mean.
+For **continuous** $X$:
+$$\mu'_r = E(X^r) = \int_{-\infty}^{\infty} x^r \, f(x) \, dx$$
 
 | Raw moment | Notation | What it equals |
 |-----------|----------|----------------|
@@ -34,12 +33,13 @@ The term "about the origin" means we raise $X$ to a power without first subtract
 
 ## Central Moments (Moments About the Mean)
 
-The **$r$-th central moment** measures the expected value of $(X - \mu)^r$ — we measure deviations from the mean, not from the origin:
+The **$r$-th central moment** measures the expected value of $(X - \mu)^r$. We measure from the mean this time, not from the origin.
 
-$$\mu_r = E\left[(X - \mu)^r\right] = \begin{cases}
-\displaystyle\sum_{\text{all } x} (x - \mu)^r f(x) & \text{discrete} \\[10pt]
-\displaystyle\int_{-\infty}^{\infty} (x - \mu)^r f(x)\, dx & \text{continuous}
-\end{cases}$$
+For **discrete** $X$:
+$$\mu_r = E\!\left[(X - \mu)^r\right] = \sum_{\text{all } x} (x - \mu)^r \, f(x)$$
+
+For **continuous** $X$:
+$$\mu_r = E\!\left[(X - \mu)^r\right] = \int_{-\infty}^{\infty} (x - \mu)^r \, f(x) \, dx$$
 
 The first four central moments each describe something specific about the shape:
 

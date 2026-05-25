@@ -16,10 +16,11 @@ Expectation — also called the **mean** or **expected value** — is the single
 
 The **mean** or **expected value** of $X$, denoted $\mu_X$ or $E(X)$, is:
 
-$$\boxed{E(X) = \begin{cases}
-\displaystyle\sum_{\text{all } x} x \cdot f(x) & \text{if } X \text{ is discrete} \\[12pt]
-\displaystyle\int_{-\infty}^{\infty} x \cdot f(x)\, dx & \text{if } X \text{ is continuous}
-\end{cases}}$$
+**For discrete $X$:**
+$$E(X) = \sum_{\text{all } x} x \cdot f(x)$$
+
+**For continuous $X$:**
+$$E(X) = \int_{-\infty}^{\infty} x \cdot f(x)\, dx$$
 
 **Interpretation:** $E(X)$ is the **probability-weighted average** of all possible values. If you repeated the experiment a huge number of times, the average of all observed values would converge to $E(X)$.
 
@@ -52,7 +53,7 @@ $$= 0 + \frac{15}{28} + \frac{6}{28} = \frac{21}{28} = \frac{3}{4} = 0.75 \text{
 
 The lifespan $X$ (in hours) of a certain electronic device has PDF:
 
-$$f(x) = \begin{cases} \dfrac{20000}{x^3} & x > 100 \\ 0 & \text{elsewhere} \end{cases}$$
+$$f(x) = \frac{20000}{x^3}, \quad x > 100 \qquad (f(x) = 0 \text{ elsewhere})$$
 
 **Find the expected lifespan:**
 $$E(X) = \int_{-\infty}^{\infty} x \cdot f(x)\, dx = \int_{100}^{\infty} x \cdot \frac{20000}{x^3}\, dx = \int_{100}^{\infty} \frac{20000}{x^2}\, dx$$
@@ -69,10 +70,11 @@ You often need the expected value of some function $g(X)$, not just $X$ itself.
 
 **Theorem 5.1:** The mean of $g(X)$ is:
 
-$$E[g(X)] = \begin{cases}
-\displaystyle\sum_{\text{all } x} g(x) \cdot f(x) & \text{if } X \text{ is discrete} \\[12pt]
-\displaystyle\int_{-\infty}^{\infty} g(x) \cdot f(x)\, dx & \text{if } X \text{ is continuous}
-\end{cases}$$
+**For discrete $X$:**
+$$E[g(X)] = \sum_{\text{all } x} g(x) \cdot f(x)$$
+
+**For continuous $X$:**
+$$E[g(X)] = \int_{-\infty}^{\infty} g(x) \cdot f(x)\, dx$$
 
 ### Worked Example 3: $g(X) = (X-1)^2$
 
@@ -92,10 +94,11 @@ The expected value tells you the centre. But two distributions can have the same
 
 **Definition 5.2:** The **variance** of $X$, denoted $\sigma^2_X$ or $Var(X)$, is the expected squared deviation from the mean:
 
-$$\boxed{Var(X) = E\left[(X - \mu)^2\right] = \begin{cases}
-\displaystyle\sum_{\text{all } x} (x - \mu)^2 f(x) & \text{discrete} \\[12pt]
-\displaystyle\int_{-\infty}^{\infty} (x - \mu)^2 f(x)\, dx & \text{continuous}
-\end{cases}}$$
+**For discrete $X$:**
+$$Var(X) = E\left[(X - \mu)^2\right] = \sum_{\text{all } x} (x - \mu)^2 f(x)$$
+
+**For continuous $X$:**
+$$Var(X) = E\left[(X - \mu)^2\right] = \int_{-\infty}^{\infty} (x - \mu)^2 f(x)\, dx$$
 
 The **standard deviation** is: $\sigma_X = \sqrt{Var(X)}$
 
@@ -204,7 +207,7 @@ $$Var(5X + 2Y - 2) = 5^2 Var(X) + 2^2 Var(Y) = 25(4) + 4(1) = 100 + 4 = 104$$
 
 A continuous random variable $X$ has PDF:
 
-$$f(x) = \begin{cases} 2(1-x) & 0 < x < 1 \\ 0 & \text{elsewhere} \end{cases}$$
+$$f(x) = 2(1-x), \quad 0 < x < 1 \qquad (f(x) = 0 \text{ elsewhere})$$
 
 Find $E(X)$ and $Var(X)$.
 
