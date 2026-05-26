@@ -68,7 +68,7 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
       <div className="w-full max-w-[430px] pointer-events-auto">
-        <div className="bg-white/90 dark:bg-brand-slate/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-700/60 safe-area-pb">
+        <div className="bg-brand-frost/95 dark:bg-brand-navy/98 backdrop-blur-md border-t border-brand-ice/60 dark:border-brand-ocean/20 safe-area-pb">
           <div className="flex justify-around py-2 px-2">
             {tabs.map(tab => {
               const active = isActive(tab.href)
@@ -78,8 +78,8 @@ export default function BottomNav() {
                   href={tab.href}
                   className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors min-w-[52px] ${
                     active
-                      ? 'text-brand-royal dark:text-brand-sky'
-                      : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                      ? 'text-brand-ocean dark:text-brand-cyan'
+                      : 'text-slate-400 dark:text-brand-ice/50 hover:text-brand-ocean dark:hover:text-brand-ice'
                   }`}
                 >
                   {tab.icon(active)}

@@ -13,7 +13,7 @@ export default function CourseCard({ course, progress }: CourseCardProps) {
 
   return (
     <Link href={`/courses/${course.code}`} className="block group">
-      <div className="rounded-2xl overflow-hidden shadow-sm border border-slate-200/60 dark:border-slate-700/40 bg-white dark:bg-brand-slate hover:shadow-md transition-shadow">
+      <div className="rounded-2xl overflow-hidden shadow-sm border border-brand-ice/60 dark:border-brand-ocean/20 bg-white dark:bg-brand-slate hover:shadow-md transition-shadow">
         <div
           className="p-4 text-white relative overflow-hidden"
           style={{ background: course.accent }}

@@ -72,7 +72,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
   return (
     <div className="fixed inset-x-0 top-0 bottom-16 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="w-full max-w-[430px] bg-white dark:bg-brand-slate rounded-t-3xl overflow-y-auto"
+        className="w-full max-w-[430px] bg-brand-frost dark:bg-brand-slate rounded-t-3xl overflow-y-auto"
         style={{ maxHeight: 'calc(100vh - 64px)' }}
         onClick={e => e.stopPropagation()}
       >
@@ -105,8 +105,8 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
                     onClick={() => setDifficulty(d)}
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium border transition-all capitalize ${
                       difficulty === d
-                        ? 'bg-brand-royal dark:bg-brand-sky text-white border-transparent'
-                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600'
+                        ? 'bg-brand-gradient text-white border-transparent'
+                        : 'bg-white dark:bg-brand-slate text-brand-navy dark:text-brand-ice border-brand-ice/60 dark:border-brand-ocean/30'
                     }`}
                   >
                     {d}
@@ -116,7 +116,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
               {error && <p className="text-sm text-red-500 mb-4 p-3 bg-red-50 dark:bg-red-950/30 rounded-lg">{error}</p>}
               <button
                 onClick={generateQuiz}
-                className="w-full py-3.5 rounded-2xl bg-brand-gradient text-white font-bold text-sm shadow-lg shadow-blue-500/30"
+                className="w-full py-3.5 rounded-2xl bg-brand-gradient text-white font-bold text-sm shadow-lg shadow-brand-ocean/30"
               >
                 Generate Quiz ✨
               </button>
@@ -126,7 +126,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
           {/* Loading */}
           {loading && (
             <div className="flex flex-col items-center gap-4 py-10">
-              <div className="w-10 h-10 border-3 border-brand-royal dark:border-brand-sky border-t-transparent rounded-full animate-spin" />
+              <div className="w-10 h-10 border-3 border-brand-ocean dark:border-brand-cyan border-t-transparent rounded-full animate-spin" />
               <p className="text-sm text-slate-500 dark:text-slate-400">Generating questions...</p>
             </div>
           )}
@@ -158,7 +158,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
                         : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/40'
                     }`}>
                       <p className="text-sm font-semibold text-slate-800 dark:text-white mb-3">
-                        <span className="text-brand-royal dark:text-brand-sky">Q{i + 1}.</span> {q.question}
+                        <span className="text-brand-ocean dark:text-brand-cyan">Q{i + 1}.</span> {q.question}
                       </p>
 
                       {q.type === 'mcq' && q.options ? (
@@ -166,8 +166,8 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
                           {q.options.map(opt => (
                             <label key={opt} className={`flex items-start gap-2.5 p-2.5 rounded-lg cursor-pointer border transition-all ${
                               answers[q.id] === opt
-                                ? 'border-brand-royal dark:border-brand-sky bg-blue-50 dark:bg-blue-950/30'
-                                : 'border-transparent bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700/60'
+                                ? 'border-brand-ocean dark:border-brand-cyan bg-brand-frost dark:bg-brand-navy/60'
+                                : 'border-transparent bg-brand-ice/20 dark:bg-brand-slate/60 hover:bg-brand-ice/40 dark:hover:bg-brand-slate'
                             }`}>
                               <input
                                 type="radio"
@@ -184,7 +184,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
                         </div>
                       ) : (
                         <textarea
-                          className="w-full text-sm p-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 resize-none focus:outline-none focus:ring-2 focus:ring-brand-royal dark:focus:ring-brand-sky"
+                          className="w-full text-sm p-3 rounded-lg border border-brand-ice/60 dark:border-brand-ocean/30 bg-white dark:bg-brand-slate text-brand-navy dark:text-brand-ice resize-none focus:outline-none focus:ring-2 focus:ring-brand-ocean dark:focus:ring-brand-cyan"
                           rows={3}
                           placeholder="Type your answer..."
                           value={answers[q.id] || ''}
