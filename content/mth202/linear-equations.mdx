@@ -1,4 +1,4 @@
-# Linear Equations
+﻿# Linear Equations
 
 A first-order linear ODE is one of the workhorses of applied mathematics — it appears in electrical circuits, population models, mixing problems, and heat transfer. The method of the **integrating factor** converts it into something that can be integrated directly.
 
@@ -6,7 +6,7 @@ A first-order linear ODE is one of the workhorses of applied mathematics — it 
 
 A first-order ODE is **linear** if it can be written as:
 
-$$\frac{dy}{dx} + P(x)\,y = Q(x) \tag{5.1}$$
+$$\frac{dy}{dx} + P(x)\,y = Q(x) $$
 
 where $P(x)$ and $Q(x)$ are functions of $x$ *only* (not of $y$).
 
@@ -38,7 +38,7 @@ The key feature: $y$ and $\frac{dy}{dx}$ each appear to the first power, with no
 
 Start with the standard form (5.1). Multiply both sides by an unknown function $u = u(x)$:
 
-$$u\frac{dy}{dx} + uP(x)y = uQ(x) \tag{5.2}$$
+$$u\frac{dy}{dx} + uP(x)y = uQ(x) $$
 
 We want the left side to be the derivative of a product $\frac{d}{dx}[u(x)\, y]$.
 
@@ -46,11 +46,11 @@ By the product rule: $\frac{d}{dx}[uy] = u\frac{dy}{dx} + y\frac{du}{dx}$.
 
 So (5.2) equals $\frac{d}{dx}[uy]$ when:
 
-$$\frac{du}{dx} = uP(x) \tag{variable separable!}$$
+$$\frac{du}{dx} = uP(x) $$
 
 Separating and integrating: $\ln u = \int P(x)\,dx$, so:
 
-$$u(x) = e^{\int P(x)\,dx} \tag{5.4}$$
+$$u(x) = e^{\int P(x)\,dx} $$
 
 This $u(x)$ is the **integrating factor**.
 
@@ -58,11 +58,11 @@ This $u(x)$ is the **integrating factor**.
 
 With $u$ from (5.4), equation (5.2) becomes:
 
-$$\frac{d}{dx}[u(x)\,y] = u(x)\,Q(x) \tag{5.5}$$
+$$\frac{d}{dx}[u(x)\,y] = u(x)\,Q(x) $$
 
 Integrate both sides:
 
-$$u(x)\,y = \int u(x)\,Q(x)\,dx + A \tag{5.6}$$
+$$u(x)\,y = \int u(x)\,Q(x)\,dx + A $$
 
 Divide by $u(x)$ to get $y$ explicitly.
 

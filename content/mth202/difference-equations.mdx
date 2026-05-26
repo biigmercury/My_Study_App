@@ -1,4 +1,4 @@
-# Difference Equations
+﻿# Difference Equations
 
 A difference equation is the discrete-time analogue of a differential equation. Instead of relating a function to its derivatives, it relates terms of a *sequence* to earlier terms. The theory mirrors ODEs almost exactly — same auxiliary equation, same three cases, same structure for the general solution.
 
@@ -12,7 +12,7 @@ A **sequence** is an ordered list of numbers: $u_0, u_1, u_2, \ldots$ The index 
 
 A **difference equation** specifies a sequence by giving a rule that expresses each term using previous terms:
 
-$$u_{n+k} + a_1 u_{n+k-1} + \cdots + a_k u_n = f(n) \tag{13.1}$$
+$$u_{n+k} + a_1 u_{n+k-1} + \cdots + a_k u_n = f(n) $$
 
 This is a **linear** difference equation of **order** $k$.
 
@@ -26,7 +26,7 @@ This is a **linear** difference equation of **order** $k$.
 
 Solving inductively: $u_1 = au_0$, $u_2 = au_1 = a^2 u_0$, and in general:
 
-$$u_n = a^n u_0 \tag{13.3}$$
+$$u_n = a^n u_0 $$
 
 Compare with the differential equation $y' = ky$, which has solution $y = Ce^{kx}$. Here $a$ plays the role of $e^k$ and $n$ plays the role of $x$.
 
@@ -34,7 +34,7 @@ Compare with the differential equation $y' = ky$, which has solution $y = Ce^{kx
 
 By the same inductive argument:
 
-$$u_n = \left(\prod_{k=0}^{n-1} a_k\right) u_0 \tag{13.5}$$
+$$u_n = \left(\prod_{k=0}^{n-1} a_k\right) u_0 $$
 
 This is the discrete analogue of $y = Ce^{\int a(x)\,dx}$.
 
@@ -42,17 +42,17 @@ This is the discrete analogue of $y = Ce^{\int a(x)\,dx}$.
 
 Iterating: $u_1 = u_0 + f_0$, $u_2 = u_0 + f_0 + f_1$, and in general:
 
-$$u_{n+1} = u_0 + \sum_{k=0}^{n} f_k \tag{13.7}$$
+$$u_{n+1} = u_0 + \sum_{k=0}^{n} f_k $$
 
 ---
 
 ## The General First-Order Linear Difference Equation
 
-$$u_{n+1} = a_n u_n + f_n \tag{13.8}$$
+$$u_{n+1} = a_n u_n + f_n $$
 
 The general solution:
 
-$$u_{n+1} = \left(\prod_{k=0}^{n} a_k\right) u_0 + \sum_{k=0}^{n}\left(\prod_{j=k+1}^{n} a_j\right) f_k \tag{13.9}$$
+$$u_{n+1} = \left(\prod_{k=0}^{n} a_k\right) u_0 + \sum_{k=0}^{n}\left(\prod_{j=k+1}^{n} a_j\right) f_k $$
 
 This parallels the integrating factor solution of first-order linear ODEs.
 

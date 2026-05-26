@@ -1,4 +1,4 @@
-# Some Special Equations
+﻿# Some Special Equations
 
 This lecture concludes the study of first-order ODEs by introducing three special types that cannot be solved by the techniques seen so far, but can each be *transformed* into something familiar. These are the Bernoulli equation, the Riccati equation, and higher-order equations reducible to first order.
 
@@ -6,7 +6,7 @@ This lecture concludes the study of first-order ODEs by introducing three specia
 
 ### Form
 
-$$\frac{dy}{dx} + P(x)y = q(x)y^n \tag{7.1}$$
+$$\frac{dy}{dx} + P(x)y = q(x)y^n $$
 
 where $P$ and $q$ are functions of $x$, and $n$ is any real constant.
 
@@ -20,7 +20,7 @@ where $P$ and $q$ are functions of $x$, and $n$ is any real constant.
 
 **Step 1.** Divide through by $y^n$:
 
-$$y^{-n}\frac{dy}{dx} + P(x)y^{1-n} = q(x) \tag{7.2}$$
+$$y^{-n}\frac{dy}{dx} + P(x)y^{1-n} = q(x) $$
 
 **Step 2.** Substitute $v = y^{1-n}$. Then:
 
@@ -32,7 +32,7 @@ so $y^{-n}\frac{dy}{dx} = \frac{1}{1-n}\frac{dv}{dx}$.
 
 $$\frac{1}{1-n}\frac{dv}{dx} + P(x)v = q(x)$$
 
-$$\frac{dv}{dx} + (1-n)P(x)v = (1-n)q(x) \tag{7.3}$$
+$$\frac{dv}{dx} + (1-n)P(x)v = (1-n)q(x) $$
 
 This is a **standard linear equation** in $v$ and $x$ — solve with the integrating factor method.
 
@@ -104,7 +104,7 @@ $$y = \frac{1}{\sqrt{x/2 + A/x}}$$
 
 ### Form
 
-$$\frac{dy}{dx} = p(x)y^2 + q(x)y + r(x) \tag{Riccati}$$
+$$\frac{dy}{dx} = p(x)y^2 + q(x)y + r(x) $$
 
 where $p(x) \neq 0$. This is a *non-linear* equation and cannot generally be solved by elementary methods.
 
@@ -114,7 +114,7 @@ where $p(x) \neq 0$. This is a *non-linear* equation and cannot generally be sol
 
 Substitute $y = y_1 + \frac{1}{v}$ into the Riccati equation. This transforms it into:
 
-$$\frac{dv}{dx} + (2p(x)y_1 + q(x))v = -p(x) \tag{7.4}$$
+$$\frac{dv}{dx} + (2p(x)y_1 + q(x))v = -p(x) $$
 
 which is a **linear equation** in $v$.
 
@@ -156,7 +156,7 @@ $$y = x + \frac{2x}{Axe^{1/(2x^2)} - 1}$$
 
 When the ODE does not contain $y$ explicitly:
 
-$$F(x,\, y',\, y'') = 0 \tag{7.5}$$
+$$F(x,\, y',\, y'') = 0 $$
 
 **Substitution:** Let $p = y'$. Then $y'' = p'$ and the equation reduces to:
 
