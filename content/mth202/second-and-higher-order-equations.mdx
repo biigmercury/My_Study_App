@@ -1,4 +1,4 @@
-# Second and Higher Order Equations with Constant Coefficients
+﻿# Second and Higher Order Equations with Constant Coefficients
 
 This is the central method of the course. Second-order linear ODEs with constant coefficients appear everywhere in physics and engineering — vibrating springs, electrical circuits, damped oscillations. The technique for solving them is elegant and completely systematic.
 
@@ -6,13 +6,13 @@ This is the central method of the course. Second-order linear ODEs with constant
 
 The **general** second-order linear ODE with constant coefficients is:
 
-$$a\frac{d^2y}{dx^2} + b\frac{dy}{dx} + cy = Q(x) \tag{8.1}$$
+$$a\frac{d^2y}{dx^2} + b\frac{dy}{dx} + cy = Q(x) $$
 
 where $a$, $b$, $c$ are constants and $Q(x)$ is a given function of $x$.
 
 The **reduced (homogeneous)** equation sets $Q = 0$:
 
-$$a\frac{d^2y}{dx^2} + b\frac{dy}{dx} + cy = 0 \tag{8.2}$$
+$$a\frac{d^2y}{dx^2} + b\frac{dy}{dx} + cy = 0 $$
 
 **The big picture:** The general solution of (8.1) is:
 
@@ -38,7 +38,7 @@ $$e^{mx}(am^2 + bm + c) = 0$$
 
 Since $e^{mx} \neq 0$, we must have:
 
-$$am^2 + bm + c = 0 \tag{8.3}$$
+$$am^2 + bm + c = 0 $$
 
 This is the **auxiliary equation** (also called the *characteristic equation*). It is a quadratic in $m$, giving two roots $m_1$ and $m_2$.
 
@@ -69,7 +69,7 @@ flowchart TD
 
 If $m_1 \neq m_2$ are both real, the complementary function is:
 
-$$y_c = Ae^{m_1 x} + Be^{m_2 x} \tag{8.5}$$
+$$y_c = Ae^{m_1 x} + Be^{m_2 x} $$
 
 ---
 
@@ -113,7 +113,7 @@ To get the second independent solution, substitute $y = v(x)e^{mx}$ and find tha
 
 The complementary function is:
 
-$$y_c = (A + Bx)e^{mx} \tag{8.6}$$
+$$y_c = (A + Bx)e^{mx} $$
 
 ---
 
@@ -139,15 +139,15 @@ where $p = -\frac{b}{2a}$ and $q = \frac{\sqrt{4ac - b^2}}{2a}$.
 
 Using Euler's formula $e^{i\theta} = \cos\theta + i\sin\theta$, the complex exponentials combine into real-valued functions:
 
-$$y_c = e^{px}(A\cos qx + B\sin qx) \tag{8.7}$$
+$$y_c = e^{px}(A\cos qx + B\sin qx) $$
 
 This can also be written:
 
-$$y_c = Ce^{px}\sin(qx + \delta) \tag{8.8}$$
+$$y_c = Ce^{px}\sin(qx + \delta) $$
 
 or
 
-$$y_c = Ce^{px}\cos(qx - \phi) \tag{8.9}$$
+$$y_c = Ce^{px}\cos(qx - \phi) $$
 
 where $C = \sqrt{A^2+B^2}$ and $\delta$ (or $\phi$) is a phase angle.
 

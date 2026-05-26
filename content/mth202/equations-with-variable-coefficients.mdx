@@ -1,4 +1,4 @@
-# Equations with Variable Coefficients
+﻿# Equations with Variable Coefficients
 
 When the coefficients of $y''$ and $y'$ are not constants but functions of $x$, the auxiliary-equation method no longer works. Two special techniques handle the most common cases: *using one known solution to find a second*, and the *Euler equation* substitution.
 
@@ -6,7 +6,7 @@ When the coefficients of $y''$ and $y'$ are not constants but functions of $x$, 
 
 Consider:
 
-$$y'' + a(x)y' + b(x)y = Q(x) \tag{11.1 reduced}$$
+$$y'' + a(x)y' + b(x)y = Q(x) $$
 
 where $a(x)$ and $b(x)$ are functions of $x$. There is no general method. But two special cases are tractable.
 
@@ -22,7 +22,7 @@ $$y'' + a(x)y' + b(x)y = 0$$
 
 then a second linearly independent solution $y_2$ is given by:
 
-$$y_2 = y_1(x)\int \frac{e^{-\int a(x)\,dx}}{y_1^2(x)}\,dx \tag{11.5}$$
+$$y_2 = y_1(x)\int \frac{e^{-\int a(x)\,dx}}{y_1^2(x)}\,dx $$
 
 **Where this comes from:** Assume $y_2 = v(x)y_1$. Substituting into the ODE and simplifying (the terms involving $y_1'' + ay_1' + by_1 = 0$ vanish), we get $v'' + \left(\frac{2y_1'}{y_1} + a\right)v' = 0$, which is a first-order ODE for $v'$. Separating and integrating yields formula (11.5).
 
@@ -88,7 +88,7 @@ $$y = Ax^2 + Bx^{-2}$$
 
 The **Euler equation** (Cauchy-Euler equation) is:
 
-$$x^2 y'' + ax y' + by = Q(x) \tag{11.6}$$
+$$x^2 y'' + ax y' + by = Q(x) $$
 
 where $a$ and $b$ are *constants* (but the coefficients $x^2$ and $x$ are *functions* of $x$).
 
@@ -106,7 +106,7 @@ $$x^2 \cdot \frac{1}{x^2}(\ddot{y}-\dot{y}) + ax\cdot\frac{1}{x}\dot{y} + by = Q
 
 $$\ddot{y} - \dot{y} + a\dot{y} + by = Q(e^t)$$
 
-$$\ddot{y} + (a-1)\dot{y} + by = Q(e^t) \tag{transformed}$$
+$$\ddot{y} + (a-1)\dot{y} + by = Q(e^t) $$
 
 This is a **constant-coefficient equation** in $t$ — solvable by all the methods of Lectures 8–9!
 
@@ -118,7 +118,7 @@ After solving for $y(t)$, back-substitute $t = \ln x$.
 
 Solve:
 
-$$xy'' - 2y' + 2y = x^3\ln x \tag{11.7}$$
+$$xy'' - 2y' + 2y = x^3\ln x $$
 
 Wait — from the textbook, the Euler equation example is $x^2 y'' - 2y' + 2y$... let me use the textbook form:
 
@@ -166,7 +166,7 @@ $$y = Ax + Bx^2 + \frac{x^3(2\ln x - 3)}{4}$$
 
 Solve:
 
-$$(x+1)^2 y'' + (x+1)y' - y = x \tag{11.8}$$
+$$(x+1)^2 y'' + (x+1)y' - y = x $$
 
 This is an Euler equation with $x+1$ in place of $x$. Set $x+1 = e^t$ (i.e., $t = \ln(x+1)$).
 

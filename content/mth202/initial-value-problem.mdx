@@ -1,4 +1,4 @@
-# Initial-Value Problem
+﻿# Initial-Value Problem
 
 Finding the general solution of an ODE is only half the job. In real applications you need the *specific* function that matches the situation at hand — the particular solution. This requires using given conditions to pin down the arbitrary constants.
 
@@ -31,11 +31,11 @@ $$y(x_0) = \alpha, \qquad y(x_1) = \beta$$
 
 Solve:
 
-$$y'' - 6y' + 5y = e^{3x} \tag{10.1}$$
+$$y'' - 6y' + 5y = e^{3x} $$
 
 subject to:
 
-$$y(0) = 0, \qquad y'(0) = 1 \tag{10.2}$$
+$$y(0) = 0, \qquad y'(0) = 1 $$
 
 **Step 1. Complementary Function.**
 
@@ -61,13 +61,13 @@ $$y_p = -\frac{1}{4}e^{3x}$$
 
 **Step 3. General Solution.**
 
-$$y = Ae^x + Be^{5x} - \frac{1}{4}e^{3x} \tag{10.3}$$
+$$y = Ae^x + Be^{5x} - \frac{1}{4}e^{3x} $$
 
 **Step 4. Apply Initial Conditions.**
 
 From $y(0) = 0$:
 
-$$A + B - \frac{1}{4} = 0 \implies A + B = \frac{1}{4} \tag{i}$$
+$$A + B - \frac{1}{4} = 0 \implies A + B = \frac{1}{4} $$
 
 Differentiate:
 
@@ -75,7 +75,7 @@ $$y' = Ae^x + 5Be^{5x} - \frac{3}{4}e^{3x}$$
 
 From $y'(0) = 1$:
 
-$$A + 5B - \frac{3}{4} = 1 \implies A + 5B = \frac{7}{4} \tag{ii}$$
+$$A + 5B - \frac{3}{4} = 1 \implies A + 5B = \frac{7}{4} $$
 
 **Step 5. Solve simultaneously.**
 
@@ -121,7 +121,7 @@ $$y_p = \frac{1}{2}x^2 e^{3x}$$
 
 **Step 3.** General solution:
 
-$$y = (A + Bx)e^{3x} + \frac{1}{2}x^2 e^{3x} \tag{10.3}$$
+$$y = (A + Bx)e^{3x} + \frac{1}{2}x^2 e^{3x} $$
 
 **Step 4.** Apply $y(0) = 0$: $A = 0$.
 
@@ -145,11 +145,11 @@ or equivalently $y = (2x-1)e^{3x} + e^{2x}$ from the original textbook version w
 
 Solve:
 
-$$y'' + y = \sin 2x \tag{10.4}$$
+$$y'' + y = \sin 2x $$
 
 subject to:
 
-$$y(0) = 1, \qquad y(\pi) = -1 \tag{10.5}$$
+$$y(0) = 1, \qquad y(\pi) = -1 $$
 
 **Step 1. CF.** Auxiliary $m^2 + 1 = 0$, $m = \pm i$ (complex, $p=0$, $q=1$).
 

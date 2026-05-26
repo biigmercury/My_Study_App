@@ -1,4 +1,4 @@
-# Exact Equations
+﻿# Exact Equations
 
 An exact equation is one that hides a complete function inside it. Recognising exactness lets you "undo" a total differential and read off the solution directly, without integration in the usual sense.
 
@@ -22,11 +22,11 @@ This is the key connection: the general solution $u(x,y) = A$ automatically sati
 
 The equation:
 
-$$P(x,y)\,dx + Q(x,y)\,dy = 0 \tag{6.5}$$
+$$P(x,y)\,dx + Q(x,y)\,dy = 0 $$
 
 is **exact** if there exists a function $u(x,y)$ such that:
 
-$$\frac{\partial u}{\partial x} = P(x,y) \qquad \text{and} \qquad \frac{\partial u}{\partial y} = Q(x,y) \tag{6.6}$$
+$$\frac{\partial u}{\partial x} = P(x,y) \qquad \text{and} \qquad \frac{\partial u}{\partial y} = Q(x,y) $$
 
 When this holds, $P\,dx + Q\,dy = du$, so the equation becomes $du = 0$, with general solution $u(x,y) = A$.
 
@@ -34,7 +34,7 @@ When this holds, $P\,dx + Q\,dy = du$, so the equation becomes $du = 0$, with ge
 
 Using the fact that mixed partial derivatives are equal ($\frac{\partial^2 u}{\partial x\,\partial y} = \frac{\partial^2 u}{\partial y\,\partial x}$), equation (6.5) is exact **if and only if**:
 
-$$\frac{\partial P}{\partial y} = \frac{\partial Q}{\partial x} \tag{6.7}$$
+$$\frac{\partial P}{\partial y} = \frac{\partial Q}{\partial x} $$
 
 This is the test. Check it first before anything else.
 
@@ -48,13 +48,13 @@ This is the test. Check it first before anything else.
 
 **Step 2.** From $\frac{\partial u}{\partial x} = P$, integrate with respect to $x$ (treating $y$ as constant):
 
-$$u(x,y) = \int P(x,y)\,dx + \phi(y) = M(x,y) + \phi(y) \tag{6.8}$$
+$$u(x,y) = \int P(x,y)\,dx + \phi(y) = M(x,y) + \phi(y) $$
 
 where $\phi(y)$ is an unknown function of $y$ (the "constant" of partial integration).
 
 **Step 3.** Differentiate with respect to $y$ and set equal to $Q$:
 
-$$\frac{\partial u}{\partial y} = \frac{\partial M}{\partial y} + \phi'(y) = Q(x,y) \tag{6.9}$$
+$$\frac{\partial u}{\partial y} = \frac{\partial M}{\partial y} + \phi'(y) = Q(x,y) $$
 
 Solve for $\phi'(y)$. Since the equation is exact, this will depend only on $y$.
 
@@ -144,7 +144,7 @@ When (6.5) is not exact, we look for an **integrating factor** $\mu(x,y)$ such t
 
 If the expression:
 
-$$k(x) = \frac{\frac{\partial P}{\partial y} - \frac{\partial Q}{\partial x}}{Q} \tag{6.16}$$
+$$k(x) = \frac{\frac{\partial P}{\partial y} - \frac{\partial Q}{\partial x}}{Q} $$
 
 is a function of $x$ *alone*, then the integrating factor is:
 

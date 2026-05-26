@@ -1,4 +1,4 @@
-# How Ordinary Differential Equations Arise
+﻿# How Ordinary Differential Equations Arise
 
 Differential equations are not invented — they are discovered. Whenever a physical, biological, or social law describes how something *changes*, the result is almost always a differential equation. Understanding where they come from makes everything that follows feel inevitable rather than arbitrary.
 
@@ -21,7 +21,7 @@ Let $h(t)$ be the height of the ball (in cm) at time $t$ (in seconds). Assume no
 
 The gravitational acceleration is $980\ \text{cm/s}^2$, directed *downward* (opposing increasing $h$), so:
 
-$$h''(t) = -980 \tag{1.1}$$
+$$h''(t) = -980 $$
 
 This is the differential equation. It says the *second derivative* of height equals the constant $-980$.
 
@@ -45,7 +45,7 @@ $$C_2 = 2205$$
 
 So:
 
-$$h(t) = -490t^2 + 2205 \tag{1.4}$$
+$$h(t) = -490t^2 + 2205 $$
 
 **Finding the answer.** The ball hits the ground when $h(t) = 0$:
 
@@ -59,7 +59,7 @@ $$490t^2 = 2205 \implies t^2 = \frac{2205}{490} = \frac{9}{2} \implies t = \frac
 
 A bacteria colony grows at a rate proportional to its current size. If $N(t)$ is the population at time $t$:
 
-$$\frac{dN}{dt} = kN \tag{1.5}$$
+$$\frac{dN}{dt} = kN $$
 
 where $k$ is the constant of proportionality.
 
@@ -81,7 +81,7 @@ $$N(t) = N(0)\, e^{kt}$$
 
 The rate of change of the temperature difference $A(t)$ between an object and its surroundings is proportional to that difference:
 
-$$\frac{dA}{dt} = kA \tag{same form as 1.5}$$
+$$\frac{dA}{dt} = kA $$
 
 **Solution:** $A(t) = A(0)\, e^{kt}$
 
@@ -99,7 +99,7 @@ $$\frac{1}{P}\frac{dP}{dt} = \beta - \delta P$$
 
 This gives the **logistic equation**:
 
-$$\frac{dP}{dt} = P(\beta - \delta P) \tag{1.6}$$
+$$\frac{dP}{dt} = P(\beta - \delta P) $$
 
 **The solution:**
 
@@ -115,7 +115,7 @@ $$P(t) = \frac{\beta/\delta}{1 + \left(\frac{\beta}{\delta P(0)} - 1\right)e^{-\
 
 An $RL$ circuit with inductance $L$, resistance $R$, and applied EMF $E$ satisfies:
 
-$$L\frac{di}{dt} + Ri = E \tag{1.7}$$
+$$L\frac{di}{dt} + Ri = E $$
 
 where $i(t)$ is the current at time $t$. This is a *linear first-order ODE* — one of the types you will master in upcoming lectures.
 
@@ -125,11 +125,11 @@ where $i(t)$ is the current at time $t$. This is a *linear first-order ODE* — 
 
 A family $S$ of curves is such that the gradient (slope) at every point equals twice the $x$-coordinate:
 
-$$\frac{dy}{dx} = 2x \tag{1.8}$$
+$$\frac{dy}{dx} = 2x $$
 
 **Solution:** Integrate both sides:
 
-$$y = x^2 + C \tag{1.9}$$
+$$y = x^2 + C $$
 
 where $C$ is an arbitrary constant. This represents an entire *family* of parabolas — one parabola for each value of $C$.
 

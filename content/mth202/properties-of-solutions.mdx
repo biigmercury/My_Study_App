@@ -1,4 +1,4 @@
-# Properties of Solutions
+﻿# Properties of Solutions
 
 This lecture develops the theory of homogeneous second-order difference equations with constant coefficients. The treatment mirrors Lecture 8 (ODEs) almost exactly — there is an auxiliary equation, three cases based on the discriminant, and a general solution built from linearly independent solutions.
 
@@ -6,7 +6,7 @@ This lecture develops the theory of homogeneous second-order difference equation
 
 Consider the homogeneous second-order linear difference equation:
 
-$$y_{n+2} + a y_{n+1} + b y_n = 0, \quad b \neq 0 \tag{14.1}$$
+$$y_{n+2} + a y_{n+1} + b y_n = 0, \quad b \neq 0 $$
 
 A **solution** is a sequence $y_0, y_1, y_2, \ldots$ satisfying (14.1) for all integers $n \geq 0$.
 
@@ -22,7 +22,7 @@ $$z_{n+2} + az_{n+1} + bz_n = A(x_{n+2}+ax_{n+1}+bx_n) + B(y_{n+2}+ay_{n+1}+by_n
 
 The analogue of the Wronskian for difference equations is the **Casoration**:
 
-$$C_n(x, y) = x_n y_{n+1} - x_{n+1} y_n \tag{definition}$$
+$$C_n(x, y) = x_n y_{n+1} - x_{n+1} y_n $$
 
 **Properties:**
 - $x_n$ and $y_n$ are linearly independent if and only if $C_n(x,y) \neq 0$ for some (equivalently, any) integer $n \geq 0$ — provided $b \neq 0$.
@@ -40,7 +40,7 @@ $$\lambda^{n+2} + a\lambda^{n+1} + b\lambda^n = \lambda^n(\lambda^2 + a\lambda +
 
 Since this must hold for $n \geq 0$, we need (for $n=0$):
 
-$$\lambda^2 + a\lambda + b = 0 \tag{14.3}$$
+$$\lambda^2 + a\lambda + b = 0 $$
 
 This is the **auxiliary equation** for the difference equation.
 
@@ -67,7 +67,7 @@ flowchart TD
 
 If $\lambda_1 \neq \lambda_2$ are real, the general solution is:
 
-$$y_n = c_1 \lambda_1^n + c_2 \lambda_2^n \tag{14.4}$$
+$$y_n = c_1 \lambda_1^n + c_2 \lambda_2^n $$
 
 ---
 
@@ -83,7 +83,7 @@ Roots: $\lambda_1 = 3$, $\lambda_2 = -2$.
 
 **Step 2.** General solution:
 
-$$y_n = c_1 \cdot 3^n + c_2 \cdot (-2)^n \tag{14.7}$$
+$$y_n = c_1 \cdot 3^n + c_2 \cdot (-2)^n $$
 
 **Step 3.** Apply initial conditions:
 
@@ -119,7 +119,7 @@ Since $\lambda = -a/2$, we have $2\lambda + a = 0$. So $n\lambda^n$ is indeed a 
 
 **General solution:**
 
-$$y_n = (c_1 + c_2 n)\lambda^n, \qquad \lambda = -\frac{a}{2} \tag{14.5}$$
+$$y_n = (c_1 + c_2 n)\lambda^n, \qquad \lambda = -\frac{a}{2} $$
 
 ---
 
@@ -155,7 +155,7 @@ $$x_n^* = r^n \cos n\theta, \qquad y_n^* = r^n \sin n\theta$$
 
 **General solution:**
 
-$$y_n = r^n(c_1 \cos n\theta + c_2 \sin n\theta) \tag{14.6}$$
+$$y_n = r^n(c_1 \cos n\theta + c_2 \sin n\theta) $$
 
 where $r = \sqrt{\alpha^2+\beta^2}$, $\theta = \arctan(\beta/\alpha)$, $0 < \theta < 2\pi$.
 
