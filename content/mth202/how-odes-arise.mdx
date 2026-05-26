@@ -1,0 +1,177 @@
+# How Ordinary Differential Equations Arise
+
+Differential equations are not invented — they are discovered. Whenever a physical, biological, or social law describes how something *changes*, the result is almost always a differential equation. Understanding where they come from makes everything that follows feel inevitable rather than arbitrary.
+
+## What Is a Differential Equation?
+
+A **differential equation** is any equation that relates a function to one or more of its derivatives. The unknown you are solving for is a *function*, not just a number.
+
+**The general idea:** If you know the *rate* at which something changes (a derivative), you want to find the *thing itself* (the function).
+
+**Real-world analogy:** A car's speedometer tells you $v(t)$ — the rate of change of position. Knowing the speedometer reading at every moment lets you reconstruct the full journey $x(t)$, provided you know where you started. That reconstruction is solving a differential equation.
+
+---
+
+## Example 1 — A Falling Ball
+
+A boy drops a ball from the top of a building 22.05 metres (2205 cm) high. When does the ball hit the ground?
+
+**Setting up the ODE.**
+Let $h(t)$ be the height of the ball (in cm) at time $t$ (in seconds). Assume no air resistance.
+
+The gravitational acceleration is $980\ \text{cm/s}^2$, directed *downward* (opposing increasing $h$), so:
+
+$$h''(t) = -980 \tag{1.1}$$
+
+This is the differential equation. It says the *second derivative* of height equals the constant $-980$.
+
+**Solving step by step.**
+
+*Integrate once* with respect to $t$:
+
+$$h'(t) = -980t + C_1$$
+
+Apply the initial condition: the ball is *dropped* (not thrown), so initial velocity is zero:
+
+$$h'(0) = 0 \implies C_1 = 0$$
+
+*Integrate again*:
+
+$$h(t) = -490t^2 + C_2$$
+
+Apply the initial condition $h(0) = 2205$ (initial height equals building height):
+
+$$C_2 = 2205$$
+
+So:
+
+$$h(t) = -490t^2 + 2205 \tag{1.4}$$
+
+**Finding the answer.** The ball hits the ground when $h(t) = 0$:
+
+$$490t^2 = 2205 \implies t^2 = \frac{2205}{490} = \frac{9}{2} \implies t = \frac{3}{\sqrt{2}}\ \text{seconds}$$
+
+(The negative root is rejected since time cannot be negative.)
+
+---
+
+## Example 2 — Population Growth (Bacteria)
+
+A bacteria colony grows at a rate proportional to its current size. If $N(t)$ is the population at time $t$:
+
+$$\frac{dN}{dt} = kN \tag{1.5}$$
+
+where $k$ is the constant of proportionality.
+
+**What this says:** The rate of change of population is *proportional* to the population itself. Larger populations grow faster in absolute terms.
+
+**The solution** (verified by substitution):
+
+$$N(t) = N(0)\, e^{kt}$$
+
+- If $k > 0$: exponential growth
+- If $k < 0$: exponential decay
+- If $k = 0$: constant population
+
+**Real-world analogy:** Compound interest works the same way. The more money in your account, the more interest you earn — the rate of earning is proportional to the amount present.
+
+---
+
+## Example 3 — Newton's Law of Cooling
+
+The rate of change of the temperature difference $A(t)$ between an object and its surroundings is proportional to that difference:
+
+$$\frac{dA}{dt} = kA \tag{same form as 1.5}$$
+
+**Solution:** $A(t) = A(0)\, e^{kt}$
+
+Since a hot object always cools toward the ambient temperature, $k < 0$ in this case. The temperature difference approaches zero as $t \to \infty$.
+
+---
+
+## Example 4 — The Logistic Equation
+
+In many populations, resources are limited. Birth rate $\beta > 0$ is constant per individual, but death rate increases with population size (crowding), proportional to $P$ with constant $\delta > 0$.
+
+The net growth rate per individual:
+
+$$\frac{1}{P}\frac{dP}{dt} = \beta - \delta P$$
+
+This gives the **logistic equation**:
+
+$$\frac{dP}{dt} = P(\beta - \delta P) \tag{1.6}$$
+
+**The solution:**
+
+$$P(t) = \frac{\beta/\delta}{1 + \left(\frac{\beta}{\delta P(0)} - 1\right)e^{-\beta t}}$$
+
+**Key behaviour:** As $t \to \infty$, the exponential term $e^{-\beta t} \to 0$, and $P(t) \to \frac{\beta}{\delta}$, the *carrying capacity*. The population cannot grow forever — it levels off.
+
+**Real-world analogy:** Fish in a pond. Early on, they multiply freely. As numbers grow, competition for food slows growth until the population stabilises.
+
+---
+
+## Example 5 — Electrical Circuit
+
+An $RL$ circuit with inductance $L$, resistance $R$, and applied EMF $E$ satisfies:
+
+$$L\frac{di}{dt} + Ri = E \tag{1.7}$$
+
+where $i(t)$ is the current at time $t$. This is a *linear first-order ODE* — one of the types you will master in upcoming lectures.
+
+---
+
+## Example 6 — Family of Curves
+
+A family $S$ of curves is such that the gradient (slope) at every point equals twice the $x$-coordinate:
+
+$$\frac{dy}{dx} = 2x \tag{1.8}$$
+
+**Solution:** Integrate both sides:
+
+$$y = x^2 + C \tag{1.9}$$
+
+where $C$ is an arbitrary constant. This represents an entire *family* of parabolas — one parabola for each value of $C$.
+
+**Key insight:** The ODE (1.8) describes all curves in the family simultaneously. A particular curve is singled out only when you specify an additional condition, such as $y(0) = 3$ (which gives $C = 3$, so $y = x^2 + 3$).
+
+---
+
+## The Common Theme
+
+```mermaid
+flowchart TD
+    A[Physical/Biological/Social Law] --> B[Rate of Change = f(quantity)]
+    B --> C[Differential Equation]
+    C --> D[Solve by Integration/Special Method]
+    D --> E[General Solution with Arbitrary Constants]
+    E --> F{Initial or Boundary Conditions?}
+    F -->|Yes| G[Particular Solution]
+    F -->|No| E
+```
+
+In every example above:
+- The law told us the **derivative** (rate of change)
+- We wrote a **differential equation**
+- The solution is a **function** (not just a number)
+- Arbitrary constants appear and are fixed by **initial conditions**
+
+---
+
+## Key Takeaways
+
+- A differential equation relates a function to its derivatives; the unknown is a *function*.
+- They arise naturally whenever a law of nature describes a *rate* — velocity, growth, cooling, current flow.
+- The general solution contains arbitrary constants; these constants are pinned down by initial or boundary conditions.
+- The number of arbitrary constants equals the *order* of the ODE (more on this in Lecture 2).
+- Equation (1.5), $dN/dt = kN$, and its solution $N(t) = N(0)e^{kt}$ are among the most important in all of science.
+
+---
+
+## Exam Tips
+
+- When asked to *formulate* an ODE from a word problem, identify: (1) what the dependent variable is, (2) what law or proportionality governs its rate of change, and (3) write $\frac{dy}{dx} = \text{(that rate)}$.
+- "Proportional to" always means multiply by a constant $k$. Write $\frac{dy}{dt} = ky$.
+- When solving by integration, apply initial conditions *immediately after each integration* to find the constants — do not save them all for the end.
+- The logistic equation $\frac{dP}{dt} = P(\beta - \delta P)$ is separable (Lecture 3 technique). Know the structure of its solution.
+- In the ball problem, the negative root $t = -3/\sqrt{2}$ is *rejected* because time is positive. Always check physical validity of solutions.

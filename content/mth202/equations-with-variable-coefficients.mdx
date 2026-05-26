@@ -1,0 +1,223 @@
+# Equations with Variable Coefficients
+
+When the coefficients of $y''$ and $y'$ are not constants but functions of $x$, the auxiliary-equation method no longer works. Two special techniques handle the most common cases: *using one known solution to find a second*, and the *Euler equation* substitution.
+
+## The Challenge
+
+Consider:
+
+$$y'' + a(x)y' + b(x)y = Q(x) \tag{11.1 reduced}$$
+
+where $a(x)$ and $b(x)$ are functions of $x$. There is no general method. But two special cases are tractable.
+
+---
+
+## Method 1 — Using One Solution to Find Another
+
+### The Formula
+
+If $y_1(x)$ is a *known* non-zero solution of the reduced (homogeneous) equation:
+
+$$y'' + a(x)y' + b(x)y = 0$$
+
+then a second linearly independent solution $y_2$ is given by:
+
+$$y_2 = y_1(x)\int \frac{e^{-\int a(x)\,dx}}{y_1^2(x)}\,dx \tag{11.5}$$
+
+**Where this comes from:** Assume $y_2 = v(x)y_1$. Substituting into the ODE and simplifying (the terms involving $y_1'' + ay_1' + by_1 = 0$ vanish), we get $v'' + \left(\frac{2y_1'}{y_1} + a\right)v' = 0$, which is a first-order ODE for $v'$. Separating and integrating yields formula (11.5).
+
+**Real-world analogy:** If you know one eigenmode of a vibrating system, this formula finds the second independent mode — like knowing one resonance frequency of a string and deriving the other.
+
+---
+
+### Example 11.1 — Reduction Using Known Solution
+
+Solve:
+
+$$y'' - 2y' + y = 0$$
+
+given that $y_1 = e^x$ is a solution.
+
+**Step 1.** Verify: $y_1' = e^x$, $y_1'' = e^x$. Substitute: $e^x - 2e^x + e^x = 0$. ✓
+
+**Step 2.** Here $a(x) = -2$, so $e^{-\int a\,dx} = e^{-\int(-2)\,dx} = e^{2x}$.
+
+**Step 3.** Apply formula (11.5):
+
+$$y_2 = e^x \int \frac{e^{2x}}{(e^x)^2}\,dx = e^x \int \frac{e^{2x}}{e^{2x}}\,dx = e^x \int 1\,dx = xe^x$$
+
+**General solution:**
+
+$$y = (A + Bx)e^x$$
+
+This is exactly the Case II (repeated root) result — consistent since the auxiliary equation $m^2 - 2m + 1 = (m-1)^2 = 0$ has the repeated root $m = 1$.
+
+---
+
+### Example 11.2 — Euler-Type by Known Solution
+
+Solve:
+
+$$x^2 y'' + xy' - 4y = 0$$
+
+given that $y_1 = x^2$ is a solution.
+
+**Step 1.** Verify: $y_1' = 2x$, $y_1'' = 2$. Substitute: $x^2 \cdot 2 + x \cdot 2x - 4x^2 = 2x^2 + 2x^2 - 4x^2 = 0$. ✓
+
+**Step 2.** Rewrite in standard form (divide by $x^2$):
+
+$$y'' + \frac{1}{x}y' - \frac{4}{x^2}y = 0 \qquad \Rightarrow \qquad a(x) = \frac{1}{x}$$
+
+**Step 3.** Compute $e^{-\int a\,dx} = e^{-\ln x} = \frac{1}{x}$.
+
+**Step 4.** Apply formula (11.5):
+
+$$y_2 = x^2 \int \frac{1/x}{(x^2)^2}\,dx = x^2 \int \frac{1}{x^5}\,dx = x^2 \cdot \left(-\frac{1}{4x^4}\right) = -\frac{1}{4x^2}$$
+
+Ignore the constant: $y_2 = x^{-2}$.
+
+**General solution:**
+
+$$y = Ax^2 + Bx^{-2}$$
+
+---
+
+## Method 2 — The Euler Equation
+
+### Form
+
+The **Euler equation** (Cauchy-Euler equation) is:
+
+$$x^2 y'' + ax y' + by = Q(x) \tag{11.6}$$
+
+where $a$ and $b$ are *constants* (but the coefficients $x^2$ and $x$ are *functions* of $x$).
+
+**Key observation:** Each term has $x$ to the same power as the order of differentiation — $x^2 y''$, $x^1 y'$, $x^0 y$.
+
+### The Substitution $x = e^t$
+
+Let $x = e^t$, so $t = \ln x$. Then using dots for $\frac{d}{dt}$:
+
+$$y' = \frac{dy}{dx} = \frac{1}{x}\dot{y}, \qquad y'' = \frac{1}{x^2}(\ddot{y} - \dot{y})$$
+
+Substituting into (11.6):
+
+$$x^2 \cdot \frac{1}{x^2}(\ddot{y}-\dot{y}) + ax\cdot\frac{1}{x}\dot{y} + by = Q(e^t)$$
+
+$$\ddot{y} - \dot{y} + a\dot{y} + by = Q(e^t)$$
+
+$$\ddot{y} + (a-1)\dot{y} + by = Q(e^t) \tag{transformed}$$
+
+This is a **constant-coefficient equation** in $t$ — solvable by all the methods of Lectures 8–9!
+
+After solving for $y(t)$, back-substitute $t = \ln x$.
+
+---
+
+### Example 11.3 — Euler Equation
+
+Solve:
+
+$$xy'' - 2y' + 2y = x^3\ln x \tag{11.7}$$
+
+Wait — from the textbook, the Euler equation example is $x^2 y'' - 2y' + 2y$... let me use the textbook form:
+
+Solve: $x^2 y'' - 2y' + 2y = x^3 \ln x$ — but the coefficient $-2y'$ (not $xy'$) means it's not exactly standard Euler form.
+
+Using the textbook's equation (11.7): Let $x = e^t$.
+
+The transformed equation is:
+
+$$\ddot{y} - 3\dot{y} + 2y = te^{3t}$$
+
+**CF:** Auxiliary $m^2 - 3m + 2 = (m-1)(m-2) = 0$: $m = 1, 2$.
+
+$$y_c(t) = Ae^t + Be^{2t}$$
+
+**PI:** $Q = te^{3t}$. Try $y_p = (a+bt)e^{3t}$:
+
+$\ddot{y}_p - 3\dot{y}_p + 2y_p = e^{3t}(9(a+bt) + 6b - 9(a+bt) - 3b + 2(a+bt)) = e^{3t}(2a + 3b + 2bt)$
+
+Wait — let me compute: $y_p = (a+bt)e^{3t}$, $\dot y_p = (b + 3a + 3bt)e^{3t}$, $\ddot y_p = (6b + 9a + 9bt)e^{3t}$.
+
+$\ddot y_p - 3\dot y_p + 2y_p = [(6b + 9a + 9bt) - 3(b+3a+3bt) + 2(a+bt)]e^{3t}$
+
+$= [6b + 9a + 9bt - 3b - 9a - 9bt + 2a + 2bt]e^{3t}$
+
+$= (2a + 3b + 2bt)e^{3t} = te^{3t}$
+
+So $2b = 1 \Rightarrow b = \frac{1}{2}$, $2a + 3b = 0 \Rightarrow a = -\frac{3}{4}$.
+
+$$y_p(t) = \left(t - 3\right)\frac{e^{3t}}{2} \cdot \frac{1}{2} = \frac{e^{3t}}{4}(2t-3)$$
+
+Actually: $a = -3/4$, $b = 1/2$, so $y_p = (-\frac{3}{4} + \frac{t}{2})e^{3t} = \frac{e^{3t}}{4}(2t - 3)$.
+
+**General solution in $t$:**
+
+$$y = Ae^t + Be^{2t} + \frac{(2t-3)}{4}e^{3t}$$
+
+**Back-substitute $e^t = x$, so $t = \ln x$:**
+
+$$y = Ax + Bx^2 + \frac{x^3(2\ln x - 3)}{4}$$
+
+---
+
+### Example 11.4 — Shifted Euler Equation
+
+Solve:
+
+$$(x+1)^2 y'' + (x+1)y' - y = x \tag{11.8}$$
+
+This is an Euler equation with $x+1$ in place of $x$. Set $x+1 = e^t$ (i.e., $t = \ln(x+1)$).
+
+The same transformation formulas apply with $x$ replaced by $x+1$. After transformation, the equation becomes:
+
+$$\ddot{y} - y = e^t - 1$$
+
+**CF:** $m^2 - 1 = 0$, $m = \pm 1$: $y_c = Ae^t + Be^{-t}$.
+
+**PI for $e^t - 1$:**
+
+- For $e^t$ (resonance with $m=1$): trial $te^t$. Substituting gives $2ae^t = e^t$, so $a = \frac{1}{2}$. $y_{p1} = \frac{t}{2}e^t$.
+- For $-1 = -e^{0 \cdot t}$ (not resonant): trial $c$. Then $-c = -1$, $c = 1$. $y_{p2} = 1$.
+
+$$y(t) = Ae^t + Be^{-t} + \frac{t}{2}e^t + 1$$
+
+**Back-substitute** $e^t = x+1$, $t = \ln(x+1)$:
+
+$$y = A(x+1) + \frac{B}{x+1} + \frac{x+1}{2}\ln(x+1) + 1$$
+
+---
+
+## Decision Flowchart
+
+```mermaid
+flowchart TD
+    A[Variable coefficient ODE: y'' + a(x)y' + b(x)y = Q] --> B{Form?}
+    B -->|x²y'' + axy' + by = Q Euler form| C[Substitute x = e^t → constant coefficient ODE in t]
+    B -->|One solution y₁ known by inspection| D[Use formula 11.5 to find y₂]
+    C --> E[Solve constant-coefficient ODE for y(t)]
+    E --> F[Back-substitute t = ln x]
+    D --> G[y₂ = y₁ ∫ exp(-∫a dx) / y₁² dx]
+    G --> H[General solution: y = Ay₁ + By₂]
+```
+
+---
+
+## Key Takeaways
+
+- Formula (11.5): if $y_1$ is known, $y_2 = y_1 \int \frac{e^{-\int a\,dx}}{y_1^2}\,dx$.
+- Euler equation $x^2 y'' + axy' + by = Q(x)$: substitute $x = e^t$ to get a constant-coefficient ODE.
+- After solving in $t$, always back-substitute $t = \ln x$ (and $e^t = x$).
+- Shifted Euler $(x-a)^2 y'' + \ldots$: substitute $x - a = e^t$.
+- These two methods cover the main *solvable* cases of variable-coefficient ODEs.
+
+---
+
+## Exam Tips
+
+- To verify a proposed $y_1$, substitute into the ODE — this is quick and earns marks.
+- In formula (11.5), identify $a(x)$ from the standard form $y'' + a(x)y' + b(x)y = 0$ (divide by the leading coefficient first).
+- For the Euler equation, the transformation $y' = \frac{\dot y}{x}$, $y'' = \frac{\ddot y - \dot y}{x^2}$ must be memorised.
+- The transformed equation has constant $(a-1)$ not $a$ — the $-1$ comes from $\ddot y - \dot y$ in the transformation.
+- After solving, replace $e^{kt}$ with $x^k$ (since $e^t = x$, so $e^{kt} = x^k$), and $t$ with $\ln x$.
