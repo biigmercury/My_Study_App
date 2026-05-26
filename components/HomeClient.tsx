@@ -35,7 +35,7 @@ export default function HomeClient({ courses }: HomeClientProps) {
     <div>
       {/* Hero */}
       <div className="px-4 pt-5 pb-1">
-        <div className="rounded-2xl overflow-hidden relative" style={{ background: 'linear-gradient(135deg, #03045E, #0077B6)' }}>
+        <div className="rounded-2xl overflow-hidden relative" style={{ background: 'linear-gradient(135deg, #1d4ed8, #38bdf8)' }}>
           <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/10 -translate-y-8 translate-x-8" />
           <div className="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-white/5 translate-y-6 -translate-x-6" />
           <div className="relative p-5">
@@ -60,7 +60,7 @@ export default function HomeClient({ courses }: HomeClientProps) {
         <div className="px-4 mt-4">
           <h2 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Continue Studying</h2>
           <Link href={`/courses/${lastCourse.code}`} className="block">
-            <div className="rounded-2xl p-4 flex items-center gap-4 bg-white dark:bg-brand-slate border border-brand-ice/60 dark:border-brand-ocean/20 shadow-sm hover:shadow-md transition-shadow">
+            <div className="rounded-2xl p-4 flex items-center gap-4 bg-white dark:bg-brand-slate border border-slate-200/60 dark:border-slate-700/40 shadow-sm hover:shadow-md transition-shadow">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style={{ background: lastCourse.accent }}>
                 {lastCourse.icon}
               </div>
@@ -83,7 +83,7 @@ export default function HomeClient({ courses }: HomeClientProps) {
       <div className="px-4 mt-5">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">All Courses</h2>
-          <Link href="/courses" className="text-xs text-brand-ocean dark:text-brand-cyan font-semibold">See all</Link>
+          <Link href="/courses" className="text-xs text-brand-royal dark:text-brand-sky font-semibold">See all</Link>
         </div>
         <div className="grid grid-cols-1 gap-3">
           {courses.slice(0, 6).map(course => (
@@ -95,7 +95,7 @@ export default function HomeClient({ courses }: HomeClientProps) {
           ))}
         </div>
         {courses.length > 6 && (
-          <Link href="/courses" className="block mt-3 text-center py-3 rounded-xl bg-brand-ice/30 dark:bg-brand-slate text-sm font-semibold text-brand-ocean dark:text-brand-cyan border border-brand-ice/60 dark:border-brand-ocean/30">
+          <Link href="/courses" className="block mt-3 text-center py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-semibold text-brand-royal dark:text-brand-sky">
             View all {courses.length} courses →
           </Link>
         )}
@@ -106,7 +106,7 @@ export default function HomeClient({ courses }: HomeClientProps) {
 
 function StatCard({ value, label, icon }: { value: number; label: string; icon: string }) {
   return (
-    <div className="bg-white dark:bg-brand-slate rounded-2xl p-3 border border-brand-ice/60 dark:border-brand-ocean/20 shadow-sm text-center">
+    <div className="bg-white dark:bg-brand-slate rounded-2xl p-3 border border-slate-200/60 dark:border-slate-700/40 shadow-sm text-center">
       <span className="text-lg">{icon}</span>
       <p className="text-xl font-black text-slate-800 dark:text-white mt-0.5">{value}</p>
       <p className="text-[10px] text-slate-500 dark:text-slate-400">{label}</p>

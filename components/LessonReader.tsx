@@ -69,20 +69,20 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
       </div>
 
       {/* Actions bar */}
-      <div className="px-4 py-3 flex gap-2 bg-brand-frost/95 dark:bg-brand-slate border-b border-brand-ice/60 dark:border-brand-ocean/20 sticky top-14 z-30">
+      <div className="px-4 py-3 flex gap-2 bg-white dark:bg-brand-slate border-b border-slate-200 dark:border-slate-700/40 sticky top-14 z-30">
         <button
           onClick={toggleComplete}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold border transition-all ${
             isCompleted
               ? 'bg-green-50 dark:bg-green-950/30 border-green-300 dark:border-green-700 text-green-700 dark:text-green-400'
-              : 'bg-white dark:bg-brand-slate border-brand-ice/60 dark:border-brand-ocean/30 text-brand-navy dark:text-brand-ice hover:border-brand-ocean dark:hover:border-brand-cyan'
+              : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-royal dark:hover:border-brand-sky'
           }`}
         >
           {isCompleted ? '✓ Completed' : 'Mark Complete'}
         </button>
         <button
           onClick={handleQuizClick}
-          className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-brand-gradient text-white text-sm font-semibold shadow-sm shadow-brand-ocean/20"
+          className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-brand-gradient text-white text-sm font-semibold shadow-sm shadow-blue-500/20"
         >
           <span>✨</span> Quiz Me
         </button>
@@ -99,8 +99,8 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
           prose-li:text-slate-700 dark:prose-li:text-slate-300
           prose-strong:text-slate-800 dark:prose-strong:text-white
           prose-code:before:content-none prose-code:after:content-none
-          prose-a:text-brand-ocean dark:prose-a:text-brand-cyan
-          prose-blockquote:border-l-brand-ocean dark:prose-blockquote:border-l-brand-cyan
+          prose-a:text-brand-royal dark:prose-a:text-brand-sky
+          prose-blockquote:border-l-brand-royal dark:prose-blockquote:border-l-brand-sky
           prose-hr:border-slate-200 dark:prose-hr:border-slate-700
           prose-table:text-xs prose-table:w-full
           prose-th:bg-slate-100 dark:prose-th:bg-slate-800 prose-th:font-semibold prose-th:text-slate-700 dark:prose-th:text-slate-300 prose-th:px-3 prose-th:py-2
@@ -117,7 +117,7 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
           className={`w-full py-4 rounded-2xl font-bold text-sm transition-all ${
             isCompleted
               ? 'bg-green-500 text-white'
-              : 'bg-brand-gradient text-white shadow-lg shadow-brand-ocean/30'
+              : 'bg-brand-gradient text-white shadow-lg shadow-blue-500/30'
           }`}
         >
           {isCompleted ? '✓ Topic Complete! Tap to unmark' : 'Mark as Complete ✓'}

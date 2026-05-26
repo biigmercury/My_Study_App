@@ -21,15 +21,15 @@ export default function TopicCard({ topic, courseCode, isCompleted, hasContent, 
   return (
     <div className={`flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-brand-slate shadow-sm border transition-all ${
       isCompleted
-        ? 'border-brand-ocean/30 dark:border-brand-cyan/30 bg-brand-frost/60 dark:bg-brand-navy/40'
-        : 'border-brand-ice/60 dark:border-brand-ocean/20'
+        ? 'border-brand-royal/30 dark:border-brand-sky/30 bg-blue-50/50 dark:bg-blue-950/20'
+        : 'border-slate-200/60 dark:border-slate-700/40'
     }`}>
       <button
         onClick={onToggle}
         className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
           isCompleted
-            ? 'bg-brand-ocean dark:bg-brand-cyan border-brand-ocean dark:border-brand-cyan'
-            : 'border-slate-300 dark:border-brand-ice/40 hover:border-brand-ocean dark:hover:border-brand-cyan'
+            ? 'bg-brand-royal dark:bg-brand-sky border-brand-royal dark:border-brand-sky'
+            : 'border-slate-300 dark:border-slate-600 hover:border-brand-royal dark:hover:border-brand-sky'
         }`}
       >
         {isCompleted && (
@@ -62,7 +62,7 @@ export default function TopicCard({ topic, courseCode, isCompleted, hasContent, 
 function TopicContent({ topic, isCompleted }: { topic: Topic; isCompleted: boolean }) {
   return (
     <>
-      <p className={`font-medium text-sm leading-tight ${isCompleted ? 'text-slate-500 dark:text-brand-ice/50 line-through decoration-brand-ocean/40' : 'text-slate-800 dark:text-white'}`}>
+      <p className={`font-medium text-sm leading-tight ${isCompleted ? 'text-slate-500 dark:text-slate-400 line-through decoration-brand-royal/40' : 'text-slate-800 dark:text-slate-100'}`}>
         {topic.title}
       </p>
       <div className="flex items-center gap-2 mt-1">
