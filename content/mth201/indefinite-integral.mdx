@@ -1,0 +1,212 @@
+# Indefinite Integral
+
+Integration is the reverse of differentiation. If differentiation asks "what is the rate of change?", integration asks "what function gives rise to this rate of change?" This process — finding antiderivatives — is called indefinite integration, and it unlocks the ability to recover quantities from their rates, compute areas, and solve differential equations.
+
+## Antiderivatives
+
+A function $F(x)$ is an **antiderivative** of $f(x)$ if:
+$$F'(x) = f(x)$$
+
+**Example:** $F(x) = x^3$ is an antiderivative of $f(x) = 3x^2$, since $(x^3)' = 3x^2$.
+
+But so is $G(x) = x^3 + 5$, since $(x^3 + 5)' = 3x^2$. Any constant can be added without changing the derivative. This leads to the general form.
+
+---
+
+## The Indefinite Integral
+
+The **indefinite integral** of $f(x)$ collects all antiderivatives:
+
+$$\int f(x)\,dx = F(x) + C$$
+
+where:
+- $\int$ is the **integral symbol**
+- $f(x)$ is the **integrand**
+- $dx$ indicates the variable of integration
+- $F(x)$ is any antiderivative of $f(x)$
+- $C$ is the **constant of integration** (arbitrary constant)
+
+**Real-world analogy:** If your speedometer reads $v(t)$ km/h, the odometer reading (distance) is $\int v(t)\,dt + C$, where $C$ depends on where you started. The indefinite integral gives you all possible distances consistent with that speed — the starting position is the constant $C$.
+
+---
+
+## Rules of Integration
+
+### Rule 1 — Constant Function
+$$\int k\,dx = kx + C$$
+
+**Example:** $\int -7\,dx = -7x + C$
+
+### Rule 2 — Power Rule
+$$\int x^n\,dx = \frac{x^{n+1}}{n+1} + C, \quad n \neq -1$$
+
+**Examples:**
+$$\int x^2\,dx = \frac{x^3}{3} + C \qquad \int x^{-2}\,dx = \frac{x^{-1}}{-1} + C = -\frac{1}{x} + C$$
+$$\int \sqrt{x}\,dx = \int x^{1/2}\,dx = \frac{x^{3/2}}{3/2} + C = \frac{2x^{3/2}}{3} + C$$
+
+**Special case ($n = -1$):**
+$$\int \frac{1}{x}\,dx = \ln|x| + C$$
+
+### Rule 3 — Constant Multiple Rule
+$$\int k f(x)\,dx = k \int f(x)\,dx$$
+
+**Example:** $\int 3\sqrt{x}\,dx = 3 \cdot \dfrac{2x^{3/2}}{3} + C = 2x^{3/2} + C$
+
+### Rule 4 — Sum/Difference Rule
+$$\int [f(x) \pm g(x)]\,dx = \int f(x)\,dx \pm \int g(x)\,dx$$
+
+**Example:**
+$$\int (x^3 + 5x - 4)\,dx = \frac{x^4}{4} + \frac{5x^2}{2} - 4x + C$$
+
+### Rule 5 — Exponential Functions
+$$\int e^x\,dx = e^x + C \qquad \int a^x\,dx = \frac{a^x}{\ln a} + C \quad (a > 0, a \neq 1)$$
+
+**Example:** $\int 4e^x\,dx = 4e^x + C$
+
+### Trigonometric Integrals
+$$\int \sin x\,dx = -\cos x + C \qquad \int \cos x\,dx = \sin x + C$$
+$$\int \sec^2 x\,dx = \tan x + C \qquad \int \csc^2 x\,dx = -\cot x + C$$
+
+---
+
+## Method 1: Integration by Substitution
+
+**When to use:** When the integrand is a composite function $f(g(x)) \cdot g'(x)$ — i.e., you can identify a function and its derivative inside the integrand.
+
+**Procedure:**
+1. Let $u = g(x)$ (choose the inner function).
+2. Compute $du = g'(x)\,dx$, then express $dx$ in terms of $du$.
+3. Rewrite the integral entirely in terms of $u$.
+4. Integrate with respect to $u$.
+5. Substitute back $u = g(x)$.
+
+---
+
+### Example 1 — Substitution
+
+**Problem:** Evaluate $\displaystyle\int \frac{2x + 7}{x^2 + 7x - 13}\,dx$.
+
+**Observe:** The numerator $2x + 7$ is (almost) the derivative of the denominator $x^2 + 7x - 13$.
+
+Let $u = x^2 + 7x - 13$, so $du = (2x + 7)\,dx$.
+
+$$\int \frac{2x + 7}{x^2 + 7x - 13}\,dx = \int \frac{du}{u} = \ln|u| + C = \ln|x^2 + 7x - 13| + C$$
+
+---
+
+### Example 2 — Substitution
+
+**Problem:** Evaluate $\displaystyle\int x\,e^{x^2}\,dx$.
+
+Let $u = x^2$, so $du = 2x\,dx$, which gives $x\,dx = \dfrac{du}{2}$.
+
+$$\int x\,e^{x^2}\,dx = \int e^u \cdot \frac{du}{2} = \frac{1}{2}e^u + C = \frac{1}{2}e^{x^2} + C$$
+
+---
+
+## Method 2: Integration by Parts
+
+**When to use:** When the integrand is a **product** of two functions — typically a polynomial times an exponential, logarithm, or trig function.
+
+**Formula:**
+$$\int u\,dv = uv - \int v\,du$$
+
+**LIATE rule** for choosing $u$ (choose the one that comes first):
+**L**ogarithmic → **I**nverse trig → **A**lgebraic → **T**rigonometric → **E**xponential
+
+---
+
+### Example 3 — Integration by Parts
+
+**Problem:** Evaluate $\displaystyle\int x e^x\,dx$.
+
+Let $u = x$ (algebraic) and $dv = e^x\,dx$.
+
+Then $du = dx$ and $v = e^x$.
+
+$$\int x e^x\,dx = xe^x - \int e^x\,dx = xe^x - e^x + C = e^x(x - 1) + C$$
+
+---
+
+### Example 4 — Integration by Parts
+
+**Problem:** Evaluate $\displaystyle\int x \cos x\,dx$.
+
+Let $u = x$, $dv = \cos x\,dx$.
+
+Then $du = dx$, $v = \sin x$.
+
+$$\int x \cos x\,dx = x \sin x - \int \sin x\,dx = x \sin x + \cos x + C$$
+
+---
+
+## Method 3: Partial Fractions
+
+**When to use:** When integrating a rational function $\dfrac{f(x)}{g(x)}$ where degree of $f <$ degree of $g$ and $g(x)$ factors.
+
+**Procedure:**
+1. Factor the denominator $g(x)$.
+2. Write the partial fraction decomposition.
+3. Solve for the unknown constants.
+4. Integrate each simple fraction separately.
+
+---
+
+### Example 5 — Partial Fractions
+
+**Problem:** Evaluate $\displaystyle\int \frac{x}{(x-1)(2x+1)}\,dx$.
+
+**Step 1:** Decompose.
+$$\frac{x}{(x-1)(2x+1)} = \frac{A}{x-1} + \frac{B}{2x+1}$$
+
+**Step 2:** Multiply through.
+$$x = A(2x+1) + B(x-1)$$
+
+**Step 3:** Solve for constants.
+
+Set $x = 1$: $1 = A(3) \implies A = \dfrac{1}{3}$
+
+Set $x = -\dfrac{1}{2}$: $-\dfrac{1}{2} = B\!\left(-\dfrac{3}{2}\right) \implies B = \dfrac{1}{3}$
+
+**Step 4:** Integrate.
+$$\int \frac{x}{(x-1)(2x+1)}\,dx = \frac{1}{3}\int \frac{dx}{x-1} + \frac{1}{3}\int \frac{dx}{2x+1}$$
+$$= \frac{1}{3}\ln|x-1| + \frac{1}{6}\ln|2x+1| + C$$
+
+(The second integral: $\displaystyle\int \dfrac{dx}{2x+1} = \dfrac{1}{2}\ln|2x+1|$, so $\dfrac{1}{3} \cdot \dfrac{1}{2} = \dfrac{1}{6}$.)
+
+---
+
+## Summary of Integration Techniques
+
+```mermaid
+flowchart TD
+    A[Given integral ∫f(x)dx] --> B{What is the form?}
+    B -->|Single power, trig, exp| C[Apply basic rules directly]
+    B -->|Composite: f(g(x))·g'(x)| D[Integration by Substitution u = g(x)]
+    B -->|Product of two functions| E[Integration by Parts: u dv = uv − ∫v du]
+    B -->|Rational function p(x)/q(x)| F[Partial Fraction Decomposition]
+    C --> G[Add constant C]
+    D --> G
+    E --> G
+    F --> G
+```
+
+---
+
+## Key Takeaways
+
+- The indefinite integral $\int f(x)\,dx = F(x) + C$ gives all antiderivatives — always include $C$.
+- Power rule: $\int x^n\,dx = \dfrac{x^{n+1}}{n+1} + C$ (valid for all $n \neq -1$).
+- Substitution: identify $u = g(x)$ so the integrand becomes $f(u)\,du$.
+- Integration by parts: use LIATE to pick $u$; formula $\int u\,dv = uv - \int v\,du$.
+- Partial fractions: factor the denominator, decompose, solve for constants, then integrate each piece.
+
+---
+
+## Exam Tips
+
+- Always verify your answer by differentiating it — you should get back the original integrand.
+- For substitution, look for a function whose derivative is also present (possibly up to a constant multiple) in the integrand.
+- When choosing $u$ for integration by parts, the LIATE order works in the vast majority of cases.
+- For partial fractions: first check that the degree of numerator $<$ degree of denominator. If not, do polynomial long division first.
+- At UI, integration by substitution and basic power-rule integrals are the most tested. Practice recognising when to use each technique.
