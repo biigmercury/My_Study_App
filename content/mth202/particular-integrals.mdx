@@ -1,0 +1,255 @@
+# Particular Integrals
+
+The complementary function (CF) solves the homogeneous equation. The particular integral (PI) accounts for the right-hand side $Q(x)$. Together they give the complete general solution. This lecture teaches the method of **undetermined coefficients** for finding the PI.
+
+## The Principle
+
+The general solution of $ay'' + by' + cy = Q(x)$ is:
+
+$$y = \underbrace{y_c}_{\text{CF}} + \underbrace{y_p}_{\text{PI}}$$
+
+The **method of undetermined coefficients** says: *guess a trial PI of the same functional form as $Q(x)$*, substitute it in, and determine the coefficients.
+
+This works when $Q(x)$ is one of these types (or a combination):
+1. A polynomial $P_n(x)$ of degree $n$
+2. $P_n(x) \cdot e^{ax}$
+3. $P_n(x) \cdot e^{ax} \sin bx$ or $P_n(x) \cdot e^{ax} \cos bx$
+
+---
+
+## Case 1 — $Q(x)$ is a Polynomial
+
+### Trial Solution
+
+If $Q(x) = c_0 + c_1 x + \cdots + c_n x^n$, try:
+
+$$y_p = a_0 + a_1 x + \cdots + a_n x^n$$
+
+(same degree polynomial with unknown coefficients).
+
+---
+
+### Example 9.1
+
+Solve: $y'' - 4y = x^2$ (equation 9.1)
+
+**Step 1.** CF: Auxiliary $m^2 - 4 = 0$, so $m = \pm 2$.
+
+$$y_c = Ae^{2x} + Be^{-2x}$$
+
+**Step 2.** Trial PI: $y_p = a + bx + cx^2$ (degree 2 polynomial).
+
+$y_p'' = 2c$
+
+**Step 3.** Substitute into $y'' - 4y = x^2$:
+
+$$2c - 4(a + bx + cx^2) = x^2$$
+
+$$(2c - 4a) - 4bx - 4cx^2 = x^2$$
+
+**Step 4.** Equate coefficients of each power of $x$:
+
+- Coefficient of $x^0$: $2c - 4a = 0$
+- Coefficient of $x^1$: $-4b = 0$
+- Coefficient of $x^2$: $-4c = 1$
+
+Solving: $c = -\frac{1}{4}$, $b = 0$, $a = \frac{2c}{4} = -\frac{1}{8}$.
+
+**PI:** $y_p = -\frac{1}{8} - \frac{1}{4}x^2$
+
+**General solution:**
+
+$$y = Ae^{2x} + Be^{-2x} - \frac{1}{4}x^2 - \frac{1}{8}$$
+
+---
+
+## Case 2 — $Q(x) = P_n(x) \cdot e^{ax}$
+
+### Trial Solution
+
+If $Q(x) = (c_0 + c_1 x + \cdots + c_n x^n)e^{ax}$, try:
+
+$$y_p = (a_0 + a_1 x + \cdots + a_n x^n)e^{ax}$$
+
+---
+
+### Example 9.2
+
+Solve: $y'' + 4y = xe^x$ (equation 9.2)
+
+**Step 1.** CF: Auxiliary $m^2 + 4 = 0$, $m = \pm 2i$ (complex).
+
+$$y_c = A\cos 2x + B\sin 2x$$
+
+**Step 2.** $Q = xe^x$, so degree 1 polynomial times $e^x$. Trial: $y_p = (a + bx)e^x$.
+
+$y_p' = (a+b+bx)e^x$
+
+$y_p'' = (a+2b+bx)e^x$
+
+**Step 3.** Substitute into $y'' + 4y = xe^x$:
+
+$$(a+2b+bx)e^x + 4(a+bx)e^x = xe^x$$
+
+$$(5a+2b) + 5bx = x$$
+
+**Step 4.** Equate coefficients:
+
+- $x^1$: $5b = 1 \Rightarrow b = \frac{1}{5}$
+- $x^0$: $5a + 2b = 0 \Rightarrow a = -\frac{2}{25}$
+
+**PI:**
+
+$$y_p = \left(-\frac{2}{25} + \frac{x}{5}\right)e^x = \frac{e^x(5x-2)}{25}$$
+
+**General solution:**
+
+$$y = A\cos 2x + B\sin 2x + \frac{e^x(5x-2)}{25}$$
+
+---
+
+## Case 3 — $Q(x)$ Contains $\sin$ or $\cos$: The Complex Exponential Method
+
+When $Q(x) = A\cos bx$ or $Q(x) = A\sin bx$, the most efficient approach uses *complex exponentials*.
+
+**Key idea:** Since $\cos bx = \text{Re}(e^{ibx})$ and $\sin bx = \text{Im}(e^{ibx})$, replace $Q$ with the complex $Ae^{ibx}$, find the complex PI, then take the real or imaginary part.
+
+---
+
+### Example 9.3
+
+Solve: $y'' + 3y' + 2y = 3\cos 2x$ (equation 9.4)
+
+**Step 1.** CF: Auxiliary $m^2 + 3m + 2 = (m+1)(m+2) = 0$, so $m = -1, -2$.
+
+$$y_c = Ae^{-x} + Be^{-2x}$$
+
+**Step 2.** Since $Q = 3\cos 2x = \text{Re}(3e^{2ix})$, try complex PI $y = ae^{2ix}$ in:
+
+$$y'' + 3y' + 2y = 3e^{2ix}$$
+
+$$(2i)^2 a + 3(2i)a + 2a = 3$$
+
+$$(-4 + 6i + 2)a = 3$$
+
+$$(-2 + 6i)a = 3$$
+
+$$a = \frac{3}{-2+6i} = \frac{3(-2-6i)}{(-2)^2 + 36} = \frac{3(-2-6i)}{40} = \frac{-3-9i}{20}$$
+
+**Step 3.** The complex PI is:
+
+$$y_p^* = \frac{-3-9i}{20}(\cos 2x + i\sin 2x)$$
+
+**Step 4.** Take the real part:
+
+$$y_p = \text{Re}(y_p^*) = \frac{1}{20}(-3\cos 2x + 9\sin 2x)$$
+
+Multiply numerator/denominator: $y_p = \frac{3(3\sin 2x - \cos 2x)}{20}$
+
+**General solution:**
+
+$$y = Ae^{-x} + Be^{-2x} + \frac{3(3\sin 2x - \cos 2x)}{20}$$
+
+---
+
+### Example 9.4 — Complex with Exponential
+
+Solve: $y'' + y' - 2y = 4e^{-x}\sin 3x$ (equation 9.6)
+
+$Q = 4e^{-x}\sin 3x = \text{Im}(4e^{(-1+3i)x})$.
+
+**CF:** Auxiliary $m^2 + m - 2 = (m+2)(m-1) = 0$: $m = -2, 1$.
+
+$$y_c = Ae^{-2x} + Be^x$$
+
+**Trial:** $y = ae^{(-1+3i)x}$ in $y'' + y' - 2y = 4e^{(-1+3i)x}$.
+
+Let $\lambda = -1+3i$:
+
+$$(\lambda^2 + \lambda - 2)a = 4$$
+
+$$\lambda^2 = 1 - 6i - 9 = -8 - 6i$$
+
+$$\lambda^2 + \lambda - 2 = (-8-6i) + (-1+3i) - 2 = -11 - 3i$$
+
+$$a = \frac{4}{-11-3i} = \frac{4(-11+3i)}{121+9} = \frac{4(-11+3i)}{130}$$
+
+PI = $\text{Im}(ae^{(-1+3i)x})$:
+
+$$y_p = \frac{4}{130}e^{-x}\text{Im}[(-11+3i)(\cos 3x + i\sin 3x)]$$
+
+$$= \frac{4e^{-x}}{130}(-11\sin 3x + 3\cos 3x) = \frac{2e^{-x}}{65}(3\cos 3x - 11\sin 3x)$$
+
+---
+
+## Superposition Principle
+
+When $Q(x) = Q_1(x) + Q_2(x)$, find $y_{p1}$ for $Q_1$ and $y_{p2}$ for $Q_2$ separately, then:
+
+$$y_p = y_{p1} + y_{p2}$$
+
+**Example 9.5:** Solve $y'' - 4y = x^2 + e^{3x}$ (equation 9.7)
+
+- From Example 9.1: $y_{p1} = -\frac{1}{8} - \frac{1}{4}x^2$ for $Q_1 = x^2$
+- For $Q_2 = e^{3x}$: try $y_{p2} = ae^{3x}$. Then $9a - 4a = 1$, so $a = \frac{1}{5}$, giving $y_{p2} = \frac{1}{5}e^{3x}$.
+
+**General solution:**
+
+$$y = Ae^{2x} + Be^{-2x} - \frac{1}{4}x^2 - \frac{1}{8} + \frac{1}{5}e^{3x}$$
+
+---
+
+## Cases of Failure (Resonance)
+
+The method fails when a term in the trial PI is *already a solution of the homogeneous equation* (it appears in the CF). This is called **resonance**.
+
+**Example 9.6:** Solve $y'' - 4y = 5e^{2x}$ (equation 9.8)
+
+CF: $y_c = Ae^{2x} + Be^{-2x}$. The trial $y_p = ae^{2x}$ is already in the CF!
+
+If we tried anyway: $a(4-4)e^{2x} = 5e^{2x} \Rightarrow 0 = 5$ — contradiction.
+
+**Fix:** Multiply the trial by $x$: try $y_p = axe^{2x}$.
+
+$y_p' = a(1+2x)e^{2x}$, $y_p'' = a(4+4x)e^{2x}$
+
+Substitute: $a(4+4x - 4x)e^{2x} = 5e^{2x} \Rightarrow 4a = 5 \Rightarrow a = \frac{5}{4}$
+
+**PI:** $y_p = \frac{5}{4}xe^{2x}$
+
+**General solution:** $y = Ae^{2x} + Be^{-2x} + \frac{5}{4}xe^{2x}$
+
+**General rule:** If the trial $y_p$ is a solution of the homogeneous equation, multiply it by $x$. If $xy_p$ is also a solution (doubly repeated root), multiply by $x^2$. Continue until the trial is not a solution of the homogeneous equation.
+
+---
+
+## Trial Solution Summary
+
+| Form of $Q(x)$ | Trial $y_p$ | Failure case |
+|---|---|---|
+| Constant $c$ | $a$ | $c=0$ is a root — try $ax$ |
+| $x^n$ | $a_0 + a_1 x + \cdots + a_n x^n$ | $m=0$ is a root — multiply by $x$ |
+| $ce^{ax}$ | $Ae^{ax}$ | $m=a$ is a root — multiply by $x$ |
+| $(a+bx)e^{ax}$ | $(A+Bx)e^{ax}$ | $m=a$ is a root — multiply by $x$ |
+| $c\cos bx$ or $c\sin bx$ | $A\cos bx + B\sin bx$ | $m=\pm bi$ are roots — multiply by $x$ |
+| $e^{ax}\cos bx$ or $e^{ax}\sin bx$ | $e^{ax}(A\cos bx + B\sin bx)$ | $m=a\pm bi$ are roots — multiply by $x$ |
+
+---
+
+## Key Takeaways
+
+- Method of undetermined coefficients: assume $y_p$ has the same functional form as $Q(x)$ with unknown constants.
+- Substitute $y_p$ into the ODE, equate coefficients, solve for the unknowns.
+- The complex exponential method is more efficient for trigonometric $Q$.
+- Superposition: treat each component of $Q$ separately and add the PIs.
+- Resonance (failure): when trial $y_p$ appears in the CF, multiply by $x$.
+
+---
+
+## Exam Tips
+
+- Always find the CF first — you need to check for resonance before choosing the trial PI.
+- For polynomial $Q$, the trial polynomial must have all powers from 0 to $n$, even if $Q$ has missing terms (e.g., $Q = x^2$ requires trial $a + bx + cx^2$).
+- When equating coefficients, group terms by powers of $x$ (or by $\cos$/$\sin$ terms) and set each group to zero.
+- Resonance check: compare the form of your trial $y_p$ against the CF. If any term matches, multiply by $x$.
+- The complex exponential method handles $\cos$ and $\sin$ simultaneously — use $\text{Re}$ for $\cos$ and $\text{Im}$ for $\sin$.

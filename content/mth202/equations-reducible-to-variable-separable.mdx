@@ -1,0 +1,265 @@
+# Equations Reducible to Variable Separable
+
+Some first-order ODEs look like they cannot be separated — but a clever substitution transforms them into a separable form. This lecture covers three such families: equations with a specific combination $x+y$, homogeneous equations, and equations with linear coefficients.
+
+## Type 1 — Substitution $v = ax + by$
+
+When the ODE has the form $\frac{dy}{dx} = F(ax + by)$ (the right-hand side depends only on the combination $ax + by$), set:
+
+$$v = ax + by$$
+
+Then $\frac{dv}{dx} = a + b\frac{dy}{dx}$, so $\frac{dy}{dx} = \frac{1}{b}\left(\frac{dv}{dx} - a\right)$.
+
+Substituting turns the equation into one in $v$ and $x$, which will be separable.
+
+---
+
+### Example 4.1 — Solving with Substitution $v = x + y$
+
+Solve:
+
+$$\frac{dy}{dx} = \cos(x + y) \tag{4.1}$$
+
+**Step 1.** Set $v = x + y$. Then:
+
+$$\frac{dv}{dx} = 1 + \frac{dy}{dx}$$
+
+so $\frac{dy}{dx} = \frac{dv}{dx} - 1$.
+
+**Step 2.** Substitute into (4.1):
+
+$$\frac{dv}{dx} - 1 = \cos v \implies \frac{dv}{dx} = 1 + \cos v$$
+
+**Step 3.** This is now separable:
+
+$$\frac{dv}{1 + \cos v} = dx$$
+
+**Step 4.** Use the identity $1 + \cos v = 2\cos^2\!\left(\frac{v}{2}\right)$:
+
+$$\frac{dv}{2\cos^2(v/2)} = dx \implies \frac{1}{2}\sec^2\!\left(\frac{v}{2}\right)dv = dx$$
+
+**Step 5.** Integrate:
+
+$$\tan\!\left(\frac{v}{2}\right) = x + A$$
+
+**Step 6.** Back-substitute $v = x + y$:
+
+$$\tan\!\left(\frac{x+y}{2}\right) = x + A$$
+
+Equivalently: $y = 2\arctan(x + A) - x$.
+
+---
+
+## Type 2 — Homogeneous Equations
+
+### Definition
+
+A function $P(x, y)$ is **homogeneous of degree $n$** if every term has the same total power of $x$ and $y$ summing to $n$.
+
+**Examples:**
+- $xy^2 - 3x^2y + 2x^3$ is homogeneous of degree 3
+- $y^4 - 3x^2y^2 + 2xy^3$ is homogeneous of degree 4
+
+**Key property:** If $P(x,y)$ is homogeneous of degree $n$, then $P(x, vx) = x^n R(v)$ for some function $R$ that depends only on $v = y/x$.
+
+### The Method
+
+An equation $P(x,y)\,dx + Q(x,y)\,dy = 0$ is **homogeneous** if both $P$ and $Q$ are homogeneous of the same degree.
+
+**Substitution:** Let $y = vx$, so $dy = x\,dv + v\,dx$.
+
+After substituting and cancelling $x^n$, the equation becomes separable in $v$ and $x$.
+
+---
+
+### Example 4.2 — Homogeneous Equation
+
+Solve:
+
+$$\frac{x^2 + y^2}{xy} = \frac{dy}{dx}$$
+
+Rewrite as $xydx - (x^2 + y^2)dy = 0$.
+
+Both $xy$ and $x^2 + y^2$ are homogeneous of degree 2. ✓
+
+**Step 1.** Substitute $y = vx$, $dy = x\,dv + v\,dx$:
+
+$$x(vx)dx - (x^2 + v^2x^2)(x\,dv + v\,dx) = 0$$
+
+$$x^2 v\,dx - x^2(1+v^2)(x\,dv + v\,dx) = 0$$
+
+**Step 2.** Divide through by $x^2$:
+
+$$v\,dx - (1+v^2)(x\,dv + v\,dx) = 0$$
+
+$$v\,dx - x(1+v^2)dv - v(1+v^2)dx = 0$$
+
+$$[v - v(1+v^2)]dx = x(1+v^2)dv$$
+
+$$-v^3\,dx = x(1+v^2)dv$$
+
+**Step 3.** Separate:
+
+$$\frac{dx}{x} = -\frac{(1+v^2)}{v^3}dv = -\left(\frac{1}{v^3} + \frac{1}{v}\right)dv$$
+
+**Step 4.** Integrate:
+
+$$\ln x = \frac{1}{2v^2} - \ln v + A$$
+
+**Step 5.** Back-substitute $v = y/x$:
+
+$$\ln x = \frac{x^2}{2y^2} - \ln\!\left(\frac{y}{x}\right) + A$$
+
+$$\ln y = \frac{x^2}{2y^2} + A$$
+
+General solution: $\ln y = A - \frac{x^2}{2y^2}$
+
+---
+
+### Example 4.3 — Recognising Homogeneous vs Not
+
+Classify these equations:
+
+| Equation | Homogeneous? |
+|---|---|
+| $(x^2+y^2)\,dy = xy\,dx$ | Yes — both degree 2 |
+| $(x^2+y)dy = xy\,dx$ | No — $x^2+y$ is not homogeneous ($x^2$ is degree 2, $y$ is degree 1) |
+| $(x^2-y^2)dx + 2xy\,dy = 0$ | Yes — both degree 2 |
+| $y' = (3x^2+y^3)/(1+3y)$ | No — degrees differ |
+
+---
+
+## Type 3 — Equations with Linear Coefficients
+
+### Form
+
+$$(a_1 x + b_1 y + c_1)\,dx + (a_2 x + b_2 y + c_2)\,dy = 0 \tag{4.3}$$
+
+where $a_1, b_1, c_1, a_2, b_2, c_2$ are constants. This is *not* homogeneous when $c_1 \neq 0$ or $c_2 \neq 0$. But it can be made homogeneous by a translation.
+
+### The Method
+
+The two lines $a_1 x + b_1 y + c_1 = 0$ and $a_2 x + b_2 y + c_2 = 0$ intersect at a point $(h, k)$ (provided they are not parallel, i.e., $a_1/a_2 \neq b_1/b_2$).
+
+**Substitute** $x = h + X$, $y = k + Y$ (translate origin to the intersection point):
+
+The constants $c_1$, $c_2$ vanish, giving a homogeneous equation in $X$ and $Y$:
+
+$$(a_1 X + b_1 Y)\,dX + (a_2 X + b_2 Y)\,dY = 0$$
+
+Now solve using the homogeneous substitution $Y = VX$.
+
+---
+
+### Example 4.4 — Linear Coefficients
+
+Solve:
+
+$$(x - y + 4)\,dx - (x + y + 2)\,dy = 0$$
+
+**Step 1.** Find the intersection of $x - y + 4 = 0$ and $x + y + 2 = 0$:
+
+Add the equations: $2x + 6 = 0 \Rightarrow x = -3$.
+Substitute: $-3 + y - 4 = 0 \Rightarrow y = 7$.
+
+Wait — let me recheck using the original:
+$x - y + 4 = 0$ and $x + y + 2 = 0$. Adding: $2x + 6 = 0 \Rightarrow x = -3$, $y = 1$.
+
+Intersection: $(h, k) = (-3, 1)$.
+
+**Step 2.** Substitute $x = -3 + X$, $y = 1 + Y$:
+
+$$(-3+X - (1+Y) + 4)\,dX - (-3+X + (1+Y) + 2)\,dY = 0$$
+
+$$(X - Y)\,dX - (X + Y)\,dY = 0$$
+
+This is homogeneous. ✓
+
+**Step 3.** Substitute $Y = VX$, $dY = X\,dV + V\,dX$:
+
+$$X(1-V)\,dX - X(1+V)(X\,dV + V\,dX) = 0$$
+
+Divide by $X$:
+
+$$(1-V)\,dX - (1+V)(X\,dV + V\,dX) = 0$$
+
+$$(1-V-V-V^2)\,dX = X(1+V)\,dV$$
+
+$$(1-2V-V^2)\,dX = X(1+V)\,dV$$
+
+**Step 4.** Separate:
+
+$$\frac{dX}{X} = \frac{(1+V)\,dV}{1 - 2V - V^2}$$
+
+**Step 5.** Integrate (note $d(1-2V-V^2) = (-2-2V)dV = -2(1+V)dV$):
+
+$$\ln X = -\frac{1}{2}\ln|1 - 2V - V^2| + \text{const}$$
+
+$$X^2(1 - 2V - V^2) = B$$
+
+**Step 6.** Back-substitute $V = Y/X$ then $X = x+3$, $Y = y-1$:
+
+$$X^2 - 2XY - Y^2 = B$$
+
+$$(x+3)^2 - 2(x+3)(y-1) - (y-1)^2 = B$$
+
+---
+
+### Example 4.5 — Parallel Lines (Degenerate Case)
+
+When $\frac{a_1}{a_2} = \frac{b_1}{b_2}$ (the lines are parallel), the intersection method fails. Instead use the substitution $z = a'x + b'y$.
+
+Solve:
+
+$$\frac{dy}{dx} = \frac{2x + 2y + 3}{x + y - 1}$$
+
+Since $\frac{2}{1} = \frac{2}{1}$, the lines are parallel. Set $z = x + y$:
+
+$$\frac{dz}{dx} = 1 + \frac{dy}{dx} = 1 + \frac{2z+3}{z-1} = \frac{z-1+2z+3}{z-1} = \frac{3z+2}{z-1}$$
+
+Separate: $\frac{(z-1)\,dz}{3z+2} = dx$.
+
+Integrate: $z - \frac{5}{3}\ln|3z+2| = 3x + A$.
+
+Back-substitute $z = x+y$: $(y-2x) - \frac{5}{3}\ln|3(x+y)+2| = A$.
+
+Equivalently: $(x+y) - \frac{5}{3}\ln|3x+3y+2| = 2x + A$, leading to general solution
+
+$$y - x + 3\ln(x+y+2) = A$$
+
+(The constants absorb the numerical coefficient.)
+
+---
+
+## Summary of Methods
+
+```mermaid
+flowchart TD
+    A[First-order ODE not directly separable] --> B{Form dy/dx = F(ax+by)?}
+    B -->|Yes| C[Set v = ax+by, get separable ODE in v,x]
+    B -->|No| D{Both P and Q homogeneous same degree?}
+    D -->|Yes| E[Set y = vx, get separable ODE in v,x]
+    D -->|No| F{Form a1x+b1y+c ODE with constants?}
+    F -->|Lines not parallel a1/a2 ≠ b1/b2| G[Find intersection h,k; translate X=x-h, Y=y-k; then use y=vx]
+    F -->|Lines parallel a1/a2 = b1/b2| H[Set z = a'x+b'y; separate in z,x]
+```
+
+---
+
+## Key Takeaways
+
+- If $F(x,y)$ depends only on $x+y$ (or $ax+by$), set $v = x+y$ and reduce to separable.
+- A homogeneous ODE has $P$ and $Q$ of the same degree; solve using $y = vx$.
+- Linear-coefficient equations need a *translation* to the intersection point first, then $y = vx$.
+- If lines are parallel, use $z = a'x + b'y$ directly.
+- After solving in the new variable, always *back-substitute* to express the answer in $x$ and $y$.
+
+---
+
+## Exam Tips
+
+- To test homogeneity: replace $x \to tx$ and $y \to ty$; if $P(tx, ty) = t^n P(x,y)$ then degree is $n$.
+- In the homogeneous substitution $y = vx$, do not forget that $dy = v\,dx + x\,dv$.
+- When finding the intersection of two lines, use elimination — add or subtract equations.
+- The parallel-lines case always has $a_1/a_2 = b_1/b_2$. Check this ratio before attempting translation.
+- Practise partial fractions for integrals like $\int \frac{(1+v^2)}{v^3}\,dv = \int \frac{1}{v^3}\,dv + \int\frac{1}{v}\,dv$.

@@ -1,0 +1,221 @@
+# Second and Higher Order Equations with Constant Coefficients
+
+This is the central method of the course. Second-order linear ODEs with constant coefficients appear everywhere in physics and engineering — vibrating springs, electrical circuits, damped oscillations. The technique for solving them is elegant and completely systematic.
+
+## The Equations
+
+The **general** second-order linear ODE with constant coefficients is:
+
+$$a\frac{d^2y}{dx^2} + b\frac{dy}{dx} + cy = Q(x) \tag{8.1}$$
+
+where $a$, $b$, $c$ are constants and $Q(x)$ is a given function of $x$.
+
+The **reduced (homogeneous)** equation sets $Q = 0$:
+
+$$a\frac{d^2y}{dx^2} + b\frac{dy}{dx} + cy = 0 \tag{8.2}$$
+
+**The big picture:** The general solution of (8.1) is:
+
+$$y = \underbrace{y_c(x)}_{\text{Complementary Function}} + \underbrace{y_p(x)}_{\text{Particular Integral}}$$
+
+- $y_c$ is the general solution of the reduced equation (8.2).
+- $y_p$ is any single solution of the full equation (8.1).
+- $y_c$ contains the two arbitrary constants; $y_p$ has none.
+
+This lecture covers finding $y_c$. Lecture 9 covers finding $y_p$.
+
+---
+
+## The Auxiliary (Characteristic) Equation
+
+To solve the homogeneous equation (8.2), try $y = e^{mx}$:
+
+$$\frac{dy}{dx} = me^{mx}, \qquad \frac{d^2y}{dx^2} = m^2 e^{mx}$$
+
+Substituting into (8.2):
+
+$$e^{mx}(am^2 + bm + c) = 0$$
+
+Since $e^{mx} \neq 0$, we must have:
+
+$$am^2 + bm + c = 0 \tag{8.3}$$
+
+This is the **auxiliary equation** (also called the *characteristic equation*). It is a quadratic in $m$, giving two roots $m_1$ and $m_2$.
+
+**Key insight:** The auxiliary equation is obtained from the ODE by simply replacing $y''$ with $m^2$, $y'$ with $m$, and $y$ with $1$. No calculus needed.
+
+---
+
+## The Three Cases for the Complementary Function
+
+The roots of $am^2 + bm + c = 0$ are $m = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+
+Three cases arise based on the **discriminant** $\Delta = b^2 - 4ac$:
+
+```mermaid
+flowchart TD
+    A[Auxiliary equation am² + bm + c = 0] --> B{Discriminant Δ = b² - 4ac}
+    B -->|Δ > 0| C[Case I: Two distinct real roots m₁ ≠ m₂]
+    B -->|Δ = 0| D[Case II: One repeated real root m₁ = m₂ = m]
+    B -->|Δ < 0| E[Case III: Complex conjugate roots p ± iq]
+    C --> CF1[y_c = Ae^(m₁x) + Be^(m₂x)]
+    D --> CF2[y_c = (A + Bx)e^(mx)]
+    E --> CF3[y_c = e^(px)(A cos qx + B sin qx)]
+```
+
+---
+
+## Case I — Two Distinct Real Roots ($\Delta > 0$)
+
+If $m_1 \neq m_2$ are both real, the complementary function is:
+
+$$y_c = Ae^{m_1 x} + Be^{m_2 x} \tag{8.5}$$
+
+---
+
+### Example 8.1
+
+Solve: $y'' + 3y' - 10y = 0$
+
+**Step 1.** Auxiliary equation: $m^2 + 3m - 10 = 0$
+
+**Step 2.** Factorise: $(m+5)(m-2) = 0$, so $m_1 = -5$, $m_2 = 2$.
+
+**Step 3.** Complementary function:
+
+$$y = Ae^{-5x} + Be^{2x}$$
+
+---
+
+### Example — Motivating Example from Textbook
+
+Solve: $y'' - 3y' + 2y = 2e^{3x}$ (equation 8.4)
+
+**Step 1.** Reduced equation: $y'' - 3y' + 2y = 0$. Auxiliary: $m^2 - 3m + 2 = 0 = (m-1)(m-2)$.
+
+Roots: $m_1 = 1$, $m_2 = 2$.
+
+**Step 2.** Complementary function: $y_c = Ae^x + Be^{2x}$.
+
+**Step 3.** For the particular integral, try $y_p = ae^{3x}$:
+
+$y_p'' - 3y_p' + 2y_p = a(9-9+2)e^{3x} = 2ae^{3x} = 2e^{3x}$, so $a = 1$.
+
+**General solution:** $y = Ae^x + Be^{2x} + e^{3x}$
+
+---
+
+## Case II — Repeated Real Root ($\Delta = 0$)
+
+If $m_1 = m_2 = m$ (the root is repeated), you might guess $y_c = (A+B)e^{mx} = Ce^{mx}$, but this contains only *one* arbitrary constant.
+
+To get the second independent solution, substitute $y = v(x)e^{mx}$ and find that $v'' = 0$, giving $v = Ax + B$.
+
+The complementary function is:
+
+$$y_c = (A + Bx)e^{mx} \tag{8.6}$$
+
+---
+
+### Example 8.2
+
+Solve: $y'' - 2y' + y = 0$
+
+**Step 1.** Auxiliary: $m^2 - 2m + 1 = 0 = (m-1)^2$. Repeated root: $m = 1$.
+
+**Step 2.** Complementary function:
+
+$$y = (A + Bx)e^x$$
+
+---
+
+## Case III — Complex Conjugate Roots ($\Delta < 0$)
+
+If $b^2 < 4ac$, the roots are:
+
+$$m_1 = p + iq, \qquad m_2 = p - iq$$
+
+where $p = -\frac{b}{2a}$ and $q = \frac{\sqrt{4ac - b^2}}{2a}$.
+
+Using Euler's formula $e^{i\theta} = \cos\theta + i\sin\theta$, the complex exponentials combine into real-valued functions:
+
+$$y_c = e^{px}(A\cos qx + B\sin qx) \tag{8.7}$$
+
+This can also be written:
+
+$$y_c = Ce^{px}\sin(qx + \delta) \tag{8.8}$$
+
+or
+
+$$y_c = Ce^{px}\cos(qx - \phi) \tag{8.9}$$
+
+where $C = \sqrt{A^2+B^2}$ and $\delta$ (or $\phi$) is a phase angle.
+
+**Real-world analogy:** Complex roots describe *oscillation*. The $e^{px}$ factor is the *envelope*: if $p < 0$, oscillations decay (damped); if $p = 0$, oscillations are sustained (simple harmonic motion); if $p > 0$, oscillations grow.
+
+---
+
+### Example 8.3
+
+Solve: $y'' + y' + y = 0$
+
+**Step 1.** Auxiliary: $m^2 + m + 1 = 0$.
+
+**Step 2.** Roots: $m = \frac{-1 \pm \sqrt{1-4}}{2} = \frac{-1 \pm i\sqrt{3}}{2}$
+
+So $p = -\frac{1}{2}$, $q = \frac{\sqrt{3}}{2}$.
+
+**Step 3.** Complementary function:
+
+$$y = e^{-x/2}\!\left(A\cos\frac{\sqrt{3}}{2}x + B\sin\frac{\sqrt{3}}{2}x\right)$$
+
+---
+
+## Linear Independence and the Wronskian
+
+Two solutions $y_1(x)$ and $y_2(x)$ of (8.2) are **linearly independent** if neither is a constant multiple of the other.
+
+The **Wronskian** provides a test:
+
+$$W(y_1, y_2) = y_1 y_2' - y_2 y_1'$$
+
+- If $W \neq 0$ on an interval, the solutions are **linearly independent**.
+- If $W = 0$ everywhere, they are **linearly dependent**.
+
+**Example:** $y_1 = e^x$, $y_2 = e^{2x}$:
+
+$$W = e^x \cdot 2e^{2x} - e^{2x} \cdot e^x = 2e^{3x} - e^{3x} = e^{3x} \neq 0$$
+
+Linearly independent. ✓
+
+**The general solution of (8.2) is** $A y_1 + B y_2$ where $y_1$, $y_2$ are any two linearly independent solutions.
+
+---
+
+## Summary: Complementary Function Quick Reference
+
+| Discriminant | Roots | $y_c$ |
+|---|---|---|
+| $b^2 - 4ac > 0$ | $m_1 \neq m_2$ real | $Ae^{m_1 x} + Be^{m_2 x}$ |
+| $b^2 - 4ac = 0$ | $m_1 = m_2 = m$ | $(A + Bx)e^{mx}$ |
+| $b^2 - 4ac < 0$ | $p \pm iq$ | $e^{px}(A\cos qx + B\sin qx)$ |
+
+---
+
+## Key Takeaways
+
+- The auxiliary equation $am^2 + bm + c = 0$ is formed by replacing $y''$ with $m^2$, $y'$ with $m$, $y$ with $1$.
+- Three cases: distinct real roots, repeated root, complex roots.
+- Complex roots always appear in conjugate pairs and give oscillatory solutions.
+- The Wronskian $W(y_1, y_2) = y_1 y_2' - y_2 y_1'$ tests linear independence.
+- The complementary function always contains *two* arbitrary constants for a second-order ODE.
+
+---
+
+## Exam Tips
+
+- In Case I, always fully factorise or use the quadratic formula — don't guess roots without checking.
+- In Case II ($m$ repeated), never write $Ce^{mx}$ — it has only one constant. Always use $(A+Bx)e^{mx}$.
+- In Case III, identify $p$ and $q$ clearly: $p$ is the real part, $q$ is the imaginary part of the root. The oscillation frequency is $q$.
+- For the Wronskian, compute $y_1 y_2' - y_2 y_1'$ carefully — the minus sign goes between the two terms.
+- In the full equation $ay'' + by' + cy = Q(x)$, the general solution is CF + PI. Do not confuse the two parts.

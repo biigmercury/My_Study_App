@@ -1,0 +1,265 @@
+# Exact Equations
+
+An exact equation is one that hides a complete function inside it. Recognising exactness lets you "undo" a total differential and read off the solution directly, without integration in the usual sense.
+
+## Total Differentials — Background
+
+For a function $u(x, y)$, the **total differential** is:
+
+$$du = \frac{\partial u}{\partial x}\,dx + \frac{\partial u}{\partial y}\,dy$$
+
+**Example:** If $u = x^2 y^3$, then $du = 2xy^3\,dx + 3x^2 y^2\,dy$.
+
+When a curve $u(x,y) = A$ (constant), differentiating both sides gives $du = 0$, so:
+
+$$\frac{\partial u}{\partial x}\,dx + \frac{\partial u}{\partial y}\,dy = 0$$
+
+This is the key connection: the general solution $u(x,y) = A$ automatically satisfies the ODE whose left side is the total differential of $u$.
+
+---
+
+## Exact Equations — Definition
+
+The equation:
+
+$$P(x,y)\,dx + Q(x,y)\,dy = 0 \tag{6.5}$$
+
+is **exact** if there exists a function $u(x,y)$ such that:
+
+$$\frac{\partial u}{\partial x} = P(x,y) \qquad \text{and} \qquad \frac{\partial u}{\partial y} = Q(x,y) \tag{6.6}$$
+
+When this holds, $P\,dx + Q\,dy = du$, so the equation becomes $du = 0$, with general solution $u(x,y) = A$.
+
+### The Exactness Condition
+
+Using the fact that mixed partial derivatives are equal ($\frac{\partial^2 u}{\partial x\,\partial y} = \frac{\partial^2 u}{\partial y\,\partial x}$), equation (6.5) is exact **if and only if**:
+
+$$\frac{\partial P}{\partial y} = \frac{\partial Q}{\partial x} \tag{6.7}$$
+
+This is the test. Check it first before anything else.
+
+**Real-world analogy:** In physics, a force field $\mathbf{F} = (P, Q)$ is conservative (has a potential energy function) exactly when $\frac{\partial P}{\partial y} = \frac{\partial Q}{\partial x}$. An exact ODE is the mathematical equivalent of a conservative force.
+
+---
+
+## Method for Solving Exact Equations
+
+**Step 1.** Verify exactness: check $\frac{\partial P}{\partial y} = \frac{\partial Q}{\partial x}$.
+
+**Step 2.** From $\frac{\partial u}{\partial x} = P$, integrate with respect to $x$ (treating $y$ as constant):
+
+$$u(x,y) = \int P(x,y)\,dx + \phi(y) = M(x,y) + \phi(y) \tag{6.8}$$
+
+where $\phi(y)$ is an unknown function of $y$ (the "constant" of partial integration).
+
+**Step 3.** Differentiate with respect to $y$ and set equal to $Q$:
+
+$$\frac{\partial u}{\partial y} = \frac{\partial M}{\partial y} + \phi'(y) = Q(x,y) \tag{6.9}$$
+
+Solve for $\phi'(y)$. Since the equation is exact, this will depend only on $y$.
+
+**Step 4.** Integrate to find $\phi(y)$.
+
+**Step 5.** Write $u(x,y) = M(x,y) + \phi(y)$. The general solution is $u(x,y) = A$.
+
+---
+
+## Example 6.1 — Testing for Exactness
+
+Which of the following are exact?
+
+**(a)** $2xy\,dx + (x^2+1)\,dy = 0$
+
+$P = 2xy$, $Q = x^2+1$
+
+$\frac{\partial P}{\partial y} = 2x$ and $\frac{\partial Q}{\partial x} = 2x$ — **Equal: exact** ✓
+
+**(b)** $(x - y\cos x)\,dx - \sin x\,dy = 0$
+
+$P = x - y\cos x$, $Q = -\sin x$
+
+$\frac{\partial P}{\partial y} = -\cos x$ and $\frac{\partial Q}{\partial x} = -\cos x$ — **Equal: exact** ✓
+
+**(c)** $y^2\,dx + x\,dy = 0$
+
+$P = y^2$, $Q = x$
+
+$\frac{\partial P}{\partial y} = 2y$ and $\frac{\partial Q}{\partial x} = 1$ — **Not equal: not exact**
+
+**(d)** $(3x^2+2y)\,dx + x\,dy = 0$
+
+$P = 3x^2+2y$, $Q = x$
+
+$\frac{\partial P}{\partial y} = 2$ and $\frac{\partial Q}{\partial x} = 1$ — **Not equal: not exact**
+
+---
+
+## Example 6.2 — Solving an Exact Equation
+
+Solve: $2xy\,dx + (x^2+1)\,dy = 0$
+
+**Step 1.** Verified exact (from Example 6.1(a)).
+
+**Step 2.** Integrate $P$ with respect to $x$:
+
+$$u = \int 2xy\,dx = x^2 y + \phi(y)$$
+
+**Step 3.** Differentiate with respect to $y$ and set equal to $Q = x^2+1$:
+
+$$\frac{\partial u}{\partial y} = x^2 + \phi'(y) = x^2 + 1$$
+
+Therefore $\phi'(y) = 1$, so $\phi(y) = y + A$.
+
+**Step 4.** General solution:
+
+$$u = x^2 y + y = y(x^2+1) = A$$
+
+---
+
+## Example 6.3 — Another Exact Equation
+
+Solve: $(x - y\cos x)\,dx - \sin x\,dy = 0$
+
+**Step 1.** Verified exact.
+
+**Step 2.** Integrate $P = x - y\cos x$ with respect to $x$:
+
+$$u = \int (x - y\cos x)\,dx = \frac{x^2}{2} - y\sin x + \phi(y)$$
+
+**Step 3.** Set $\frac{\partial u}{\partial y} = Q$:
+
+$$-\sin x + \phi'(y) = -\sin x \implies \phi'(y) = 0 \implies \phi(y) = A$$
+
+**Step 4.** General solution:
+
+$$\frac{x^2}{2} - y\sin x = A$$
+
+---
+
+## Equations Reducible to Exact Form — Integrating Factors
+
+When (6.5) is not exact, we look for an **integrating factor** $\mu(x,y)$ such that $\mu P\,dx + \mu Q\,dy = 0$ becomes exact.
+
+### Integrating Factor Depending Only on $x$
+
+If the expression:
+
+$$k(x) = \frac{\frac{\partial P}{\partial y} - \frac{\partial Q}{\partial x}}{Q} \tag{6.16}$$
+
+is a function of $x$ *alone*, then the integrating factor is:
+
+$$\mu(x) = e^{\int k(x)\,dx}$$
+
+### Integrating Factor Depending Only on $y$
+
+If:
+
+$$k(y) = \frac{\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}}{P}$$
+
+is a function of $y$ alone, then:
+
+$$\mu(y) = e^{\int k(y)\,dy}$$
+
+---
+
+## Example 6.4 — Finding an Integrating Factor
+
+Show that $e^x$ is an integrating factor of $(x + y)\,dx + dy = 0$, and find the general solution.
+
+**Step 1.** Check exactness:
+
+$P = x+y$, $Q = 1$, $\frac{\partial P}{\partial y} = 1$, $\frac{\partial Q}{\partial x} = 0$ — *not exact*.
+
+**Step 2.** Multiply by $e^x$:
+
+$$e^x(x+y)\,dx + e^x\,dy = 0$$
+
+Now $P^* = e^x(x+y)$, $Q^* = e^x$.
+
+$\frac{\partial P^*}{\partial y} = e^x$ and $\frac{\partial Q^*}{\partial x} = e^x$ — **exact** ✓
+
+**Step 3.** Integrate $Q^* = e^x$ with respect to $y$:
+
+$$u = ye^x + \psi(x)$$
+
+**Step 4.** Set $\frac{\partial u}{\partial x} = P^*$:
+
+$$ye^x + \psi'(x) = e^x(x+y) \implies \psi'(x) = xe^x$$
+
+Integrate by parts: $\psi(x) = xe^x - e^x = e^x(x-1)$
+
+**Step 5.** General solution:
+
+$$u = ye^x + e^x(x-1) = e^x(x+y-1) = A$$
+
+---
+
+## Example 6.5 — Integrating Factor in $y$
+
+Solve: $y\,dx + (y-x)\,dy = 0$
+
+**Step 1.** $P = y$, $Q = y-x$:
+
+$$\frac{\partial P}{\partial y} = 1, \quad \frac{\partial Q}{\partial x} = -1$$
+
+Not exact. Compute $k(y) = \frac{\partial Q/\partial x - \partial P/\partial y}{P} = \frac{-1 - 1}{y} = -\frac{2}{y}$.
+
+This depends only on $y$. ✓
+
+**Step 2.** Integrating factor:
+
+$$\mu(y) = e^{\int -2/y\,dy} = e^{-2\ln y} = y^{-2}$$
+
+**Step 3.** Multiply by $y^{-2}$:
+
+$$\frac{1}{y}\,dx + \frac{y-x}{y^2}\,dy = 0$$
+
+**Step 4.** Integrate $\frac{\partial u}{\partial x} = \frac{1}{y}$:
+
+$$u = \frac{x}{y} + \phi(y)$$
+
+**Step 5.** Set $\frac{\partial u}{\partial y} = \frac{y-x}{y^2}$:
+
+$$-\frac{x}{y^2} + \phi'(y) = \frac{1}{y} - \frac{x}{y^2} \implies \phi'(y) = \frac{1}{y} \implies \phi(y) = \ln y$$
+
+**General solution:**
+
+$$\frac{x}{y} + \ln y = A$$
+
+---
+
+## Decision Flowchart
+
+```mermaid
+flowchart TD
+    A[P dx + Q dy = 0] --> B{Check exactness: ∂P/∂y = ∂Q/∂x ?}
+    B -->|Yes| C[Exact: integrate P w.r.t. x to get M + φ(y)]
+    C --> D[Differentiate u w.r.t. y, set = Q, solve for φ'(y)]
+    D --> E[Integrate φ'(y) to get φ(y)]
+    E --> F[General solution: u(x,y) = A]
+    B -->|No| G{Is (∂P/∂y - ∂Q/∂x)/Q a function of x only?}
+    G -->|Yes| H[μ(x) = exp∫k(x)dx; multiply and solve]
+    G -->|No| I{Is (∂Q/∂x - ∂P/∂y)/P a function of y only?}
+    I -->|Yes| J[μ(y) = exp∫k(y)dy; multiply and solve]
+    I -->|No| K[Try another method]
+```
+
+---
+
+## Key Takeaways
+
+- Test for exactness: $\frac{\partial P}{\partial y} = \frac{\partial Q}{\partial x}$.
+- If exact, integrate $P$ w.r.t. $x$ to get $M(x,y)$, then find $\phi(y)$ so that $\frac{\partial}{\partial y}[M + \phi] = Q$.
+- If not exact, try an integrating factor $\mu(x)$ or $\mu(y)$ using formulas (6.16)/(6.17).
+- After multiplying by $\mu$, recheck exactness before solving.
+- The general solution is always of the form $u(x,y) = A$ (implicit).
+
+---
+
+## Exam Tips
+
+- Show the exactness check explicitly — it earns marks.
+- When integrating $P$ with respect to $x$, treat $y$ as a constant. The "constant" of integration is $\phi(y)$, not a number.
+- After computing $\frac{\partial M}{\partial y}$, the remainder after subtracting from $Q$ must be a function of $y$ only (no $x$). If it has $x$ terms, you made an error.
+- Integrating factors in exam questions will always reduce to simple forms like $x^n$, $y^n$, or $e^{ax}$.
+- Final answers are left implicit: $u(x,y) = A$ is perfectly acceptable.

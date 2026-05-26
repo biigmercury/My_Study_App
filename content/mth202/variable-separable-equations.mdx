@@ -1,0 +1,175 @@
+# Variable Separable Equations
+
+The method of separation of variables is the first and most intuitive technique for solving first-order ODEs. The idea is beautifully simple: move everything involving $y$ to one side and everything involving $x$ to the other, then integrate both sides independently.
+
+## The Setup
+
+A first-order ODE of the form
+
+$$\frac{dy}{dx} = F(x, y)$$
+
+is called **variable separable** when $F(x, y)$ factors into a product of a function of $x$ alone and a function of $y$ alone:
+
+$$F(x, y) = f(x) \cdot g(y)$$
+
+so the equation becomes:
+
+$$\frac{dy}{dx} = f(x)\, g(y) \tag{3.2}$$
+
+**Real-world analogy:** Think of $x$ and $y$ as two strangers who can be "separated" — one moves to the left side of an equation, the other to the right. Once separated, each can be integrated independently on their own side.
+
+---
+
+## Method
+
+**Step 1.** Rewrite the equation so all $y$-terms (including $dy$) are on the left, and all $x$-terms (including $dx$) are on the right:
+
+$$\frac{dy}{g(y)} = f(x)\, dx \tag{3.3}$$
+
+**Step 2.** Integrate both sides:
+
+$$\int \frac{dy}{g(y)} = \int f(x)\, dx + A$$
+
+where $A$ is the single arbitrary constant of integration.
+
+**Step 3.** If possible, solve for $y$ explicitly.
+
+---
+
+## Example 3.1 — Basic Separation
+
+Solve:
+
+$$\frac{dy}{dx} \cdot y = (x + 1)^2$$
+
+**Step 1.** Separate variables — move $y$ to the left, $dx$ to the right:
+
+$$y\, dy = (x+1)^2\, dx$$
+
+**Step 2.** Integrate both sides:
+
+$$\int y\, dy = \int (x+1)^2\, dx$$
+
+$$\frac{y^2}{2} = \frac{(x+1)^3}{3} + A$$
+
+where $A$ is an arbitrary constant.
+
+**General solution:**
+
+$$y^2 = \frac{2(x+1)^3}{3} + C \qquad (C = 2A)$$
+
+---
+
+## Example 3.2 — Implicit Solution
+
+Solve:
+
+$$x(y^2 - 1)\, dx - y(x^2 - 1)\, dy = 0$$
+
+**Step 1.** Rearrange to separate:
+
+$$\frac{x\, dx}{x^2 - 1} = \frac{y\, dy}{y^2 - 1}$$
+
+**Step 2.** Note that $\frac{d}{dx}(x^2 - 1) = 2x$, so $x\, dx = \frac{1}{2} d(x^2 - 1)$. Integrating:
+
+$$\frac{1}{2}\ln|x^2 - 1| = \frac{1}{2}\ln|y^2 - 1| + A$$
+
+$$\ln|x^2 - 1| - \ln|y^2 - 1| = \ln B \qquad (A = \ln B/2 \Rightarrow 2A = \ln B)$$
+
+$$\ln\left|\frac{x^2 - 1}{y^2 - 1}\right| = \ln B$$
+
+**General solution:**
+
+$$x^2 - 1 = B(y^2 - 1)$$
+
+where $B$ is an arbitrary constant.
+
+**Note:** Replacing one constant with another ($A \to \ln B$) is a standard trick to simplify the form of the general solution. You will use it often.
+
+---
+
+## Example 3.3 — The Logistic Equation
+
+Solve the logistic equation:
+
+$$\frac{dP}{dt} = P(\beta - \delta P)$$
+
+with initial condition $P(0) = P_0$.
+
+**Step 1.** Separate variables:
+
+$$\frac{dP}{P(\beta - \delta P)} = dt$$
+
+**Step 2.** Use partial fractions. Decompose $\frac{1}{P(\beta - \delta P)}$:
+
+$$\frac{1}{P(\beta - \delta P)} = \frac{1}{\beta P} + \frac{\delta}{\beta(\beta - \delta P)}$$
+
+**Step 3.** Integrate:
+
+$$\frac{1}{\beta}\ln P - \frac{1}{\beta}\ln(\beta - \delta P) = t + A$$
+
+$$\frac{1}{\beta}\ln\left(\frac{P}{\beta - \delta P}\right) = t + A$$
+
+**Step 4.** Exponentiate both sides and let $e^{\beta A} = A$ (renaming the constant):
+
+$$\frac{P}{\beta - \delta P} = Ae^{\beta t}$$
+
+**Step 5.** Apply the initial condition $P(0) = P_0$:
+
+$$A = \frac{P_0}{\beta - \delta P_0}$$
+
+**Step 6.** Cross-multiply and solve for $P(t)$:
+
+$$P(t) = \frac{\beta/\delta}{1 + \left(\frac{\beta}{\delta P_0} - 1\right)e^{-\beta t}}$$
+
+**Behaviour:** As $t \to \infty$, the denominator $\to 1$, so $P \to \beta/\delta$ (the carrying capacity).
+
+---
+
+## Recognising Separable Equations
+
+Not every first-order ODE is separable. The key question is: *can $F(x,y)$ be written as a product $f(x)g(y)$?*
+
+| Equation | Separable? | Reason |
+|---|---|---|
+| $\frac{dy}{dx} = \cot x \cot y$ | Yes | $f(x) = \cot x$, $g(y) = \cot y$ |
+| $(x^2+1)dy + (xy - xy^3)dx = 0$ | No | Cannot factor into $f(x)g(y)$ |
+| $xy\, dy + \sqrt{1-y^2}\, dx = 0$ | Yes | Rewrite as $\frac{y\, dy}{\sqrt{1-y^2}} = -\frac{dx}{x}$ |
+| $\frac{dy}{dx} = x + y$ | No | The $x + y$ cannot be factored |
+
+---
+
+## Decision Flowchart
+
+```mermaid
+flowchart TD
+    A[First-order ODE: dy/dx = F(x,y)] --> B{Can F(x,y) be written as f(x)·g(y)?}
+    B -->|Yes| C[Separate: dy/g(y) = f(x)dx]
+    B -->|No| D[Try another method]
+    C --> E[Integrate both sides]
+    E --> F[General solution with constant A]
+    F --> G{Initial condition given?}
+    G -->|Yes| H[Substitute to find A → Particular Solution]
+    G -->|No| F
+```
+
+---
+
+## Key Takeaways
+
+- Separation of variables works when $F(x, y) = f(x) \cdot g(y)$ — the function factors.
+- After separation, each side is integrated independently; the result is one arbitrary constant.
+- When integrating, you may need partial fractions (logistic equation) or substitution.
+- The general solution may be implicit (e.g., $x^2 - 1 = B(y^2-1)$); this is acceptable.
+- You can rename arbitrary constants at any step to simplify the expression — just be consistent.
+- For an IVP, substitute the initial condition after finding the general solution.
+
+---
+
+## Exam Tips
+
+- Always separate variables completely before integrating — the $dx$ and $dy$ must be on opposite sides.
+- When you see $\int \frac{g'(x)}{g(x)}\, dx$, the result is $\ln|g(x)| + C$.
+- In the logistic equation, memorise that partial fractions give $\frac{1}{P(\beta - \delta P)} = \frac{1}{\beta P} + \frac{\delta}{\beta(\beta - \delta P)}$.
+- If the ODE has the form $\frac{dN}{dt} = kN$, the solution is always $N = N_0 e^{kt}$ — you can write this directly without full working, but state that it is the separable solution.
+- Check for the *trivial solution* $y = 0$ (or $g(y) = 0$): when you divide by $g(y)$, you lose this solution. It may or may not be useful depending on the problem.
