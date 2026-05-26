@@ -189,10 +189,10 @@ The key textbook result is: $y = 2x + Ax(x^2-1)^{1/2}$.
 
 ```mermaid
 flowchart TD
-    A[ODE: dy/dx + Py = Q] --> B[Find integrating factor u = e^∫Pdx]
-    B --> C[Multiply: d/dx(uy) = uQ]
-    C --> D[Integrate: uy = ∫uQ dx + A]
-    D --> E[Divide by u: solve for y]
+    A["ODE: dy/dx + Py = Q"] --> B["Find integrating factor: u = exp of integral of P dx"]
+    B --> C["Multiply through so left side becomes d/dx of u*y"]
+    C --> D["Integrate: u*y = integral of u*Q dx + A"]
+    D --> E[Divide by u to solve for y]
     E --> F{Initial condition?}
     F -->|Yes| G[Substitute to find A]
     F -->|No| H[General solution complete]

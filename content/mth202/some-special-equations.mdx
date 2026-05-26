@@ -201,14 +201,14 @@ which may be separable in $p$ and $y$.
 ```mermaid
 flowchart TD
     A[Special First-Order ODE] --> B{Type?}
-    B -->|dy/dx + Py = qy^n| C[Bernoulli]
-    B -->|dy/dx = py² + qy + r| D[Riccati]
-    B -->|F(x, y', y'') = 0 no y term| E[Reduction of Order]
-    C --> C1[Divide by y^n; set v = y^(1-n); linear ODE]
-    D --> D1[Find one particular solution y1 by inspection]
-    D1 --> D2[Substitute y = y1 + 1/v; linear ODE]
-    E --> E1[Set p = y'; first-order ODE in p and x]
-    E1 --> E2[Solve for p; integrate to get y]
+    B -->|"Bernoulli: dy/dx + Py = q times y^n"| C[Bernoulli]
+    B -->|"Riccati: dy/dx = p*y^2 + q*y + r"| D[Riccati]
+    B -->|"No explicit y — F depends on x, y', y'' only"| E[Reduction of Order]
+    C --> C1["Divide by y^n; let v = y^(1-n); reduces to linear ODE"]
+    D --> D1[Find particular solution y1 by inspection or trial]
+    D1 --> D2["Set y = y1 + 1/v; get linear ODE in v"]
+    E --> E1["Let p = y'; get first-order ODE in p and x"]
+    E1 --> E2[Solve for p then integrate to recover y]
 ```
 
 ---

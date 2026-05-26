@@ -235,13 +235,13 @@ $$y - x + 3\ln(x+y+2) = A$$
 
 ```mermaid
 flowchart TD
-    A[First-order ODE not directly separable] --> B{Form dy/dx = F(ax+by)?}
-    B -->|Yes| C[Set v = ax+by, get separable ODE in v,x]
-    B -->|No| D{Both P and Q homogeneous same degree?}
-    D -->|Yes| E[Set y = vx, get separable ODE in v,x]
-    D -->|No| F{Form a1x+b1y+c ODE with constants?}
-    F -->|Lines not parallel a1/a2 ≠ b1/b2| G[Find intersection h,k; translate X=x-h, Y=y-k; then use y=vx]
-    F -->|Lines parallel a1/a2 = b1/b2| H[Set z = a'x+b'y; separate in z,x]
+    A[First-order ODE not directly separable] --> B{"Form: dy/dx = F(ax+by)?"}
+    B -->|Yes| C["Set v = ax+by; get separable ODE in v and x"]
+    B -->|No| D{Both P and Q homogeneous of same degree?}
+    D -->|Yes| E["Set y = vx; get separable ODE in v and x"]
+    D -->|No| F{Linear-coefficient form with constants?}
+    F -->|Lines intersect| G["Find intersection point h,k; translate axes; set y=vx"]
+    F -->|Lines parallel| H["Set z = ax+by; reduces to separable in z and x"]
 ```
 
 ---
