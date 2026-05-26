@@ -193,13 +193,13 @@ $$y = A(x+1) + \frac{B}{x+1} + \frac{x+1}{2}\ln(x+1) + 1$$
 
 ```mermaid
 flowchart TD
-    A[Variable coefficient ODE: y'' + a(x)y' + b(x)y = Q] --> B{Form?}
-    B -->|x²y'' + axy' + by = Q Euler form| C[Substitute x = e^t → constant coefficient ODE in t]
-    B -->|One solution y₁ known by inspection| D[Use formula 11.5 to find y₂]
-    C --> E[Solve constant-coefficient ODE for y(t)]
-    E --> F[Back-substitute t = ln x]
-    D --> G[y₂ = y₁ ∫ exp(-∫a dx) / y₁² dx]
-    G --> H[General solution: y = Ay₁ + By₂]
+    A["Variable-coefficient ODE: y'' + a(x)y' + b(x)y = Q"] --> B{Form?}
+    B -->|"Euler form: x^2*y'' + ax*y' + by = Q"| C["Substitute x = e^t to get constant-coefficient ODE in t"]
+    B -->|One solution y1 known by inspection| D[Use reduction-of-order formula to find y2]
+    C --> E["Solve the constant-coefficient ODE for y as function of t"]
+    E --> F["Back-substitute: replace t with ln(x)"]
+    D --> G["y2 = y1 * integral of exp(-integral of a dx) divided by y1^2 dx"]
+    G --> H["General solution: y = Ay1 + By2"]
 ```
 
 ---

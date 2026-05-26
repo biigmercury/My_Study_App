@@ -187,15 +187,15 @@ This illustrates that BVPs do not always have a unique solution.
 
 ```mermaid
 flowchart TD
-    A[General Solution y = Ay₁ + By₂ + yₚ] --> B{Type of Conditions}
-    B -->|Initial: y(x₀)=α and y'(x₀)=β same point| C[IVP]
-    B -->|Boundary: y(x₀)=α and y(x₁)=β different points| D[BVP]
-    C --> E[Substitute x=x₀ into y → Equation 1]
-    C --> F[Substitute x=x₀ into y' → Equation 2]
-    E --> G[Solve 2 equations simultaneously for A and B]
+    A["General Solution: y = Ay1 + By2 + yp"] --> B{Type of Conditions}
+    B -->|"Initial: y and y' both specified at same point x0"| C[IVP]
+    B -->|"Boundary: y specified at two different points x0 and x1"| D[BVP]
+    C --> E["Substitute x0 into y — gives Equation 1"]
+    C --> F["Substitute x0 into y' — gives Equation 2"]
+    E --> G[Solve simultaneously for A and B]
     F --> G
-    G --> H[Unique particular solution always exists for well-posed IVP]
-    D --> I[Substitute x=x₀ and x=x₁ → 2 equations in A and B]
+    G --> H[Unique particular solution for well-posed IVP]
+    D --> I["Substitute x0 and x1 — gives 2 equations in A and B"]
     I --> J{Determinant of system?}
     J -->|Non-zero| K[Unique solution]
     J -->|Zero| L[No solution or infinitely many solutions]

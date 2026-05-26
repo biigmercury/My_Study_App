@@ -189,17 +189,17 @@ This mirrors the ODE rule: multiply trial PI by $x$ for each repetition of a roo
 
 ```mermaid
 flowchart TD
-    A[Non-homogeneous: yₙ₊₂ + ayₙ₊₁ + byₙ = fₙ] --> B[Find CF by solving auxiliary λ² + aλ + b = 0]
-    B --> C{Form of fₙ?}
-    C -->|fₙ = zⁿ| D[Try zₙ = A₀zⁿ]
-    C -->|fₙ = sin/cos| E[Try complex: zₙ = A₀ζⁿ; take Re or Im]
-    C -->|fₙ = polynomial| F[Try zₙ = matching degree polynomial]
-    D --> G{Term in CF?}
+    A["Non-homogeneous: y(n+2) + a*y(n+1) + b*y(n) = f(n)"] --> B["Solve auxiliary equation for the complementary function CF"]
+    B --> C{Form of f(n)?}
+    C -->|"f(n) = z^n"| D["Trial PI: A0 * z^n"]
+    C -->|"f(n) = sin or cos"| E[Use complex exponential trial; take real or imaginary part]
+    C -->|"f(n) = polynomial"| F[Trial PI: polynomial of matching degree]
+    D --> G{Does trial PI appear in CF?}
     E --> G
     F --> G
-    G -->|No resonance| H[Substitute; equate coefficients; solve for A]
-    G -->|Resonance| I[Multiply trial by n; recheck]
-    H --> J[yₙ = CF + PI]
+    G -->|No resonance| H[Substitute trial; equate coefficients; solve for A]
+    G -->|Resonance| I[Multiply trial PI by n then recheck]
+    H --> J[General solution = CF + PI]
     I --> H
 ```
 

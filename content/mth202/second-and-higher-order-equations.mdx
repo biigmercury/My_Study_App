@@ -54,13 +54,10 @@ Three cases arise based on the **discriminant** $\Delta = b^2 - 4ac$:
 
 ```mermaid
 flowchart TD
-    A[Auxiliary equation am² + bm + c = 0] --> B{Discriminant Δ = b² - 4ac}
-    B -->|Δ > 0| C[Case I: Two distinct real roots m₁ ≠ m₂]
-    B -->|Δ = 0| D[Case II: One repeated real root m₁ = m₂ = m]
-    B -->|Δ < 0| E[Case III: Complex conjugate roots p ± iq]
-    C --> CF1[y_c = Ae^(m₁x) + Be^(m₂x)]
-    D --> CF2[y_c = (A + Bx)e^(mx)]
-    E --> CF3[y_c = e^(px)(A cos qx + B sin qx)]
+    A["Auxiliary equation: am^2 + bm + c = 0"] --> B{"Discriminant: b^2 - 4ac"}
+    B -->|"Positive: two distinct real roots m1, m2"| C["y_c = A*exp(m1*x) + B*exp(m2*x)"]
+    B -->|"Zero: one repeated real root m"| D["y_c = (A + Bx)*exp(m*x)"]
+    B -->|"Negative: complex conjugate roots p plus/minus iq"| E["y_c = exp(px) times (A cos qx + B sin qx)"]
 ```
 
 ---

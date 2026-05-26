@@ -143,13 +143,13 @@ Not every first-order ODE is separable. The key question is: *can $F(x,y)$ be wr
 
 ```mermaid
 flowchart TD
-    A[First-order ODE: dy/dx = F(x,y)] --> B{Can F(x,y) be written as f(x)·g(y)?}
-    B -->|Yes| C[Separate: dy/g(y) = f(x)dx]
+    A["ODE: dy/dx = F(x,y)"] --> B{"Can F be split as f(x) times g(y)?"}
+    B -->|Yes| C["Separate: dy/g(y) = f(x) dx"]
     B -->|No| D[Try another method]
     C --> E[Integrate both sides]
     E --> F[General solution with constant A]
     F --> G{Initial condition given?}
-    G -->|Yes| H[Substitute to find A → Particular Solution]
+    G -->|Yes| H[Substitute to find A — Particular Solution]
     G -->|No| F
 ```
 

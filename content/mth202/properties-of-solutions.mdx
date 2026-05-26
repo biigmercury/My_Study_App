@@ -52,13 +52,10 @@ The roots are: $\lambda_{1,2} = \frac{-a \pm \sqrt{a^2 - 4b}}{2}$
 
 ```mermaid
 flowchart TD
-    A[Auxiliary equation λ² + aλ + b = 0] --> B{Discriminant a² - 4b}
-    B -->|a² - 4b > 0| C[Case I: Two distinct real roots λ₁ ≠ λ₂]
-    B -->|a² - 4b = 0| D[Case II: Repeated real root λ = -a/2]
-    B -->|a² - 4b < 0| E[Case III: Complex conjugate roots]
-    C --> CF1[yₙ = c₁λ₁ⁿ + c₂λ₂ⁿ]
-    D --> CF2[yₙ = (c₁ + c₂n)λⁿ]
-    E --> CF3[yₙ = rⁿ(c₁ cos nθ + c₂ sin nθ)]
+    A["Auxiliary equation: lambda^2 + a*lambda + b = 0"] --> B{"Discriminant: a^2 - 4b"}
+    B -->|"Positive: two distinct real roots"| C["y(n) = c1*lambda1^n + c2*lambda2^n"]
+    B -->|"Zero: repeated real root lambda = -a/2"| D["y(n) = (c1 + c2*n) * lambda^n"]
+    B -->|"Negative: complex conjugate roots"| E["y(n) = r^n * (c1*cos(n*theta) + c2*sin(n*theta))"]
 ```
 
 ---

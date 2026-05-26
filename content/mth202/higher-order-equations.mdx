@@ -195,14 +195,14 @@ $$y = (A_1 + A_2 x)e^x + A_3 e^{-2x} + \frac{2\cos x + \sin x}{10}$$
 
 ```mermaid
 flowchart TD
-    A[nth order auxiliary polynomial] --> B[Find all roots by inspection or quadratic formula or factoring]
-    B --> C{Real root λⱼ?}
-    C -->|Multiplicity 1| D[Add: e^(λx)]
-    C -->|Multiplicity m > 1| E[Add: e^(λx), xe^(λx), ..., x^(m-1)e^(λx)]
-    B --> F{Complex root α ± iβ?}
-    F -->|Multiplicity 1| G[Add: e^(αx)cos(βx) and e^(αx)sin(βx)]
-    F -->|Multiplicity m > 1| H[Add the above multiplied by 1, x, ..., x^(m-1)]
-    D --> I[Count total: must equal n]
+    A["nth-order auxiliary polynomial"] --> B[Find all roots by inspection or quadratic formula]
+    B --> C{Real root?}
+    C -->|Multiplicity 1| D["Contributes: exp(lambda*x)"]
+    C -->|"Multiplicity m > 1"| E["Contributes: exp(lambda*x) times 1, x, ..., x^(m-1)"]
+    B --> F{Complex conjugate pair?}
+    F -->|Multiplicity 1| G["Contributes: exp(alpha*x)*cos(beta*x) and exp(alpha*x)*sin(beta*x)"]
+    F -->|"Multiplicity m > 1"| H["Multiply those by 1, x, ..., x^(m-1)"]
+    D --> I[Count all basis functions — total must equal n]
     E --> I
     G --> I
     H --> I

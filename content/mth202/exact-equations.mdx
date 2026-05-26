@@ -232,15 +232,15 @@ $$\frac{x}{y} + \ln y = A$$
 
 ```mermaid
 flowchart TD
-    A[P dx + Q dy = 0] --> B{Check exactness: ∂P/∂y = ∂Q/∂x ?}
-    B -->|Yes| C[Exact: integrate P w.r.t. x to get M + φ(y)]
-    C --> D[Differentiate u w.r.t. y, set = Q, solve for φ'(y)]
-    D --> E[Integrate φ'(y) to get φ(y)]
-    E --> F[General solution: u(x,y) = A]
-    B -->|No| G{Is (∂P/∂y - ∂Q/∂x)/Q a function of x only?}
-    G -->|Yes| H[μ(x) = exp∫k(x)dx; multiply and solve]
-    G -->|No| I{Is (∂Q/∂x - ∂P/∂y)/P a function of y only?}
-    I -->|Yes| J[μ(y) = exp∫k(y)dy; multiply and solve]
+    A["P dx + Q dy = 0"] --> B{"Exact? Check: dP/dy equals dQ/dx"}
+    B -->|Yes| C["Integrate P w.r.t. x; result is M(x,y) plus unknown function of y"]
+    C --> D["Differentiate w.r.t. y; set equal to Q; solve for unknown function"]
+    D --> E[Integrate to find the unknown function of y]
+    E --> F["General solution: u(x,y) = constant"]
+    B -->|No| G{"Is (dP/dy minus dQ/dx) over Q a function of x only?"}
+    G -->|Yes| H["Compute integrating factor as function of x; multiply through; now exact"]
+    G -->|No| I{"Is (dQ/dx minus dP/dy) over P a function of y only?"}
+    I -->|Yes| J["Compute integrating factor as function of y; multiply through; now exact"]
     I -->|No| K[Try another method]
 ```
 
