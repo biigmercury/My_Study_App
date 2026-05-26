@@ -1,0 +1,164 @@
+# Mean Value Theorem
+
+The Mean Value Theorem (MVT) is one of the most powerful and widely-used results in all of calculus. It generalises Rolle's Theorem by removing the requirement that the function has equal endpoint values. In return, it gives a deeper conclusion: somewhere between $a$ and $b$, the instantaneous rate of change equals the average rate of change over the whole interval.
+
+## Statement of the Mean Value Theorem
+
+**Theorem:** Let $f$ be a function that satisfies:
+
+1. $f$ is **continuous** on the closed interval $[a, b]$
+2. $f$ is **differentiable** on the open interval $(a, b)$
+
+Then there exists at least one point $c \in (a, b)$ such that:
+
+$$f'(c) = \frac{f(b) - f(a)}{b - a}$$
+
+The right-hand side is the **slope of the secant line** connecting $(a, f(a))$ and $(b, f(b))$.
+
+**Geometric interpretation:** The tangent line to the curve at some interior point $c$ is parallel to the secant line joining the two endpoints.
+
+**Real-world analogy:** If you drive from Lagos to Ibadan (say 130 km) in 1.5 hours, your average speed is about 87 km/h. The MVT says that at some moment during the trip, your speedometer read exactly 87 km/h — your instantaneous speed equalled your average speed. (This is why traffic cameras work: if you covered a stretch in less time than legally possible at the speed limit, you must have exceeded it at some point.)
+
+---
+
+## Connection to Rolle's Theorem
+
+Rolle's Theorem is the special case $f(a) = f(b)$, which makes the right-hand side zero:
+$$f'(c) = \frac{f(b) - f(a)}{b - a} = \frac{0}{b - a} = 0$$
+
+MVT is more general — it handles functions where the endpoints are at different heights.
+
+---
+
+## Proof
+
+**Define an auxiliary function $H$ on $[a, b]$:**
+
+$$H(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x - a)$$
+
+$H$ is constructed so that:
+- $H(a) = f(a) - f(a) - 0 = 0$
+- $H(b) = f(b) - f(a) - \dfrac{f(b) - f(a)}{b-a}(b-a) = f(b) - f(a) - [f(b) - f(a)] = 0$
+
+So $H(a) = H(b) = 0$. Also $H$ is continuous on $[a,b]$ and differentiable on $(a,b)$ (since $f$ is).
+
+By **Rolle's Theorem**, there exists $c \in (a, b)$ such that $H'(c) = 0$.
+
+$$H'(x) = f'(x) - \frac{f(b) - f(a)}{b - a}$$
+
+$$H'(c) = 0 \implies f'(c) = \frac{f(b) - f(a)}{b - a} \quad \square$$
+
+---
+
+## Example 1 — Verifying and Applying the MVT
+
+**Problem:** Verify that the MVT applies to $f(x) = x^2 - x - 2$ on $[1, 3]$ and find all values of $c$.
+
+**Check conditions:**
+
+1. $f$ is a polynomial → continuous on $[1, 3]$. ✓
+2. $f$ is a polynomial → differentiable on $(1, 3)$. ✓
+
+**Apply the MVT:**
+
+$$f(1) = 1 - 1 - 2 = -2 \qquad f(3) = 9 - 3 - 2 = 4$$
+
+$$\frac{f(3) - f(1)}{3 - 1} = \frac{4 - (-2)}{2} = \frac{6}{2} = 3$$
+
+**Find $c$:**
+$$f'(x) = 2x - 1$$
+$$f'(c) = 3 \implies 2c - 1 = 3 \implies c = 2$$
+
+Since $c = 2 \in (1, 3)$, the MVT is verified: at $x = 2$, the tangent slope equals the secant slope.
+
+---
+
+## Example 2 — MVT for a Cubic
+
+**Problem:** Verify that the MVT applies to $f(x) = 2x^3 - x$ on $[0, 2]$ and find $c$.
+
+**Check conditions:** Polynomial — continuous and differentiable. ✓
+
+$$f(0) = 0 \qquad f(2) = 16 - 2 = 14$$
+
+$$\frac{f(2) - f(0)}{2 - 0} = \frac{14}{2} = 7$$
+
+**Differentiate:**
+$$f'(x) = 6x^2 - 1$$
+
+**Set equal to average rate:**
+$$6c^2 - 1 = 7 \implies 6c^2 = 8 \implies c^2 = \frac{4}{3} \implies c = \frac{2}{\sqrt{3}} = \frac{2\sqrt{3}}{3}$$
+
+(Taking the positive root since $c \in (0, 2)$.)
+
+$c = \dfrac{2\sqrt{3}}{3} \approx 1.15 \in (0, 2)$. ✓
+
+---
+
+## Example 3 — Rational Function
+
+**Problem:** Apply the MVT to $f(x) = \dfrac{1}{x}$ on $[1, 3]$.
+
+**Check conditions:**
+- $f$ is continuous on $[1, 3]$ (no zero in this interval). ✓
+- $f'(x) = -\dfrac{1}{x^2}$ exists on $(1, 3)$. ✓
+
+$$f(1) = 1 \qquad f(3) = \frac{1}{3}$$
+
+$$\frac{f(3) - f(1)}{3 - 1} = \frac{\frac{1}{3} - 1}{2} = \frac{-\frac{2}{3}}{2} = -\frac{1}{3}$$
+
+**Find $c$:**
+$$-\frac{1}{c^2} = -\frac{1}{3} \implies c^2 = 3 \implies c = \sqrt{3}$$
+
+$c = \sqrt{3} \approx 1.73 \in (1, 3)$. ✓
+
+---
+
+## Important Consequences of the MVT
+
+**Corollary 1:** If $f'(x) = 0$ for all $x \in (a, b)$, then $f$ is constant on $[a, b]$.
+
+*Proof:* For any two points $x_1, x_2$ in $[a, b]$, MVT gives $f(x_2) - f(x_1) = f'(c)(x_2 - x_1) = 0$. So $f(x_1) = f(x_2)$.
+
+**Corollary 2:** If $f'(x) = g'(x)$ for all $x \in (a, b)$, then $f(x) = g(x) + C$ for some constant $C$.
+
+*This is why antiderivatives differ only by a constant.*
+
+**Corollary 3:** If $f'(x) > 0$ on $(a, b)$, then $f$ is strictly increasing on $[a, b]$.
+
+---
+
+## Flowchart: Applying the MVT
+
+```mermaid
+flowchart TD
+    A[Given f on interval a,b] --> B{Is f continuous on [a,b]?}
+    B -->|No| C[MVT does not apply]
+    B -->|Yes| D{Is f differentiable on (a,b)?}
+    D -->|No| C
+    D -->|Yes| E[Compute average rate: f(b)−f(a) / b−a]
+    E --> F[Compute f'(x)]
+    F --> G[Solve f'(c) = average rate]
+    G --> H[Verify c is in (a,b)]
+    H --> I[c is the guaranteed point]
+```
+
+---
+
+## Key Takeaways
+
+- The MVT guarantees a point $c$ where instantaneous rate $=$ average rate over $[a, b]$.
+- Conditions: continuous on $[a, b]$, differentiable on $(a, b)$ — both must hold.
+- MVT generalises Rolle's Theorem; when $f(a) = f(b)$, it reduces to Rolle's.
+- The auxiliary function $H(x)$ proof reduces MVT to Rolle's Theorem.
+- Key consequence: $f'(x) = 0$ everywhere implies $f$ is constant; equal derivatives imply functions differ by a constant.
+
+---
+
+## Exam Tips
+
+- "Verify the MVT" means: check continuity, check differentiability, compute $\dfrac{f(b)-f(a)}{b-a}$, set $f'(c)$ equal to it, solve, confirm $c \in (a, b)$.
+- Do not skip the verification steps — one mark is usually allocated to each condition check.
+- After finding $c$, always state: "$c = \ldots \in (a, b)$, confirming the MVT conclusion."
+- At UI, the MVT often appears alongside Rolle's Theorem. Know both theorems and be able to distinguish which applies to which scenario.
+- The most common error: applying the MVT without first verifying the conditions. Always check them explicitly.

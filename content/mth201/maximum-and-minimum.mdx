@@ -1,0 +1,190 @@
+# Maximum and Minimum
+
+Finding the maximum or minimum value of a function is one of the most practical applications of calculus. Engineers optimise designs, economists maximise profit, and physicists minimise energy — all using the techniques in this topic. You will learn to find both local and absolute extrema, and to use both the First and Second Derivative Tests to classify them.
+
+## Types of Extrema
+
+**Local (Relative) Extremum:**
+- $f(c)$ is a **local maximum** if $f(c) \geq f(x)$ for all $x$ near $c$ (in some open interval around $c$).
+- $f(c)$ is a **local minimum** if $f(c) \leq f(x)$ for all $x$ near $c$.
+
+**Absolute (Global) Extremum:**
+- $f(c)$ is the **absolute maximum** if $f(c) \geq f(x)$ for all $x$ in the domain.
+- $f(c)$ is the **absolute minimum** if $f(c) \leq f(x)$ for all $x$ in the domain.
+
+**Key relationship:** Every absolute extremum is also a local extremum (if it lies in the interior of the domain). The converse is not true — a local extremum may not be the global one.
+
+**Real-world analogy:** In a hilly landscape, a local maximum is the top of one hill. The absolute maximum is the highest point in the entire map. Every hilltop is locally highest, but only one is globally highest.
+
+---
+
+## Fermat's Theorem (Necessary Condition)
+
+If $f$ has a local extremum at $c$ and $f'(c)$ exists, then $f'(c) = 0$.
+
+This means all local extrema with defined derivatives are critical points. But not all critical points are extrema — they are only candidates.
+
+---
+
+## The Second Derivative Test
+
+The Second Derivative Test classifies critical points more efficiently than the First Derivative Test when $f''$ is easy to compute.
+
+**Theorem:** Suppose $f'(c) = 0$ and $f''$ is continuous near $c$.
+
+- If $f''(c) > 0$, then $f$ has a **local minimum** at $c$ (curve is concave up).
+- If $f''(c) < 0$, then $f$ has a **local maximum** at $c$ (curve is concave down).
+- If $f''(c) = 0$, the test is **inconclusive** — use the First Derivative Test instead.
+
+**Intuition:** If you are at the bottom of a bowl ($f'' > 0$, concave up), you are at a minimum. If you are at the top of a hill ($f'' < 0$, concave down), you are at a maximum.
+
+---
+
+## Example 1 — Second Derivative Test
+
+**Problem:** Find and classify all local extrema of $f(x) = x^5 - 5x$.
+
+**Step 1:** Find $f'(x)$.
+$$f'(x) = 5x^4 - 5 = 5(x^4 - 1) = 5(x^2 - 1)(x^2 + 1) = 5(x-1)(x+1)(x^2+1)$$
+
+**Step 2:** Set $f'(x) = 0$.
+$$5(x-1)(x+1)(x^2+1) = 0 \implies x = 1 \text{ or } x = -1$$
+
+(since $x^2 + 1 > 0$ always)
+
+**Step 3:** Find $f''(x)$.
+$$f''(x) = 20x^3$$
+
+**Step 4:** Evaluate $f''$ at each critical point.
+
+At $x = -1$: $f''(-1) = 20(-1)^3 = -20 < 0$ → **local maximum**.
+$$f(-1) = (-1)^5 - 5(-1) = -1 + 5 = 4$$
+
+At $x = 1$: $f''(1) = 20(1)^3 = 20 > 0$ → **local minimum**.
+$$f(1) = (1)^5 - 5(1) = 1 - 5 = -4$$
+
+**Conclusion:** Local maximum at $(-1, 4)$; local minimum at $(1, -4)$.
+
+---
+
+## Finding Absolute Extrema on a Closed Interval
+
+On a closed interval $[a, b]$, the **Extreme Value Theorem** guarantees that a continuous $f$ attains both an absolute maximum and an absolute minimum.
+
+**Closed Interval Method:**
+1. Find all critical points of $f$ in the open interval $(a, b)$.
+2. Evaluate $f$ at each critical point.
+3. Evaluate $f$ at the endpoints $a$ and $b$.
+4. The largest value is the absolute maximum; the smallest is the absolute minimum.
+
+---
+
+## Example 2 — Absolute Extrema on $[a, b]$
+
+**Problem:** Find the absolute extrema of $f(x) = 4x - x^2$ on $[0, 4]$.
+
+**Step 1:** Find $f'(x)$.
+$$f'(x) = 4 - 2x$$
+
+**Step 2:** Set $f'(x) = 0$.
+$$4 - 2x = 0 \implies x = 2$$
+
+$x = 2$ lies in $(0, 4)$ ✓. $f'(x)$ is defined everywhere.
+
+**Step 3:** Evaluate $f$ at the critical point and endpoints.
+
+$$f(0) = 4(0) - 0^2 = 0$$
+$$f(2) = 4(2) - 2^2 = 8 - 4 = 4$$
+$$f(4) = 4(4) - 4^2 = 16 - 16 = 0$$
+
+**Step 4:** Compare values.
+
+Largest: $f(2) = 4$ → **absolute maximum** at $x = 2$.
+Smallest: $f(0) = f(4) = 0$ → **absolute minimum** at $x = 0$ and $x = 4$.
+
+---
+
+## Example 3 — Application: Maximum Productivity
+
+**Problem:** An employee's monthly productivity (units produced) is:
+$$M(t) = -2t^2 + 100t + 180, \quad 0 \leq t \leq 40$$
+where $t$ is years of employment. Find the maximum productivity and when it is achieved.
+
+**Step 1:** Differentiate.
+$$M'(t) = -4t + 100$$
+
+**Step 2:** Critical point.
+$$-4t + 100 = 0 \implies t = 25$$
+
+$t = 25$ is in $[0, 40]$ ✓.
+
+**Step 3:** Second derivative test.
+$$M''(t) = -4 < 0$$
+
+So $t = 25$ gives a **maximum**.
+
+**Step 4:** Evaluate.
+$$M(25) = -2(625) + 100(25) + 180 = -1250 + 2500 + 180 = 1430$$
+
+**Maximum productivity is 1430 units, achieved after 25 years.**
+
+**Also check endpoints:**
+$$M(0) = 180 \quad M(40) = -2(1600) + 4000 + 180 = -3200 + 4180 = 980$$
+
+The global maximum on $[0, 40]$ is indeed $M(25) = 1430$.
+
+---
+
+## Example 4 — Profit Optimization
+
+**Problem:** A company sells bags at a profit function $P(x) = -x^2 + 50x - 400$ (in thousands of naira), where $x$ is the number of bags sold. Find:
+
+(a) The number of bags to maximize profit.
+(b) The maximum profit.
+(c) The range of $x$ for which profit is made.
+
+**Part (a):** Find critical point.
+$$P'(x) = -2x + 50 = 0 \implies x = 25$$
+
+$P''(x) = -2 < 0$ → maximum at $x = 25$.
+
+**Part (b):** Maximum profit.
+$$P(25) = -(625) + 50(25) - 400 = -625 + 1250 - 400 = 225 \text{ thousand naira}$$
+
+**Part (c):** Profit is made when $P(x) > 0$.
+$$-x^2 + 50x - 400 > 0 \implies x^2 - 50x + 400 < 0 \implies (x - 10)(x - 40) < 0$$
+
+This inequality holds for $10 < x < 40$.
+
+Profit is made when $10 < x < 40$ bags are sold.
+
+---
+
+## Absolute Maximum/Minimum on Unbounded Domain
+
+When no closed interval is specified, use the second derivative to confirm the nature of the critical point:
+
+- Single critical point + $f''(c) < 0$: absolute maximum at $c$.
+- Single critical point + $f''(c) > 0$: absolute minimum at $c$.
+- Also: check $f(x) \to \pm\infty$ as $x \to \pm\infty$ to confirm there is no higher/lower value.
+
+---
+
+## Key Takeaways
+
+- Local extrema require critical points; classify using First or Second Derivative Test.
+- Second Derivative Test: $f''(c) > 0$ → minimum; $f''(c) < 0$ → maximum; $f''(c) = 0$ → inconclusive.
+- Absolute extrema on $[a, b]$: evaluate $f$ at all critical points inside the interval and at both endpoints — pick the largest and smallest.
+- On an unbounded domain: find the unique critical point and confirm with $f''$.
+- Always verify that your critical point lies within the given domain before using it.
+
+---
+
+## Exam Tips
+
+- For closed-interval problems: never skip the endpoint evaluations — the absolute extremum may occur at an endpoint, not at a critical point.
+- When the second derivative test is inconclusive ($f''(c) = 0$): revert to the First Derivative Test (sign change of $f'$).
+- "Find the number of units that maximizes profit" means: find the critical point, confirm it's a maximum, state the $x$ value.
+- "Find the maximum profit" means: compute $f$ at the critical point.
+- "Find the range for which profit is made" means: solve $P(x) > 0$ — a separate inequality problem.
+- At UI, application word problems (productivity, profit, area) consistently appear. Practice reading off which quantity is the objective function, then differentiating and solving.

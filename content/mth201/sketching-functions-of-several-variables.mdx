@@ -1,0 +1,171 @@
+# Sketching Functions of Several Variables
+
+A function of one variable produces a curve in 2D. A function of two variables produces a **surface** in 3D. Visualising these surfaces is the key to understanding multivariable calculus. Since drawing in 3D on paper is difficult, we use cross-sections and level curves to build up the picture systematically.
+
+## The Graph of $z = f(x, y)$
+
+The **graph** of $f(x, y)$ is the set of all points $(x, y, z)$ in three-dimensional space where $z = f(x, y)$:
+
+$$\{(x, y, z) \in \mathbb{R}^3 \mid z = f(x, y),\; (x, y) \in D\}$$
+
+This is a surface sitting above (or below) the $xy$-plane.
+
+**Real-world analogy:** A topographic map represents a 3D landscape (mountains, valleys) in 2D using contour lines. Each contour line shows where the elevation is constant. Level curves are the mathematical version of contour lines.
+
+---
+
+## Level Curves (Contour Lines)
+
+A **level curve** of $f(x, y)$ at height $k$ is the set of all $(x, y)$ in the domain where $f(x, y) = k$:
+
+$$\{(x, y) \mid f(x, y) = k\}$$
+
+By drawing level curves for several values of $k$, you build a **contour map** of the surface.
+
+**Key observations:**
+- Where level curves are close together: the surface changes steeply.
+- Where level curves are spread apart: the surface changes gradually.
+- Closed level curves often indicate a peak or valley.
+
+---
+
+## Cross-Sections
+
+A **cross-section** fixes one variable and lets the other vary:
+
+- **Fixing $x = a$:** gives the curve $z = f(a, y)$ in the $yz$-plane.
+- **Fixing $y = b$:** gives the curve $z = f(x, b)$ in the $xz$-plane.
+- **Fixing $z = k$:** gives the level curve $f(x, y) = k$ in the $xy$-plane.
+
+Combining several cross-sections gives a complete picture of the surface.
+
+---
+
+## Common Surfaces
+
+### Paraboloid: $z = x^2 + y^2$
+
+**Level curves** ($z = k$, $k > 0$): $x^2 + y^2 = k$ — circles centred at the origin of radius $\sqrt{k}$.
+
+**Cross-section at $x = 0$**: $z = y^2$ — upward parabola.
+
+**Shape:** Bowl opening upward; minimum at the origin $(0, 0, 0)$.
+
+---
+
+### Hyperbolic Paraboloid (Saddle): $z = x^2 - y^2$
+
+**Level curves** ($z = k$):
+- $k = 0$: $x^2 = y^2 \implies y = \pm x$ — two diagonal lines through the origin.
+- $k > 0$: $x^2 - y^2 = k$ — hyperbolas opening along the $x$-axis.
+- $k < 0$: $y^2 - x^2 = |k|$ — hyperbolas opening along the $y$-axis.
+
+**Shape:** Saddle — goes up in the $x$-direction, down in the $y$-direction.
+
+---
+
+### Ellipsoid: $\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} + \dfrac{z^2}{c^2} = 1$
+
+**Level curves** (horizontal cross-sections $z = k$): ellipses (shrinking as $|k| \to c$).
+
+**Shape:** Egg-shaped closed surface.
+
+---
+
+### Cone: $z = \sqrt{x^2 + y^2}$
+
+**Level curves** ($z = k$, $k > 0$): $x^2 + y^2 = k^2$ — circles.
+
+**Shape:** Upward-pointing cone with vertex at origin.
+
+---
+
+## Example 1 — Sketching Level Curves of a Paraboloid
+
+**Problem:** Sketch several level curves of $f(x, y) = x^2 + y^2$.
+
+Set $f(x, y) = k$ for $k = 0, 1, 4, 9$:
+
+| $k$ | Level curve | Description |
+|---|---|---|
+| $0$ | $x^2 + y^2 = 0$, i.e., $(0,0)$ | Single point at origin |
+| $1$ | $x^2 + y^2 = 1$ | Circle, radius $1$ |
+| $4$ | $x^2 + y^2 = 4$ | Circle, radius $2$ |
+| $9$ | $x^2 + y^2 = 9$ | Circle, radius $3$ |
+
+Concentric circles spreading outward — the surface rises like a bowl. Circles get farther apart at equal height increments because the slope flattens as $r$ increases... actually the slope steepens. Equal spacing of $k$ produces circles that grow at rate $\sqrt{k}$ — closer spacing at large $r$ means the surface is steeper there.
+
+---
+
+## Example 2 — Level Curves of a Linear Function
+
+**Problem:** Sketch several level curves of $f(x, y) = 2x + 3y$.
+
+Set $f(x, y) = k$: $2x + 3y = k$ — a straight line.
+
+| $k$ | Level curve |
+|---|---|
+| $-6$ | $2x + 3y = -6$ |
+| $0$ | $2x + 3y = 0$ |
+| $6$ | $2x + 3y = 6$ |
+| $12$ | $2x + 3y = 12$ |
+
+Parallel lines with slope $-\dfrac{2}{3}$. The surface is a tilted plane — equally-spaced level curves confirm uniform slope (constant gradient).
+
+---
+
+## Example 3 — Cross-Sections of $z = x^2 + y^2$
+
+**Cross-section $y = 0$:** $z = x^2$ — upward parabola in the $xz$-plane.
+
+**Cross-section $x = 0$:** $z = y^2$ — upward parabola in the $yz$-plane.
+
+**Cross-section $x = 1$:** $z = 1 + y^2$ — parabola shifted up by 1.
+
+**Cross-section $z = 4$:** $x^2 + y^2 = 4$ — circle of radius 2.
+
+All cross-sections consistently show a bowl (paraboloid) opening upward.
+
+---
+
+## Example 4 — Identifying a Surface from Level Curves
+
+**Problem:** Level curves of $f$ are hyperbolas $xy = k$ for $k \neq 0$ and two crossed lines $y = 0$, $x = 0$ for $k = 0$. Identify the surface.
+
+The level curve $f(x, y) = k$ is $xy = k \implies f(x, y) = xy$.
+
+The surface is $z = xy$ — a **hyperbolic paraboloid** (saddle surface). At the origin, $z = 0$. Moving along the line $y = x$: $z = x^2$ (rises). Moving along $y = -x$: $z = -x^2$ (falls).
+
+---
+
+## Sketching Strategy
+
+```mermaid
+flowchart TD
+    A[Given z = f(x,y)] --> B[Find Domain: describe region in xy-plane]
+    B --> C[Draw level curves: set f(x,y) = k for several k values]
+    C --> D[Identify pattern of level curves: circles, ellipses, lines, hyperbolas?]
+    D --> E[Draw cross-sections: fix x=a, fix y=b, fix z=k]
+    E --> F[Combine to describe the 3D surface]
+    F --> G[Name the surface: paraboloid, plane, saddle, cone, ellipsoid]
+```
+
+---
+
+## Key Takeaways
+
+- The graph of $z = f(x, y)$ is a surface in 3D space.
+- Level curves $f(x, y) = k$ are the 2D cross-sections at constant height $k$ — they form a contour map.
+- Cross-sections (fixing one variable) reveal the shape of the surface in each coordinate plane.
+- Circular level curves → paraboloid; hyperbolic level curves → saddle; parallel line curves → plane; concentric ellipses → ellipsoid.
+- Dense level curves mean steep surface; sparse curves mean gentle slope.
+
+---
+
+## Exam Tips
+
+- "Sketch the level curves" means: set $f(x, y) = k$ for several values of $k$, solve for the equation, identify the curve type (line, circle, parabola, hyperbola), and draw them on the $xy$-plane.
+- Always label each level curve with its corresponding $k$ value.
+- For identifying the surface from level curves: the curve shape at each level tells you the surface type — circular $\to$ paraboloid/cone, linear $\to$ plane, hyperbolic $\to$ saddle.
+- At UI, questions may ask you to sketch level curves OR describe the surface from its equation. Practice both directions.
+- When all level curves are the same curve type (just scaled), the surface is smooth; when the curve type changes with $k$ (like the saddle), the surface has a more complex shape.

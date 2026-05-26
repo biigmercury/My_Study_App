@@ -1,0 +1,196 @@
+# Differentiability
+
+Differentiation is the process of finding the instantaneous rate of change of a function. The derivative measures exactly how fast a function changes at a point. Understanding when a derivative exists — and what it looks like when it does not — is fundamental to everything that follows in calculus.
+
+## The Derivative from First Principles
+
+The **derivative** of $f$ at a point $x = a$ is defined as the limit of the difference quotient:
+
+$$f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}$$
+
+provided this limit exists and is finite. When this limit exists, $f$ is said to be **differentiable at $x = a$**.
+
+The difference quotient $\dfrac{f(a+h) - f(a)}{h}$ is the slope of the secant line through the points $(a, f(a))$ and $(a+h, f(a+h))$. As $h \to 0$, the secant line becomes the **tangent line** to the curve at $x = a$.
+
+**Real-world analogy:** Average speed over a time interval is $\dfrac{\text{distance}}{\text{time}}$. As the time interval shrinks to zero, average speed becomes instantaneous speed — the derivative of position.
+
+---
+
+## Alternative Notations
+
+The derivative of $y = f(x)$ is written in several equivalent ways:
+
+$$f'(x) \quad = \quad y' \quad = \quad \frac{dy}{dx} \quad = \quad \frac{d}{dx}[f(x)] \quad = \quad Df(x)$$
+
+---
+
+## Left-Hand and Right-Hand Derivatives
+
+Just as limits have one-sided versions, so does the derivative:
+
+**Left-hand derivative (LHD):**
+$$f'(a^-) = \lim_{h \to 0^-} \frac{f(a + h) - f(a)}{h}$$
+
+**Right-hand derivative (RHD):**
+$$f'(a^+) = \lim_{h \to 0^+} \frac{f(a + h) - f(a)}{h}$$
+
+**$f$ is differentiable at $a$** if and only if:
+$$f'(a^-) = f'(a^+)$$
+
+(both exist and are equal)
+
+This is directly analogous to how a two-sided limit requires matching one-sided limits.
+
+---
+
+## Differentiability on an Interval
+
+- $f$ is **differentiable on an open interval $(a, b)$** if it is differentiable at every point in $(a, b)$.
+- $f$ is **differentiable on a closed interval $[a, b]$** if it is differentiable on $(a, b)$ and additionally the right-hand derivative exists at $a$ and the left-hand derivative exists at $b$.
+
+---
+
+## Continuity vs Differentiability
+
+These two properties are closely related but not equivalent:
+
+**Theorem:** If $f$ is differentiable at $a$, then $f$ is continuous at $a$.
+
+$$\text{Differentiable at } a \implies \text{Continuous at } a$$
+
+The **converse is false**: a function can be continuous at a point without being differentiable there.
+
+**Classic counterexample:** $f(x) = |x|$ at $x = 0$.
+
+- $f(0) = 0$. ✓
+- $\displaystyle\lim_{x \to 0} |x| = 0 = f(0)$, so $f$ is continuous at $0$. ✓
+- LHD: $\displaystyle\lim_{h \to 0^-} \dfrac{|h|}{h} = \lim_{h \to 0^-} \dfrac{-h}{h} = -1$
+- RHD: $\displaystyle\lim_{h \to 0^+} \dfrac{|h|}{h} = \lim_{h \to 0^+} \dfrac{h}{h} = +1$
+
+LHD $\neq$ RHD, so $f$ is **not differentiable at $x = 0$**, even though it is continuous there.
+
+```mermaid
+flowchart LR
+    A[Differentiable at a] -->|implies| B[Continuous at a]
+    B -->|does NOT imply| A
+```
+
+---
+
+## When is a Function NOT Differentiable?
+
+A function fails to be differentiable at $a$ when the graph has:
+
+| Situation | Description |
+|---|---|
+| Sharp corner or cusp | LHD and RHD exist but are unequal (e.g., $|x|$ at $x=0$) |
+| Vertical tangent | Derivative is $\pm\infty$ (limit does not exist as a finite number) |
+| Jump discontinuity | Function is not even continuous — derivative cannot exist |
+| Oscillation | Limit of difference quotient does not exist |
+
+---
+
+## Standard Differentiation Rules
+
+Once differentiability is established, use these rules to find derivatives:
+
+| Rule | Formula |
+|---|---|
+| Constant | $\dfrac{d}{dx}[c] = 0$ |
+| Power | $\dfrac{d}{dx}[x^n] = nx^{n-1}$ |
+| Constant multiple | $\dfrac{d}{dx}[cf(x)] = cf'(x)$ |
+| Sum/Difference | $\dfrac{d}{dx}[f \pm g] = f' \pm g'$ |
+| Product | $\dfrac{d}{dx}[fg] = f'g + fg'$ |
+| Quotient | $\dfrac{d}{dx}\!\left[\dfrac{f}{g}\right] = \dfrac{f'g - fg'}{g^2}$ |
+| Chain | $\dfrac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)$ |
+
+---
+
+## Common Derivatives
+
+$$\frac{d}{dx}[\sin x] = \cos x \qquad \frac{d}{dx}[\cos x] = -\sin x \qquad \frac{d}{dx}[\tan x] = \sec^2 x$$
+
+$$\frac{d}{dx}[e^x] = e^x \qquad \frac{d}{dx}[a^x] = a^x \ln a \qquad \frac{d}{dx}[\ln x] = \frac{1}{x}$$
+
+$$\frac{d}{dx}[\sqrt{x}] = \frac{1}{2\sqrt{x}} \qquad \frac{d}{dx}[x^{1/n}] = \frac{1}{n}x^{(1/n)-1}$$
+
+---
+
+## Example 1 — Derivative from First Principles
+
+**Problem:** Find $f'(x)$ for $f(x) = x^2 + 3x$ using the definition.
+
+$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+
+**Expand $f(x + h)$:**
+$$f(x + h) = (x+h)^2 + 3(x+h) = x^2 + 2xh + h^2 + 3x + 3h$$
+
+**Difference:**
+$$f(x+h) - f(x) = 2xh + h^2 + 3h = h(2x + h + 3)$$
+
+**Divide by $h$ and take limit:**
+$$f'(x) = \lim_{h \to 0} \frac{h(2x + h + 3)}{h} = \lim_{h \to 0}(2x + h + 3) = 2x + 3$$
+
+---
+
+## Example 2 — Checking Differentiability of a Piecewise Function
+
+**Problem:** Is $f$ differentiable at $x = 1$?
+
+$$f(x) = \begin{cases} x^2 & x \leq 1 \\ 2x - 1 & x > 1 \end{cases}$$
+
+**Step 1: Check continuity first.**
+
+$f(1) = 1^2 = 1$
+
+$\displaystyle\lim_{x \to 1^-} x^2 = 1$ and $\displaystyle\lim_{x \to 1^+} (2x - 1) = 1$. Both sides agree and equal $f(1)$. ✓ Continuous at $x = 1$.
+
+**Step 2: Check LHD and RHD.**
+
+$$\text{LHD} = \lim_{h \to 0^-} \frac{f(1+h) - f(1)}{h} = \lim_{h \to 0^-} \frac{(1+h)^2 - 1}{h} = \lim_{h \to 0^-} \frac{2h + h^2}{h} = \lim_{h \to 0^-}(2 + h) = 2$$
+
+$$\text{RHD} = \lim_{h \to 0^+} \frac{f(1+h) - f(1)}{h} = \lim_{h \to 0^+} \frac{[2(1+h) - 1] - 1}{h} = \lim_{h \to 0^+} \frac{2h}{h} = 2$$
+
+LHD $=$ RHD $= 2$. **$f$ is differentiable at $x = 1$**, with $f'(1) = 2$.
+
+---
+
+## Example 3 — Non-Differentiable Piecewise Function
+
+**Problem:** Is $g$ differentiable at $x = 0$?
+
+$$g(x) = \begin{cases} 3x + 1 & x \geq 0 \\ x^2 + 1 & x < 0 \end{cases}$$
+
+**Step 1: Check continuity at $x = 0$.**
+
+$g(0) = 3(0) + 1 = 1$
+
+$\displaystyle\lim_{x \to 0^+} (3x + 1) = 1$ and $\displaystyle\lim_{x \to 0^-} (x^2 + 1) = 1$. Continuous. ✓
+
+**Step 2: Compute one-sided derivatives.**
+
+$$\text{LHD} = \lim_{h \to 0^-} \frac{g(h) - g(0)}{h} = \lim_{h \to 0^-} \frac{(h^2 + 1) - 1}{h} = \lim_{h \to 0^-} h = 0$$
+
+$$\text{RHD} = \lim_{h \to 0^+} \frac{g(h) - g(0)}{h} = \lim_{h \to 0^+} \frac{(3h + 1) - 1}{h} = \lim_{h \to 0^+} 3 = 3$$
+
+LHD $= 0 \neq 3 =$ RHD. **$g$ is not differentiable at $x = 0$** — there is a sharp corner at $(0, 1)$.
+
+---
+
+## Key Takeaways
+
+- The derivative $f'(a)$ is the limit of the difference quotient as $h \to 0$.
+- $f$ is differentiable at $a$ when LHD $=$ RHD $=$ finite number.
+- Differentiability implies continuity, but continuity does not imply differentiability.
+- Piecewise functions: check continuity first (necessary), then check LHD vs RHD.
+- Non-differentiable points arise at corners, cusps, vertical tangents, or discontinuities.
+
+---
+
+## Exam Tips
+
+- For "show $f$ is differentiable at $x = a$": you must check continuity AND show LHD $=$ RHD.
+- For "find $f'(x)$ from first principles": expand $f(x+h)$, subtract $f(x)$, factor out $h$, cancel, then take $h \to 0$.
+- At UI, piecewise differentiability is a major exam topic — always compute both LHD and RHD; never just use the derivative formula directly without checking.
+- If LHD $\neq$ RHD, the function is not differentiable there — state this clearly and identify it as a corner.
+- Continuity is a necessary condition for differentiability. If continuity fails, differentiability fails automatically — no need to compute derivatives.

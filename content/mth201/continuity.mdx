@@ -1,0 +1,205 @@
+# Continuity
+
+Before you can understand differentiation or integration — the core of calculus — you need to understand continuity. A function is continuous if you can draw its graph without lifting your pencil. That informal idea has a precise mathematical definition, and learning to verify it rigorously is exactly what this topic is about.
+
+## Limits: The Foundation
+
+Continuity is built on the concept of a **limit**. The limit of $f(x)$ as $x$ approaches $a$ asks: what value does $f(x)$ get closer and closer to as $x$ gets closer and closer to $a$ — without $x$ ever equaling $a$?
+
+$$\lim_{x \to a} f(x) = L$$
+
+means: for every $x$ near $a$ (but $x \neq a$), $f(x)$ is near $L$.
+
+**Important:** The limit does not care what $f(a)$ actually is — only what $f(x)$ approaches.
+
+---
+
+## One-Sided Limits
+
+Two directional limits feed into the full limit:
+
+- **Left-hand limit (LHL):** $\displaystyle\lim_{x \to a^-} f(x) = L^-$ — approaching $a$ from the left ($x < a$)
+- **Right-hand limit (RHL):** $\displaystyle\lim_{x \to a^+} f(x) = L^+$ — approaching $a$ from the right ($x > a$)
+
+**The two-sided limit exists if and only if both one-sided limits exist and are equal:**
+
+$$\lim_{x \to a} f(x) = L \iff \lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x) = L$$
+
+---
+
+## Standard Limit Properties
+
+If $\displaystyle\lim_{x \to a} f(x) = L$ and $\displaystyle\lim_{x \to a} g(x) = M$, then:
+
+| Property | Statement |
+|---|---|
+| Sum | $\lim[f(x) + g(x)] = L + M$ |
+| Difference | $\lim[f(x) - g(x)] = L - M$ |
+| Product | $\lim[f(x) \cdot g(x)] = L \cdot M$ |
+| Quotient | $\lim\dfrac{f(x)}{g(x)} = \dfrac{L}{M}$, provided $M \neq 0$ |
+| Constant multiple | $\lim[c \cdot f(x)] = cL$ |
+| Power | $\lim[f(x)]^n = L^n$ |
+
+---
+
+## Special Limits
+
+Three limits appear repeatedly in calculus — memorise them:
+
+$$\lim_{x \to 0} \frac{\sin x}{x} = 1$$
+
+$$\lim_{x \to 0} \frac{1 - \cos x}{x} = 0$$
+
+$$\lim_{x \to \infty} \left(1 + \frac{1}{x}\right)^x = e$$
+
+---
+
+## Definition of Continuity at a Point
+
+A function $f$ is **continuous at $x = a$** if all three conditions hold simultaneously:
+
+1. $f(a)$ is defined — $a$ is in the domain of $f$.
+2. $\displaystyle\lim_{x \to a} f(x)$ exists — both one-sided limits are equal.
+3. $\displaystyle\lim_{x \to a} f(x) = f(a)$ — the limit equals the function value.
+
+If any one of these three conditions fails, $f$ is **discontinuous** at $x = a$.
+
+**Real-world analogy:** Think of a road trip. Condition 1 says the road exists at that location. Condition 2 says the road connects smoothly from both directions. Condition 3 says where you actually arrive matches where the road points. A broken bridge breaks all three at once.
+
+---
+
+## Types of Discontinuity
+
+```mermaid
+flowchart TD
+    A[Discontinuity at x = a] --> B{Is lim f(x) defined?}
+    B -->|No — one-sided limits differ| C[Jump Discontinuity]
+    B -->|No — limit is ±∞| D[Infinite Discontinuity]
+    B -->|Yes, limit = L| E{Is f(a) defined?}
+    E -->|No| F[Removable Discontinuity — hole in graph]
+    E -->|Yes, but f(a) ≠ L| G[Removable Discontinuity — misplaced point]
+```
+
+| Type | What fails | Example |
+|---|---|---|
+| Removable | Condition 1 or 3 | $f(x) = \dfrac{x^2 - 1}{x - 1}$ at $x = 1$ |
+| Jump | Condition 2 (LHL $\neq$ RHL) | Piecewise with gap |
+| Infinite | Condition 2 (limit is $\infty$) | $f(x) = \dfrac{1}{x}$ at $x = 0$ |
+
+---
+
+## Example 1 — Verifying Continuity
+
+**Problem:** Is $f(x) = 2x^2 - 3x + 1$ continuous at $x = 2$?
+
+**Step 1:** Check $f(2)$ is defined.
+$$f(2) = 2(4) - 3(2) + 1 = 8 - 6 + 1 = 3$$
+Defined. ✓
+
+**Step 2:** Find $\displaystyle\lim_{x \to 2} f(x)$.
+
+Since $f$ is a polynomial, substitute directly:
+$$\lim_{x \to 2} (2x^2 - 3x + 1) = 2(4) - 3(2) + 1 = 3$$
+Limit exists. ✓
+
+**Step 3:** Check the limit equals $f(2)$.
+$$\lim_{x \to 2} f(x) = 3 = f(2) \checkmark$$
+
+All three conditions hold. $f$ is continuous at $x = 2$.
+
+> **Rule:** Any polynomial is continuous everywhere on $\mathbb{R}$.
+
+---
+
+## Example 2 — Detecting Discontinuity
+
+**Problem:** Discuss the continuity of:
+
+$$g(x) = \frac{x^2 - 4}{x - 2}$$
+
+**Step 1:** Check the domain. At $x = 2$: denominator $= 0$, so $g(2)$ is **undefined**.
+
+Condition 1 fails — $g$ is discontinuous at $x = 2$.
+
+**Step 2:** Classify the discontinuity. Find the limit:
+$$\lim_{x \to 2} \frac{x^2 - 4}{x - 2} = \lim_{x \to 2} \frac{(x-2)(x+2)}{x-2} = \lim_{x \to 2} (x + 2) = 4$$
+
+The limit exists (equals 4), but $g(2)$ is undefined. This is a **removable discontinuity** — there is a hole in the graph at $(2, 4)$.
+
+**Fix:** Define $\tilde{g}(x) = \begin{cases} \dfrac{x^2-4}{x-2} & x \neq 2 \\ 4 & x = 2 \end{cases}$. Now $\tilde{g}$ is continuous everywhere.
+
+---
+
+## Example 3 — Piecewise Function
+
+**Problem:** Determine whether $f$ is continuous at $x = 1$:
+
+$$f(x) = \begin{cases} x^2 + 1 & x < 1 \\ 3 & x = 1 \\ 2x & x > 1 \end{cases}$$
+
+**Step 1:** $f(1) = 3$. Defined. ✓
+
+**Step 2:** Find one-sided limits.
+
+Left-hand limit:
+$$\lim_{x \to 1^-} f(x) = \lim_{x \to 1^-} (x^2 + 1) = 1 + 1 = 2$$
+
+Right-hand limit:
+$$\lim_{x \to 1^+} f(x) = \lim_{x \to 1^+} 2x = 2(1) = 2$$
+
+Since LHL $=$ RHL $= 2$, the two-sided limit exists: $\displaystyle\lim_{x \to 1} f(x) = 2$. ✓
+
+**Step 3:** Compare limit to function value.
+$$\lim_{x \to 1} f(x) = 2 \neq 3 = f(1)$$
+
+Condition 3 fails. $f$ is **discontinuous at $x = 1$** — it is a removable discontinuity (the point $(1, 3)$ is misplaced).
+
+---
+
+## Example 4 — Finding Constant for Continuity
+
+**Problem:** Find the value of $k$ that makes $f$ continuous at $x = 2$:
+
+$$f(x) = \begin{cases} 3x + k & x \leq 2 \\ x^2 - 1 & x > 2 \end{cases}$$
+
+For continuity at $x = 2$, we need $\displaystyle\lim_{x \to 2^-} f(x) = \lim_{x \to 2^+} f(x) = f(2)$.
+
+Left-hand limit and $f(2)$:
+$$\lim_{x \to 2^-} f(x) = 3(2) + k = 6 + k$$
+
+Right-hand limit:
+$$\lim_{x \to 2^+} f(x) = (2)^2 - 1 = 3$$
+
+Setting them equal:
+$$6 + k = 3 \implies k = -3$$
+
+**Verify:** With $k = -3$: $f(2) = 6 + (-3) = 3$, and $\lim_{x \to 2^+} f(x) = 3$. ✓
+
+---
+
+## Continuity of Composite Functions
+
+If $g$ is continuous at $a$ and $f$ is continuous at $g(a)$, then the composition $f \circ g$ is continuous at $a$:
+
+$$\lim_{x \to a} f(g(x)) = f\left(\lim_{x \to a} g(x)\right) = f(g(a))$$
+
+This means you can "pass limits inside" a continuous outer function.
+
+---
+
+## Key Takeaways
+
+- Continuity at a point requires three things: $f(a)$ defined, $\lim_{x \to a} f(x)$ exists, and both are equal.
+- The two-sided limit exists only when the left and right limits match.
+- Polynomials and rational functions (away from zeros of denominator) are continuous on their domains.
+- Removable discontinuities occur when the limit exists but either $f(a)$ is undefined or $f(a) \neq$ limit.
+- Jump discontinuities occur when LHL $\neq$ RHL; infinite discontinuities occur when the limit is $\pm\infty$.
+
+---
+
+## Exam Tips
+
+- When asked to "discuss continuity," always check all three conditions explicitly — don't assume.
+- For piecewise functions: compute LHL using the left piece and RHL using the right piece; compare them to each other and to $f(a)$.
+- To find $k$ for continuity: set LHL $=$ RHL (and $= f(a)$ if the point is in a separate piece), then solve.
+- Rational functions are automatically discontinuous wherever the denominator equals zero — always find those points first.
+- In UI exams, piecewise continuity questions and "find $k$" problems are the most common format. Practice checking all three conditions every time.

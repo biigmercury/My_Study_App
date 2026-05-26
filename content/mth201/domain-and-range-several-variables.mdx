@@ -1,0 +1,183 @@
+# Domain and Range of Functions of Several Variables
+
+Real-world quantities rarely depend on just one variable. Temperature depends on position and altitude. Revenue depends on price and quantity sold. In calculus, we extend the idea of a function to cases where the output depends on two or more inputs simultaneously. This topic covers how to define, describe, and find the domain and range of such functions.
+
+## Functions of Two Variables
+
+A **function of two variables** $f$ assigns to each ordered pair $(x, y)$ in some set $D \subseteq \mathbb{R}^2$ exactly one real number $z$:
+
+$$f: D \subseteq \mathbb{R}^2 \to \mathbb{R}$$
+$$z = f(x, y)$$
+
+Here:
+- $x$ and $y$ are the **independent variables** (inputs)
+- $z$ is the **dependent variable** (output)
+- $D$ is the **domain** — the set of all ordered pairs $(x, y)$ for which $f(x, y)$ is defined
+
+**Real-world analogy:** The body mass index (BMI) is $\text{BMI} = \dfrac{m}{h^2}$, a function of mass $m$ and height $h$. The domain is all $(m, h)$ with $m > 0$ and $h > 0$.
+
+---
+
+## Functions of Three or More Variables
+
+A **function of three variables**: $w = f(x, y, z)$, domain $D \subseteq \mathbb{R}^3$.
+
+**Example:** The temperature of a room at position $(x, y, z)$ is a function of three spatial coordinates.
+
+In general, for $n$ variables: $f(x_1, x_2, \ldots, x_n)$ with domain $D \subseteq \mathbb{R}^n$.
+
+---
+
+## Finding the Domain in $\mathbb{R}^2$
+
+The same four restrictions apply as for single-variable functions — but now the domain is a **region in the $xy$-plane**, not just a set of $x$-values.
+
+1. **Division by zero:** exclude $(x, y)$ where denominator $= 0$.
+2. **Square root of negative:** require radicand $\geq 0$.
+3. **Logarithm of non-positive:** require argument $> 0$.
+4. **Even roots of negatives:** same as square root.
+
+The domain is now a region — describe it as a set: $D = \{(x, y) \mid \text{condition}\}$.
+
+---
+
+## Example 1 — Polynomial in Two Variables
+
+**Problem:** Find the domain of $f(x, y) = x^2 + y^2 - xy + 3$.
+
+No denominators, no roots, no logarithms. $f$ is defined for all $(x, y) \in \mathbb{R}^2$.
+
+$$D = \mathbb{R}^2$$
+
+---
+
+## Example 2 — Square Root
+
+**Problem:** Find the domain of $f(x, y) = \sqrt{1 - x^2 - y^2}$.
+
+**Condition:** Radicand $\geq 0$:
+$$1 - x^2 - y^2 \geq 0 \implies x^2 + y^2 \leq 1$$
+
+This is the set of all points inside and on the unit circle centred at the origin.
+
+$$D = \{(x, y) \mid x^2 + y^2 \leq 1\}$$
+
+Geometrically: a closed disk of radius 1.
+
+---
+
+## Example 3 — Rational Function
+
+**Problem:** Find the domain of $g(x, y) = \dfrac{1}{x^2 - y}$.
+
+**Condition:** Denominator $\neq 0$:
+$$x^2 - y \neq 0 \implies y \neq x^2$$
+
+The domain is all of $\mathbb{R}^2$ except the parabola $y = x^2$.
+
+$$D = \{(x, y) \mid y \neq x^2\}$$
+
+---
+
+## Example 4 — Logarithm
+
+**Problem:** Find the domain of $h(x, y) = \ln(x + y - 1)$.
+
+**Condition:** Argument $> 0$:
+$$x + y - 1 > 0 \implies x + y > 1$$
+
+This is the open half-plane above (and to the right of) the line $x + y = 1$.
+
+$$D = \{(x, y) \mid x + y > 1\}$$
+
+---
+
+## Example 5 — Combined Restrictions
+
+**Problem:** Find the domain of $f(x, y) = \dfrac{\sqrt{y - x^2}}{1 - x^2}$.
+
+**Restriction 1 (square root):** $y - x^2 \geq 0 \implies y \geq x^2$
+
+**Restriction 2 (denominator):** $1 - x^2 \neq 0 \implies x \neq \pm 1$
+
+**Combined domain:**
+
+$$D = \{(x, y) \mid y \geq x^2 \text{ and } x \neq \pm 1\}$$
+
+Geometrically: the region on and above the parabola $y = x^2$, excluding the two vertical lines $x = 1$ and $x = -1$.
+
+---
+
+## Range of Functions of Two Variables
+
+The **range** is the set of all output values $z = f(x, y)$ as $(x, y)$ varies over the domain.
+
+**Methods:**
+- For simple functions, identify the possible values of the expression directly.
+- For constrained functions, substitute the domain restriction and find possible outputs.
+
+---
+
+## Example 6 — Finding the Range
+
+**Problem:** Find the range of $f(x, y) = \sqrt{1 - x^2 - y^2}$ (from Example 2).
+
+Domain: $x^2 + y^2 \leq 1$, so $0 \leq x^2 + y^2 \leq 1$.
+
+Therefore:
+$$0 \leq 1 - (x^2 + y^2) \leq 1 \implies 0 \leq \sqrt{1 - x^2 - y^2} \leq 1$$
+
+**Range:** $[0, 1]$.
+
+- At $(0, 0)$: $f(0, 0) = 1$ (maximum).
+- On the boundary $x^2 + y^2 = 1$: $f(x, y) = 0$ (minimum).
+
+---
+
+## Example 7 — Range of a Sum
+
+**Problem:** Find the domain and range of $f(x, y) = \sqrt{x} + \sqrt{y}$.
+
+**Domain:** Both $\sqrt{x}$ and $\sqrt{y}$ require non-negative arguments:
+$$x \geq 0 \quad \text{and} \quad y \geq 0$$
+$$D = \{(x, y) \mid x \geq 0, y \geq 0\} = [0, \infty) \times [0, \infty)$$
+
+**Range:** Since $\sqrt{x} \geq 0$ and $\sqrt{y} \geq 0$, their sum satisfies $f(x, y) \geq 0$.
+
+The minimum is $f(0, 0) = 0$. The sum can be made arbitrarily large by taking $x$ or $y$ large.
+
+**Range:** $[0, \infty)$.
+
+---
+
+## Describing Domains Geometrically
+
+| Condition | Geometric Description |
+|---|---|
+| $x^2 + y^2 \leq r^2$ | Closed disk of radius $r$ centred at origin |
+| $x^2 + y^2 < r^2$ | Open disk of radius $r$ |
+| $x^2 + y^2 \geq r^2$ | Outside (and on) circle of radius $r$ |
+| $ax + by < c$ | Open half-plane below/above a line |
+| $ax + by \leq c$ | Closed half-plane |
+| $y \geq x^2$ | Region above (and on) parabola $y = x^2$ |
+| $y \neq x^2$ | All of $\mathbb{R}^2$ excluding the parabola |
+
+---
+
+## Key Takeaways
+
+- A function of two variables $z = f(x, y)$ has a domain that is a region in the $xy$-plane.
+- Apply the same restriction rules as single-variable calculus: denominator $\neq 0$, radicand $\geq 0$, log argument $> 0$.
+- Express the domain as a set $\{(x, y) \mid \text{conditions}\}$ and describe it geometrically.
+- The range is the set of all output values — find it by analysing what values the expression can take over the domain.
+- When multiple restrictions apply, intersect all conditions.
+
+---
+
+## Exam Tips
+
+- Always express the domain using set notation AND a geometric description.
+- For combined restrictions, find each restriction separately first, then combine with "and."
+- A common error: writing the domain as an interval like $[1, \infty)$ instead of a 2D region — always write ordered pairs or a region description.
+- For the range: substitute the extreme cases from the domain (boundary and interior points) to determine minimum and maximum output values.
+- At UI, domain questions for functions of two variables mirror single-variable domain questions but require you to describe a 2D region. Practice drawing a rough sketch of the domain region.
