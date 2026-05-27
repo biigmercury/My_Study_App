@@ -180,11 +180,11 @@ $$= \frac{1}{3}\ln|x-1| + \frac{1}{6}\ln|2x+1| + C$$
 
 ```mermaid
 flowchart TD
-    A[Given integral ∫f(x)dx] --> B{What is the form?}
+    A["Given integral of f(x) dx"] --> B{What is the form?}
     B -->|Single power, trig, exp| C[Apply basic rules directly]
-    B -->|Composite: f(g(x))·g'(x)| D[Integration by Substitution u = g(x)]
-    B -->|Product of two functions| E[Integration by Parts: u dv = uv − ∫v du]
-    B -->|Rational function p(x)/q(x)| F[Partial Fraction Decomposition]
+    B -->|"Composite: f(g(x)) times g'(x)"| D[Integration by Substitution: u = g(x)]
+    B -->|Product of two functions| E["Integration by Parts: uv minus integral of v du"]
+    B -->|"Rational: p(x) over q(x)"| F[Partial Fraction Decomposition]
     C --> G[Add constant C]
     D --> G
     E --> G

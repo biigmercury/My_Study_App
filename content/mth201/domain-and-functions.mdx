@@ -147,11 +147,11 @@ $$R = \mathbb{R}$$
 
 ```mermaid
 flowchart TD
-    A[Find Domain of f(x)] --> B{Type of expression?}
-    B -->|Polynomial or linear| C[D = ℝ all real numbers]
-    B -->|Square root √(...) | D[Set radicand ≥ 0; solve for x]
-    B -->|Rational f(x)/g(x)| E[Set g(x) ≠ 0; exclude those x]
-    B -->|Logarithm log or ln| F[Set argument > 0; solve for x]
+    A[Find Domain of f of x] --> B{Type of expression?}
+    B -->|Polynomial or linear| C[D = all real numbers]
+    B -->|Square root of expression| D[Set radicand ≥ 0 and solve for x]
+    B -->|"Rational: f(x) over g(x)"| E["Set g(x) not equal to 0; exclude those x"]
+    B -->|Logarithm log or ln| F[Set argument > 0 and solve for x]
     B -->|Combination| G[Apply all relevant restrictions; intersect the sets]
     D --> H[D = interval where inequality holds]
     E --> H

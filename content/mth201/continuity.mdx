@@ -73,11 +73,11 @@ If any one of these three conditions fails, $f$ is **discontinuous** at $x = a$.
 ```mermaid
 flowchart TD
     A[Discontinuity at x = a] --> B{Is lim f(x) defined?}
-    B -->|No — one-sided limits differ| C[Jump Discontinuity]
-    B -->|No — limit is ±∞| D[Infinite Discontinuity]
+    B -->|"No — one-sided limits differ"| C[Jump Discontinuity]
+    B -->|"No — limit diverges to infinity"| D[Infinite Discontinuity]
     B -->|Yes, limit = L| E{Is f(a) defined?}
     E -->|No| F[Removable Discontinuity — hole in graph]
-    E -->|Yes, but f(a) ≠ L| G[Removable Discontinuity — misplaced point]
+    E -->|"Yes, but f(a) is not equal to L"| G[Removable Discontinuity — misplaced point]
 ```
 
 | Type | What fails | Example |
