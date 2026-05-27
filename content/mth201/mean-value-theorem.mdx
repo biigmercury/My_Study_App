@@ -132,15 +132,15 @@ $c = \sqrt{3} \approx 1.73 \in (1, 3)$. ✓
 
 ```mermaid
 flowchart TD
-    A[Given f on interval a,b] --> B{Is f continuous on [a,b]?}
+    A[Given f on closed interval a to b] --> B{Continuous on closed interval?}
     B -->|No| C[MVT does not apply]
-    B -->|Yes| D{Is f differentiable on (a,b)?}
+    B -->|Yes| D{Differentiable on open interval?}
     D -->|No| C
-    D -->|Yes| E[Compute average rate: f(b)−f(a) / b−a]
-    E --> F[Compute f'(x)]
-    F --> G[Solve f'(c) = average rate]
-    G --> H[Verify c is in (a,b)]
-    H --> I[c is the guaranteed point]
+    D -->|Yes| E["Average rate = f(b) minus f(a) over b minus a"]
+    E --> F["Find f'(x) by differentiating"]
+    F --> G["Set f'(c) equal to average rate and solve"]
+    G --> H[Verify c is strictly between a and b]
+    H --> I[c is the guaranteed MVT point]
 ```
 
 ---

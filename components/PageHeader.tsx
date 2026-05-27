@@ -1,5 +1,6 @@
 import ThemeToggle from '@/components/ThemeToggle'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface PageHeaderProps {
   title?: string
@@ -20,9 +21,7 @@ export default function PageHeader({ title, backHref }: PageHeaderProps) {
             </Link>
           ) : (
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-brand-gradient flex items-center justify-center">
-                <span className="text-white text-xs font-black">S</span>
-              </div>
+              <Image src="/logo.jpg" alt="StudyOS" width={28} height={28} className="rounded-lg" />
               <span className="font-black text-lg bg-brand-gradient bg-clip-text text-transparent">
                 StudyOS
               </span>
