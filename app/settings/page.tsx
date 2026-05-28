@@ -6,7 +6,7 @@ import { resetAllProgress } from '@/lib/progress'
 import { COURSES } from '@/lib/courses'
 import {
   getSettings, saveSettings, requestNotificationPermission,
-  scheduleReminder, cancelReminder,
+  scheduleReminder, cancelReminder, DEFAULTS,
   type AppSettings, type QuizDifficulty,
 } from '@/lib/settings'
 
@@ -86,7 +86,7 @@ async function downloadContent(
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
-  const [settings, setSettings] = useState<AppSettings | null>(null)
+  const [settings, setSettings] = useState<AppSettings>(DEFAULTS)
   const [notifStatus, setNotifStatus] = useState<'unknown' | 'granted' | 'denied' | 'unsupported'>('unknown')
   const [showConfirm, setShowConfirm] = useState(false)
   const [resetDone, setResetDone] = useState(false)
@@ -103,8 +103,6 @@ export default function SettingsPage() {
       }
     }
   }, [])
-
-  if (!settings) return null
 
   // ── helpers ──────────────────────────────────────────────────────────────
 
