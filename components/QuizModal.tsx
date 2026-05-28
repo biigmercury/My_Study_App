@@ -122,7 +122,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
           {!questions && !loading && (
             <div>
               <p className="text-[13.5px] text-brand-navy/65 dark:text-white/60 leading-[1.5] mb-4">
-                Generate 5 exam-style questions tuned to this lesson. Pick a difficulty:
+                Generate 20 exam-style questions tuned to this lesson. Pick a difficulty:
               </p>
               <div className="flex gap-2 mb-[18px]">
                 {(['easy', 'medium', 'hard'] as Difficulty[]).map(d => (
