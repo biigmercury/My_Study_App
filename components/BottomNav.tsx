@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 const tabs = [
   {
@@ -59,42 +61,47 @@ const tabs = [
 
 export default function BottomNav() {
   const pathname = usePathname()
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  const isDark = mounted && resolvedTheme === 'dark'
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
     return pathname.startsWith(href)
   }
 
+  const pillBg     = isDark ? 'rgba(8,12,50,0.75)'        : 'rgba(255,255,255,0.88)'
+  const pillBorder = isDark ? 'rgba(144,224,239,0.12)'     : 'rgba(3,4,94,0.07)'
+  const pillShadow = isDark
+    ? '0 10px 30px -10px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,180,216,0.05) inset'
+    : '0 10px 30px -12px rgba(3,4,94,0.18), 0 0 0 1px rgba(255,255,255,0.7) inset'
+  const activeColor   = '#00B4D8'
+  const inactiveColor = isDark ? 'rgba(202,240,248,0.40)' : 'rgba(3,4,94,0.35)'
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
       <div className="w-full max-w-[430px] pointer-events-none px-3.5 pb-5">
-        {/* Floating glass pill */}
         <div
           className="pointer-events-auto flex justify-between p-2 rounded-[28px]"
           style={{
-            background: 'var(--nav-bg, rgba(255,255,255,0.78))',
+            background: pillBg,
             backdropFilter: 'blur(22px) saturate(180%)',
             WebkitBackdropFilter: 'blur(22px) saturate(180%)',
-            border: '1px solid var(--nav-border, rgba(3,4,94,0.06))',
-            boxShadow: '0 10px 30px -12px rgba(3,4,94,0.18), 0 0 0 1px rgba(255,255,255,0.6) inset',
+            border: `1px solid ${pillBorder}`,
+            boxShadow: pillShadow,
           }}
         >
-          <style>{`
-            @media (prefers-color-scheme: dark) { :root { --nav-bg: rgba(8,12,50,0.7); --nav-border: rgba(144,224,239,0.12); } }
-            .dark { --nav-bg: rgba(8,12,50,0.7); --nav-border: rgba(144,224,239,0.12); }
-            .dark .bottom-nav-pill { box-shadow: 0 10px 30px -10px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,180,216,0.05) inset !important; }
-          `}</style>
           {tabs.map(tab => {
             const active = isActive(tab.href)
             return (
               <Link
                 key={tab.href}
                 href={tab.href}
-                className={`flex flex-col items-center gap-0.5 flex-1 py-2 px-1 rounded-[18px] transition-colors ${
-                  active
-                    ? 'text-brand-sky dark:text-brand-sky'
-                    : 'text-brand-navy/40 dark:text-brand-cyan/50 hover:text-brand-navy/60 dark:hover:text-brand-cyan/70'
-                }`}
+                className="flex flex-col items-center gap-0.5 flex-1 py-2 px-1 rounded-[18px] transition-colors"
+                style={{ color: active ? activeColor : inactiveColor }}
               >
                 {tab.icon(active)}
                 <span className={`text-[10px] tracking-[0.1px] ${active ? 'font-bold' : 'font-medium'}`}>

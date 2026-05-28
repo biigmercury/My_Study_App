@@ -73,7 +73,7 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
       <div className="sticky top-14 left-0 right-0 z-30 h-[3px] bg-transparent">
         <div
           className="h-full transition-[width] duration-75 linear"
-          style={{ width: `${scrollPct * 100}%`, background: '#0077B6' }}
+          style={{ width: `${scrollPct * 100}%`, background: '#00B4D8' }}
         />
       </div>
 
@@ -152,7 +152,7 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-white text-[13px] font-semibold"
           style={{
             background: 'linear-gradient(135deg, #0077B6, #00B4D8)',
-            boxShadow: '0 6px 18px -6px #0077B688',
+            boxShadow: '0 6px 18px -6px #00B4D888',
           }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -196,7 +196,7 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
           className="w-full py-[14px] rounded-[18px] font-bold text-[14px] text-white flex items-center justify-center gap-2 transition-all"
           style={{
             background: isCompleted ? '#22c55e' : 'linear-gradient(135deg, #0077B6, #00B4D8)',
-            boxShadow: `0 10px 28px -10px ${isCompleted ? '#22c55e99' : '#0077B699'}`,
+            boxShadow: `0 10px 28px -10px ${isCompleted ? '#22c55e99' : '#00B4D899'}`,
           }}
         >
           {isCompleted ? (

@@ -15,31 +15,22 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Elevated card shadows (theme-aware) */
+  :root {
+    --card-shadow: 0 10px 30px -14px rgba(3,4,94,0.25), 0 2px 6px rgba(3,4,94,0.06);
+    --card-shadow-hover: 0 14px 36px -12px rgba(3,4,94,0.30), 0 4px 12px rgba(3,4,94,0.08);
+    --search-input-bg: #ffffff;
+  }
+  .dark {
+    --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.35);
+    --card-shadow-hover: 0 14px 36px -8px rgba(0,0,0,0.65), 0 4px 12px rgba(0,0,0,0.45);
+    --search-input-bg: #0F1656;
+  }
 }
 
 @layer utilities {
   .border-3 {
     border-width: 3px;
-  }
-
-  /* Glass card utility */
-  .glass {
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    border: 1px solid rgba(3, 4, 94, 0.06);
-  }
-
-  .glass-dark {
-    background: rgba(20, 26, 70, 0.55);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(144, 224, 239, 0.10);
-  }
-
-  /* Progress ring animation */
-  @keyframes ring-fill {
-    from { stroke-dashoffset: var(--ring-circ); }
-    to   { stroke-dashoffset: var(--ring-offset); }
   }
 }

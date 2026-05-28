@@ -51,9 +51,8 @@ export default function SearchPage() {
             autoFocus
             className="w-full pl-[42px] pr-4 py-[13px] rounded-2xl text-[14px] text-brand-navy dark:text-white placeholder:text-brand-navy/35 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-royal/30 dark:focus:ring-brand-sky/30"
             style={{
-              background: 'rgba(255,255,255,0.8)',
+              background: 'var(--search-input-bg)',
               border: '1px solid rgba(3,4,94,0.07)',
-              backdropFilter: 'blur(14px)',
             }}
           />
         </div>
@@ -73,8 +72,8 @@ export default function SearchPage() {
                 className="block"
               >
                 <div
-                  className="flex gap-2.5 items-center p-3 rounded-[16px] bg-white/80 dark:bg-brand-slate/60 border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] transition-shadow hover:shadow-md"
-                  style={{ boxShadow: '0 4px 16px -8px rgba(0,119,182,0.10)' }}
+                  className="flex gap-2.5 items-center p-3 rounded-[16px] bg-white dark:bg-brand-surface border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] transition-shadow hover:shadow-md"
+                  style={{ boxShadow: 'var(--card-shadow)' }}
                 >
                   <div
                     className="w-[34px] h-[34px] rounded-[9px] flex items-center justify-center text-[16px] flex-shrink-0"
@@ -127,8 +126,7 @@ export default function SearchPage() {
               <button
                 key={r}
                 onClick={() => setQuery(r)}
-                className="px-3 py-[7px] rounded-full text-[12px] font-medium text-brand-navy/70 dark:text-white/60 border border-brand-navy/[0.08] dark:border-brand-cyan/[0.12]"
-                style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(8px)' }}
+                className="px-3 py-[7px] rounded-full text-[12px] font-medium text-brand-navy/70 dark:text-white/60 border border-brand-navy/[0.08] dark:border-brand-cyan/[0.12] bg-white dark:bg-brand-surface"
               >
                 {r}
               </button>
@@ -144,8 +142,8 @@ export default function SearchPage() {
             {COURSES.map(course => (
               <Link key={course.code} href={`/courses/${course.code}`} className="block">
                 <div
-                  className="flex items-center gap-2 p-2.5 rounded-[16px] bg-white/80 dark:bg-brand-slate/60 border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] transition-shadow hover:shadow-sm"
-                  style={{ boxShadow: '0 4px 16px -8px rgba(0,119,182,0.08)' }}
+                  className="flex items-center gap-2 p-2.5 rounded-[16px] bg-white dark:bg-brand-surface border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] transition-shadow hover:shadow-sm"
+                  style={{ boxShadow: 'var(--card-shadow)' }}
                 >
                   <span className="text-[18px]">{course.icon}</span>
                   <div className="min-w-0">

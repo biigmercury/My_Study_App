@@ -14,8 +14,8 @@ export default function CourseCard({ course, progress }: CourseCardProps) {
   return (
     <Link href={`/courses/${course.code}`} className="block">
       <div
-        className="flex gap-3 items-center p-3.5 rounded-[20px] bg-white/80 dark:bg-brand-slate/60 border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] transition-shadow hover:shadow-md"
-        style={{ boxShadow: '0 6px 24px -10px rgba(0,119,182,0.10)' }}
+        className="flex gap-3 items-center p-3.5 rounded-[20px] bg-white dark:bg-brand-surface border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] transition-shadow hover:shadow-lg"
+        style={{ boxShadow: 'var(--card-shadow)' }}
       >
         <div
           className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
@@ -34,7 +34,7 @@ export default function CourseCard({ course, progress }: CourseCardProps) {
             <div className="flex-1 h-[6px] bg-brand-navy/[0.08] dark:bg-brand-cyan/[0.12] rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${pct}%`, background: '#0077B6' }}
+                style={{ width: `${pct}%`, background: '#00B4D8' }}
               />
             </div>
             <span className="text-[10px] font-semibold tabular-nums text-brand-navy/60 dark:text-white/50">
