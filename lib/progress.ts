@@ -1,6 +1,7 @@
 import type { ProgressStore, CourseProgress } from '@/types'
 
 const STORAGE_KEY = 'studyos-progress'
+const ACTIVITY_KEY = 'studyos-activity'
 
 export function getProgress(): ProgressStore {
   if (typeof window === 'undefined') return {}
@@ -17,12 +18,45 @@ export function getCourseProgress(courseCode: string): CourseProgress {
   return all[courseCode] ?? { completedTopics: [], lastVisited: '' }
 }
 
+// ─── Activity log ────────────────────────────────────────────────────────────
+
+function getActivityLog(): Record<string, number> {
+  if (typeof window === 'undefined') return {}
+  try {
+    const raw = localStorage.getItem(ACTIVITY_KEY)
+    return raw ? JSON.parse(raw) : {}
+  } catch {
+    return {}
+  }
+}
+
+function incrementActivity(): void {
+  if (typeof window === 'undefined') return
+  const log = getActivityLog()
+  const key = new Date().toISOString().slice(0, 10)
+  log[key] = (log[key] ?? 0) + 1
+  localStorage.setItem(ACTIVITY_KEY, JSON.stringify(log))
+}
+
+// Returns 14 numbers: index 0 = 13 days ago, index 13 = today
+export function getActivityLast14Days(): number[] {
+  const log = getActivityLog()
+  return Array.from({ length: 14 }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() - (13 - i))
+    return log[d.toISOString().slice(0, 10)] ?? 0
+  })
+}
+
+// ─── Mutations ───────────────────────────────────────────────────────────────
+
 export function markTopicComplete(courseCode: string, topicSlug: string): void {
   if (typeof window === 'undefined') return
   const all = getProgress()
   const course = all[courseCode] ?? { completedTopics: [], lastVisited: '' }
   if (!course.completedTopics.includes(topicSlug)) {
     course.completedTopics = [...course.completedTopics, topicSlug]
+    incrementActivity()
   }
   course.lastVisited = new Date().toISOString()
   all[courseCode] = course
@@ -50,6 +84,7 @@ export function setLastVisited(courseCode: string): void {
 export function resetAllProgress(): void {
   if (typeof window === 'undefined') return
   localStorage.removeItem(STORAGE_KEY)
+  localStorage.removeItem(ACTIVITY_KEY)
 }
 
 export function getOverallStats(totalTopics: number): {
