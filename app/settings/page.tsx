@@ -426,10 +426,7 @@ export default function SettingsPage() {
         <div className={card} style={{ boxShadow: 'var(--card-shadow)' }}>
           <div className="p-4">
             <div className="flex items-center gap-3 mb-2.5">
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-[22px] font-semibold flex-shrink-0"
-                style={{ fontFamily: '"New York", ui-serif, Georgia, serif', background: 'linear-gradient(135deg, #03045E, #00B4D8)' }}>
-                S
-              </div>
+              <img src="/logo.jpg" alt="StudyOS" className="w-11 h-11 rounded-xl object-cover flex-shrink-0" />
               <div>
                 <p className="text-[15px] font-bold text-brand-navy dark:text-white">StudyOS</p>
                 <p className="text-[11px] text-brand-navy/45 dark:text-white/35">v 0.1.0 · Personal Learning</p>
