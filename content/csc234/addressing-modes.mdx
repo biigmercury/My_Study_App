@@ -68,9 +68,9 @@ graph TD
     subgraph Addressing Modes
         A[Immediate] -->|Data in Instruction| B(MOV AX, 5)
         C[Register] -->|Data in CPU| D(MOV AX, BX)
-        E[Memory] --> F[Direct: MOV AX, [num1]]
-        E --> G[Indirect: MOV AX, [BX]]
-        E --> H[Based Indexed: MOV AX, [BX][SI]]
+        E[Memory] --> F["Direct: MOV AX, #91;num1#93;"]
+        E --> G["Indirect: MOV AX, #91;BX#93;"]
+        E --> H["Based Indexed: MOV AX, #91;BX#93;#91;SI#93;"]
     end
 ```
 
