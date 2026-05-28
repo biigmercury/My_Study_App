@@ -23,18 +23,17 @@ export default function TopicCard({ topic, courseCode, isCompleted, onToggle }: 
     <div
       className={`flex items-center gap-3 p-3.5 rounded-[16px] border transition-all ${
         isCompleted
-          ? 'border-brand-royal/25 dark:border-brand-sky/20 bg-brand-royal/[0.04] dark:bg-brand-sky/[0.06]'
-          : 'border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] bg-white/80 dark:bg-brand-slate/60'
+          ? 'border-brand-royal/25 dark:border-brand-royal/20 bg-brand-royal/[0.04] dark:bg-brand-royal/[0.06]'
+          : 'border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] bg-white dark:bg-brand-surface'
       }`}
-      style={{ boxShadow: '0 4px 16px -8px rgba(0,119,182,0.08)' }}
+      style={{ boxShadow: 'var(--card-shadow)' }}
     >
-      {/* Completion toggle */}
       <button
         onClick={onToggle}
         className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
           isCompleted
-            ? 'bg-brand-royal dark:bg-brand-sky border-brand-royal dark:border-brand-sky'
-            : 'border-brand-navy/25 dark:border-white/20 hover:border-brand-royal dark:hover:border-brand-sky'
+            ? 'bg-brand-royal border-brand-royal'
+            : 'border-brand-navy/25 dark:border-white/20 hover:border-brand-royal'
         }`}
       >
         {isCompleted && (

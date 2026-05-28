@@ -13,7 +13,7 @@ export default function ProgressBar({ completed, total, height = 'h-[6px]', show
       <div className={`${height} bg-brand-navy/[0.08] dark:bg-brand-cyan/[0.12] rounded-full overflow-hidden`}>
         <div
           className="h-full rounded-full transition-all duration-500"
-          style={{ width: `${pct}%`, background: '#0077B6' }}
+          style={{ width: `${pct}%`, background: '#00B4D8' }}
         />
       </div>
       {showLabel && (

@@ -12,18 +12,21 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          // Primary palette — updated to new design system
-          royal:  '#0077B6', // primary action / CTAs (was #1d4ed8)
-          sky:    '#00B4D8', // accent / dark-mode highlights (was #38bdf8)
-          navy:   '#03045E', // deep navy text + brand (was #0f172a)
-          slate:  '#0A0F45', // dark card / surface bg (was #1e293b)
-          soft:   '#F4FAFC', // lightest bg — light mode body (was #f0f4ff)
-          bg:     '#01022E', // dark mode body bg
-          cyan:   '#90E0EF', // soft sky / muted highlights
-          mist:   '#CAF0F8', // very light wash
+          // Accent / primary interactive colour — user selected #00B4D8
+          royal:   '#00B4D8',  // accent: cyan — rings, progress bars, CTAs
+          sky:     '#90E0EF',  // soft sky — dark-mode muted accents
+          navy:    '#03045E',  // deep navy — text / brand
+          slate:   '#0A0F45',  // dark nav/header bg
+          surface: '#0F1656',  // dark elevated card surface
+          soft:    '#F4FAFC',  // lightest bg — light-mode body
+          bg:      '#01022E',  // dark-mode body bg
+          cyan:    '#90E0EF',  // alias for sky
+          mist:    '#CAF0F8',  // very light wash
+          deep:    '#0077B6',  // deep blue — gradient start only
         },
       },
       backgroundImage: {
+        // Gradient goes deep → accent (dark-to-cyan — looks great on buttons)
         'brand-gradient': 'linear-gradient(135deg, #0077B6, #00B4D8)',
       },
       fontFamily: {
