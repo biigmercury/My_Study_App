@@ -135,6 +135,20 @@ export default function SettingsPage() {
     update({ dailyGoal: next })
   }
 
+  function changeReminderHour(delta: number) {
+    const next = (settings.reminderHour + delta + 24) % 24
+    const saved = update({ reminderHour: next })
+    if (saved.dailyReminders) scheduleReminder(saved.reminderHour, saved.reminderMinute)
+  }
+
+  function changeReminderMinute(delta: number) {
+    const minutes = [0, 15, 30, 45]
+    const idx = minutes.indexOf(settings.reminderMinute)
+    const nextIdx = (idx + delta + minutes.length) % minutes.length
+    const saved = update({ reminderMinute: minutes[nextIdx] })
+    if (saved.dailyReminders) scheduleReminder(saved.reminderHour, saved.reminderMinute)
+  }
+
   function setDifficulty(d: QuizDifficulty) {
     update({ quizDifficulty: d })
   }
@@ -209,24 +223,57 @@ export default function SettingsPage() {
         <div className={card} style={{ boxShadow: 'var(--card-shadow)' }}>
 
           {/* Daily reminders */}
-          <SettingRow
-            icon={<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>}
-            title="Daily reminders"
-            subtitle={
-              notifStatus === 'denied'
-                ? 'Blocked — allow notifications in browser settings'
-                : notifStatus === 'unsupported'
-                  ? 'Not supported in this browser'
-                  : settings.dailyReminders
-                    ? `Every day at ${String(settings.reminderHour).padStart(2,'0')}:${String(settings.reminderMinute).padStart(2,'0')}`
-                    : 'Tap to enable a daily study reminder'
-            }
-            right={
-              notifStatus === 'unsupported' || notifStatus === 'denied'
-                ? <span className="text-[11px] text-brand-navy/35 dark:text-white/25">Unavailable</span>
-                : <Toggle on={settings.dailyReminders} onToggle={toggleReminders} />
-            }
-          />
+          <div className="border-b border-brand-navy/[0.06] dark:border-brand-cyan/[0.10]">
+            <SettingRow
+              icon={<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>}
+              title="Daily reminders"
+              subtitle={
+                notifStatus === 'denied'
+                  ? 'Blocked — allow notifications in browser settings'
+                  : notifStatus === 'unsupported'
+                    ? 'Not supported in this browser'
+                    : settings.dailyReminders
+                      ? `Every day at ${String(settings.reminderHour).padStart(2,'0')}:${String(settings.reminderMinute).padStart(2,'0')}`
+                      : 'Tap to enable a daily study reminder'
+              }
+              right={
+                notifStatus === 'unsupported' || notifStatus === 'denied'
+                  ? <span className="text-[11px] text-brand-navy/35 dark:text-white/25">Unavailable</span>
+                  : <Toggle on={settings.dailyReminders} onToggle={toggleReminders} />
+              }
+              last
+            />
+            {/* Inline time picker — visible when reminders are on */}
+            {settings.dailyReminders && notifStatus === 'granted' && (
+              <div className="px-3.5 pb-3.5 flex items-center gap-3">
+                <div className="w-8 h-8 flex-shrink-0" /> {/* spacer to align with icon */}
+                <div className="flex items-center gap-2 flex-1">
+                  <span className="text-[12px] text-brand-navy/50 dark:text-white/40 font-medium w-[56px]">Remind at</span>
+                  {/* Hour */}
+                  <div className="flex items-center gap-1.5 bg-brand-navy/[0.04] dark:bg-brand-cyan/[0.06] rounded-xl px-2.5 py-1.5">
+                    <button onClick={() => changeReminderHour(-1)}
+                      className="text-brand-royal text-[16px] leading-none w-5 flex items-center justify-center">‹</button>
+                    <span className="text-[14px] font-bold text-brand-navy dark:text-white tabular-nums w-7 text-center">
+                      {String(settings.reminderHour).padStart(2, '0')}
+                    </span>
+                    <button onClick={() => changeReminderHour(+1)}
+                      className="text-brand-royal text-[16px] leading-none w-5 flex items-center justify-center">›</button>
+                  </div>
+                  <span className="text-[16px] font-bold text-brand-navy/40 dark:text-white/30">:</span>
+                  {/* Minute */}
+                  <div className="flex items-center gap-1.5 bg-brand-navy/[0.04] dark:bg-brand-cyan/[0.06] rounded-xl px-2.5 py-1.5">
+                    <button onClick={() => changeReminderMinute(-1)}
+                      className="text-brand-royal text-[16px] leading-none w-5 flex items-center justify-center">‹</button>
+                    <span className="text-[14px] font-bold text-brand-navy dark:text-white tabular-nums w-7 text-center">
+                      {String(settings.reminderMinute).padStart(2, '0')}
+                    </span>
+                    <button onClick={() => changeReminderMinute(+1)}
+                      className="text-brand-royal text-[16px] leading-none w-5 flex items-center justify-center">›</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Daily goal */}
           <SettingRow

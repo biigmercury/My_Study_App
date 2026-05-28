@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { COURSES } from '@/lib/courses'
-import { getProgress } from '@/lib/progress'
+import { COURSES, SEMESTER_1, SEMESTER_2 } from '@/lib/courses'
+import { getProgress, getActivityLast14Days } from '@/lib/progress'
 import type { CourseProgress } from '@/types'
 
 function RingProgress({ value, total, size = 92, stroke = 9 }: { value: number; total: number; size?: number; stroke?: number }) {
@@ -39,7 +39,7 @@ function ActivityChart({ topics }: { topics: number[] }) {
       style={{ boxShadow: 'var(--card-shadow)' }}>
       <div className="flex justify-between items-baseline mb-3">
         <span className="text-[12px] font-bold text-brand-navy dark:text-white tracking-[0.2px]">Last 14 days</span>
-        <span className="text-[11px] font-semibold text-brand-royal">{total} topics</span>
+        <span className="text-[11px] font-semibold text-brand-royal">{total} topic{total !== 1 ? 's' : ''}</span>
       </div>
       <div className="flex items-end gap-[5px] h-[60px]">
         {topics.map((v, i) => (
@@ -58,15 +58,43 @@ function ActivityChart({ topics }: { topics: number[] }) {
   )
 }
 
+function CourseProgressRow({ course, done, total }: { course: { code: string; shortName: string; icon: string; accent: string }; done: number; total: number }) {
+  const ratio = total > 0 ? Math.round((done / total) * 100) : 0
+  return (
+    <div className="rounded-[20px] p-3.5 bg-white dark:bg-brand-surface border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10]"
+      style={{ boxShadow: 'var(--card-shadow)' }}>
+      <div className="flex gap-2.5 items-center mb-2">
+        <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[17px] flex-shrink-0"
+          style={{ background: course.accent }}>{course.icon}</div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[13px] font-semibold text-brand-navy dark:text-white truncate">{course.shortName}</p>
+          <p className="text-[10.5px] font-mono text-brand-navy/40 dark:text-white/30">{done}/{total} topics</p>
+        </div>
+        <span className="text-[19px] font-semibold text-brand-navy dark:text-white tracking-[-0.3px] tabular-nums"
+          style={{ fontFamily: '"New York", ui-serif, Georgia, serif' }}>
+          {ratio}<span className="text-[11px] opacity-50">%</span>
+        </span>
+      </div>
+      <div className="h-[6px] bg-brand-navy/[0.08] dark:bg-brand-cyan/[0.12] rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-500"
+          style={{ width: `${(done/total)*100}%`, background: '#00B4D8' }} />
+      </div>
+    </div>
+  )
+}
+
 export default function ProgressPage() {
   const [progressMap, setProgressMap] = useState<Record<string, CourseProgress>>({})
+  const [activity, setActivity] = useState<number[]>(new Array(14).fill(0))
   const empty: CourseProgress = { completedTopics: [], lastVisited: '' }
 
-  useEffect(() => { setProgressMap(getProgress()) }, [])
+  useEffect(() => {
+    setProgressMap(getProgress())
+    setActivity(getActivityLast14Days())
+  }, [])
 
   const totalTopics = COURSES.reduce((s, c) => s + c.topics.length, 0)
   const totalCompleted = Object.values(progressMap).reduce((s, p) => s + p.completedTopics.length, 0)
-  const activity = [2, 3, 1, 0, 4, 2, 5, 3, 0, 2, 4, 3, 5, totalCompleted > 0 ? 2 : 0]
 
   return (
     <div className="pb-4">
@@ -108,37 +136,38 @@ export default function ProgressPage() {
         <ActivityChart topics={activity} />
       </div>
 
-      {/* Per-course */}
-      <div className="px-[20px] mb-2.5">
-        <span className="text-[11px] font-bold tracking-[0.8px] uppercase text-brand-navy/45 dark:text-white/35">By course</span>
+      {/* Semester 1 */}
+      <div className="px-[20px] mb-2.5 flex items-baseline gap-2">
+        <span className="text-[11px] font-bold tracking-[0.8px] uppercase text-brand-navy/45 dark:text-white/35">Semester 1</span>
+        <span className="text-[10px] font-mono text-brand-navy/25 dark:text-white/20">
+          {SEMESTER_1.reduce((s, c) => s + (progressMap[c.code]?.completedTopics.length ?? 0), 0)}/
+          {SEMESTER_1.reduce((s, c) => s + c.topics.length, 0)}
+        </span>
+      </div>
+      <div className="px-4 flex flex-col gap-2.5 mb-4">
+        {SEMESTER_1.map(course => {
+          const p = progressMap[course.code] ?? empty
+          return (
+            <CourseProgressRow key={course.code} course={course}
+              done={p.completedTopics.length} total={course.topics.length} />
+          )
+        })}
+      </div>
+
+      {/* Semester 2 */}
+      <div className="px-[20px] mb-2.5 flex items-baseline gap-2">
+        <span className="text-[11px] font-bold tracking-[0.8px] uppercase text-brand-navy/45 dark:text-white/35">Semester 2</span>
+        <span className="text-[10px] font-mono text-brand-navy/25 dark:text-white/20">
+          {SEMESTER_2.reduce((s, c) => s + (progressMap[c.code]?.completedTopics.length ?? 0), 0)}/
+          {SEMESTER_2.reduce((s, c) => s + c.topics.length, 0)}
+        </span>
       </div>
       <div className="px-4 flex flex-col gap-2.5">
-        {COURSES.map(course => {
+        {SEMESTER_2.map(course => {
           const p = progressMap[course.code] ?? empty
-          const done = p.completedTopics.length
-          const total = course.topics.length
-          const ratio = total > 0 ? Math.round((done / total) * 100) : 0
           return (
-            <div key={course.code}
-              className="rounded-[20px] p-3.5 bg-white dark:bg-brand-surface border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10]"
-              style={{ boxShadow: 'var(--card-shadow)' }}>
-              <div className="flex gap-2.5 items-center mb-2">
-                <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[17px] flex-shrink-0"
-                  style={{ background: course.accent }}>{course.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-semibold text-brand-navy dark:text-white truncate">{course.shortName}</p>
-                  <p className="text-[10.5px] font-mono text-brand-navy/40 dark:text-white/30">{done}/{total} topics</p>
-                </div>
-                <span className="text-[19px] font-semibold text-brand-navy dark:text-white tracking-[-0.3px] tabular-nums"
-                  style={{ fontFamily: '"New York", ui-serif, Georgia, serif' }}>
-                  {ratio}<span className="text-[11px] opacity-50">%</span>
-                </span>
-              </div>
-              <div className="h-[6px] bg-brand-navy/[0.08] dark:bg-brand-cyan/[0.12] rounded-full overflow-hidden">
-                <div className="h-full rounded-full transition-all duration-500"
-                  style={{ width: `${(done/total)*100}%`, background: '#00B4D8' }} />
-              </div>
-            </div>
+            <CourseProgressRow key={course.code} course={course}
+              done={p.completedTopics.length} total={course.topics.length} />
           )
         })}
       </div>

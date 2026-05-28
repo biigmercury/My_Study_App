@@ -491,3 +491,12 @@ export function getAllCourseCodes(): string[] {
 export function getTotalTopicCount(): number {
   return COURSES.reduce((sum, c) => sum + c.topics.length, 0)
 }
+
+// Courses from the first-semester timetable
+export const SEMESTER_1_CODES = new Set([
+  'ift211', 'csc234', 'cos203', 'cos201', 'sen201',
+  'csc203', 'sta202', 'cyb201', 'mth201', 'csc236', 'mth202',
+])
+
+export const SEMESTER_1 = COURSES.filter(c => SEMESTER_1_CODES.has(c.code))
+export const SEMESTER_2 = COURSES.filter(c => !SEMESTER_1_CODES.has(c.code))
