@@ -16,12 +16,12 @@ To ensure these concepts are locked into memory, let's review the entire workflo
 graph TD
     OS[Operating System / File System] --> Pathlib[pathlib Module]
     Pathlib --> PathObj[Path Objects]
-    PathObj --> Open[The 'with' Statement]
+    PathObj --> Open["The 'with' Statement"]
     
     Open --> TxtFile[Text Files]
     Open --> CSVFile[CSV Files]
     
-    TxtFile --> Modes[Modes: 'r', 'w', 'a']
+    TxtFile --> Modes["Modes: 'r', 'w', 'a'"]
     CSVFile --> CSVMod[csv Module]
     CSVMod --> DictReader[DictReader / DictWriter]
 ```

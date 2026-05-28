@@ -124,9 +124,9 @@ When rolling a fair die twice, what is the probability of getting **at least one
 ```mermaid
 flowchart TD
     A[Need P of A or B] --> B{Are A and B<br/>mutually exclusive?}
-    B -->|Yes: A∩B = ∅| C[P(A∪B) = P(A) + P(B)]
-    B -->|No: A∩B ≠ ∅| D[P(A∪B) = P(A) + P(B) − P(A∩B)]
-    E[Need P of 'not A'] --> F[P(Ā) = 1 − P(A)]
+    B -->|"Yes: mutually exclusive"| C[P(A∪B) = P(A) + P(B)]
+    B -->|"No: events overlap"| D[P(A∪B) = P(A) + P(B) minus P(A∩B)]
+    E["Need P of 'not A'"] --> F[P(A-complement) = 1 minus P(A)]
 ```
 
 ---

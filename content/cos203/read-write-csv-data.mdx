@@ -61,7 +61,7 @@ Instead, we use the incredibly powerful `csv.DictReader`. It reads the first lin
 
 ```mermaid
 flowchart LR
-    CSV[Name,Role\nAlice,CEO] -->|csv.DictReader| Dict[{"Name": "Alice", "Role": "CEO"}]
+    CSV[CSV row as plain text] -->|csv.DictReader| Dict[Row converted to Python dict]
 ```
 
 ### Worked Example 1: Reading Employee Data
