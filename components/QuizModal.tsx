@@ -50,11 +50,6 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
     setAnswers(prev => ({ ...prev, [qId]: value }))
   }
 
-  const handleSubmit = () => {
-    if (!questions) return
-    setSubmitted(true)
-  }
-
   const handleReset = () => {
     setQuestions(null)
     setAnswers({})
@@ -69,56 +64,105 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
 
   if (!isOpen) return null
 
+  const score = getScore()
+
   return (
-    <div className="fixed inset-x-0 top-0 bottom-16 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center"
+      style={{ background: 'rgba(3,4,50,0.55)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
+      onClick={onClose}
+    >
       <div
-        className="w-full max-w-[430px] bg-white dark:bg-brand-slate rounded-t-3xl overflow-y-auto"
-        style={{ maxHeight: 'calc(100vh - 64px)' }}
+        className="w-full max-w-[430px] overflow-y-auto"
+        style={{
+          maxHeight: '88%',
+          background: 'var(--quiz-bg)',
+          borderRadius: '28px 28px 0 0',
+          boxShadow: '0 -16px 40px -10px rgba(0,0,0,0.35)',
+        }}
         onClick={e => e.stopPropagation()}
       >
+        <style>{`
+          :root { --quiz-bg: #fff; }
+          .dark { --quiz-bg: #040630; }
+        `}</style>
+
         {/* Handle */}
-        <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full bg-slate-200 dark:bg-slate-600" />
+        <div className="flex justify-center pt-2.5">
+          <div
+            className="w-[38px] h-1 rounded-full"
+            style={{ background: 'rgba(3,4,94,0.18)' }}
+          />
         </div>
 
-        <div className="px-5 pb-8 pt-2">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="font-bold text-lg text-slate-800 dark:text-white">Quiz</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{topicTitle}</p>
+        {/* Header */}
+        <div className="px-5 pt-3.5 pb-1.5 flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-1 text-[10px] font-bold tracking-[0.7px] uppercase text-brand-royal dark:text-brand-sky mb-0.5">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
+              </svg>
+              AI Quiz
             </div>
-            <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">
-              ✕
-            </button>
+            <h3
+              className="text-[22px] font-semibold text-brand-navy dark:text-white leading-[1.1] tracking-[-0.3px]"
+              style={{ fontFamily: '"New York", ui-serif, Georgia, serif' }}
+            >
+              {topicTitle}
+            </h3>
           </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center rounded-full text-brand-navy/50 dark:text-white/50 mt-1"
+            style={{ background: 'rgba(3,4,94,0.06)' }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
 
+        <div className="px-5 pb-8 pt-3">
           {/* Start screen */}
           {!questions && !loading && (
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                Generate 5 exam-style questions. Choose difficulty:
+              <p className="text-[13.5px] text-brand-navy/65 dark:text-white/60 leading-[1.5] mb-4">
+                Generate 5 exam-style questions tuned to this lesson. Pick a difficulty:
               </p>
-              <div className="flex gap-2 mb-6">
+              <div className="flex gap-2 mb-[18px]">
                 {(['easy', 'medium', 'hard'] as Difficulty[]).map(d => (
                   <button
                     key={d}
                     onClick={() => setDifficulty(d)}
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium border transition-all capitalize ${
-                      difficulty === d
-                        ? 'bg-brand-royal dark:bg-brand-sky text-white border-transparent'
-                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600'
-                    }`}
+                    className="flex-1 py-3 rounded-[14px] text-[13px] font-semibold border capitalize transition-all"
+                    style={{
+                      background: difficulty === d ? '#0077B6' : 'rgba(3,4,94,0.04)',
+                      color: difficulty === d ? '#fff' : undefined,
+                      borderColor: difficulty === d ? 'transparent' : 'rgba(3,4,94,0.08)',
+                    }}
                   >
                     {d}
                   </button>
                 ))}
               </div>
-              {error && <p className="text-sm text-red-500 mb-4 p-3 bg-red-50 dark:bg-red-950/30 rounded-lg">{error}</p>}
+              {error && (
+                <p className="text-sm text-red-500 mb-4 p-3 rounded-xl"
+                  style={{ background: 'rgba(239,68,68,0.08)' }}>
+                  {error}
+                </p>
+              )}
               <button
                 onClick={generateQuiz}
-                className="w-full py-3.5 rounded-2xl bg-brand-gradient text-white font-bold text-sm shadow-lg shadow-blue-500/30"
+                className="w-full py-[14px] rounded-2xl text-white font-bold text-[14px] flex items-center justify-center gap-2"
+                style={{
+                  background: 'linear-gradient(135deg, #0077B6, #00B4D8)',
+                  boxShadow: '0 10px 28px -10px #0077B6aa',
+                }}
               >
-                Generate Quiz ✨
+                Generate quiz
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
+                </svg>
               </button>
             </div>
           )}
@@ -127,66 +171,96 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
           {loading && (
             <div className="flex flex-col items-center gap-4 py-10">
               <div className="w-10 h-10 border-3 border-brand-royal dark:border-brand-sky border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-slate-500 dark:text-slate-400">Generating questions...</p>
+              <p className="text-sm text-brand-navy/50 dark:text-white/40">Generating questions…</p>
             </div>
           )}
 
           {/* Questions */}
           {questions && (
             <div>
+              {/* Score banner */}
               {submitted && (
-                <div className="mb-5 p-4 rounded-xl bg-brand-gradient">
-                  <p className="text-white font-bold text-center">
-                    Score: {getScore()}/{questions.length} — {Math.round((getScore() / questions.length) * 100)}%
+                <div
+                  className="mb-[18px] p-4 rounded-[18px] text-white text-center"
+                  style={{ background: 'linear-gradient(135deg, #0077B6, #00B4D8)' }}
+                >
+                  <p className="text-[10px] font-bold tracking-[0.8px] uppercase opacity-80">Your score</p>
+                  <p
+                    className="text-[38px] font-semibold leading-[1.1] tracking-[-1px]"
+                    style={{ fontFamily: '"New York", ui-serif, Georgia, serif' }}
+                  >
+                    {score}<span className="text-[22px] opacity-60">/{questions.length}</span>
+                  </p>
+                  <p className="text-[12px] opacity-90 mt-0.5">
+                    {Math.round((score / questions.length) * 100)}% ·{' '}
+                    {score >= 4 ? 'Excellent work' : score >= 3 ? 'Solid effort' : "Let's review"}
                   </p>
                 </div>
               )}
 
-              <div className="space-y-5">
+              <div className="flex flex-col gap-3.5">
                 {questions.map((q, i) => {
                   const isCorrect = submitted && answers[q.id]?.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase()
-                  const isWrong = submitted && answers[q.id] && !isCorrect
+                  const isWrong   = submitted && answers[q.id] && !isCorrect
 
                   return (
-                    <div key={q.id} className={`p-4 rounded-xl border ${
-                      submitted
-                        ? isCorrect
-                          ? 'border-green-400/60 bg-green-50 dark:bg-green-950/20'
-                          : isWrong
-                            ? 'border-red-400/60 bg-red-50 dark:bg-red-950/20'
-                            : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40'
-                        : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/40'
-                    }`}>
-                      <p className="text-sm font-semibold text-slate-800 dark:text-white mb-3">
-                        <span className="text-brand-royal dark:text-brand-sky">Q{i + 1}.</span> {q.question}
-                      </p>
+                    <div
+                      key={q.id}
+                      className="rounded-2xl p-3.5"
+                      style={{
+                        border: `1px solid ${submitted ? (isCorrect ? '#22c55e44' : isWrong ? '#ef444444' : 'rgba(3,4,94,0.08)') : 'rgba(3,4,94,0.08)'}`,
+                        background: submitted
+                          ? isCorrect ? 'rgba(34,197,94,0.06)' : isWrong ? 'rgba(239,68,68,0.06)' : 'transparent'
+                          : 'rgba(3,4,94,0.02)',
+                      }}
+                    >
+                      <div className="flex items-baseline gap-1.5 mb-2">
+                        <span className="text-[10px] font-bold text-brand-royal dark:text-brand-sky font-mono">Q{i + 1}</span>
+                        <span className="text-[13.5px] font-semibold text-brand-navy dark:text-white leading-[1.35]">
+                          {q.question}
+                        </span>
+                      </div>
 
                       {q.type === 'mcq' && q.options ? (
-                        <div className="space-y-2">
-                          {q.options.map(opt => (
-                            <label key={opt} className={`flex items-start gap-2.5 p-2.5 rounded-lg cursor-pointer border transition-all ${
-                              answers[q.id] === opt
-                                ? 'border-brand-royal dark:border-brand-sky bg-blue-50 dark:bg-blue-950/30'
-                                : 'border-transparent bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700/60'
-                            }`}>
-                              <input
-                                type="radio"
-                                name={q.id}
-                                value={opt}
-                                checked={answers[q.id] === opt}
-                                onChange={() => handleAnswer(q.id, opt)}
-                                className="mt-0.5 accent-brand-royal"
-                                disabled={submitted}
-                              />
-                              <span className="text-xs text-slate-700 dark:text-slate-300">{opt}</span>
-                            </label>
-                          ))}
+                        <div className="flex flex-col gap-1.5">
+                          {q.options.map(opt => {
+                            const selected = answers[q.id] === opt
+                            const isCorrectOpt = submitted && opt === q.correctAnswer
+                            return (
+                              <label
+                                key={opt}
+                                className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer transition-colors"
+                                style={{
+                                  background: isCorrectOpt
+                                    ? 'rgba(34,197,94,0.14)'
+                                    : selected
+                                      ? 'rgba(0,180,216,0.12)'
+                                      : 'rgba(255,255,255,0.02)',
+                                  border: `1px solid ${
+                                    isCorrectOpt ? '#22c55e55'
+                                    : selected ? '#0077B6'
+                                    : 'rgba(3,4,94,0.07)'
+                                  }`,
+                                }}
+                                onClick={() => !submitted && handleAnswer(q.id, opt)}
+                              >
+                                <div
+                                  className="w-4 h-4 rounded-full flex-shrink-0 transition-colors"
+                                  style={{
+                                    border: `2px solid ${isCorrectOpt ? '#22c55e' : selected ? '#0077B6' : 'rgba(3,4,94,0.25)'}`,
+                                    background: selected || isCorrectOpt ? (isCorrectOpt ? '#22c55e' : '#0077B6') : 'transparent',
+                                  }}
+                                />
+                                <span className="text-[12.5px] text-brand-navy dark:text-white leading-[1.4]">{opt}</span>
+                              </label>
+                            )
+                          })}
                         </div>
                       ) : (
                         <textarea
-                          className="w-full text-sm p-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 resize-none focus:outline-none focus:ring-2 focus:ring-brand-royal dark:focus:ring-brand-sky"
+                          className="w-full text-sm p-3 rounded-xl border border-brand-navy/[0.08] dark:border-brand-cyan/[0.12] bg-white/80 dark:bg-brand-slate/60 text-brand-navy dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-brand-royal/40"
                           rows={3}
-                          placeholder="Type your answer..."
+                          placeholder="Type your answer…"
                           value={answers[q.id] || ''}
                           onChange={e => handleAnswer(q.id, e.target.value)}
                           disabled={submitted}
@@ -194,11 +268,11 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
                       )}
 
                       {submitted && (
-                        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
-                          <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">
-                            ✓ Answer: <span className="text-green-600 dark:text-green-400">{q.correctAnswer}</span>
+                        <div className="mt-2.5 pt-2.5 border-t border-brand-navy/[0.08] dark:border-brand-cyan/[0.10]">
+                          <p className="text-xs text-brand-navy/70 dark:text-white/60 leading-[1.5]">
+                            <span className="text-brand-royal dark:text-brand-sky font-semibold">Why · </span>
+                            {q.explanation}
                           </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400">{q.explanation}</p>
                         </div>
                       )}
                     </div>
@@ -206,22 +280,18 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
                 })}
               </div>
 
-              <div className="mt-6 flex gap-3">
-                {!submitted ? (
-                  <button
-                    onClick={handleSubmit}
-                    className="flex-1 py-3.5 rounded-2xl bg-brand-gradient text-white font-bold text-sm"
-                  >
-                    Submit Answers
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleReset}
-                    className="flex-1 py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-sm"
-                  >
-                    Try Again
-                  </button>
-                )}
+              <div className="mt-[18px]">
+                <button
+                  onClick={submitted ? handleReset : () => setSubmitted(true)}
+                  className="w-full py-[14px] rounded-2xl font-bold text-[14px] transition-all"
+                  style={
+                    submitted
+                      ? { background: 'rgba(3,4,94,0.06)', color: '#03045E', border: '1px solid rgba(3,4,94,0.08)' }
+                      : { background: 'linear-gradient(135deg, #0077B6, #00B4D8)', color: '#fff', boxShadow: '0 10px 28px -10px #0077B699' }
+                  }
+                >
+                  {submitted ? 'Try again' : 'Submit answers'}
+                </button>
               </div>
             </div>
           )}

@@ -9,10 +9,10 @@ interface MobileLayoutProps {
 
 export default function MobileLayout({ children, title, backHref }: MobileLayoutProps) {
   return (
-    <div className="min-h-screen flex justify-center bg-brand-soft dark:bg-brand-navy">
-      <div className="w-full max-w-[430px] flex flex-col min-h-screen relative shadow-2xl">
+    <div className="min-h-screen flex justify-center bg-brand-soft dark:bg-brand-bg">
+      <div className="w-full max-w-[430px] flex flex-col min-h-screen relative shadow-2xl shadow-brand-navy/10">
         <PageHeader title={title} backHref={backHref} />
-        <main className="flex-1 pb-24 overflow-x-hidden">
+        <main className="flex-1 pb-28 overflow-x-hidden">
           {children}
         </main>
         <BottomNav />
