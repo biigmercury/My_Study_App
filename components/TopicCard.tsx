@@ -7,7 +7,6 @@ interface TopicCardProps {
   topic: Topic
   courseCode: string
   isCompleted: boolean
-  hasContent: boolean
   onToggle: () => void
 }
 
@@ -17,7 +16,7 @@ const diffChipLight: Record<string, [string, string]> = {
   advanced:     ['#ede9fe', '#6d28d9'],
 }
 
-export default function TopicCard({ topic, courseCode, isCompleted, hasContent, onToggle }: TopicCardProps) {
+export default function TopicCard({ topic, courseCode, isCompleted, onToggle }: TopicCardProps) {
   const [chipBg, chipFg] = diffChipLight[topic.difficulty] ?? diffChipLight.beginner
 
   return (
@@ -45,43 +44,26 @@ export default function TopicCard({ topic, courseCode, isCompleted, hasContent, 
         )}
       </button>
 
-      {hasContent ? (
-        <Link href={`/courses/${courseCode}/${topic.slug}`} className="flex-1 min-w-0">
-          <TopicContent topic={topic} isCompleted={isCompleted} chipBg={chipBg} chipFg={chipFg} />
-        </Link>
-      ) : (
-        <div className="flex-1 min-w-0 opacity-50">
-          <TopicContent topic={topic} isCompleted={isCompleted} chipBg={chipBg} chipFg={chipFg} />
-          <span className="text-[10px] text-brand-navy/35 dark:text-white/25 mt-0.5 block">Coming soon</span>
+      <Link href={`/courses/${courseCode}/${topic.slug}`} className="flex-1 min-w-0">
+        <p className={`text-sm font-medium leading-tight ${
+          isCompleted ? 'text-brand-navy/45 dark:text-white/35 line-through decoration-brand-royal/30' : 'text-brand-navy dark:text-white'
+        }`}>
+          {topic.title}
+        </p>
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-[11px] text-brand-navy/40 dark:text-white/30">{topic.duration}</span>
+          <span
+            className="text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize"
+            style={{ background: chipBg, color: chipFg }}
+          >
+            {topic.difficulty}
+          </span>
         </div>
-      )}
+      </Link>
 
-      {hasContent && (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-navy/20 dark:text-white/20 flex-shrink-0">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      )}
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-navy/20 dark:text-white/20 flex-shrink-0">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
     </div>
-  )
-}
-
-function TopicContent({ topic, isCompleted, chipBg, chipFg }: { topic: Topic; isCompleted: boolean; chipBg: string; chipFg: string }) {
-  return (
-    <>
-      <p className={`text-sm font-medium leading-tight ${
-        isCompleted ? 'text-brand-navy/45 dark:text-white/35 line-through decoration-brand-royal/30' : 'text-brand-navy dark:text-white'
-      }`}>
-        {topic.title}
-      </p>
-      <div className="flex items-center gap-2 mt-1">
-        <span className="text-[11px] text-brand-navy/40 dark:text-white/30">{topic.duration}</span>
-        <span
-          className="text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize"
-          style={{ background: chipBg, color: chipFg }}
-        >
-          {topic.difficulty}
-        </span>
-      </div>
-    </>
   )
 }
