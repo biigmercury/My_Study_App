@@ -76,7 +76,7 @@ export default function QuizModal({ courseCode, topicSlug, topicTitle, isOpen, o
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center"
+      className="fixed inset-0 z-[60] flex items-end justify-center"
       style={{ background: 'rgba(3,4,50,0.55)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
       onClick={onClose}
     >
