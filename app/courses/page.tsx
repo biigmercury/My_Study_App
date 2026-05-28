@@ -15,12 +15,19 @@ export default function CoursesPage() {
   }, [])
 
   return (
-    <div className="px-4 pt-4 pb-2">
-      <div className="mb-4">
-        <h1 className="text-xl font-black text-slate-800 dark:text-white">All Courses</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">{COURSES.length} courses this session</p>
+    <div className="pb-4">
+      <div className="px-[22px] pt-2 pb-4">
+        <h1
+          className="text-[30px] font-semibold text-brand-navy dark:text-white tracking-[-0.7px]"
+          style={{ fontFamily: '"New York", ui-serif, Georgia, serif' }}
+        >
+          Courses
+        </h1>
+        <p className="text-[13px] text-brand-navy/60 dark:text-white/50 mt-0.5">
+          {COURSES.length} courses · {COURSES.reduce((s, c) => s + c.topics.length, 0)} topics
+        </p>
       </div>
-      <div className="grid grid-cols-1 gap-3">
+      <div className="px-4 flex flex-col gap-2.5">
         {COURSES.map(course => (
           <CourseCard
             key={course.code}

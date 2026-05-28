@@ -11,25 +11,31 @@ interface TopicCardProps {
   onToggle: () => void
 }
 
-const difficultyColors = {
-  beginner: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
-  intermediate: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400',
-  advanced: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
+const diffChipLight: Record<string, [string, string]> = {
+  beginner:     ['#dcfce7', '#15803d'],
+  intermediate: ['#cffafe', '#0e7490'],
+  advanced:     ['#ede9fe', '#6d28d9'],
 }
 
 export default function TopicCard({ topic, courseCode, isCompleted, hasContent, onToggle }: TopicCardProps) {
+  const [chipBg, chipFg] = diffChipLight[topic.difficulty] ?? diffChipLight.beginner
+
   return (
-    <div className={`flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-brand-slate shadow-sm border transition-all ${
-      isCompleted
-        ? 'border-brand-royal/30 dark:border-brand-sky/30 bg-blue-50/50 dark:bg-blue-950/20'
-        : 'border-slate-200/60 dark:border-slate-700/40'
-    }`}>
+    <div
+      className={`flex items-center gap-3 p-3.5 rounded-[16px] border transition-all ${
+        isCompleted
+          ? 'border-brand-royal/25 dark:border-brand-sky/20 bg-brand-royal/[0.04] dark:bg-brand-sky/[0.06]'
+          : 'border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] bg-white/80 dark:bg-brand-slate/60'
+      }`}
+      style={{ boxShadow: '0 4px 16px -8px rgba(0,119,182,0.08)' }}
+    >
+      {/* Completion toggle */}
       <button
         onClick={onToggle}
         className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
           isCompleted
             ? 'bg-brand-royal dark:bg-brand-sky border-brand-royal dark:border-brand-sky'
-            : 'border-slate-300 dark:border-slate-600 hover:border-brand-royal dark:hover:border-brand-sky'
+            : 'border-brand-navy/25 dark:border-white/20 hover:border-brand-royal dark:hover:border-brand-sky'
         }`}
       >
         {isCompleted && (
@@ -41,17 +47,17 @@ export default function TopicCard({ topic, courseCode, isCompleted, hasContent, 
 
       {hasContent ? (
         <Link href={`/courses/${courseCode}/${topic.slug}`} className="flex-1 min-w-0">
-          <TopicContent topic={topic} isCompleted={isCompleted} />
+          <TopicContent topic={topic} isCompleted={isCompleted} chipBg={chipBg} chipFg={chipFg} />
         </Link>
       ) : (
-        <div className="flex-1 min-w-0 opacity-60">
-          <TopicContent topic={topic} isCompleted={isCompleted} />
-          <span className="text-[10px] text-slate-400 mt-0.5 block">Coming soon</span>
+        <div className="flex-1 min-w-0 opacity-50">
+          <TopicContent topic={topic} isCompleted={isCompleted} chipBg={chipBg} chipFg={chipFg} />
+          <span className="text-[10px] text-brand-navy/35 dark:text-white/25 mt-0.5 block">Coming soon</span>
         </div>
       )}
 
       {hasContent && (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-300 dark:text-slate-600 flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-navy/20 dark:text-white/20 flex-shrink-0">
           <polyline points="9 18 15 12 9 6"/>
         </svg>
       )}
@@ -59,15 +65,20 @@ export default function TopicCard({ topic, courseCode, isCompleted, hasContent, 
   )
 }
 
-function TopicContent({ topic, isCompleted }: { topic: Topic; isCompleted: boolean }) {
+function TopicContent({ topic, isCompleted, chipBg, chipFg }: { topic: Topic; isCompleted: boolean; chipBg: string; chipFg: string }) {
   return (
     <>
-      <p className={`font-medium text-sm leading-tight ${isCompleted ? 'text-slate-500 dark:text-slate-400 line-through decoration-brand-royal/40' : 'text-slate-800 dark:text-slate-100'}`}>
+      <p className={`text-sm font-medium leading-tight ${
+        isCompleted ? 'text-brand-navy/45 dark:text-white/35 line-through decoration-brand-royal/30' : 'text-brand-navy dark:text-white'
+      }`}>
         {topic.title}
       </p>
       <div className="flex items-center gap-2 mt-1">
-        <span className="text-xs text-slate-400">{topic.duration}</span>
-        <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${difficultyColors[topic.difficulty]}`}>
+        <span className="text-[11px] text-brand-navy/40 dark:text-white/30">{topic.duration}</span>
+        <span
+          className="text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize"
+          style={{ background: chipBg, color: chipFg }}
+        >
           {topic.difficulty}
         </span>
       </div>

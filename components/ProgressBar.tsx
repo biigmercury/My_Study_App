@@ -5,19 +5,19 @@ interface ProgressBarProps {
   showLabel?: boolean
 }
 
-export default function ProgressBar({ completed, total, height = 'h-2', showLabel = false }: ProgressBarProps) {
+export default function ProgressBar({ completed, total, height = 'h-[6px]', showLabel = false }: ProgressBarProps) {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0
 
   return (
     <div className="w-full">
-      <div className={`${height} bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden`}>
+      <div className={`${height} bg-brand-navy/[0.08] dark:bg-brand-cyan/[0.12] rounded-full overflow-hidden`}>
         <div
-          className="h-full bg-brand-gradient rounded-full transition-all duration-500"
-          style={{ width: `${pct}%` }}
+          className="h-full rounded-full transition-all duration-500"
+          style={{ width: `${pct}%`, background: '#0077B6' }}
         />
       </div>
       {showLabel && (
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs text-brand-navy/50 dark:text-white/40 mt-1">
           {completed}/{total} topics · {pct}%
         </p>
       )}

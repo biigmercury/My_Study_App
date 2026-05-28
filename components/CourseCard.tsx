@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import ProgressBar from '@/components/ProgressBar'
 import type { Course, CourseProgress } from '@/types'
 
 interface CourseCardProps {
@@ -10,31 +9,42 @@ interface CourseCardProps {
 export default function CourseCard({ course, progress }: CourseCardProps) {
   const completed = progress.completedTopics.length
   const total = course.topics.length
+  const pct = total > 0 ? Math.round((completed / total) * 100) : 0
 
   return (
-    <Link href={`/courses/${course.code}`} className="block group">
-      <div className="rounded-2xl overflow-hidden shadow-sm border border-slate-200/60 dark:border-slate-700/40 bg-white dark:bg-brand-slate hover:shadow-md transition-shadow">
+    <Link href={`/courses/${course.code}`} className="block">
+      <div
+        className="flex gap-3 items-center p-3.5 rounded-[20px] bg-white/80 dark:bg-brand-slate/60 border border-brand-navy/[0.06] dark:border-brand-cyan/[0.10] transition-shadow hover:shadow-md"
+        style={{ boxShadow: '0 6px 24px -10px rgba(0,119,182,0.10)' }}
+      >
         <div
-          className="p-4 text-white relative overflow-hidden"
+          className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
           style={{ background: course.accent }}
         >
-          <div className="absolute top-0 right-0 w-24 h-24 rounded-full bg-white/10 -translate-y-6 translate-x-6" />
-          <div className="relative">
-            <span className="text-3xl block mb-1">{course.icon}</span>
-            <p className="text-[10px] font-mono text-white/60 uppercase tracking-wider mb-0.5">[{course.code.toUpperCase()}]</p>
-            <h3 className="font-bold text-base leading-tight">{course.shortName}</h3>
-            <p className="text-white/70 text-xs mt-0.5">{course.creditHours} credit hours</p>
+          {course.icon}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[9.5px] font-mono text-brand-navy/40 dark:text-white/30 tracking-[0.5px]">
+            [{course.code.toUpperCase()}]
+          </p>
+          <p className="text-[14px] font-semibold text-brand-navy dark:text-white mt-0.5 truncate">
+            {course.shortName}
+          </p>
+          <div className="flex items-center gap-2 mt-1.5">
+            <div className="flex-1 h-[6px] bg-brand-navy/[0.08] dark:bg-brand-cyan/[0.12] rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{ width: `${pct}%`, background: '#0077B6' }}
+              />
+            </div>
+            <span className="text-[10px] font-semibold tabular-nums text-brand-navy/60 dark:text-white/50">
+              {completed}/{total}
+            </span>
           </div>
         </div>
-        <div className="p-4">
-          <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-3">
-            {course.description}
-          </p>
-          <ProgressBar completed={completed} total={total} />
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">
-            {completed}/{total} topics completed
-          </p>
-        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-navy/20 dark:text-white/20 flex-shrink-0">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
       </div>
     </Link>
   )

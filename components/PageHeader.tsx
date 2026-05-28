@@ -9,7 +9,18 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, backHref }: PageHeaderProps) {
   return (
-    <header className="sticky top-0 z-40 bg-white/80 dark:bg-brand-navy/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-700/40">
+    <header
+      className="sticky top-0 z-40 border-b border-brand-navy/[0.06] dark:border-brand-cyan/[0.10]"
+      style={{
+        background: 'var(--header-bg)',
+        backdropFilter: 'blur(16px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+      }}
+    >
+      <style>{`
+        :root { --header-bg: rgba(244,250,252,0.85); }
+        .dark { --header-bg: rgba(1,2,46,0.85); }
+      `}</style>
       <div className="flex items-center justify-between h-14 px-4">
         <div className="flex items-center gap-2">
           {backHref ? (
@@ -22,7 +33,10 @@ export default function PageHeader({ title, backHref }: PageHeaderProps) {
           ) : (
             <Link href="/" className="flex items-center gap-2">
               <Image src="/logo.jpg" alt="StudyOS" width={28} height={28} className="rounded-lg" />
-              <span className="font-black text-lg bg-brand-gradient bg-clip-text text-transparent">
+              <span
+                className="font-black text-lg text-brand-navy dark:text-white"
+                style={{ fontFamily: '"New York", ui-serif, Georgia, serif' }}
+              >
                 StudyOS
               </span>
             </Link>
