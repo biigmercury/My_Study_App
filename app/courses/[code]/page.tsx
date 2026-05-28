@@ -14,14 +14,9 @@ export default function CoursePage() {
   const course = getCourse(params.code)
 
   const [progress, setProgress] = useState<CourseProgress>({ completedTopics: [], lastVisited: '' })
-  const [availableSlugs, setAvailableSlugs] = useState<string[]>([])
 
   useEffect(() => {
     setProgress(getCourseProgress(params.code))
-    fetch(`/api/topics/${params.code}`)
-      .then(r => r.json())
-      .then(data => setAvailableSlugs(data.slugs ?? []))
-      .catch(() => setAvailableSlugs([]))
   }, [params.code])
 
   if (!course) {
@@ -108,7 +103,6 @@ export default function CoursePage() {
               topic={topic}
               courseCode={course.code}
               isCompleted={progress.completedTopics.includes(topic.slug)}
-              hasContent={availableSlugs.includes(topic.slug)}
               onToggle={() => toggleTopic(topic.slug)}
             />
           ))}
