@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { resetAllProgress } from '@/lib/progress'
-import { COURSES } from '@/lib/courses'
 import {
   getSettings, saveSettings, requestNotificationPermission,
-  scheduleReminder, cancelReminder, DEFAULTS,
+  scheduleReminder, cancelReminder, showNotification, registerServiceWorker, DEFAULTS,
   type AppSettings, type QuizDifficulty,
 } from '@/lib/settings'
 
@@ -54,33 +53,7 @@ function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
   )
 }
 
-// ─── Download state ───────────────────────────────────────────────────────────
-
-type DownloadStatus = 'idle' | 'downloading' | 'done' | 'error' | 'unsupported'
-
-async function downloadContent(
-  onProgress: (n: number) => void,
-): Promise<void> {
-  if (!('caches' in window)) throw new Error('unsupported')
-
-  const urls = [
-    '/', '/courses', '/progress', '/search', '/settings',
-    ...COURSES.map(c => `/courses/${c.code}`),
-    ...COURSES.flatMap(c => c.topics.map(t => `/courses/${c.code}/${t.slug}`)),
-  ]
-
-  const cache = await caches.open('studyos-offline-v1')
-  let done = 0
-
-  for (const url of urls) {
-    try {
-      const res = await fetch(url, { cache: 'no-cache' })
-      if (res.ok) await cache.put(url, res)
-    } catch { /* skip unreachable */ }
-    done++
-    onProgress(Math.round((done / urls.length) * 100))
-  }
-}
+const FEEDBACK_URL = 'https://wa.link/ogszop'
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -90,8 +63,6 @@ export default function SettingsPage() {
   const [notifStatus, setNotifStatus] = useState<'unknown' | 'granted' | 'denied' | 'unsupported'>('unknown')
   const [showConfirm, setShowConfirm] = useState(false)
   const [resetDone, setResetDone] = useState(false)
-  const [downloadStatus, setDownloadStatus] = useState<DownloadStatus>('idle')
-  const [downloadProgress, setDownloadProgress] = useState(0)
 
   useEffect(() => {
     setSettings(getSettings())
@@ -123,8 +94,14 @@ export default function SettingsPage() {
         return
       }
       setNotifStatus('granted')
+      await registerServiceWorker()
       const next = update({ dailyReminders: true })
       scheduleReminder(next.reminderHour, next.reminderMinute)
+      // Immediate confirmation so the user sees a real notification right away
+      await showNotification(
+        'Reminders on ✓',
+        `You'll get a daily nudge at ${String(next.reminderHour).padStart(2, '0')}:${String(next.reminderMinute).padStart(2, '0')}.`,
+      )
     }
   }
 
@@ -156,18 +133,6 @@ export default function SettingsPage() {
     setShowConfirm(false)
     setResetDone(true)
     setTimeout(() => setResetDone(false), 3000)
-  }
-
-  async function handleDownload() {
-    if (!('caches' in window)) { setDownloadStatus('unsupported'); return }
-    setDownloadStatus('downloading')
-    setDownloadProgress(0)
-    try {
-      await downloadContent(p => setDownloadProgress(p))
-      setDownloadStatus('done')
-    } catch {
-      setDownloadStatus('error')
-    }
   }
 
   // ── shared card style ─────────────────────────────────────────────────────
@@ -335,48 +300,28 @@ export default function SettingsPage() {
       <SectionLabel>Data</SectionLabel>
       <div className="px-4 mb-4">
         <div className={card} style={{ boxShadow: 'var(--card-shadow)' }}>
-          {/* Download */}
+          {/* Give feedback */}
           <div className="p-3.5 border-b border-brand-navy/[0.06] dark:border-brand-cyan/[0.10]">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-[9px] flex items-center justify-center flex-shrink-0 text-brand-royal"
-                style={{ background: 'rgba(0,180,216,0.10)' }}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <div className="flex items-center gap-3 mb-2.5">
+              <div className="w-8 h-8 rounded-[9px] flex items-center justify-center flex-shrink-0"
+                style={{ background: 'rgba(37,211,102,0.12)', color: '#25D366' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.0c-.24.68-1.42 1.31-1.95 1.36-.5.05-.98.24-3.3-.69-2.77-1.09-4.55-3.91-4.69-4.09-.14-.18-1.13-1.5-1.13-2.86s.71-2.03.96-2.31c.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.55.81 1.91.88 2.05.07.14.12.3.02.48-.09.18-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.18-.21.69-.81.87-1.09.18-.28.37-.23.62-.14.25.09 1.6.76 1.88.9.28.14.46.21.53.32.07.12.07.66-.17 1.34z"/></svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[13.5px] font-semibold text-brand-navy dark:text-white">Download for offline</p>
-                <p className="text-[11.5px] text-brand-navy/55 dark:text-white/45 mt-0.5">
-                  {downloadStatus === 'done'    ? 'All content cached for offline use'
-                   : downloadStatus === 'error'       ? 'Download failed — check connection'
-                   : downloadStatus === 'unsupported' ? 'Not supported in this browser'
-                   : `${COURSES.reduce((s,c)=>s+c.topics.length,0) + COURSES.length + 5} pages to cache`}
-                </p>
+                <p className="text-[13.5px] font-semibold text-brand-navy dark:text-white">Give feedback</p>
+                <p className="text-[11.5px] text-brand-navy/55 dark:text-white/45 mt-0.5">Report bugs or suggest features on WhatsApp</p>
               </div>
             </div>
-            {downloadStatus === 'downloading' ? (
-              <div className="mt-1">
-                <div className="flex justify-between text-[11px] text-brand-navy/50 dark:text-white/40 mb-1">
-                  <span>Caching content…</span>
-                  <span>{downloadProgress}%</span>
-                </div>
-                <div className="h-[6px] bg-brand-navy/[0.08] dark:bg-brand-cyan/[0.12] rounded-full overflow-hidden">
-                  <div className="h-full rounded-full transition-all duration-300"
-                    style={{ width: `${downloadProgress}%`, background: '#00B4D8' }} />
-                </div>
-              </div>
-            ) : (
-              <button
-                onClick={handleDownload}
-                disabled={downloadStatus === 'unsupported' || downloadStatus === 'done'}
-                className="w-full py-2.5 rounded-xl text-[13px] font-semibold transition-all disabled:opacity-40"
-                style={{
-                  background: downloadStatus === 'done' ? 'rgba(34,197,94,0.10)' : 'rgba(0,180,216,0.10)',
-                  color: downloadStatus === 'done' ? '#15803d' : '#00B4D8',
-                  border: `1px solid ${downloadStatus === 'done' ? 'rgba(34,197,94,0.25)' : 'rgba(0,180,216,0.20)'}`,
-                }}
-              >
-                {downloadStatus === 'done' ? '✓ Downloaded' : downloadStatus === 'error' ? 'Retry download' : 'Download now'}
-              </button>
-            )}
+            <a
+              href={FEEDBACK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all"
+              style={{ background: 'rgba(37,211,102,0.12)', color: '#1ca452', border: '1px solid rgba(37,211,102,0.30)' }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>
+              Send feedback
+            </a>
           </div>
 
           {/* Reset progress */}
