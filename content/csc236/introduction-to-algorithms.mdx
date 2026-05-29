@@ -1,0 +1,228 @@
+---
+title: "Introduction to Algorithms"
+description: "What an algorithm is, why it matters, how we describe and evaluate one — the language and mindset of the entire course."
+duration: "35 min"
+difficulty: "beginner"
+---
+
+## What Are We Really Doing in This Course?
+
+Before anything else, let us agree on what the word **algorithm** means — because every single topic in this course is about algorithms.
+
+Think about a recipe. A recipe tells you exactly:
+1. What ingredients you need (inputs)
+2. Step-by-step what to do (operations)
+3. What you end up with (output)
+
+A cooking recipe is an algorithm for producing food. An algorithm in computer science is the same idea, applied to computation: it is a **precise, finite sequence of steps** that takes some input and produces some output.
+
+But here is what makes this course different from a programming course: we do not just care whether an algorithm **works**. We care whether it works **efficiently**. Two recipes can both produce the same dish — but one might take 20 minutes and one might take 3 hours. In algorithms, we study which approach is faster, why, and by how much.
+
+---
+
+## Formal Definition
+
+> **Algorithm:** A finite sequence of well-defined instructions that, given some input, produces an output and is guaranteed to terminate.
+
+Every word in that definition matters:
+
+| Word | Why it matters |
+|---|---|
+| **Finite** | It must eventually stop. An infinite loop is not an algorithm. |
+| **Well-defined** | Each step must be precise and unambiguous. "Do something" is not a valid step. |
+| **Input** | Algorithms operate on data. The data they start with is the input. |
+| **Output** | The algorithm must produce a result. |
+| **Terminate** | For every valid input, it must halt. |
+
+---
+
+## Real-World Analogy: The ATM
+
+An ATM executes an algorithm every time you withdraw money:
+
+```
+1. Accept card
+2. Verify PIN (if wrong 3 times → reject card)
+3. Show menu
+4. Accept withdrawal amount
+5. Check balance
+6. If sufficient: dispense cash, deduct balance, print receipt
+7. If insufficient: show error
+8. Return card
+```
+
+Notice: it is finite, each step is unambiguous, it takes inputs (card, PIN, amount), it produces outputs (cash, receipt), and it always terminates.
+
+---
+
+## How Do We Describe Algorithms?
+
+There are three common ways:
+
+### 1. Natural Language
+Plain English. Useful for the first sketch of an idea.
+
+> "Start from the first element. Compare it with the value you are looking for. If it matches, you are done. If not, move to the next element. Repeat until found or end of list."
+
+**Problem:** Ambiguous. "Move to the next" — what if we are already at the last?
+
+### 2. Pseudocode
+A structured, language-independent notation. Looks like code but is not tied to Java, Python, or any language.
+
+```
+ALGORITHM LinearSearch(A, n, target):
+  FOR i FROM 0 TO n-1 DO:
+    IF A[i] == target THEN
+      RETURN i
+  RETURN -1
+```
+
+**Why pseudocode?** It is precise enough to analyse but not cluttered with syntax details. We use pseudocode heavily in this course.
+
+### 3. Flowcharts
+
+```mermaid
+flowchart TD
+    A([Start]) --> B[i = 0]
+    B --> C{i < n?}
+    C -- Yes --> D{A[i] == target?}
+    D -- Yes --> E([Return i])
+    D -- No --> F[i = i + 1]
+    F --> C
+    C -- No --> G([Return -1])
+```
+
+---
+
+## What Makes a Good Algorithm?
+
+We judge algorithms on three criteria:
+
+### 1. Correctness
+Does it always produce the right output for all valid inputs? This sounds obvious but proving it rigorously is non-trivial — that is what loop invariants (Topic 6) are about.
+
+### 2. Efficiency
+How much **time** and **space** does it use? This is the central question of algorithm analysis. We will spend most of this course studying time efficiency.
+
+### 3. Simplicity
+Is it easy to understand and implement correctly? A brilliant algorithm that nobody can implement without bugs is not very useful.
+
+---
+
+## A First Comparison: Two Sorting Approaches
+
+Here are two ways to sort the list `[5, 3, 8, 1]` into ascending order.
+
+**Approach A — Bubble Sort (swap neighbours):**
+
+```
+Pass 1: [3, 5, 8, 1] → [3, 5, 8, 1] → [3, 5, 1, 8]   (3 comparisons)
+Pass 2: [3, 5, 1, 8] → [3, 1, 5, 8]                    (2 comparisons)
+Pass 3: [1, 3, 5, 8]                                    (1 comparison)
+Total: 6 comparisons
+```
+
+**Approach B — Merge Sort (divide and conquer):**
+
+```
+Split: [5, 3] and [8, 1]
+Sort each: [3, 5] and [1, 8]
+Merge: [1, 3, 5, 8]
+Total: ~5 comparisons
+```
+
+For 4 elements they are roughly equal. But for 1,000,000 elements:
+- Bubble Sort: ~500 billion operations
+- Merge Sort: ~20 million operations
+
+Same correct result. Wildly different efficiency. **That difference is what this course is about.**
+
+---
+
+## The Input Size Parameter
+
+When we analyse efficiency, we always express it in terms of $n$, the **size of the input**.
+
+- For a list: $n$ = number of elements
+- For a graph: $n$ = number of vertices, $m$ = number of edges
+- For a number: $n$ = number of digits (or the magnitude)
+
+The key insight: **the running time of an algorithm is a function of $n$**. We write $T(n)$ to mean "the number of operations the algorithm performs on an input of size $n$."
+
+---
+
+## Operations and the RAM Model
+
+To count operations fairly, we use the **Random Access Machine (RAM) model**:
+
+- Any single memory access takes constant time
+- Any arithmetic operation takes constant time
+- We do not count memory allocation time
+- We count only the fundamental operations in the algorithm
+
+This lets us focus on the **algorithm's logic** rather than hardware specifics. In Topic 8 we make this more rigorous with asymptotic notation.
+
+---
+
+## Worked Example: Counting Operations
+
+**Problem:** Find the maximum value in an array of $n$ numbers.
+
+```
+ALGORITHM FindMax(A, n):
+  max = A[0]                  ← 1 operation
+  FOR i FROM 1 TO n-1:        ← loop runs n-1 times
+    IF A[i] > max THEN         ← 1 comparison per iteration
+      max = A[i]               ← at most 1 assignment per iteration
+  RETURN max                  ← 1 operation
+```
+
+**Counting:**
+- Initial assignment: 1
+- Loop: runs $n - 1$ times, each with 1 comparison + at most 1 assignment = at most 2 operations
+- Return: 1
+
+$$T(n) \leq 1 + 2(n-1) + 1 = 2n$$
+
+So FindMax takes at most $2n$ operations — it scales **linearly** with input size.
+
+**Worked Example 2: Sum of all pairs**
+
+```
+ALGORITHM SumPairs(A, n):
+  total = 0
+  FOR i FROM 0 TO n-1:
+    FOR j FROM i+1 TO n-1:
+      total = total + A[i] + A[j]
+  RETURN total
+```
+
+The outer loop runs $n$ times. For each iteration of the outer loop, the inner loop runs at most $n - 1$ times. Total operations:
+
+$$T(n) \approx \frac{n(n-1)}{2} \approx \frac{n^2}{2}$$
+
+This scales **quadratically**. For $n = 1000$, that is ~500,000 operations. For $n = 1,000,000$, that is ~500,000,000,000 — half a trillion. The quadratic growth is catastrophic for large inputs.
+
+---
+
+## Key Takeaway
+
+> An algorithm is a finite, precise sequence of steps that takes inputs and produces an output. We care not just whether algorithms are correct, but how **efficient** they are — specifically, how their running time grows as a function of input size $n$. The difference between a linear algorithm and a quadratic one can be the difference between "finishes in a second" and "never finishes in a human lifetime."
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Definition of an algorithm — know the five properties (finite, well-defined, input, output, terminates)
+- Given pseudocode, count the total number of operations as a function of $n$
+- Explain the difference between correctness and efficiency
+- Describe the RAM model and why we use it
+
+**Common mistakes:**
+- Saying "an algorithm is just a program" — it is not. An algorithm is independent of any programming language.
+- Forgetting that efficiency is measured as a function of **input size**, not absolute number of seconds.
+- In operation counts, forgetting that a loop body runs $n$ times total, not once.
+
+**Likely question format:**
+> "Define an algorithm and state its five essential properties. Distinguish between an algorithm's correctness and its efficiency, using an example." (8 marks)

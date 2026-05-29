@@ -1,0 +1,270 @@
+---
+title: "Information Representation and Number Systems"
+description: "How digital systems represent numbers — binary, octal, hexadecimal, and decimal — with complete conversion methods in all directions, signed representations, and special codes."
+duration: "60 min"
+difficulty: "beginner"
+---
+
+## Why Computers Use Binary
+
+At the deepest level, a computer is made of billions of tiny switches (transistors). Each switch is either **ON** or **OFF** — there is no in-between. We represent these two states as **1** (on) and **0** (off).
+
+Everything a computer does — every number, letter, image, sound, and instruction — is ultimately a pattern of 1s and 0s. To work with computers at the hardware level, you must understand how information is represented in these patterns. That is what number systems are about.
+
+**Real-world analogy:** Think of a row of light switches. With one switch, you can represent 2 states (on/off). With two switches, 4 states (off-off, off-on, on-off, on-on). With $n$ switches, $2^n$ states. Binary numbers are exactly this — each bit is a switch.
+
+---
+
+## Positional Number Systems
+
+Every number system has a **base** (also called **radix**) — the number of unique digits it uses.
+
+| System | Base | Digits Used |
+|---|---|---|
+| Binary | 2 | 0, 1 |
+| Octal | 8 | 0–7 |
+| Decimal | 10 | 0–9 |
+| Hexadecimal | 16 | 0–9, A, B, C, D, E, F |
+
+**The positional value rule:** Each digit's value depends on its position. Each position represents a power of the base.
+
+**Decimal example:** $347_{10}$ means:
+
+$$3 \times 10^2 + 4 \times 10^1 + 7 \times 10^0 = 300 + 40 + 7 = 347$$
+
+**Binary example:** $1011_2$ means:
+
+$$1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 8 + 0 + 2 + 1 = 11_{10}$$
+
+---
+
+## Binary Terminology
+
+| Term | Meaning |
+|---|---|
+| **Bit** | A single binary digit (0 or 1) |
+| **Nibble** | 4 bits |
+| **Byte** | 8 bits |
+| **Word** | 16 bits (architecture-dependent) |
+| **MSB** | Most Significant Bit (leftmost) |
+| **LSB** | Least Significant Bit (rightmost) |
+
+**Range of an n-bit unsigned number:** $0$ to $2^n - 1$
+
+| Bits | Range |
+|---|---|
+| 8 (1 byte) | 0 to 255 |
+| 16 | 0 to 65,535 |
+| 32 | 0 to 4,294,967,295 |
+
+---
+
+## Conversion 1: Binary → Decimal
+
+Multiply each bit by its positional value (power of 2) and sum.
+
+**Worked example: Convert $10011101_2$ to decimal**
+
+| Bit | 1 | 0 | 0 | 1 | 1 | 1 | 0 | 1 |
+|---|---|---|---|---|---|---|---|---|
+| Power | $2^7$ | $2^6$ | $2^5$ | $2^4$ | $2^3$ | $2^2$ | $2^1$ | $2^0$ |
+| Value | 128 | 0 | 0 | 16 | 8 | 4 | 0 | 1 |
+
+$$128 + 16 + 8 + 4 + 1 = 157_{10}$$
+
+---
+
+## Conversion 2: Decimal → Binary
+
+Use **repeated division by 2**, recording remainders. Read the remainders from **bottom to top**.
+
+**Worked example: Convert $25_{10}$ to binary**
+
+| Division | Quotient | Remainder |
+|---|---|---|
+| 25 ÷ 2 | 12 | **1** |
+| 12 ÷ 2 | 6 | **0** |
+| 6 ÷ 2 | 3 | **0** |
+| 3 ÷ 2 | 1 | **1** |
+| 1 ÷ 2 | 0 | **1** |
+
+Reading remainders bottom to top: $25_{10} = 11001_2$
+
+**Verify:** $16 + 8 + 0 + 0 + 1 = 25$ ✓
+
+---
+
+## Conversion 3: Hexadecimal
+
+Hexadecimal is base 16 — it is a **compact way to write binary**. Each hex digit equals exactly 4 binary bits (one nibble).
+
+**Hex digit reference table:**
+
+| Dec | Bin | Hex | Dec | Bin | Hex |
+|---|---|---|---|---|---|
+| 0 | 0000 | 0 | 8 | 1000 | 8 |
+| 1 | 0001 | 1 | 9 | 1001 | 9 |
+| 2 | 0010 | 2 | 10 | 1010 | A |
+| 3 | 0011 | 3 | 11 | 1011 | B |
+| 4 | 0100 | 4 | 12 | 1100 | C |
+| 5 | 0101 | 5 | 13 | 1101 | D |
+| 6 | 0110 | 6 | 14 | 1110 | E |
+| 7 | 0111 | 7 | 15 | 1111 | F |
+
+### Binary → Hex
+Group bits into sets of 4 **from the right**, convert each group.
+
+**Example:** $101011110011_2$
+
+$$\underbrace{1010}_{A}\ \underbrace{1111}_{F}\ \underbrace{0011}_{3} = AF3_{16}$$
+
+### Hex → Binary
+Replace each hex digit with its 4-bit equivalent.
+
+**Example:** $3B7_{16}$
+
+$$\underbrace{3}_{0011}\ \underbrace{B}_{1011}\ \underbrace{7}_{0111} = 001110110111_2$$
+
+### Hex → Decimal
+Positional expansion using powers of 16.
+
+**Example:** $2AF_{16}$
+
+$$2 \times 16^2 + A(10) \times 16^1 + F(15) \times 16^0 = 512 + 160 + 15 = 687_{10}$$
+
+### Decimal → Hex
+Repeated division by 16, record remainders.
+
+**Example:** Convert $687_{10}$ to hex
+
+| Division | Quotient | Remainder |
+|---|---|---|
+| 687 ÷ 16 | 42 | **15 (F)** |
+| 42 ÷ 16 | 2 | **10 (A)** |
+| 2 ÷ 16 | 0 | **2** |
+
+Reading bottom to top: $687_{10} = 2AF_{16}$ ✓
+
+---
+
+## Conversion 4: Octal
+
+Octal is base 8 — each octal digit equals exactly 3 binary bits.
+
+### Binary → Octal
+Group bits in 3s from the right.
+
+**Example:** $110101011_2$
+
+$$\underbrace{110}_{6}\ \underbrace{101}_{5}\ \underbrace{011}_{3} = 653_8$$
+
+### Octal → Decimal
+Positional expansion using powers of 8.
+
+**Example:** $745_8$
+
+$$7 \times 8^2 + 4 \times 8^1 + 5 \times 8^0 = 448 + 32 + 5 = 485_{10}$$
+
+---
+
+## Signed Number Representation
+
+So far we have handled positive numbers (unsigned). But computers must represent negative numbers too. Three methods:
+
+### Method 1: Sign-Magnitude
+The leftmost bit is the **sign bit**: 0 = positive, 1 = negative. The remaining bits are the magnitude.
+
+- $+25$ → `00011001`
+- $-25$ → `10011001`
+
+**Problems:**
+- Two representations of zero: `00000000` (+0) and `10000000` (−0)
+- Arithmetic is complicated — simple binary addition gives wrong results for mixed signs
+
+### Method 2: 1's Complement
+Negative numbers: invert ALL bits of the positive number.
+
+- $+25$ → `00011001`
+- $-25$ → `11100110` (every bit flipped)
+
+Still has the double-zero problem.
+
+### Method 3: 2's Complement (Most Widely Used)
+Negative numbers: take the 1's complement, then **add 1**.
+
+**Worked example: Represent $-25$ in 8-bit 2's complement**
+
+1. $+25$ = `00011001`
+2. 1's complement (invert): `11100110`
+3. Add 1: `11100110 + 1` = `11100111`
+
+So $-25$ = `11100111` in 2's complement.
+
+**Why 2's complement is used everywhere:**
+- Only one representation of zero
+- Standard binary addition works correctly for all signed values (positive and negative)
+
+**Worked example: 2's complement of $-56$ (8-bit)**
+
+1. $56$ = `00111000`
+2. Invert: `11000111`
+3. Add 1: `11001000`
+
+So $-56$ = `11001000`.
+
+---
+
+## Special Codes
+
+### BCD (Binary Coded Decimal)
+Each decimal digit is encoded separately as a 4-bit binary number.
+
+**Example:** $395_{10}$ in BCD:
+
+$$\underbrace{0011}_{3}\ \underbrace{1001}_{9}\ \underbrace{0101}_{5}$$
+
+**Illegal BCD:** `1011` (= 11) has no decimal equivalent — only 0000 to 1001 (0–9) are valid.
+
+**Advantages:** Exact decimal representation (used in finance where rounding errors are unacceptable); easy conversion to display digits.
+
+**Disadvantage:** Less compact than pure binary.
+
+### Gray Code
+A binary sequence where **only one bit changes** between consecutive values. Used in shaft encoders to prevent reading errors during transitions.
+
+| Decimal | Binary | Gray Code |
+|---|---|---|
+| 0 | 000 | 000 |
+| 1 | 001 | 001 |
+| 2 | 010 | 011 |
+| 3 | 011 | 010 |
+| 4 | 100 | 110 |
+
+Notice only one bit changes between adjacent rows.
+
+---
+
+## Key Takeaway
+
+> Computers represent all information in binary (base 2). Number systems differ by base: binary (2), octal (8), decimal (10), hexadecimal (16). Convert binary↔decimal by positional expansion / repeated division. Hex and octal are compact binary shorthand — group 4 bits for hex, 3 bits for octal. Negative numbers use 2's complement (invert bits, add 1) because it allows standard addition to work and has a single zero. BCD encodes each decimal digit separately; Gray code changes only one bit between consecutive values.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Convert between all bases in both directions — show every step
+- Compute 2's complement of a negative number (invert, add 1)
+- State the range of an n-bit unsigned number ($0$ to $2^n - 1$)
+- Convert binary to hex/octal by grouping bits
+- Identify illegal BCD codes
+- Generate Gray code
+
+**Common mistakes:**
+- Reading division remainders top-to-bottom instead of bottom-to-top
+- Grouping hex bits from the left instead of the right
+- Forgetting the "+1" step in 2's complement
+- Confusing 1's complement (just invert) with 2's complement (invert + 1)
+
+**Likely question:**
+> "(a) Convert $173_{10}$ to binary, octal, and hexadecimal. (b) Represent $-45$ in 8-bit 2's complement form, showing all steps. (c) Convert $2C9_{16}$ to decimal." (15 marks)

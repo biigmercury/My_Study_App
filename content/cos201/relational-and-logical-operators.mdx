@@ -1,0 +1,321 @@
+---
+title: "Relational and Logical Operators"
+description: "How to compare values and combine conditions — the foundation of all decision-making and loop control in Java."
+duration: "35 min"
+difficulty: "beginner"
+---
+
+## Making Decisions Requires Comparing
+
+Every decision in a program comes down to a question: "Is this condition true or false?" To ask those questions, you need two types of operators:
+
+- **Relational operators:** compare two values (`>`, `<`, `==`, etc.)
+- **Logical operators:** combine multiple conditions (`&&`, `||`, `!`)
+
+Together, they are the language of conditions.
+
+---
+
+## Relational (Comparison) Operators
+
+Relational operators compare two values and return a `boolean` result: either `true` or `false`.
+
+| Operator | Meaning | Example | Result |
+|---|---|---|---|
+| `==` | Equal to | `5 == 5` | `true` |
+| `!=` | Not equal to | `5 != 3` | `true` |
+| `>` | Greater than | `7 > 3` | `true` |
+| `<` | Less than | `3 < 7` | `true` |
+| `>=` | Greater than or equal to | `5 >= 5` | `true` |
+| `<=` | Less than or equal to | `4 <= 3` | `false` |
+
+```java
+public class RelationalDemo {
+    public static void main(String[] args) {
+        int a = 10, b = 20, c = 10;
+        
+        System.out.println(a == c);   // true  (10 equals 10)
+        System.out.println(a == b);   // false (10 does not equal 20)
+        System.out.println(a != b);   // true  (10 is not equal to 20)
+        System.out.println(a > b);    // false (10 is not greater than 20)
+        System.out.println(a < b);    // true  (10 is less than 20)
+        System.out.println(a >= c);   // true  (10 >= 10)
+        System.out.println(a <= b);   // true  (10 <= 20)
+        
+        // The result IS a boolean — you can store it in a variable
+        boolean isEqual = (a == c);
+        boolean isGreater = (a > b);
+        System.out.println(isEqual);    // true
+        System.out.println(isGreater);  // false
+    }
+}
+```
+
+---
+
+## The `=` vs `==` Distinction — Critical!
+
+```java
+int x = 5;      // ASSIGNMENT: put 5 into x
+
+if (x == 5) {   // COMPARISON: is x equal to 5?
+    System.out.println("x is 5");
+}
+
+// COMMON MISTAKE — using = instead of == in a condition:
+// if (x = 5) {   // COMPILE ERROR in Java (would cause bug in C/C++)
+//                 // In Java: assignment inside if is illegal
+// }
+```
+
+**Rule:** `=` is **assignment** (changes a value). `==` is **comparison** (checks equality).
+
+---
+
+## Logical Operators
+
+Logical operators combine boolean expressions to form more complex conditions.
+
+| Operator | Name | Description |
+|---|---|---|
+| `&&` | AND | `true` only if BOTH conditions are `true` |
+| `\|\|` | OR | `true` if AT LEAST ONE condition is `true` |
+| `!` | NOT | Flips `true` to `false`, `false` to `true` |
+
+### Truth Table for `&&` (AND)
+
+| A | B | A && B |
+|---|---|---|
+| `true` | `true` | `true` |
+| `true` | `false` | `false` |
+| `false` | `true` | `false` |
+| `false` | `false` | `false` |
+
+AND returns `true` **only when both are true**. Even one `false` makes the whole thing `false`.
+
+### Truth Table for `||` (OR)
+
+| A | B | A \|\| B |
+|---|---|---|
+| `true` | `true` | `true` |
+| `true` | `false` | `true` |
+| `false` | `true` | `true` |
+| `false` | `false` | `false` |
+
+OR returns `true` **whenever at least one is true**. Only `false || false` gives `false`.
+
+### Truth Table for `!` (NOT)
+
+| A | !A |
+|---|---|
+| `true` | `false` |
+| `false` | `true` |
+
+---
+
+## Using Logical Operators in Code
+
+```java
+public class LogicalDemo {
+    public static void main(String[] args) {
+        int age = 25;
+        double salary = 55000;
+        boolean hasID = true;
+        
+        // AND: both conditions must be true
+        boolean qualifiesForLoan = (salary >= 50000) && (age >= 21);
+        System.out.println("Qualifies for loan: " + qualifiesForLoan);  // true
+        
+        // OR: at least one condition must be true
+        boolean getsDiscount = (age < 18) || (age >= 65);
+        System.out.println("Gets discount: " + getsDiscount);  // false (25 is neither)
+        
+        // NOT: flips the condition
+        boolean isRestricted = !hasID;
+        System.out.println("Is restricted: " + isRestricted);  // false (has ID)
+        
+        // Chaining multiple conditions
+        int score = 72;
+        boolean passesCourse = (score >= 50) && (score <= 100) && (hasID);
+        System.out.println("Passes course: " + passesCourse);  // true
+    }
+}
+```
+
+---
+
+## Short-Circuit Evaluation
+
+Java uses **short-circuit evaluation** — it stops evaluating as soon as the result is determined.
+
+**For `&&`:** If the left side is `false`, the right side is NOT evaluated (result must be `false` anyway).
+
+**For `||`:** If the left side is `true`, the right side is NOT evaluated (result must be `true` anyway).
+
+```java
+public class ShortCircuitDemo {
+    public static void main(String[] args) {
+        int x = 0;
+        
+        // Short-circuit AND: first condition is false, so division never happens
+        if (x != 0 && 100 / x > 5) {
+            System.out.println("Large ratio");
+        } else {
+            System.out.println("Cannot divide");  // Output: Cannot divide
+        }
+        // If Java evaluated 100/x when x=0, it would throw a divide-by-zero exception
+        // Short-circuit protects us from this!
+        
+        // Short-circuit OR: first condition is true, second never checked
+        boolean result = (5 > 3) || (100 / 0 > 5);  // no error!
+        System.out.println(result);  // true — second part never evaluated
+    }
+}
+```
+
+**Practical use:** Check if a variable is valid before using it:
+
+```java
+String name = null;
+
+// WITHOUT short-circuit protection — crashes!
+// if (name.length() > 0) { ... }  // NullPointerException: name is null
+
+// WITH short-circuit protection — safe:
+if (name != null && name.length() > 0) {
+    System.out.println("Name: " + name);
+}
+// If name == null, the right side is never evaluated — no crash
+```
+
+---
+
+## Combining Relational and Logical Operators
+
+```java
+public class GradeRange {
+    public static void main(String[] args) {
+        int score = 67;
+        
+        // Check if score is in B range (60-69)
+        boolean isB = (score >= 60) && (score <= 69);
+        System.out.println("Is B grade: " + isB);  // true
+        
+        // Check if score is NOT passing
+        boolean failed = !(score >= 50);
+        boolean failedAlt = score < 50;   // equivalent
+        System.out.println("Failed: " + failed);      // false
+        System.out.println("Failed (alt): " + failedAlt); // false
+        
+        // Complex condition: pass both theory AND practical
+        int theory = 67, practical = 72;
+        boolean passedBoth = (theory >= 50) && (practical >= 50);
+        System.out.println("Passed both: " + passedBoth);  // true
+        
+        // Either failed
+        boolean eitherFailed = (theory < 50) || (practical < 50);
+        System.out.println("Either failed: " + eitherFailed); // false
+    }
+}
+```
+
+---
+
+## Operator Precedence with Logical Operators
+
+When expressions mix arithmetic, relational, and logical operators, Java evaluates in this order:
+
+| Priority | Operators |
+|---|---|
+| 1 (highest) | `()` Parentheses |
+| 2 | `!` (NOT), `++`, `--` |
+| 3 | `*`, `/`, `%` |
+| 4 | `+`, `-` |
+| 5 | `<`, `>`, `<=`, `>=` |
+| 6 | `==`, `!=` |
+| 7 | `&&` (AND) |
+| 8 (lowest) | `\|\|` (OR) |
+
+```java
+// Without parentheses — relies on precedence:
+boolean result = 5 > 3 && 10 != 8 || false;
+// Step 1: 5 > 3 → true
+// Step 2: 10 != 8 → true
+// Step 3: true && true → true
+// Step 4: true || false → true
+
+// Better with parentheses — clear intent:
+boolean result2 = ((5 > 3) && (10 != 8)) || false;  // same result, clearly written
+```
+
+**Recommendation:** When combining `&&` and `||` in one expression, always use parentheses to make the grouping explicit.
+
+---
+
+## Worked Example: University Admission Check
+
+```java
+import java.util.Scanner;
+
+public class AdmissionCheck {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Enter JAMB score: ");
+        int jambScore = sc.nextInt();
+        
+        System.out.print("Enter O-Level grade points (e.g., 240): ");
+        int oLevelPoints = sc.nextInt();
+        
+        System.out.print("Has O-Level Mathematics? (1=yes, 0=no): ");
+        int hasMathInput = sc.nextInt();
+        boolean hasMath = (hasMathInput == 1);
+        
+        // Admission criteria:
+        // JAMB >= 200 AND O-Level >= 200 AND has Mathematics
+        boolean meetsJamb   = jambScore >= 200;
+        boolean meetsOLevel = oLevelPoints >= 200;
+        boolean qualified   = meetsJamb && meetsOLevel && hasMath;
+        
+        System.out.println("\n=== Admission Check ===");
+        System.out.println("JAMB requirement (>=200): " + meetsJamb);
+        System.out.println("O-Level requirement (>=200): " + meetsOLevel);
+        System.out.println("Has Mathematics: " + hasMath);
+        System.out.println("Qualified for admission: " + qualified);
+        
+        if (qualified) {
+            System.out.println("Status: PROCEED TO NEXT STAGE");
+        } else {
+            System.out.println("Status: DOES NOT MEET REQUIREMENTS");
+            if (!meetsJamb)   System.out.println("  - JAMB score too low");
+            if (!meetsOLevel) System.out.println("  - O-Level points too low");
+            if (!hasMath)     System.out.println("  - Mathematics not credited");
+        }
+    }
+}
+```
+
+---
+
+## Key Takeaway
+
+> Relational operators (`==`, `!=`, `<`, `>`, `<=`, `>=`) compare values and return `boolean`. Logical operators (`&&`, `||`, `!`) combine boolean expressions. `&&` requires both to be true; `||` requires at least one to be true; `!` flips the result. Java uses short-circuit evaluation — `&&` stops if the left side is `false`, `||` stops if the left side is `true`. Always use parentheses when mixing `&&` and `||` to make the intended grouping clear.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Evaluate a complex boolean expression step by step (showing intermediate results)
+- Identify what `&&`, `||`, `!` do using truth tables
+- Explain short-circuit evaluation and give an example where it prevents an error
+- Write conditions for range checks: "score is between 50 and 69 inclusive"
+
+**Common mistakes:**
+- `=` vs `==`: always use `==` for comparisons, never `=`
+- Writing `50 <= score <= 69` like in maths — Java does NOT support this. Must write `score >= 50 && score <= 69`
+- Confusing `&&` with `||`: "the candidate is under 18 **or** over 65" gets a discount — use `||`; "the student passed theory **and** practical" — use `&&`
+
+**Likely question:**
+> "Evaluate: `(5 > 3 && 2 < 1) || !(4 == 4)`. Show every step." (4 marks)  
+> "Write a Java condition that checks if a number is between 1 and 100 inclusive AND is divisible by 5." (3 marks)

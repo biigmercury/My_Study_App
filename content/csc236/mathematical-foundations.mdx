@@ -1,0 +1,242 @@
+---
+title: "Mathematical Foundations for Algorithm Analysis"
+description: "The mathematical tools you need: logarithms, summations, floors and ceilings, and proof by induction — the language of algorithm analysis."
+duration: "45 min"
+difficulty: "intermediate"
+---
+
+## Why Math Before Algorithms?
+
+Algorithm analysis is essentially mathematics applied to computation. When we ask "how long does this algorithm take?", the answer comes in the form of mathematical expressions. Without the right tools, we cannot read or write those answers.
+
+Think of this topic as learning the grammar before studying literature. You could try to analyse algorithms without it, but you would constantly get stuck on notation. After this topic, you will be fluent in the language the rest of the course is written in.
+
+---
+
+## 1. Logarithms
+
+The **logarithm** is arguably the most important function in algorithm analysis. It appears everywhere algorithms divide problems in half.
+
+### Definition
+
+$$\log_b n = k \iff b^k = n$$
+
+The logarithm $\log_b n$ answers the question: **"To what power must I raise $b$ to get $n$?"**
+
+### The Most Common Bases
+
+| Notation | Base | Meaning |
+|---|---|---|
+| $\log_2 n$ | 2 | How many times can $n$ be halved? |
+| $\log_{10} n$ | 10 | Powers of 10 |
+| $\ln n$ | $e \approx 2.718$ | Natural logarithm |
+
+In algorithms, $\log_2 n$ appears constantly — any time we divide a problem in half at each step, the depth of recursion is $\log_2 n$.
+
+> **Convention:** In this course, $\log n$ without a base means $\log_2 n$.
+
+### Logarithm Laws (you must know these)
+
+| Law | Formula |
+|---|---|
+| Product | $\log_b (xy) = \log_b x + \log_b y$ |
+| Quotient | $\log_b (x/y) = \log_b x - \log_b y$ |
+| Power | $\log_b (x^k) = k \cdot \log_b x$ |
+| Change of base | $\log_b x = \dfrac{\log_a x}{\log_a b}$ |
+
+**Key consequence of change-of-base:** All logarithms differ by a constant factor. $\log_2 n = \dfrac{\ln n}{\ln 2} \approx 1.443 \ln n$. This means for asymptotic analysis, the base of the logarithm does not matter — we drop it.
+
+### Worked Example 1: How Many Times Can We Halve 1024?
+
+$$\log_2 1024 = \log_2 2^{10} = 10$$
+
+Starting with 1024, we can halve it 10 times before reaching 1. Binary search on a list of 1024 elements takes at most 10 steps — not 1024.
+
+### Worked Example 2: Solving $2^k = n$ for $k$
+
+If a recursive algorithm has a tree of depth $k$ where each level halves the problem, and the original problem has size $n$:
+
+$$2^k = n \implies k = \log_2 n$$
+
+For $n = 1{,}000{,}000$: $k = \log_2 (10^6) \approx 20$. Twenty levels deep — not a million.
+
+---
+
+## 2. Floor and Ceiling Functions
+
+When dividing integers, we sometimes need to round.
+
+$$\lfloor x \rfloor = \text{greatest integer} \leq x \quad \text{(floor, round down)}$$
+
+$$\lceil x \rceil = \text{smallest integer} \geq x \quad \text{(ceiling, round up)}$$
+
+**Examples:**
+
+| Expression | Value |
+|---|---|
+| $\lfloor 7/2 \rfloor$ | 3 |
+| $\lceil 7/2 \rceil$ | 4 |
+| $\lfloor 8/2 \rfloor$ | 4 |
+| $\lceil 8/2 \rceil$ | 4 |
+| $\lfloor 3.9 \rfloor$ | 3 |
+| $\lceil 3.1 \rceil$ | 4 |
+
+**Why this matters:** When binary search splits a list of $n$ elements at the midpoint, the two halves have sizes $\lfloor n/2 \rfloor$ and $\lceil n/2 \rceil$. Keeping track of these is essential for exact recurrence analysis.
+
+---
+
+## 3. Summation Formulas
+
+When we count operations in loops, we sum up the work done at each step.
+
+### Sum of First $n$ Natural Numbers
+
+$$\sum_{i=1}^{n} i = 1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}$$
+
+**Proof (Gauss's trick):** Write the sum forwards and backwards:
+
+$$S = 1 + 2 + 3 + \cdots + n$$
+$$S = n + (n-1) + (n-2) + \cdots + 1$$
+
+Adding: $2S = (n+1) + (n+1) + \cdots + (n+1) = n(n+1)$, so $S = \dfrac{n(n+1)}{2}$.
+
+**Example:** A nested loop where the inner loop runs $i$ times for each $i$ from 1 to $n$ performs exactly $\dfrac{n(n+1)}{2}$ inner-loop iterations.
+
+### Sum of Squares
+
+$$\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}$$
+
+### Geometric Series
+
+$$\sum_{i=0}^{k} r^i = 1 + r + r^2 + \cdots + r^k = \frac{r^{k+1} - 1}{r - 1} \quad (r \neq 1)$$
+
+For $r = 2$:
+
+$$\sum_{i=0}^{k} 2^i = 2^{k+1} - 1$$
+
+**Example:** A complete binary tree with $k$ levels has $2^0 + 2^1 + \cdots + 2^k = 2^{k+1} - 1$ total nodes.
+
+### Worked Example: Count Inner Loop Operations
+
+```
+FOR i FROM 1 TO n:
+  FOR j FROM 1 TO i:
+    do_something()
+```
+
+For $i = 1$: inner loop runs 1 time.  
+For $i = 2$: inner loop runs 2 times.  
+$\vdots$  
+For $i = n$: inner loop runs $n$ times.
+
+$$T(n) = \sum_{i=1}^{n} i = \frac{n(n+1)}{2}$$
+
+For $n = 100$: $T(100) = 5050$ operations.
+
+---
+
+## 4. Proof by Induction
+
+Mathematical induction is how we **prove** that a formula or property holds for all natural numbers. You will use this to verify recurrence solutions, prove loop invariants, and establish algorithm correctness.
+
+### Structure of an Induction Proof
+
+**Step 1 — Base Case:** Show the statement is true for $n = 1$ (or $n = 0$).
+
+**Step 2 — Inductive Hypothesis:** Assume the statement is true for some arbitrary $n = k$.
+
+**Step 3 — Inductive Step:** Using the hypothesis, prove the statement is also true for $n = k + 1$.
+
+If both steps succeed, the statement is true for **all** $n \geq 1$.
+
+### Worked Example 1: Prove $\sum_{i=1}^{n} i = \dfrac{n(n+1)}{2}$
+
+**Base case ($n = 1$):**
+$$\text{LHS} = 1, \quad \text{RHS} = \frac{1 \cdot 2}{2} = 1 \checkmark$$
+
+**Inductive hypothesis:** Assume $\displaystyle\sum_{i=1}^{k} i = \frac{k(k+1)}{2}$ for some $k \geq 1$.
+
+**Inductive step:** Show it holds for $k + 1$.
+
+$$\sum_{i=1}^{k+1} i = \sum_{i=1}^{k} i + (k+1) = \frac{k(k+1)}{2} + (k+1)$$
+
+$$= (k+1)\left(\frac{k}{2} + 1\right) = (k+1) \cdot \frac{k+2}{2} = \frac{(k+1)(k+2)}{2}$$
+
+This is exactly the formula with $n = k+1$. $\blacksquare$
+
+### Worked Example 2: Prove $\sum_{i=0}^{n} 2^i = 2^{n+1} - 1$
+
+**Base case ($n = 0$):**
+$$\text{LHS} = 2^0 = 1, \quad \text{RHS} = 2^1 - 1 = 1 \checkmark$$
+
+**Inductive hypothesis:** Assume $\displaystyle\sum_{i=0}^{k} 2^i = 2^{k+1} - 1$.
+
+**Inductive step:**
+
+$$\sum_{i=0}^{k+1} 2^i = \sum_{i=0}^{k} 2^i + 2^{k+1} = (2^{k+1} - 1) + 2^{k+1} = 2 \cdot 2^{k+1} - 1 = 2^{k+2} - 1$$
+
+Which is the formula with $n = k+1$. $\blacksquare$
+
+---
+
+## 5. Powers of 2 — Reference Table
+
+You will encounter these constantly:
+
+| $n$ | $2^n$ |
+|---|---|
+| 0 | 1 |
+| 1 | 2 |
+| 2 | 4 |
+| 3 | 8 |
+| 4 | 16 |
+| 8 | 256 |
+| 10 | 1,024 (~1K) |
+| 16 | 65,536 (~64K) |
+| 20 | 1,048,576 (~1M) |
+| 30 | ~1 billion |
+| 32 | ~4 billion |
+
+> **Memory trick:** $2^{10} \approx 10^3$. So $2^{20} \approx 10^6$, $2^{30} \approx 10^9$, etc.
+
+---
+
+## 6. Counting Arguments (Combinatorics Basics)
+
+Sometimes we need to count how many possibilities exist to analyse algorithms.
+
+**Multiplication principle:** If you make $k$ independent choices, where choice $i$ has $n_i$ options, the total number of outcomes is $n_1 \times n_2 \times \cdots \times n_k$.
+
+**Permutations:** Number of ways to arrange $n$ distinct items = $n!$
+
+$$n! = n \times (n-1) \times (n-2) \times \cdots \times 1$$
+
+This appears in sorting lower bounds: there are $n!$ possible orderings of $n$ elements.
+
+**Worked Example:** How many ways can 5 students line up?
+
+$$5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$$
+
+---
+
+## Key Takeaway
+
+> The mathematical language of algorithm analysis consists of: **logarithms** (for halving arguments), **floors and ceilings** (for integer arithmetic), **summation formulas** (for counting loop iterations), and **proof by induction** (for verifying correctness). Master these tools and every analysis in this course becomes a straightforward calculation.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Evaluate logarithms: $\log_2 64$, $\log_2 n$ when $n = 2^k$
+- Simplify summations using the closed-form formulas — especially $\sum i = n(n+1)/2$
+- Carry out a complete induction proof for a given formula
+- Apply floor/ceiling: "the left subarray has $\lfloor n/2 \rfloor$ elements"
+
+**Common mistakes:**
+- Forgetting the base case in induction (the proof is incomplete without it)
+- Mixing up $\log n$ and $n$ — $\log_2 1000000 \approx 20$, not $1{,}000{,}000$
+- In the inductive step, trying to prove the formula directly instead of starting from the hypothesis
+
+**Likely question format:**
+> "Using mathematical induction, prove that $\displaystyle\sum_{i=1}^{n} i^2 = \dfrac{n(n+1)(2n+1)}{6}$." (10 marks)

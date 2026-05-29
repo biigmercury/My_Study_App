@@ -1,0 +1,186 @@
+---
+title: "Best, Worst, and Average Case Analysis"
+description: "How the same algorithm can behave very differently depending on the input — and how to characterise each scenario rigorously."
+duration: "40 min"
+difficulty: "intermediate"
+---
+
+## The Same Algorithm, Three Stories
+
+Consider Linear Search on a list of $n$ elements:
+- You search for the first element → 1 comparison. Done instantly.
+- You search for the last element → $n$ comparisons. Slow.
+- You search for a random element → about $n/2$ comparisons on average.
+
+The algorithm is identical in all three cases. The input changes. This is why we need three different analyses.
+
+**Real-world analogy:** A taxi driver's daily commute to work is always the same route. But:
+- Best case: no traffic, green lights → 15 minutes
+- Worst case: rush hour accident → 90 minutes
+- Average case: typical day → 35 minutes
+
+The route (algorithm) is fixed. The conditions (input) vary.
+
+---
+
+## Formal Definitions
+
+Let $\mathcal{I}_n$ be the set of all possible inputs of size $n$.
+
+### Worst-Case Running Time
+
+$$T_\text{worst}(n) = \max_{I \in \mathcal{I}_n} T(I)$$
+
+The maximum running time over all inputs of size $n$.
+
+**Why it matters:** Guarantees an upper bound. "No matter what input I receive, this algorithm takes at most $T_\text{worst}(n)$ time."
+
+**When to use:** Safety-critical systems, real-time applications — anywhere you need a guarantee.
+
+### Best-Case Running Time
+
+$$T_\text{best}(n) = \min_{I \in \mathcal{I}_n} T(I)$$
+
+The minimum running time over all inputs of size $n$.
+
+**Why it matters (and doesn't):** Shows the algorithm is capable of fast runs, but does not guarantee it. An adversary can always present a worst-case input. Best-case analysis is rarely used for algorithm comparison — a "best case" claim like "it runs in $O(1)$" is only meaningful if that best case occurs frequently.
+
+**When it is useful:** Algorithms optimised for nearly-sorted data (Insertion Sort, Timsort) legitimately cite best-case performance because sorted input occurs often in practice.
+
+### Average-Case Running Time
+
+$$T_\text{avg}(n) = \sum_{I \in \mathcal{I}_n} P(I) \cdot T(I)$$
+
+The expected running time, averaged over all inputs weighted by their probability.
+
+**Key assumption:** We must know (or assume) the probability distribution of inputs $P(I)$. The most common assumption is uniform: all inputs are equally likely.
+
+**Why it matters:** More realistic than worst-case for most applications.
+
+**Challenge:** Requires knowing the input distribution, which may be wrong in practice. Also mathematically harder to compute.
+
+---
+
+## Worked Analysis: Linear Search
+
+**Algorithm:** Search for $x$ in $A[0..n-1]$.
+
+**Assumptions:**
+- $x$ is in $A$ (successful search)
+- All positions are equally likely (uniform distribution)
+- $x$ is found at position $i$ with probability $1/n$ for each $i$
+
+### Best Case
+$x$ is at index 0 — found in 1 comparison.
+
+$$T_\text{best}(n) = 1 = O(1)$$
+
+### Worst Case
+$x$ is at index $n-1$ — found in $n$ comparisons.
+
+$$T_\text{worst}(n) = n = O(n)$$
+
+### Average Case (Successful Search)
+Expected position of $x$ = average of $1, 2, \ldots, n$ (1-indexed comparisons):
+
+$$T_\text{avg}(n) = \frac{1}{n} \sum_{i=1}^{n} i = \frac{1}{n} \cdot \frac{n(n+1)}{2} = \frac{n+1}{2} = O(n)$$
+
+So on average, we check about half the array.
+
+---
+
+## Worked Analysis: Insertion Sort
+
+### Best Case (Already Sorted Array)
+For each $j$, `key = A[j]` and $A[j-1] \leq A[j]$, so the `WHILE` loop never executes.
+
+$$T_\text{best}(n) = \sum_{j=1}^{n-1} 1 = n - 1 = O(n)$$
+
+### Worst Case (Reverse-Sorted Array)
+For each $j$, the `WHILE` loop shifts all $j$ previous elements right.
+
+$$T_\text{worst}(n) = \sum_{j=1}^{n-1} j = \frac{n(n-1)}{2} = O(n^2)$$
+
+### Average Case (Random Order)
+On average, each element is inserted in the middle of the already-sorted portion — about $j/2$ shifts.
+
+$$T_\text{avg}(n) = \sum_{j=1}^{n-1} \frac{j}{2} = \frac{1}{2} \cdot \frac{n(n-1)}{2} = \frac{n(n-1)}{4} = O(n^2)$$
+
+---
+
+## Worked Analysis: Quick Sort
+
+Quick Sort's performance varies dramatically based on pivot quality.
+
+### Best Case (Perfect Splits)
+Each partition divides the array exactly in half.
+
+$$T_\text{best}(n) = 2T(n/2) + n \Rightarrow O(n \log n)$$
+
+### Worst Case (Already Sorted, First-Element Pivot)
+One sub-problem has size $n-1$, the other has size $0$.
+
+$$T_\text{worst}(n) = T(n-1) + n \Rightarrow O(n^2)$$
+
+Unrolling: $T(n) = T(n-1) + n = T(n-2) + (n-1) + n = \cdots = \sum_{i=1}^{n} i = \frac{n(n+1)}{2} = O(n^2)$.
+
+### Average Case (Random Pivot Selection)
+Expected pivot position is uniform over $1$ to $n$. The average of all partition ratios gives:
+
+$$T_\text{avg}(n) = O(n \log n)$$
+
+The formal proof uses linearity of expectation (covered in Topics 15–17). The result is the same as the best case asymptotically.
+
+---
+
+## Summary Table for Key Algorithms
+
+| Algorithm | Best Case | Average Case | Worst Case |
+|---|---|---|---|
+| Linear Search | $O(1)$ | $O(n)$ | $O(n)$ |
+| Binary Search | $O(1)$ | $O(\log n)$ | $O(\log n)$ |
+| Bubble Sort | $O(n)$* | $O(n^2)$ | $O(n^2)$ |
+| Selection Sort | $O(n^2)$ | $O(n^2)$ | $O(n^2)$ |
+| Insertion Sort | $O(n)$ | $O(n^2)$ | $O(n^2)$ |
+| Merge Sort | $O(n \log n)$ | $O(n \log n)$ | $O(n \log n)$ |
+| Quick Sort | $O(n \log n)$ | $O(n \log n)$ | $O(n^2)$ |
+
+*With early-exit optimisation
+
+**Observation:** Merge Sort has the same complexity in all three cases — it is **input-independent**. Quick Sort has the same best and average, but a catastrophically bad worst case if pivots are chosen poorly.
+
+---
+
+## Which Case to Report?
+
+In most algorithm analysis contexts:
+
+1. **Worst case** is the standard. When we say "Bubble Sort is $O(n^2)$," we mean worst case.
+2. **Average case** is reported when worst case is unusually pessimistic (e.g., Quick Sort: worst case is $O(n^2)$ but average is $O(n \log n)$, and the worst case is extremely rare with random pivots).
+3. **Best case** is reported only when it has practical significance (Insertion Sort for nearly-sorted data).
+
+**Important convention:** "$O$-notation" on its own usually refers to **worst case**. When average or best case is meant, it is stated explicitly.
+
+---
+
+## Key Takeaway
+
+> The best case is the fastest an algorithm can run; the worst case is the slowest; the average case is the expected performance. Worst case gives the safety guarantee and is the default metric. Average case is more realistic but requires knowing the input distribution. Insertion Sort and Quick Sort have meaningfully different complexities across cases — choose your algorithm based on what you know about your data.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- State best, worst, and average case for Linear Search, Insertion Sort, and Quick Sort with full justification
+- Explain what "average case" requires (probability distribution over inputs)
+- Compute average case for linear search (show the summation)
+- Explain why Selection Sort has the same complexity in all cases
+
+**Common mistakes:**
+- Saying Binary Search is $O(\log n)$ best case — it is $O(1)$ best (when the target is the midpoint)
+- Confusing "best case of the algorithm" with "best case of the input" — they are the same thing: the algorithm's performance on the most favourable input
+- Reporting worst case as $O(n \log n)$ for Quick Sort without noting this only holds with random pivot selection
+
+**Likely question:**
+> "For Insertion Sort, state the best, average, and worst case complexities. Show the derivation for each. For which type of input does each case occur?" (12 marks)

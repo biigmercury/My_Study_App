@@ -1,0 +1,306 @@
+---
+title: "Variables and Constants"
+description: "How to declare, initialise, and name variables in Java — plus the difference between variables (changeable) and constants (fixed), with Java's final keyword."
+duration: "35 min"
+difficulty: "beginner"
+---
+
+## What Is a Variable?
+
+A **variable** is a named storage location in the computer's memory that holds a value. The value can change during the program's execution — that is why it is called a *variable*.
+
+**Real-world analogy:** Think of a variable as a labelled box. The label is the variable name (e.g., `score`). The box holds a value (e.g., 85). You can look inside the box, take the value out, or replace it with a new value at any time.
+
+---
+
+## Declaring and Initialising Variables
+
+In Java, you must **declare** a variable before you use it. Declaration tells Java the variable's name and type.
+
+**Syntax:**
+```java
+dataType variableName;              // declaration only
+dataType variableName = value;      // declaration + initialisation
+```
+
+```java
+public class VariableDemo {
+    public static void main(String[] args) {
+        
+        // Declaration only — value is undefined until assigned
+        int age;
+        
+        // Declaration + initialisation in one step
+        int score = 85;
+        double salary = 45000.50;
+        String name = "Emeka";      // String is a reference type, not primitive
+        boolean isActive = true;
+        char grade = 'A';
+        
+        // Assign a value after declaration
+        age = 21;
+        
+        // Print all variables
+        System.out.println("Name: " + name);       // Name: Emeka
+        System.out.println("Age: " + age);          // Age: 21
+        System.out.println("Score: " + score);      // Score: 85
+        System.out.println("Salary: " + salary);    // Salary: 45000.5
+        System.out.println("Grade: " + grade);      // Grade: A
+        System.out.println("Active: " + isActive);  // Active: true
+    }
+}
+```
+
+---
+
+## Variable Naming Rules
+
+Java has strict rules for variable names:
+
+### Must Follow (Rules)
+
+| Rule | Valid | Invalid |
+|---|---|---|
+| Start with a letter, `$`, or `_` | `score`, `_name`, `$total` | `1score`, `#rate` |
+| Can contain letters, digits, `$`, `_` | `score1`, `my_total` | `my-total`, `my total` |
+| Cannot be a Java keyword | `studentName` | `int`, `class`, `return` |
+| Case-sensitive | `score` ≠ `Score` ≠ `SCORE` | — |
+
+**Java keywords (cannot use as names):** `int`, `double`, `boolean`, `char`, `if`, `else`, `for`, `while`, `do`, `class`, `public`, `private`, `static`, `return`, `new`, `null`, `true`, `false`, `void`, and others.
+
+### Should Follow (Conventions)
+
+| Convention | Rule | Example |
+|---|---|---|
+| **camelCase** for variables | First word lowercase, subsequent words start with uppercase | `studentName`, `totalScore` |
+| Descriptive names | Name should say what the variable stores | `age` not `a`, `score` not `s` |
+| No abbreviations (except well-known ones) | Prefer `temperature` over `temp` unless context is clear | |
+
+```java
+// BAD naming (legal but unreadable):
+int a = 21;
+double b = 98.6;
+String c = "Emeka";
+
+// GOOD naming (clear intent):
+int age = 21;
+double bodyTemperature = 98.6;
+String studentName = "Emeka";
+```
+
+---
+
+## Updating Variables
+
+Once declared, a variable can be updated (assigned a new value):
+
+```java
+public class UpdateDemo {
+    public static void main(String[] args) {
+        int score = 70;
+        System.out.println("Initial score: " + score);  // 70
+        
+        score = 85;  // update — old value discarded
+        System.out.println("Updated score: " + score);  // 85
+        
+        score = score + 10;  // use current value, add 10
+        System.out.println("After bonus: " + score);    // 95
+        
+        // Shorthand update operators (covered in detail in Operators topic):
+        score += 5;    // same as: score = score + 5;
+        System.out.println("Final score: " + score);    // 100
+    }
+}
+```
+
+---
+
+## Multiple Variables
+
+You can declare multiple variables of the same type in one statement (but it reduces readability):
+
+```java
+// Multiple declarations — one line (legal but less readable):
+int x = 1, y = 2, z = 3;
+
+// Better — separate declarations:
+int x = 1;
+int y = 2;
+int z = 3;
+```
+
+---
+
+## Constants: The `final` Keyword
+
+A **constant** is a variable whose value, once assigned, can never be changed. In Java, use the `final` keyword to declare a constant.
+
+```java
+final dataType CONSTANT_NAME = value;
+```
+
+**Convention:** Constants use ALL_CAPS with underscores.
+
+```java
+public class ConstantDemo {
+    public static void main(String[] args) {
+        
+        // Constants — declared with 'final', value can NEVER change
+        final double PI = 3.141592653589793;
+        final int MAX_ATTEMPTS = 3;
+        final String UNIVERSITY = "University of Ibadan";
+        
+        System.out.println("PI = " + PI);
+        System.out.println("Max attempts: " + MAX_ATTEMPTS);
+        System.out.println("University: " + UNIVERSITY);
+        
+        // Trying to change a constant is a compile error:
+        // PI = 3.14;  // COMPILE ERROR: cannot assign a value to final variable PI
+        // MAX_ATTEMPTS = 5;  // COMPILE ERROR
+    }
+}
+```
+
+**Output:**
+```
+PI = 3.141592653589793
+Max attempts: 3
+University: University of Ibadan
+```
+
+### Why Use Constants?
+
+```java
+// WITHOUT constants — "magic numbers" — unclear:
+double area = 3.14159 * radius * radius;
+double circumference = 2 * 3.14159 * radius;
+// If the value of PI needs to change (e.g., more precision), you must find and update EVERY occurrence
+
+// WITH constants — clear and maintainable:
+final double PI = 3.141592653589793;
+double area = PI * radius * radius;
+double circumference = 2 * PI * radius;
+// Change PI in one place, and it updates everywhere
+```
+
+Constants provide:
+1. **Readability:** `MAX_STUDENTS` is clearer than `30`
+2. **Maintainability:** change the value in one place
+3. **Safety:** cannot accidentally change the value
+
+---
+
+## Variable Scope
+
+**Scope** is the part of the program where a variable is accessible.
+
+```java
+public class ScopeDemo {
+    
+    // Class-level variable (field) — accessible anywhere in the class
+    static int classLevel = 100;
+    
+    public static void main(String[] args) {
+        
+        int methodLevel = 50;  // method variable — only inside main
+        
+        System.out.println(classLevel);   // OK: 100
+        System.out.println(methodLevel);  // OK: 50
+        
+        {
+            // Block-level variable — only inside this { }
+            int blockLevel = 25;
+            System.out.println(blockLevel);    // OK: 25
+            System.out.println(methodLevel);   // OK: methodLevel is in outer scope
+        }
+        
+        // System.out.println(blockLevel);  // COMPILE ERROR: blockLevel out of scope
+    }
+}
+```
+
+**Rule:** A variable is accessible from the point it is declared to the end of the block `{ }` it is declared in.
+
+---
+
+## Worked Example: Student Information Program
+
+```java
+import java.util.Scanner;
+
+public class StudentInfo {
+    public static void main(String[] args) {
+        // Constants
+        final int PASSING_SCORE = 50;
+        final String INSTITUTION = "University of Ibadan";
+        
+        // Variables to store student data
+        Scanner input = new Scanner(System.in);
+        
+        System.out.print("Enter student name: ");
+        String studentName = input.nextLine();    // read a line of text
+        
+        System.out.print("Enter student score: ");
+        int studentScore = input.nextInt();        // read an integer
+        
+        System.out.print("Enter credit hours completed: ");
+        double creditHours = input.nextDouble();   // read a decimal
+        
+        // Calculate grade
+        boolean hasPassed = studentScore >= PASSING_SCORE;
+        char gradeSymbol;
+        if (studentScore >= 70) gradeSymbol = 'A';
+        else if (studentScore >= 60) gradeSymbol = 'B';
+        else if (studentScore >= 50) gradeSymbol = 'C';
+        else gradeSymbol = 'F';
+        
+        // Output results
+        System.out.println("\n--- Student Report ---");
+        System.out.println("Institution: " + INSTITUTION);
+        System.out.println("Name: " + studentName);
+        System.out.println("Score: " + studentScore);
+        System.out.println("Grade: " + gradeSymbol);
+        System.out.println("Passed: " + hasPassed);
+        System.out.println("Credit hours: " + creditHours);
+    }
+}
+```
+
+**Sample run:**
+```
+Enter student name: Emeka Obi
+Enter student score: 73
+Enter credit hours completed: 15.5
+
+--- Student Report ---
+Institution: University of Ibadan
+Name: Emeka Obi
+Score: 73
+Grade: A
+Passed: true
+Credit hours: 15.5
+```
+
+---
+
+## Key Takeaway
+
+> A variable is a named memory location that stores a value which can change. A constant (declared with `final`) stores a value that cannot change. Always use meaningful camelCase names for variables and ALL_CAPS for constants. Understand scope — a variable is only accessible within the block it was declared in. Uninitialised local variables cause compile errors.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Write variable declarations of each primitive type with appropriate initial values
+- Identify valid vs. invalid variable names (legal rules)
+- Show how to declare a constant using `final` and explain why constants are used
+- Explain scope: what would happen if you access a block-scoped variable outside the block?
+
+**Common mistakes:**
+- Using reserved words as variable names (`int int = 5;` is a compile error)
+- Forgetting that Java is case-sensitive: `Score` and `score` are different variables
+- Confusing `final` (Java constant) with immutability — `final` only prevents reassignment of the reference; for `String`, the String itself is already immutable, but a `final int[]` array can still have its contents changed
+
+**Likely question:**
+> "Write a Java program that declares variables for a student's name, age, GPA, and whether they are enrolled. Declare the university name as a constant. Print all values." (8 marks)

@@ -1,0 +1,208 @@
+---
+title: "Constructive Analysis Using Asymptotics"
+description: "How to use Big-O to build upper and lower bounds for algorithms — moving from exact counting to asymptotic reasoning, and connecting the two."
+duration: "40 min"
+difficulty: "intermediate"
+---
+
+## From Counting to Bounding
+
+So far we have learned two things: how to count operations exactly (Topic 5), and what asymptotic notation means (Topic 8). This topic bridges them.
+
+**Constructive analysis** is the process of working with an algorithm step-by-step to build up an asymptotic bound on its running time. Instead of counting every operation precisely, we identify the dominant work and bound everything else.
+
+**Analogy:** When estimating the cost of building a house, you do not add up every nail and every minute of labour. You identify the big-ticket items — foundations, structure, roofing — and estimate the rest as small constants. Constructive analysis does the same for algorithms.
+
+---
+
+## The Process
+
+```mermaid
+flowchart LR
+    A[Identify loops and recursive calls] --> B[Count iterations per loop]
+    B --> C[Identify work done per iteration]
+    C --> D[Multiply: iterations × work per iteration]
+    D --> E[Sum across all components]
+    E --> F[Drop constants and lower-order terms]
+    F --> G[State big-O result]
+```
+
+---
+
+## Worked Example 1: Nested Loops (Quadratic)
+
+```
+FOR i FROM 0 TO n - 1:
+  FOR j FROM 0 TO n - 1:
+    A[i][j] = i * j         // single operation: O(1)
+```
+
+- Outer loop: $n$ iterations
+- Inner loop: $n$ iterations for each outer iteration
+- Work per inner iteration: $O(1)$
+
+$$T(n) = n \times n \times O(1) = O(n^2)$$
+
+---
+
+## Worked Example 2: Sequential Segments
+
+```
+// Part 1: initialise array
+FOR i FROM 0 TO n - 1:
+  A[i] = 0              // O(1) per iteration → O(n) total
+
+// Part 2: compute pairwise sums
+FOR i FROM 0 TO n - 1:
+  FOR j FROM i + 1 TO n - 1:
+    total = total + A[i] + A[j]   // O(1) per inner iter → O(n²) total
+```
+
+Part 1: $O(n)$  
+Part 2: $O(n^2)$  
+
+Sum rule: $O(n) + O(n^2) = O(n^2)$ (lower-order term drops out)
+
+$$T(n) = O(n^2)$$
+
+---
+
+## Worked Example 3: Logarithmic Inner Loop
+
+```
+FOR i FROM 0 TO n - 1:
+  j = n
+  WHILE j >= 1:
+    j = j / 2         // halving: runs log n times
+```
+
+- Outer loop: $n$ iterations
+- Inner `WHILE` loop: the variable $j$ starts at $n$ and is halved each time → $\log_2 n$ iterations
+- Work per inner iteration: $O(1)$
+
+$$T(n) = n \times \log n \times O(1) = O(n \log n)$$
+
+---
+
+## Worked Example 4: Building the Bound for Insertion Sort
+
+Revisiting Insertion Sort with constructive analysis:
+
+```
+FOR j FROM 1 TO n - 1:          // outer loop: n-1 iterations
+  key = A[j]                     // O(1)
+  i = j - 1                      // O(1)
+  WHILE i >= 0 AND A[i] > key:   // inner loop: at most j iterations
+    A[i + 1] = A[i]              // O(1)
+    i = i - 1                    // O(1)
+  A[i + 1] = key                 // O(1)
+```
+
+**Upper bound (worst case):**  
+Inner `WHILE` runs at most $j$ times for outer index $j$.
+
+$$T(n) \leq \sum_{j=1}^{n-1} j = \frac{n(n-1)}{2} = O(n^2)$$
+
+**Lower bound (worst case — reversed array):**  
+When the array is reversed, the `WHILE` runs exactly $j$ times.
+
+$$T(n) \geq \sum_{j=1}^{n-1} j = \frac{n(n-1)}{2} = \Omega(n^2)$$
+
+**Tight bound (worst case):**
+
+$$T_\text{worst}(n) = \Theta(n^2)$$
+
+**Lower bound (best case — already sorted):**  
+`WHILE` never executes. $T_\text{best}(n) = \Theta(n)$.
+
+---
+
+## Worked Example 5: The "Work Per Level" Technique for Recursive Algorithms
+
+Consider an algorithm that:
+- Divides the input of size $n$ into 2 sub-problems of size $n/2$
+- Does $O(n)$ work to split and combine
+
+**Recursion tree:**
+
+```
+Level 0:   n                 → O(n) work
+Level 1:   n/2   n/2         → O(n/2) + O(n/2) = O(n) work
+Level 2:   n/4 n/4 n/4 n/4  → 4×O(n/4) = O(n) work
+...
+Level k:   2^k nodes, each O(n/2^k) → O(n) work
+...
+Level log n:  n nodes of size 1 → O(n) work
+```
+
+- Total levels: $\log_2 n + 1$
+- Work per level: $O(n)$
+- Total: $O(n \log n)$
+
+This is Merge Sort. The constructive analysis — "work per level × number of levels" — gives $O(n \log n)$ without even writing a recurrence.
+
+---
+
+## Identifying Dominant Operations
+
+When multiple operations happen in sequence, only the **dominant** (highest-complexity) operation matters for the big-O of the whole algorithm.
+
+| Components | Dominant | Overall |
+|---|---|---|
+| $O(n) + O(\log n)$ | $O(n)$ | $O(n)$ |
+| $O(n^2) + O(n \log n)$ | $O(n^2)$ | $O(n^2)$ |
+| $O(n^3) + O(n^2) + O(n)$ | $O(n^3)$ | $O(n^3)$ |
+| $O(2^n) + O(n^{100})$ | $O(2^n)$ | $O(2^n)$ |
+
+---
+
+## Worked Example 6: Full Constructive Analysis
+
+**Algorithm:** Find all pairs $(i, j)$ where $A[i] + A[j] = \text{target}$ in a sorted array.
+
+```
+ALGORITHM FindPairs(A, n, target):
+  FOR i FROM 0 TO n - 2:
+    // Binary search for (target - A[i]) in A[i+1..n-1]
+    x = target - A[i]
+    lo = i + 1
+    hi = n - 1
+    WHILE lo <= hi:
+      mid = (lo + hi) / 2
+      IF A[mid] == x: PRINT (i, mid); BREAK
+      ELSE IF A[mid] < x: lo = mid + 1
+      ELSE: hi = mid - 1
+```
+
+**Analysis:**
+- Outer `FOR` loop: $n - 1$ iterations → $O(n)$
+- Inner `WHILE` (binary search): $O(\log n)$ per outer iteration
+- Work per iteration (beyond the search): $O(1)$
+
+$$T(n) = O(n) \times O(\log n) = O(n \log n)$$
+
+Compare to naively checking all pairs: $O(n^2)$. The constructive analysis shows the binary search inside the outer loop saves a factor of $n / \log n$.
+
+---
+
+## Key Takeaway
+
+> Constructive analysis builds a big-O bound by systematically analysing each part of an algorithm: counting loop iterations, multiplying by per-iteration work, and applying the sum and product rules. The dominant term survives; everything else drops out. When loops nest, multiply. When loops are sequential, take the maximum. When recursion divides, use "work per level × number of levels."
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Given pseudocode, perform a full constructive analysis to produce a big-O bound
+- Identify whether loops are nested (multiply) or sequential (add/max)
+- Use "work per level" for recursive divide-and-conquer
+- Explain why the $O(n)$ term is dominated by $O(n^2)$ in a combined bound
+
+**Common mistakes:**
+- Adding when you should multiply: nested loops multiply their iteration counts, not add them
+- Forgetting that binary search inside a for loop gives $O(n \log n)$, not $O(n + \log n)$
+- Saying "the outer loop does $O(n)$ work" when the outer loop body contains an $O(n)$ inner loop — the outer loop contributes $O(n \times n) = O(n^2)$ total
+
+**Likely question:**
+> "Perform a constructive analysis of the following algorithm and state its time complexity with justification." (10 marks) — followed by pseudocode with a nested loop or recursion.

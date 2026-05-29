@@ -1,0 +1,254 @@
+---
+title: "Boolean Algebra and Switching Theory"
+description: "The mathematics of digital logic — logic gates, Boolean laws and theorems, truth tables, DeMorgan's theorem, and algebraic simplification of logic expressions."
+duration: "60 min"
+difficulty: "intermediate"
+---
+
+## The Algebra of True and False
+
+Ordinary algebra works with numbers. **Boolean algebra** works with just two values: **0 (false)** and **1 (true)**. It is the mathematical foundation of all digital circuits — every logic gate, processor, and memory chip operates according to Boolean algebra.
+
+Developed by George Boole in 1847, it became the basis of digital computing when Claude Shannon showed in 1937 that Boolean algebra could describe electrical switching circuits — hence "switching theory."
+
+**Real-world analogy:** Think of a light controlled by switches. Boolean algebra describes exactly when the light is on (1) or off (0) based on the switch positions. Every digital circuit is built from this principle.
+
+---
+
+## The Fundamental Logic Gates
+
+A **logic gate** is a physical device that implements a Boolean operation. Each gate takes one or more binary inputs and produces a binary output.
+
+### NOT Gate (Inverter)
+Output is the inverse of the input.
+
+**Boolean expression:** $X = \overline{A}$ (A-bar)
+
+| A | X |
+|---|---|
+| 0 | 1 |
+| 1 | 0 |
+
+### AND Gate
+Output is 1 only when ALL inputs are 1.
+
+**Boolean expression:** $X = A \cdot B$
+
+| A | B | X |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+### OR Gate
+Output is 1 when ANY input is 1.
+
+**Boolean expression:** $X = A + B$
+
+| A | B | X |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+### NAND Gate (NOT-AND)
+Inverse of AND. **Universal gate** — any logic function can be built from NAND gates alone.
+
+**Boolean expression:** $X = \overline{A \cdot B}$
+
+| A | B | X |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+### NOR Gate (NOT-OR)
+Inverse of OR. Also a **universal gate**.
+
+**Boolean expression:** $X = \overline{A + B}$
+
+| A | B | X |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 0 |
+
+### XOR Gate (Exclusive-OR)
+Output is 1 when inputs are DIFFERENT.
+
+**Boolean expression:** $X = A \oplus B = \overline{A}B + A\overline{B}$
+
+| A | B | X |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+### XNOR Gate (Exclusive-NOR)
+Output is 1 when inputs are the SAME (inverse of XOR).
+
+| A | B | X |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+**Number of truth table rows** = $2^n$ where $n$ = number of inputs. (3 inputs → 8 rows; 4 inputs → 16 rows.)
+
+---
+
+## Boolean Notation and Precedence
+
+| Operation | Analogy | Symbol |
+|---|---|---|
+| AND | Multiplication | $A \cdot B$ or $AB$ |
+| OR | Addition | $A + B$ |
+| NOT | — | $\overline{A}$ |
+
+**Order of precedence (highest to lowest):**
+1. NOT (overline)
+2. AND ($\cdot$)
+3. OR ($+$)
+4. Parentheses override all
+
+**Example:** $\overline{A} \cdot B + C$ means $((\overline{A}) \cdot B) + C$ — NOT first, then AND, then OR.
+
+---
+
+## The Three Fundamental Laws
+
+**1. Commutative Law** (order does not matter):
+$$A + B = B + A \qquad A \cdot B = B \cdot A$$
+
+**2. Associative Law** (grouping does not matter):
+$$A + (B + C) = (A + B) + C \qquad A \cdot (B \cdot C) = (A \cdot B) \cdot C$$
+
+**3. Distributive Law** (AND distributes over OR):
+$$A \cdot (B + C) = A \cdot B + A \cdot C$$
+
+---
+
+## The Complete Rules of Boolean Algebra
+
+**NOT rule:**
+- $\overline{\overline{A}} = A$ (double negation)
+
+**OR rules:**
+| Rule | Name |
+|---|---|
+| $A + 0 = A$ | Identity |
+| $A + 1 = 1$ | Annihilator |
+| $A + A = A$ | Idempotent |
+| $A + \overline{A} = 1$ | Complement |
+
+**AND rules:**
+| Rule | Name |
+|---|---|
+| $A \cdot 0 = 0$ | Annihilator |
+| $A \cdot 1 = A$ | Identity |
+| $A \cdot A = A$ | Idempotent |
+| $A \cdot \overline{A} = 0$ | Complement |
+
+**Absorption rules:**
+- $A + A \cdot B = A$
+- $A + \overline{A} \cdot B = A + B$
+- $(A + B)(A + C) = A + B \cdot C$
+
+---
+
+## DeMorgan's Theorem
+
+The two most important theorems in Boolean algebra. They let us push a NOT through a gate, flipping it:
+
+$$\boxed{\overline{A + B} = \overline{A} \cdot \overline{B}}$$
+
+$$\boxed{\overline{A \cdot B} = \overline{A} + \overline{B}}$$
+
+**In words:**
+- The inverse of a sum (OR) = the product (AND) of the inverses
+- The inverse of a product (AND) = the sum (OR) of the inverses
+
+**Truth table proof of $\overline{A + B} = \overline{A} \cdot \overline{B}$:**
+
+| A | B | $A+B$ | $\overline{A+B}$ | $\overline{A}$ | $\overline{B}$ | $\overline{A} \cdot \overline{B}$ |
+|---|---|---|---|---|---|---|
+| 0 | 0 | 0 | **1** | 1 | 1 | **1** |
+| 0 | 1 | 1 | **0** | 1 | 0 | **0** |
+| 1 | 0 | 1 | **0** | 0 | 1 | **0** |
+| 1 | 1 | 1 | **0** | 0 | 0 | **0** |
+
+Columns $\overline{A+B}$ and $\overline{A} \cdot \overline{B}$ are identical → theorem proven. ✓
+
+**Extended DeMorgan (4 variables):**
+$$\overline{A + B + C + D} = \overline{A} \cdot \overline{B} \cdot \overline{C} \cdot \overline{D}$$
+
+---
+
+## Algebraic Simplification — Worked Examples
+
+The goal: reduce a complex Boolean expression to a simpler equivalent that requires fewer gates.
+
+**Example 1: Prove $A + A \cdot B = A$**
+
+$$A + A \cdot B = A \cdot 1 + A \cdot B \quad \text{(identity: } A = A \cdot 1\text{)}$$
+$$= A \cdot (1 + B) \quad \text{(distributive)}$$
+$$= A \cdot 1 \quad \text{(annihilator: } 1 + B = 1\text{)}$$
+$$= A \quad \text{(identity)} \qquad \blacksquare$$
+
+**Example 2: Simplify $\overline{B} \cdot (A + \overline{A} \cdot B)$**
+
+$$= \overline{B} \cdot A + \overline{B} \cdot \overline{A} \cdot B \quad \text{(distributive)}$$
+$$= \overline{B} \cdot A + \overline{A} \cdot (\overline{B} \cdot B) \quad \text{(rearrange)}$$
+$$= \overline{B} \cdot A + \overline{A} \cdot 0 \quad \text{(complement: } \overline{B} \cdot B = 0\text{)}$$
+$$= \overline{B} \cdot A + 0 = A \cdot \overline{B} \qquad \blacksquare$$
+
+**Example 3: Simplify $\overline{A}\,\overline{B}\,\overline{C} + \overline{A}\,\overline{B}\,C + \overline{A}\,B\,\overline{C} + \overline{A}\,B\,C$**
+
+$$= \overline{A}\,[\,\overline{B}(\overline{C} + C) + B(\overline{C} + C)\,] \quad \text{(factor out } \overline{A}\text{)}$$
+$$= \overline{A}\,[\,\overline{B} \cdot 1 + B \cdot 1\,] \quad (\overline{C} + C = 1)$$
+$$= \overline{A}\,[\,\overline{B} + B\,] = \overline{A} \cdot 1 = \overline{A} \qquad \blacksquare$$
+
+From 4 three-variable terms down to a single variable — a massive simplification.
+
+---
+
+## Why Simplification Matters
+
+Each term in a Boolean expression corresponds to logic gates in a circuit. A simpler expression means:
+- Fewer gates → cheaper circuit
+- Less power consumption
+- Faster operation (fewer gate delays)
+- Smaller physical chip area
+
+Simplifying $\overline{A}\,\overline{B}\,\overline{C} + \overline{A}\,\overline{B}\,C + \overline{A}\,B\,\overline{C} + \overline{A}\,B\,C$ to just $\overline{A}$ reduces a circuit of ~12 gates to a single inverter.
+
+---
+
+## Key Takeaway
+
+> Boolean algebra is the mathematics of digital logic, using only 0 and 1. The fundamental gates are NOT, AND, OR, NAND, NOR, XOR, XNOR (NAND and NOR are universal). Boolean laws (commutative, associative, distributive) and rules (identity, annihilator, idempotent, complement, absorption) allow algebraic simplification. DeMorgan's theorems ($\overline{A+B} = \overline{A}\cdot\overline{B}$ and $\overline{A \cdot B} = \overline{A}+\overline{B}$) let us push NOT through gates. Simplification reduces gate count, cost, power, and delay.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Draw the truth table for any gate
+- Prove a Boolean identity using algebraic laws (show each step with the law used)
+- Apply DeMorgan's theorem to an expression
+- Simplify a Boolean expression to minimum form
+- Prove DeMorgan's theorem with a truth table
+
+**Common mistakes:**
+- $\overline{A \cdot B} \neq \overline{A} \cdot \overline{B}$ — this is the DeMorgan trap; it equals $\overline{A} + \overline{B}$
+- Forgetting precedence: NOT before AND before OR
+- Incorrectly applying $A + 1 = 1$ vs $A \cdot 1 = A$
+
+**Likely question:**
+> "(a) State and prove DeMorgan's theorems using truth tables. (b) Simplify the Boolean expression $A\overline{B} + AB + \overline{A}B$ using Boolean algebra laws, stating each law used." (14 marks)

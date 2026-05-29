@@ -1,0 +1,357 @@
+---
+title: "The for Loop"
+description: "Java's most common loop — use it when you know exactly how many times to repeat. Complete syntax, traces, nested loops, and real programs."
+duration: "40 min"
+difficulty: "intermediate"
+---
+
+## Why Loops Exist
+
+Imagine printing numbers 1 to 1000. Without a loop, you would need 1000 `System.out.println` statements. With a loop, you need 3 lines:
+
+```java
+for (int i = 1; i <= 1000; i++) {
+    System.out.println(i);
+}
+```
+
+Loops let you execute a block of code **repeatedly** — a fundamental requirement of almost every real program.
+
+---
+
+## The `for` Loop — When You Know the Count
+
+Use the `for` loop when you know **in advance** exactly how many times the loop should run.
+
+**Syntax:**
+```java
+for (initialisation; condition; update) {
+    // loop body — executes each iteration
+}
+```
+
+The three parts separated by semicolons:
+
+| Part | Purpose | Example |
+|---|---|---|
+| Initialisation | Declare/set the loop counter (runs once at start) | `int i = 0` |
+| Condition | Check before each iteration (loop continues while true) | `i < 10` |
+| Update | Modify the counter after each iteration | `i++` |
+
+---
+
+## Step-by-Step: How the for Loop Executes
+
+```java
+for (int i = 1; i <= 5; i++) {
+    System.out.println("Iteration: " + i);
+}
+```
+
+**Execution trace:**
+
+| Step | Action | i | Condition | Output |
+|---|---|---|---|---|
+| 1 | Initialise | `i = 1` | `1 <= 5` → true | — |
+| 2 | Execute body | `i = 1` | — | `Iteration: 1` |
+| 3 | Update | `i = 2` | `2 <= 5` → true | — |
+| 4 | Execute body | `i = 2` | — | `Iteration: 2` |
+| 5 | Update | `i = 3` | `3 <= 5` → true | — |
+| 6 | Execute body | `i = 3` | — | `Iteration: 3` |
+| 7 | Update | `i = 4` | `4 <= 5` → true | — |
+| 8 | Execute body | `i = 4` | — | `Iteration: 4` |
+| 9 | Update | `i = 5` | `5 <= 5` → true | — |
+| 10 | Execute body | `i = 5` | — | `Iteration: 5` |
+| 11 | Update | `i = 6` | `6 <= 5` → **false** | — loop ends |
+
+**Output:**
+```
+Iteration: 1
+Iteration: 2
+Iteration: 3
+Iteration: 4
+Iteration: 5
+```
+
+---
+
+## Counting Up and Counting Down
+
+```java
+public class CountingDemo {
+    public static void main(String[] args) {
+        // Count up: 1 to 5
+        System.out.print("Up: ");
+        for (int i = 1; i <= 5; i++) {
+            System.out.print(i + " ");
+        }
+        System.out.println();  // newline
+        // Output: Up: 1 2 3 4 5
+        
+        // Count down: 5 to 1
+        System.out.print("Down: ");
+        for (int i = 5; i >= 1; i--) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        // Output: Down: 5 4 3 2 1
+        
+        // Count by twos (even numbers): 0 to 10
+        System.out.print("Evens: ");
+        for (int i = 0; i <= 10; i += 2) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        // Output: Evens: 0 2 4 6 8 10
+        
+        // Multiples of 3
+        System.out.print("Mult of 3: ");
+        for (int i = 3; i <= 30; i += 3) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        // Output: Mult of 3: 3 6 9 12 15 18 21 24 27 30
+    }
+}
+```
+
+---
+
+## The Relationship Between for and while
+
+Every `for` loop can be rewritten as a `while` loop:
+
+```java
+// FOR loop version:
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);
+}
+
+// Equivalent WHILE loop:
+int i = 0;          // initialisation
+while (i < 5) {     // condition
+    System.out.println(i);
+    i++;             // update
+}
+```
+
+They produce identical output. The `for` loop is more compact because all three parts (init, condition, update) are in one line.
+
+---
+
+## Computing Sums with for Loops
+
+```java
+public class SumDemo {
+    public static void main(String[] args) {
+        // Sum of 1 to 100
+        int total = 0;
+        for (int i = 1; i <= 100; i++) {
+            total += i;    // equivalent to: total = total + i
+        }
+        System.out.println("Sum 1 to 100: " + total);
+        // Output: Sum 1 to 100: 5050
+        
+        // Sum of squares: 1² + 2² + 3² + ... + 10²
+        int sumSquares = 0;
+        for (int i = 1; i <= 10; i++) {
+            sumSquares += i * i;
+        }
+        System.out.println("Sum of squares 1-10: " + sumSquares);
+        // Output: Sum of squares 1-10: 385
+        
+        // Product (factorial): 5! = 5 × 4 × 3 × 2 × 1
+        int factorial = 1;
+        for (int i = 1; i <= 5; i++) {
+            factorial *= i;    // equivalent to: factorial = factorial * i
+        }
+        System.out.println("5! = " + factorial);
+        // Output: 5! = 120
+    }
+}
+```
+
+---
+
+## Multiplication Table
+
+```java
+import java.util.Scanner;
+
+public class MultiplicationTable {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int n = sc.nextInt();
+        
+        System.out.println("\nMultiplication table for " + n + ":");
+        for (int i = 1; i <= 10; i++) {
+            System.out.println(n + " x " + i + " = " + (n * i));
+        }
+    }
+}
+```
+
+**Output (n=7):**
+```
+Multiplication table for 7:
+7 x 1 = 7
+7 x 2 = 14
+...
+7 x 10 = 70
+```
+
+---
+
+## Printing Numbers 1 to 60 (from Course Materials)
+
+Directly from the course materials using `JOptionPane`:
+
+```java
+import javax.swing.JOptionPane;
+
+public class Print1To60 {
+    public static void main(String[] args) {
+        String output = "";
+        
+        for (int count = 1; count <= 60; count++) {
+            output += " " + count;   // append the current number
+        }
+        
+        JOptionPane.showMessageDialog(null, output);
+        System.exit(0);
+    }
+}
+```
+
+**Output:** A dialog showing `1 2 3 4 5 6 ... 60`
+
+---
+
+## Nested for Loops
+
+A `for` loop **inside** another `for` loop. The inner loop runs completely for each iteration of the outer loop.
+
+```java
+public class MultiplicationGrid {
+    public static void main(String[] args) {
+        // Print a 5x5 multiplication grid
+        for (int row = 1; row <= 5; row++) {       // outer: rows
+            for (int col = 1; col <= 5; col++) {   // inner: columns
+                System.out.printf("%4d", row * col);  // 4-char wide column
+            }
+            System.out.println();  // newline after each row
+        }
+    }
+}
+```
+
+**Output:**
+```
+   1   2   3   4   5
+   2   4   6   8  10
+   3   6   9  12  15
+   4   8  12  16  20
+   5  10  15  20  25
+```
+
+**How nested loops work:**
+- `row` starts at 1. Inner loop runs col=1,2,3,4,5. Then `row` becomes 2. Inner loop runs again col=1,2,3,4,5. Etc.
+- Total iterations: 5 × 5 = 25
+
+---
+
+## Pattern Printing with Nested Loops
+
+```java
+public class StarPattern {
+    public static void main(String[] args) {
+        int n = 5;
+        
+        // Right triangle pattern:
+        // *
+        // **
+        // ***
+        // ****
+        // *****
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {    // inner loop runs i times
+                System.out.print("*");
+            }
+            System.out.println();  // newline
+        }
+    }
+}
+```
+
+**Output:**
+```
+*
+**
+***
+****
+*****
+```
+
+---
+
+## Common for Loop Bugs
+
+### Bug 1: Off-by-one error
+
+```java
+// Intended: print 1 to 10
+for (int i = 1; i < 10; i++) {    // WRONG: stops at 9 (< instead of <=)
+    System.out.print(i + " ");
+}
+// Output: 1 2 3 4 5 6 7 8 9   ← missing 10!
+
+for (int i = 1; i <= 10; i++) {   // CORRECT
+    System.out.print(i + " ");
+}
+// Output: 1 2 3 4 5 6 7 8 9 10
+```
+
+### Bug 2: Infinite loop (condition never becomes false)
+
+```java
+// BUG: i never reaches 10 because i decrements (goes down, not up)
+for (int i = 1; i <= 10; i--) {  // i-- makes it 0, -1, -2... forever
+    System.out.println(i);
+}
+// INFINITE LOOP — never terminates!
+```
+
+### Bug 3: Modifying the loop variable inside the body
+
+```java
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);
+    i++;   // AVOID: i is incremented both by loop update AND this line
+           // Effectively: i goes 0, 2, 4 → prints only 0, 2, 4
+}
+```
+
+---
+
+## Key Takeaway
+
+> The `for` loop is used when you know how many iterations are needed. Its three parts — initialisation, condition, update — are declared in one clear line. `for (int i = 1; i <= n; i++)` is the most common pattern. Nested `for` loops execute the inner loop completely for each outer iteration, giving $n \times m$ total iterations. Watch for off-by-one errors (`<` vs `<=`) — they are the most common loop bug.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Trace a for loop step by step — show the value of the counter at each iteration
+- Predict the output of a nested loop
+- Write programs to compute sums, products, or print patterns using for loops
+- Identify the bug in a for loop with off-by-one or wrong direction
+
+**Common mistakes:**
+- `i < n` gives $n$ iterations (0 to n-1); `i <= n` gives $n+1$ iterations (0 to n)
+- Not initialising the accumulator (`total`) to 0 before the loop
+- Writing the condition with `=` instead of `<=`: `i = 10` is assignment, not a comparison
+
+**Likely question:**
+> "Write a Java program using a `for` loop that reads an integer $n$ from the user and prints all multiples of 5 between 1 and $n$ inclusive, along with their count and sum." (10 marks)

@@ -1,0 +1,309 @@
+---
+title: "Arithmetic and Assignment Operators"
+description: "All arithmetic operators in Java — addition, subtraction, multiplication, division, modulus — plus compound assignment shortcuts and the increment/decrement operators."
+duration: "35 min"
+difficulty: "beginner"
+---
+
+## What Are Operators?
+
+An **operator** is a symbol that tells Java to perform a specific operation on one or more values (called **operands**).
+
+```java
+int result = 5 + 3;
+//            ^ ^
+//            operands
+//              ^ operator
+```
+
+Java has many categories of operators. This topic covers arithmetic and assignment operators — the foundation of all calculations.
+
+---
+
+## Arithmetic Operators
+
+| Operator | Symbol | Example | Result |
+|---|---|---|---|
+| Addition | `+` | `5 + 3` | `8` |
+| Subtraction | `-` | `10 - 4` | `6` |
+| Multiplication | `*` | `4 * 7` | `28` |
+| Division | `/` | `15 / 4` | `3` (integer!) |
+| Modulus | `%` | `15 % 4` | `3` (remainder) |
+
+```java
+public class ArithmeticDemo {
+    public static void main(String[] args) {
+        int a = 15, b = 4;
+        
+        System.out.println(a + b);   // 19
+        System.out.println(a - b);   // 11
+        System.out.println(a * b);   // 60
+        System.out.println(a / b);   // 3  ← integer division! 15/4 = 3.75, truncated to 3
+        System.out.println(a % b);   // 3  ← remainder: 15 = 4*3 + 3, so remainder is 3
+    }
+}
+```
+
+---
+
+## Integer Division — The Critical Trap
+
+When both operands are integers, Java performs **integer division** — the result is truncated (no rounding, just cut off the decimal):
+
+```java
+public class DivisionTrap {
+    public static void main(String[] args) {
+        // INTEGER DIVISION — both operands are int
+        int a = 7, b = 2;
+        System.out.println(a / b);          // 3  (not 3.5!)
+        
+        // To get 3.5, at least one operand must be double/float:
+        System.out.println((double) a / b); // 3.5 — cast a to double first
+        System.out.println(7.0 / 2);        // 3.5 — literal 7.0 is already double
+        System.out.println(7 / 2.0);        // 3.5 — literal 2.0 is already double
+        
+        // Common bug — computing an average:
+        int sum = 17, count = 5;
+        double wrongAvg = sum / count;          // 3.0 (integer division! lost 0.4)
+        double rightAvg = (double) sum / count; // 3.4 (correct!)
+        System.out.println("Wrong average: " + wrongAvg);  // 3.0
+        System.out.println("Right average: " + rightAvg);  // 3.4
+    }
+}
+```
+
+**Rule:** If you need a decimal result from integer variables, cast at least one to `double` before dividing.
+
+---
+
+## The Modulus Operator `%`
+
+The modulus operator returns the **remainder** after integer division.
+
+```java
+public class ModulusDemo {
+    public static void main(String[] args) {
+        System.out.println(10 % 3);   // 1  (10 = 3*3 + 1)
+        System.out.println(12 % 4);   // 0  (12 = 4*3 + 0 — exactly divisible)
+        System.out.println(7 % 2);    // 1  (odd number)
+        System.out.println(8 % 2);    // 0  (even number)
+        System.out.println(5 % 7);    // 5  (5 < 7, so 5 = 7*0 + 5)
+    }
+}
+```
+
+**Common uses of modulus:**
+
+```java
+// Check if a number is even or odd
+int n = 17;
+if (n % 2 == 0) {
+    System.out.println(n + " is even");
+} else {
+    System.out.println(n + " is odd");   // Output: 17 is odd
+}
+
+// Get the last digit of a number
+int number = 3456;
+int lastDigit = number % 10;    // 6
+System.out.println("Last digit: " + lastDigit);
+
+// Check if divisible by some value
+int year = 2024;
+if (year % 4 == 0) {
+    System.out.println(year + " is a leap year candidate");
+}
+
+// Wrap around (cycling through 0-6 for days of week)
+int day = 10 % 7;   // 3 (wraps back into range 0-6)
+```
+
+---
+
+## Operator Precedence
+
+Java follows mathematical order of operations. Memorise this with **BODMAS/PEMDAS**:
+
+| Priority | Operators | Example |
+|---|---|---|
+| 1 (highest) | `()` Parentheses | `(3 + 4) * 2 = 14` |
+| 2 | `++`, `--` (unary) | `++x` |
+| 3 | `*`, `/`, `%` | `3 + 4 * 2 = 11` |
+| 4 (lowest arithmetic) | `+`, `-` | `10 - 3 + 2 = 9` |
+
+```java
+System.out.println(3 + 4 * 2);     // 11  (multiply first: 3 + 8)
+System.out.println((3 + 4) * 2);   // 14  (parentheses first: 7 * 2)
+System.out.println(10 - 3 + 2);    // 9   (left to right: 7 + 2)
+System.out.println(10 % 3 * 2);    // 4   (left to right: 1 * 2)  [Wait: 10%3=1, 1*2=2]
+// Actually: 10 % 3 = 1, then 1 * 2 = 2. Let's verify:
+System.out.println(10 % 3 * 2);    // 2 ← not 4
+```
+
+**When in doubt, use parentheses.** It makes the intent clear and prevents bugs.
+
+---
+
+## Assignment Operator
+
+The basic assignment operator `=` assigns a value to a variable:
+
+```java
+int x = 5;       // assign 5 to x
+x = x + 3;       // read x (5), add 3, assign 8 back to x
+// x is now 8
+```
+
+**Important:** `=` is NOT "equals" in the mathematical sense. It means "assign the right-hand value to the left-hand variable."
+
+---
+
+## Compound Assignment Operators
+
+These combine an arithmetic operation with assignment — useful shortcuts:
+
+| Operator | Meaning | Example | Equivalent To |
+|---|---|---|---|
+| `+=` | Add and assign | `x += 3` | `x = x + 3` |
+| `-=` | Subtract and assign | `x -= 3` | `x = x - 3` |
+| `*=` | Multiply and assign | `x *= 3` | `x = x * 3` |
+| `/=` | Divide and assign | `x /= 3` | `x = x / 3` |
+| `%=` | Modulus and assign | `x %= 3` | `x = x % 3` |
+
+```java
+public class CompoundAssignment {
+    public static void main(String[] args) {
+        int score = 70;
+        System.out.println("Initial: " + score);   // 70
+        
+        score += 10;  // add bonus
+        System.out.println("After bonus: " + score);  // 80
+        
+        score -= 5;   // deduct late penalty
+        System.out.println("After penalty: " + score); // 75
+        
+        score *= 2;   // double for extra credit
+        System.out.println("Doubled: " + score);       // 150
+        
+        score /= 3;   // average with two others
+        System.out.println("Averaged: " + score);      // 50
+        
+        score %= 7;   // remainder
+        System.out.println("Remainder mod 7: " + score); // 1
+    }
+}
+```
+
+---
+
+## Increment and Decrement Operators
+
+`++` adds 1 to a variable. `--` subtracts 1. Both come in two forms:
+
+| Form | Expression | Effect |
+|---|---|---|
+| Pre-increment | `++x` | Increment x THEN use the new value |
+| Post-increment | `x++` | Use current value THEN increment x |
+| Pre-decrement | `--x` | Decrement x THEN use the new value |
+| Post-decrement | `x--` | Use current value THEN decrement x |
+
+```java
+public class IncrementDemo {
+    public static void main(String[] args) {
+        int a = 5;
+        int b = 5;
+        
+        // Post-increment: use 5, THEN increment to 6
+        System.out.println(a++);  // Output: 5  (prints a before incrementing)
+        System.out.println(a);    // Output: 6  (a has been incremented)
+        
+        // Pre-increment: increment to 6 FIRST, THEN use 6
+        System.out.println(++b);  // Output: 6  (increments before printing)
+        System.out.println(b);    // Output: 6
+        
+        // Common use in for loops — both work the same way there:
+        for (int i = 0; i < 3; i++) {    // i++ — value of i is not used mid-expression
+            System.out.print(i + " ");
+        }
+        System.out.println();   // Output: 0 1 2
+        
+        // Tricky expressions (avoid in exams unless you know exactly what you're doing):
+        int x = 5;
+        int y = x++ + ++x;
+        // x++ → use 5, then x becomes 6
+        // ++x → x becomes 7, then use 7
+        // y = 5 + 7 = 12, x = 7
+        System.out.println("x=" + x + ", y=" + y);  // x=7, y=12
+    }
+}
+```
+
+---
+
+## Worked Example: Computing BMI
+
+```java
+import java.util.Scanner;
+
+public class BMICalculator {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Enter weight in kg: ");
+        double weight = sc.nextDouble();   // e.g., 70.0
+        
+        System.out.print("Enter height in metres: ");
+        double height = sc.nextDouble();   // e.g., 1.75
+        
+        // BMI formula: weight / (height * height)
+        double bmi = weight / (height * height);
+        
+        // Round to 2 decimal places using printf
+        System.out.printf("Your BMI is: %.2f%n", bmi);
+        
+        // Categorise using integer division analogy
+        if (bmi < 18.5) {
+            System.out.println("Category: Underweight");
+        } else if (bmi < 25.0) {
+            System.out.println("Category: Normal weight");
+        } else if (bmi < 30.0) {
+            System.out.println("Category: Overweight");
+        } else {
+            System.out.println("Category: Obese");
+        }
+    }
+}
+```
+
+**Sample run:**
+```
+Enter weight in kg: 70.0
+Enter height in metres: 1.75
+Your BMI is: 22.86
+Category: Normal weight
+```
+
+---
+
+## Key Takeaway
+
+> Java's arithmetic operators follow standard mathematical precedence. The modulus `%` gives the remainder and is essential for even/odd checks, range wrapping, and digit extraction. **Integer division truncates** — cast to `double` when you need decimal results. Compound assignment operators (`+=`, `-=`, etc.) are clean shortcuts. Pre/post increment (`++`/`--`) behave differently in expressions — use them carefully.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Predict the output of arithmetic expressions with precedence
+- Explain integer division and show how to get decimal results
+- Use modulus to check even/odd or divisibility
+- Show the difference between `x++` (post) and `++x` (pre) in expressions
+
+**Common mistakes:**
+- `int avg = sum / count` — integer division truncates; use `(double)sum/count`
+- Confusing `=` (assignment) with `==` (comparison): `if (x = 5)` is a bug; `if (x == 5)` is the comparison
+- `5 % 7 = 5`, not 0 — modulus of a smaller number by larger gives back the smaller number
+
+**Likely question:**
+> "What is the output of: `int x = 10; System.out.println(x++ + ++x + x);`? Show all steps." (4 marks)  
+> "Write a Java program that reads two integers and prints their quotient and remainder using integer division. Explain why `7 / 2` gives 3 in Java." (8 marks)

@@ -1,0 +1,320 @@
+---
+title: "Functional Programming"
+description: "A paradigm where computation is expressed as function evaluation — pure functions, immutability, and why side effects are the enemy of reliable code."
+duration: "35 min"
+difficulty: "intermediate"
+---
+
+## A Different Way of Thinking About Code
+
+Most beginners think of programming as "writing instructions that tell the computer what to do, step by step." This is called the **imperative** style. But there is another way: **functional programming** — where you describe *what* to compute using mathematical functions, not *how* to compute it step by step.
+
+**Real-world analogy:** Imagine making orange juice.
+- **Imperative:** Get oranges → cut in half → squeeze each half → collect juice → filter pulp → pour in glass.
+- **Functional:** `orangeJuice = filter(pulp, squeeze(halve(oranges)))` — you describe the transformation chain, not the manual steps.
+
+Both produce orange juice. Functional style focuses on what the transformations are; imperative focuses on the steps.
+
+---
+
+## Core Principles of Functional Programming
+
+### 1. Pure Functions
+
+A **pure function** is one that:
+- Always returns the same output for the same input
+- Has no **side effects** — it does not modify any external state
+
+**Pure function (good):**
+
+```java
+// This function only depends on its input
+// It never modifies anything outside itself
+public static int square(int x) {
+    return x * x;  // square(4) is ALWAYS 16, no matter what
+}
+```
+
+**Impure function (problematic):**
+
+```java
+// This function depends on external state AND modifies it
+static int count = 0;  // external state
+
+public static int addAndCount(int x) {
+    count++;                // side effect: modifies count
+    return x + count;       // output depends on external state, not just input
+}
+// addAndCount(5) might return 6 the first time, 7 the second time, etc.
+// Unpredictable!
+```
+
+**Why pure functions matter:**
+- Easy to test: you just check the output for a given input — no setup needed
+- Easy to reason about: you know exactly what they do
+- Can be run in any order (or in parallel) safely
+
+### 2. Immutability
+
+In functional programming, once a value is created, it is never changed. Instead of modifying a variable, you create a new value.
+
+**Wrong way (mutating state):**
+
+```java
+int total = 0;
+
+// BAD: modifying total in a loop
+for (int score : scores) {
+    total = total + score;  // total changes each iteration — mutable
+}
+```
+
+**Functional way (no mutation):**
+
+```java
+// Java Stream: transform the list without modifying anything
+int total = Arrays.stream(scores)
+                  .reduce(0, Integer::sum);  // sum without modifying scores
+```
+
+**Why immutability matters:** In a large program with many parts running simultaneously, mutable shared state is the #1 cause of bugs. If values never change, different parts of the program cannot interfere with each other.
+
+### 3. First-Class Functions
+
+In functional programming, functions are treated as **data** — they can be stored in variables, passed as arguments, and returned from other functions.
+
+```java
+import java.util.function.Function;
+
+// Storing a function in a variable
+Function<Integer, Integer> doubler = x -> x * 2;
+// doubler is now a variable that holds a function
+
+System.out.println(doubler.apply(5));  // Output: 10
+System.out.println(doubler.apply(8));  // Output: 16
+```
+
+### 4. Higher-Order Functions
+
+A **higher-order function** takes other functions as parameters or returns functions as results.
+
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class HigherOrderDemo {
+    public static void main(String[] args) {
+        // A list of integers
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        
+        // 'filter' is a higher-order function — it takes a function (n -> n % 2 == 0)
+        // as its argument to decide which elements to keep
+        List<Integer> evens = numbers.stream()
+                                     .filter(n -> n % 2 == 0)  // function as argument
+                                     .collect(Collectors.toList());
+        
+        System.out.println(evens);  // Output: [2, 4, 6, 8, 10]
+    }
+}
+```
+
+---
+
+## Lambda Expressions in Java
+
+Java 8 introduced **lambda expressions** — a concise way to write anonymous functions (functions without names).
+
+**Syntax:**
+```
+(parameters) -> expression
+(parameters) -> { statements; }
+```
+
+**Example 1: Without lambda vs. with lambda**
+
+```java
+// WITHOUT lambda (verbose):
+List<String> names = Arrays.asList("Emeka", "Ada", "Bola");
+Collections.sort(names, new Comparator<String>() {
+    @Override
+    public int compare(String a, String b) {
+        return a.compareTo(b);  // alphabetical sort
+    }
+});
+
+// WITH lambda (concise — same result):
+Collections.sort(names, (a, b) -> a.compareTo(b));
+// Or even shorter:
+names.sort(String::compareTo);
+```
+
+**Example 2: Lambda to double all values**
+
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class LambdaDemo {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+        
+        // Lambda: n -> n * 2 is an anonymous function that doubles its input
+        List<Integer> doubled = numbers.stream()
+                                       .map(n -> n * 2)        // apply function to each
+                                       .collect(Collectors.toList());
+        
+        System.out.println(doubled);  // Output: [2, 4, 6, 8, 10]
+        System.out.println(numbers);  // Output: [1, 2, 3, 4, 5] — UNCHANGED (immutability)
+    }
+}
+```
+
+---
+
+## Recursion in Functional Programming
+
+Functional programming uses **recursion** instead of loops. Instead of changing a loop variable (which is mutation), you call the function with a smaller input.
+
+**Factorial — iterative (imperative):**
+
+```java
+public static long factorial(int n) {
+    long result = 1;
+    for (int i = 2; i <= n; i++) {
+        result = result * i;  // mutating result
+    }
+    return result;
+}
+```
+
+**Factorial — recursive (functional style):**
+
+```java
+public static long factorial(int n) {
+    if (n <= 1) {
+        return 1;               // base case: no mutation
+    }
+    return n * factorial(n - 1);  // pure recursive call — no state changed
+}
+
+// Usage:
+System.out.println(factorial(5));  // Output: 120
+System.out.println(factorial(6));  // Output: 720
+```
+
+---
+
+## Worked Example: Processing a Student Grade List
+
+**Task:** From a list of scores, extract all scores above 50 and calculate their average.
+
+**Imperative way:**
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public class GradesImperative {
+    public static void main(String[] args) {
+        List<Integer> scores = Arrays.asList(45, 72, 38, 91, 55, 49, 83);
+        
+        int total = 0;
+        int count = 0;
+        
+        for (int score : scores) {
+            if (score > 50) {       // check condition
+                total += score;     // mutate total
+                count++;            // mutate count
+            }
+        }
+        
+        double average = count > 0 ? (double) total / count : 0;
+        System.out.println("Average of scores above 50: " + average);
+        // Output: Average of scores above 50: 75.25
+    }
+}
+```
+
+**Functional way (Java Streams):**
+
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.OptionalDouble;
+
+public class GradesFunctional {
+    public static void main(String[] args) {
+        List<Integer> scores = Arrays.asList(45, 72, 38, 91, 55, 49, 83);
+        
+        // Describe WHAT to compute, not HOW to do it step by step
+        OptionalDouble average = scores.stream()
+                                       .filter(score -> score > 50)   // keep scores > 50
+                                       .mapToInt(Integer::intValue)    // convert to int stream
+                                       .average();                      // compute average
+        
+        System.out.println("Average: " + average.getAsDouble());
+        // Output: Average: 75.25
+    }
+}
+```
+
+Both produce the same result. The functional version is more concise, has no mutable state, and is easier to extend (add more transformations by chaining).
+
+---
+
+## Pure vs. Impure Functions — Side-by-Side
+
+```java
+public class PurityDemo {
+
+    // PURE: same input always → same output, no side effects
+    public static int add(int a, int b) {
+        return a + b;
+        // add(3, 4) is always 7
+        // add(3, 4) changes nothing in the world
+    }
+
+    // IMPURE: output depends on external state (currentTime)
+    public static String greet(String name) {
+        java.time.LocalTime time = java.time.LocalTime.now();  // external state!
+        if (time.getHour() < 12) {
+            return "Good morning, " + name;  // output changes based on time
+        } else {
+            return "Good afternoon, " + name;
+        }
+        // greet("Ada") might return different things at 9am vs 2pm
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(add(3, 4));      // Always: 7
+        System.out.println(add(3, 4));      // Always: 7 (predictable)
+        System.out.println(greet("Ada"));   // Might vary by time (unpredictable)
+    }
+}
+```
+
+---
+
+## Key Takeaway
+
+> Functional programming treats computation as function evaluation — functions that always return the same output for the same input (pure functions) and never change external state (immutability). Java supports functional style through lambda expressions (since Java 8) and the Stream API. These are not just style preferences — pure functions are easier to test, reason about, and safely run in parallel. Every Java developer should understand both imperative and functional styles.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Define pure function and give an example (and a counter-example)
+- Define immutability and explain why it reduces bugs
+- Write a lambda expression for a given task
+- Explain the difference between imperative and functional approaches using a loop vs. stream
+
+**Common mistakes:**
+- Saying Java does not support functional programming — it does (since Java 8, via lambdas and streams)
+- Confusing "functional" with "functions in Java" — all Java methods are functions, but functional programming is a *style* that uses pure functions and avoids mutable state
+- Writing an impure function when asked for a pure one (checking for external state access)
+
+**Likely question:**
+> "Explain the concept of a pure function. Write a Java method that IS pure and one that is NOT pure. Explain what makes each one pure or impure." (8 marks)

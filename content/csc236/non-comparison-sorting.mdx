@@ -1,0 +1,225 @@
+---
+title: "Beating the Lower Bound: Non-comparison Sorting"
+description: "Counting Sort and Radix Sort — algorithms that bypass the Ω(n log n) barrier by using the values of keys directly instead of just comparing them."
+duration: "45 min"
+difficulty: "advanced"
+---
+
+## The Loophole
+
+We proved that any **comparison-based** sorting algorithm needs $\Omega(n \log n)$ comparisons. But what if we use more information about our elements than just "which is larger"?
+
+If we know that all elements are integers in the range $[0, k]$, we can sort in $O(n + k)$ time — linear in $n$ when $k = O(n)$.
+
+This is not a contradiction of the lower bound. The lower bound assumed we can only learn about order through comparisons. Non-comparison sorts exploit the structure of the keys themselves.
+
+**Analogy:** If you need to sort 1000 people by birth year and all were born between 1950 and 2005 (56 possible years), you do not compare every pair of people. You make 56 buckets, one per year, and drop each person into their bucket. That is $O(n + 56)$ — linear.
+
+---
+
+## Counting Sort
+
+### When to Use
+
+- Elements are integers in a known range $[0, k]$
+- $k$ is small relative to $n$ (ideally $k = O(n)$)
+
+### The Idea
+
+1. Count how many times each value $v \in [0, k]$ appears in the input
+2. Compute cumulative counts (prefix sums) to determine the correct output position of each value
+3. Place each element into its correct output position
+
+### Algorithm
+
+```
+ALGORITHM CountingSort(A, B, n, k):
+  // A = input array, B = output array, n = length, k = max value
+
+  // Step 1: Count occurrences
+  C = array of size k+1, all zeros
+  FOR i FROM 0 TO n - 1:
+    C[A[i]] = C[A[i]] + 1
+  // C[v] now holds count of elements equal to v
+
+  // Step 2: Prefix sums (each C[v] = number of elements ≤ v)
+  FOR v FROM 1 TO k:
+    C[v] = C[v] + C[v - 1]
+
+  // Step 3: Place elements into output (go backwards for stability)
+  FOR i FROM n - 1 DOWNTO 0:
+    B[C[A[i]] - 1] = A[i]
+    C[A[i]] = C[A[i]] - 1
+```
+
+### Complete Worked Example
+
+**Input:** $A = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3]$, $k = 9$
+
+**Step 1: Count array $C$:**
+
+| Value | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Count | 0 | 2 | 1 | 2 | 1 | 2 | 1 | 0 | 0 | 1 |
+
+**Step 2: Prefix sums (cumulative):**
+
+| Value | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Cumulative | 0 | 2 | 3 | 5 | 6 | 8 | 9 | 9 | 9 | 10 |
+
+Now $C[v]$ = number of elements $\leq v$.
+
+**Step 3: Place into output $B$ (scanning $A$ backwards for stability):**
+
+- $A[9] = 3$: $C[3] = 5$ → $B[4] = 3$; $C[3] = 4$
+- $A[8] = 5$: $C[5] = 8$ → $B[7] = 5$; $C[5] = 7$
+- $A[7] = 6$: $C[6] = 9$ → $B[8] = 6$; $C[6] = 8$
+- $A[6] = 2$: $C[2] = 3$ → $B[2] = 2$; $C[2] = 2$
+- $A[5] = 9$: $C[9] = 10$ → $B[9] = 9$; $C[9] = 9$
+- $A[4] = 5$: $C[5] = 7$ → $B[6] = 5$; $C[5] = 6$
+- $A[3] = 1$: $C[1] = 2$ → $B[1] = 1$; $C[1] = 1$
+- $A[2] = 4$: $C[4] = 6$ → $B[5] = 4$; $C[4] = 5$
+- $A[1] = 1$: $C[1] = 1$ → $B[0] = 1$; $C[1] = 0$
+- $A[0] = 3$: $C[3] = 4$ → $B[3] = 3$; $C[3] = 3$
+
+**Output $B$:**
+
+| Index | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Value | 1 | 1 | 2 | 3 | 3 | 4 | 5 | 5 | 6 | 9 |
+
+Correctly sorted! ✓
+
+### Complexity
+
+- Step 1 (count): $O(n)$
+- Step 2 (prefix sum): $O(k)$
+- Step 3 (place): $O(n)$
+
+$$T(n) = O(n + k)$$
+
+When $k = O(n)$: $T(n) = O(n)$ — linear!
+
+**Space:** $O(n + k)$ extra (the count array $C$ of size $k+1$ and the output $B$).
+
+**Stability:** Counting Sort is **stable** (equal elements maintain their original relative order) because Step 3 goes backwards.
+
+---
+
+## Radix Sort
+
+### When to Use
+
+- Elements are $d$-digit numbers (strings, integers)
+- Each digit is in range $[0, k]$
+- Want to sort all $n$ numbers in $O(d(n + k))$ time
+
+### The Key Idea
+
+Sort by the **least significant digit first**, then the second-least, ..., then the most significant digit. Using a **stable sort** for each digit pass ensures the algorithm is correct.
+
+**Why least significant first?** Because after sorting by all digits left to right (most significant first), you cannot easily use the previous sort result. But least-to-most significant preserves previous order for ties.
+
+**Why stability matters:** When you sort by the tens digit, elements with the same tens digit must remain in the order established by the units digit sort. This only happens if the sort is stable.
+
+### Algorithm
+
+```
+ALGORITHM RadixSort(A, n, d, k):
+  FOR i FROM 1 TO d:                // process digit i (1=least significant)
+    StableSort(A by digit i)        // use Counting Sort for stability
+```
+
+### Complete Worked Example
+
+**Input:** 3-digit numbers, $n = 6$:
+
+$$A = [329, 457, 657, 839, 436, 720, 355]$$
+
+**Pass 1 — Sort by units digit (1s place):**
+
+| 329 | 457 | 657 | 839 | 436 | 720 | 355 |
+|---|---|---|---|---|---|---|
+| 9 | 7 | 7 | 9 | 6 | 0 | 5 |
+
+After sorting by units: $[720, 355, 436, 457, 657, 329, 839]$
+
+**Pass 2 — Sort by tens digit (10s place):**
+
+Units: 720→**2**, 355→**5**, 436→**3**, 457→**5**, 657→**5**, 329→**2**, 839→**3**
+
+After sorting by tens (stable — ties in tens keep units-sort order):
+$[720, 329, 436, 839, 355, 457, 657]$
+
+**Pass 3 — Sort by hundreds digit (100s place):**
+
+Hundreds: 720→**7**, 329→**3**, 436→**4**, 839→**8**, 355→**3**, 457→**4**, 657→**6**
+
+After sorting by hundreds: $[329, 355, 436, 457, 657, 720, 839]$
+
+**Sorted!** ✓
+
+### Correctness Intuition
+
+After $d$ passes, consider any two elements $x$ and $y$ where $x < y$. At the point where they first differ (the most significant differing digit), the stable sort for that digit placed $x$ before $y$. All subsequent passes on more significant digits did not change their relative order (they are equal in more significant digits or $x$ is smaller and stays before $y$).
+
+### Complexity
+
+- $d$ passes, each using Counting Sort on digit values in $[0, k]$: $O(n + k)$
+
+$$T(n) = O(d(n + k))$$
+
+For fixed-width integers (e.g., 32-bit integers): $d = 8$ (eight 4-bit digits, each in $[0, 15]$), $k = 15$.
+
+$$T(n) = O(8(n + 15)) = O(n)$$
+
+Linear for fixed-width integers!
+
+**Space:** $O(n + k)$ per pass for Counting Sort.
+
+---
+
+## Comparison: When to Use Each Sort
+
+| Scenario | Best Sort | Why |
+|---|---|---|
+| General purpose, unknown data | Merge Sort | $O(n \log n)$, stable, always correct |
+| Small nearly-sorted array | Insertion Sort | $O(n)$ best case |
+| Need to avoid $O(n^2)$ worst case | Merge Sort / Heap Sort | Guaranteed $O(n \log n)$ |
+| Integers in range $[0, k]$, $k = O(n)$ | Counting Sort | $O(n)$ |
+| $d$-digit integers, fixed width | Radix Sort | $O(dn)$ ≈ $O(n)$ |
+
+---
+
+## Why Non-comparison Sorts Do Not Violate the Lower Bound
+
+The $\Omega(n \log n)$ lower bound says: "any algorithm that uses only **pairwise comparisons** to determine order needs at least $n \log n$ comparisons."
+
+Counting Sort and Radix Sort use **array indexing** on key values, not pairwise comparisons. They extract more information per operation (the exact value, not just a relative comparison). The lower bound proof assumes only comparisons — it never applies to these algorithms.
+
+This is like saying "you cannot pass through a locked door without a key" — and then someone opens a window. The constraint was "without a key," which Counting Sort and Radix Sort cleverly avoid.
+
+---
+
+## Key Takeaway
+
+> Counting Sort sorts $n$ integers in range $[0, k]$ in $O(n+k)$ time by counting occurrences and computing cumulative positions — no comparisons needed. Radix Sort sorts $d$-digit numbers in $O(d(n+k))$ by stable-sorting digit by digit from least to most significant. Both are linear for appropriate input types. They beat the $\Omega(n \log n)$ comparison lower bound because they use more information than just pairwise comparisons.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Trace Counting Sort on a small array showing all three steps (count, prefix sum, place)
+- Trace Radix Sort on a set of 3-digit numbers showing all passes
+- State the time complexity and conditions for each
+- Explain why these algorithms do not violate the lower bound
+
+**Common mistakes:**
+- Radix Sort going most-significant-first — it must go least-significant-first for correctness
+- Forgetting Counting Sort needs a **stable** sort sub-step in Radix Sort — unstable Counting Sort would give wrong results
+- Stating complexity without the condition: "Counting Sort is $O(n)$" — only when $k = O(n)$
+
+**Likely question:**
+> "Trace Radix Sort on $\{170, 45, 75, 90, 802, 24, 2, 66\}$. Show all passes. State the time complexity and explain why Radix Sort does not violate the $\Omega(n \log n)$ lower bound." (14 marks)
