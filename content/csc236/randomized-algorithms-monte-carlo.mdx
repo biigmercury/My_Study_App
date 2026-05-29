@@ -1,0 +1,202 @@
+---
+title: "Randomized Algorithms I: Monte Carlo"
+description: "Algorithms that flip coins to make decisions — Monte Carlo algorithms run in bounded time but may produce wrong answers with small probability."
+duration: "40 min"
+difficulty: "advanced"
+---
+
+## Why Use Randomness?
+
+Deterministic algorithms behave the same way for every input. For some problems, this predictability is a weakness: an adversary who knows your algorithm can always present the worst-case input (e.g., a sorted array for Quick Sort with first-element pivot).
+
+**Randomized algorithms** use a source of random numbers to make decisions. This has two benefits:
+
+1. **No adversary can exploit predictability** — the algorithm's behaviour changes each run
+2. **For many problems, randomized algorithms are simpler or faster** than the best known deterministic alternatives
+
+**Real-world analogy:** In a coin-toss game, if you always call "heads," a cheating opponent can always flip tails. But if you randomly call heads or tails, no strategy beats you more than half the time.
+
+---
+
+## Two Types of Randomized Algorithms
+
+| Type | Running Time | Correctness |
+|---|---|---|
+| **Monte Carlo** | Always bounded (fixed) | May be wrong (small probability) |
+| **Las Vegas** | Random (variable) | Always correct |
+
+This topic covers Monte Carlo. Think of it as: **"always fast, sometimes wrong."**
+
+---
+
+## Formal Definition
+
+A **Monte Carlo algorithm** is a randomized algorithm that:
+- Runs in a fixed worst-case time $T(n)$ regardless of its random choices
+- Produces the correct answer with probability at least $1 - \varepsilon$ for some small $\varepsilon > 0$
+
+The key trade-off: you sacrifice certainty of correctness in exchange for certainty of time.
+
+---
+
+## Example 1: Estimating $\pi$ by Simulation
+
+**Setup:** A unit square $[0,1] \times [0,1]$ contains a quarter-circle of radius 1. The quarter-circle has area $\pi/4$; the square has area 1.
+
+**Algorithm:**
+```
+ALGORITHM EstimatePi(N):
+  inside = 0
+  FOR i FROM 1 TO N:
+    x = random uniform in [0, 1]
+    y = random uniform in [0, 1]
+    IF x² + y² <= 1 THEN
+      inside = inside + 1
+  RETURN 4 * inside / N
+```
+
+**How it works:** A random point $(x, y)$ falls inside the quarter-circle if $x^2 + y^2 \leq 1$. By the law of large numbers, the fraction of points inside converges to $\pi/4$.
+
+**Worked example ($N = 10$ points, illustrative):**
+
+| $(x, y)$ | $x^2 + y^2$ | Inside? |
+|---|---|---|
+| (0.3, 0.6) | 0.45 | Yes |
+| (0.9, 0.8) | 1.45 | No |
+| (0.1, 0.4) | 0.17 | Yes |
+| (0.7, 0.7) | 0.98 | Yes |
+| (0.8, 0.9) | 1.45 | No |
+| (0.2, 0.2) | 0.08 | Yes |
+| (0.5, 0.5) | 0.50 | Yes |
+| (0.95, 0.1) | 0.91 | Yes |
+| (0.6, 0.8) | 1.00 | Yes (boundary) |
+| (0.85, 0.7) | 1.21 | No |
+
+Inside count: 7. Estimate: $4 \times 7/10 = 2.8$ (rough; real $\pi \approx 3.14159$).
+
+**Error:** With 10 points, the error is large. With $N = 10^6$ points, the estimate is typically accurate to 3 decimal places.
+
+**Complexity:** $O(N)$ — always, regardless of random choices. This is the Monte Carlo property.
+
+---
+
+## Example 2: Probabilistic Primality Testing
+
+**Problem:** Is $n$ prime?
+
+**Deterministic method:** Trial division by all primes up to $\sqrt{n}$. Correct, but $O(\sqrt{n})$ — slow for large $n$.
+
+**Fermat's Primality Test (Monte Carlo):**
+
+Fermat's Little Theorem: if $p$ is prime, then for any $a$ with $1 \leq a \leq p-1$:
+
+$$a^{p-1} \equiv 1 \pmod{p}$$
+
+**Algorithm:**
+```
+ALGORITHM FermatTest(n, k):
+  FOR i FROM 1 TO k:
+    a = random integer in [2, n-2]
+    IF a^(n-1) mod n ≠ 1 THEN
+      RETURN "COMPOSITE"     // definitely not prime
+  RETURN "PROBABLY PRIME"
+```
+
+**Why it is Monte Carlo:**
+- If it returns "COMPOSITE" — $n$ is definitely NOT prime (no error possible in this direction)
+- If it returns "PROBABLY PRIME" — $n$ might be prime or might be a composite that passed all $k$ tests
+
+The probability that a composite number passes a single test is at most $1/2$. So after $k$ tests:
+
+$$P(\text{error}) \leq \left(\frac{1}{2}\right)^k$$
+
+**Reducing error by repetition:**
+
+| $k$ (tests) | $P(\text{wrong answer})$ |
+|---|---|
+| 1 | $\leq 0.5$ |
+| 5 | $\leq 0.031$ |
+| 10 | $\leq 0.001$ |
+| 20 | $\leq 10^{-6}$ |
+| 50 | $\leq 10^{-15}$ |
+
+After 50 independent tests, the probability of a wrong answer is less than $10^{-15}$ — astronomically unlikely.
+
+**Time complexity:** Each modular exponentiation takes $O(\log n)$ time (fast exponentiation). With $k$ tests: $O(k \log n)$. For fixed $k$: $O(\log n)$ — exponentially faster than trial division.
+
+**Application:** RSA key generation requires testing numbers with hundreds of digits for primality. Deterministic methods are infeasible; Monte Carlo primality tests (Miller-Rabin, a stronger variant) are used in practice.
+
+---
+
+## The Error Reduction Principle
+
+A core technique for Monte Carlo algorithms: **run the algorithm $k$ times independently**. If the probability of error in one run is $\varepsilon$, then after $k$ independent runs:
+
+$$P(\text{all runs give wrong answer}) \leq \varepsilon^k$$
+
+Since this decreases exponentially with $k$, we can make the error probability arbitrarily small at the cost of $k$ times the running time.
+
+**Worked example:** Suppose $\varepsilon = 1/4$ (one run is wrong 25% of the time).
+
+$$k = 1: P(\text{error}) = 0.25$$
+$$k = 2: P(\text{error}) \leq 0.0625$$
+$$k = 10: P(\text{error}) \leq (0.25)^{10} \approx 10^{-6}$$
+
+For $k = 10$, the algorithm runs 10 times as long but the error probability is negligible.
+
+---
+
+## Example 3: Randomized Matrix Multiplication Verification (Freivalds' Algorithm)
+
+**Problem:** Given $n \times n$ matrices $A$, $B$, $C$, verify whether $AB = C$.
+
+**Naive approach:** Compute $AB$ directly and compare — costs $O(n^3)$ or $O(n^{2.81})$.
+
+**Freivalds' Algorithm (Monte Carlo):**
+1. Choose a random vector $\mathbf{r} \in \{0,1\}^n$ (each entry 0 or 1 independently with equal probability)
+2. Compute $\mathbf{p} = A(B\mathbf{r})$ — multiply $B\mathbf{r}$ first ($O(n^2)$), then $A(B\mathbf{r})$ ($O(n^2)$)
+3. Compute $\mathbf{q} = C\mathbf{r}$ — also $O(n^2)$
+4. Return `YES` if $\mathbf{p} = \mathbf{q}$, `NO` otherwise
+
+**Analysis:**
+- If $AB = C$: $A(B\mathbf{r}) = (AB)\mathbf{r} = C\mathbf{r}$ always → no false negatives
+- If $AB \neq C$: $P(\mathbf{p} = \mathbf{q}) \leq 1/2$ — error at most 50%
+- Running $k$ times reduces error to $(1/2)^k$
+- Total time: $O(kn^2)$ vs. naive $O(n^3)$
+
+For large $n$, this is a significant speedup for a verification task.
+
+---
+
+## Monte Carlo vs. Deterministic Summary
+
+| Property | Deterministic | Monte Carlo |
+|---|---|---|
+| Running time | Fixed for each input | Fixed (bounded) |
+| Correctness | Always correct | Probably correct |
+| Adversarial inputs | Predictable | Unpredictable |
+| Application | When correctness is critical | When speed matters more than perfection |
+
+---
+
+## Key Takeaway
+
+> Monte Carlo algorithms trade correctness for time certainty. They always finish within a bounded time, but may produce wrong answers with small probability. By running $k$ independent trials, the error probability drops exponentially to $(ε)^k$ — making Monte Carlo algorithms practical for primality testing, matrix verification, and simulation. The key insight: if the probability of error per trial is $ε < 1$, then $k$ trials make the error astronomically small for reasonable $k$.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Define Monte Carlo algorithms and contrast with Las Vegas and deterministic
+- Calculate error probability after $k$ repetitions of a Monte Carlo test
+- Describe Fermat's primality test: why it may fail (Carmichael numbers), and how repetitions fix it
+- Explain the Monte Carlo $\pi$ estimation: setup, formula, why it works
+
+**Common mistakes:**
+- Saying Monte Carlo algorithms are "wrong" — they are *probably* right; the error can be made negligibly small
+- Confusing error reduction: error after $k$ runs is $\varepsilon^k$, not $k\varepsilon$
+- Thinking the "probably prime" result from Fermat's test means the number is prime with high probability — technically, it might still be composite (a Carmichael number)
+
+**Likely question:**
+> "A Monte Carlo primality test has a probability of $1/4$ of incorrectly classifying a composite number as prime in a single trial. How many trials are needed to reduce the error probability below $10^{-6}$? Justify." (6 marks)

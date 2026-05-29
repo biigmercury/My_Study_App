@@ -1,0 +1,180 @@
+---
+title: "Software Engineering and Law"
+description: "The legal dimension of software — intellectual property, licensing, contracts, liability, data protection, and the professional and ethical responsibilities of software engineers."
+duration: "35 min"
+difficulty: "advanced"
+---
+
+## Why Software Engineers Must Understand Law
+
+Software does not exist in a legal vacuum. The code you write, the data you handle, and the systems you deploy are all subject to laws. A software engineer who ignores the legal dimension can expose themselves and their organisation to lawsuits, fines, and criminal liability.
+
+**Real-world analogy:** A pharmacist must know not just chemistry but the laws governing controlled substances. A software engineer must know not just programming but the laws governing intellectual property, data, and contracts. Technical competence alone is not enough to practise responsibly.
+
+---
+
+## Intellectual Property (IP)
+
+Intellectual property law protects creations of the mind. For software, four types matter:
+
+### 1. Copyright
+Automatically protects original works (including source code) the moment they are created. The author owns the right to copy, modify, and distribute.
+
+**Key points:**
+- Source code is copyrighted automatically — no registration needed
+- Copying code without permission is infringement
+- Copyright protects the **expression** (the actual code), not the **idea** (the algorithm)
+
+### 2. Patents
+Protect novel inventions, including some software algorithms and methods (jurisdiction-dependent). A patent grants a temporary monopoly in exchange for public disclosure.
+
+**Controversy:** Software patents are contentious — many argue they stifle innovation. Different countries treat them differently.
+
+### 3. Trademarks
+Protect names, logos, and brands (e.g., the name "Java", the Windows logo). They prevent others from misrepresenting their products as yours.
+
+### 4. Trade Secrets
+Confidential business information (e.g., Google's search algorithm, the Coca-Cola formula). Protected as long as kept secret. Disclosing trade secrets can be a criminal offence.
+
+---
+
+## Software Licensing
+
+A **software licence** is a legal agreement specifying how software may be used. When you "buy" software, you usually buy a licence to use it — not ownership.
+
+### Proprietary Licences
+The vendor retains all rights. Users may only use the software according to the licence terms (e.g., Microsoft Windows, Adobe Photoshop).
+
+### Open Source Licences
+Source code is publicly available and may be used, modified, and distributed, subject to licence terms.
+
+| Licence | Type | Key requirement |
+|---|---|---|
+| **MIT** | Permissive | Keep the copyright notice; do almost anything else |
+| **Apache 2.0** | Permissive | Keep notices; patent grant included |
+| **GPL** | Copyleft | Derivative works must also be GPL (open source) |
+| **LGPL** | Weak copyleft | Can link without making your code GPL |
+
+**Critical distinction:**
+- **Permissive (MIT, Apache):** You can use the code in proprietary products
+- **Copyleft (GPL):** If you use GPL code, your product must also be open source
+
+**Real consequence:** A company that incorporates GPL-licensed code into a proprietary product may be legally required to release their entire product's source code. This has resulted in real lawsuits.
+
+---
+
+## Contracts and Software
+
+Software is often built under contract. Key contract concepts:
+
+### Types of Software Contracts
+- **Fixed-price contract:** Agreed price for agreed deliverables. Risk is on the developer if it takes longer than expected.
+- **Time-and-materials contract:** Customer pays for actual time and resources used. Risk is on the customer.
+
+### Service Level Agreements (SLAs)
+Contractual commitments about service quality:
+- Uptime (e.g., "99.9% availability")
+- Response time for support (e.g., "critical bugs addressed within 4 hours")
+- Performance guarantees
+
+### Acceptance Criteria
+The contract should specify exactly what conditions the software must meet for the customer to accept (and pay for) it. Disputes over "is it done?" are common — clear acceptance criteria prevent them.
+
+---
+
+## Liability
+
+If software fails and causes harm, who is liable?
+
+**Examples of software-caused harm:**
+- A medical device's software miscalculates a drug dose → patient harmed
+- A financial system has a bug → incorrect transactions
+- An autonomous vehicle's software causes an accident
+
+**Liability considerations:**
+- Was the software negligently developed (without proper testing/process)?
+- Did the developer follow professional standards?
+- Were known risks disclosed?
+
+This is why professional software engineering — with proper process, testing, and documentation — is not just good practice but legal protection. A defensible development process demonstrates due diligence.
+
+---
+
+## Data Protection and Privacy
+
+Software that handles personal data is subject to data protection laws.
+
+### Key Regulations
+- **GDPR (General Data Protection Regulation):** EU law governing personal data of EU residents
+- **NDPR (Nigeria Data Protection Regulation):** Nigeria's data protection framework
+- Sector-specific: HIPAA (US healthcare), PCI-DSS (payment cards)
+
+### Core Data Protection Principles
+1. **Lawfulness and consent:** Collect data only with a legal basis (often consent)
+2. **Purpose limitation:** Use data only for the stated purpose
+3. **Data minimisation:** Collect only what is necessary
+4. **Accuracy:** Keep data accurate and up-to-date
+5. **Storage limitation:** Do not keep data longer than needed
+6. **Security:** Protect data against breaches
+7. **Rights of the data subject:** Users can access, correct, and delete their data
+
+**Engineering implications:**
+- Design systems with privacy in mind ("privacy by design")
+- Encrypt sensitive data
+- Implement consent mechanisms
+- Build data deletion capabilities
+- Log access to personal data
+
+**Real consequence:** GDPR violations can incur fines up to €20 million or 4% of global annual revenue — whichever is higher.
+
+---
+
+## Professional Codes of Conduct
+
+Professional bodies (IEEE, ACM, BCS) publish codes of ethics that members must follow:
+
+- Act in the public interest
+- Maintain professional competence
+- Be honest about capabilities and limitations
+- Respect confidentiality and privacy
+- Report risks and unlawful activity responsibly
+
+The **ACM/IEEE Software Engineering Code of Ethics** has eight principles: Public, Client and Employer, Product, Judgment, Management, Profession, Colleagues, and Self.
+
+---
+
+## Worked Scenario: Legal Analysis
+
+**Scenario:** A startup builds a mobile app for tracking students' attendance. The app:
+1. Uses an open-source face-recognition library licensed under GPL
+2. Stores students' photos and location data
+3. Is sold to universities under a fixed-price contract
+
+**Legal issues:**
+
+| Issue | Concern | Action |
+|---|---|---|
+| GPL library | App may need to be open-sourced | Use a permissive (MIT) alternative, or comply with GPL |
+| Student photos & location | Personal/biometric data under NDPR | Obtain explicit consent; encrypt; allow deletion |
+| Fixed-price contract | Risk if development overruns | Define clear acceptance criteria and scope |
+| Liability | If attendance data is wrong, students penalised unfairly | Test thoroughly; document process; disclose limitations |
+
+---
+
+## Key Takeaway
+
+> Software engineering operates within a legal framework. Intellectual property (copyright, patents, trademarks, trade secrets) protects software creations. Software licences — especially the distinction between permissive (MIT, Apache) and copyleft (GPL) — determine how code can be used; using GPL code can legally require open-sourcing your product. Contracts define obligations and acceptance criteria. Data protection laws (GDPR, NDPR) impose strict requirements on systems handling personal data, with severe penalties. Professional engineers follow codes of ethics and build defensible processes that demonstrate due diligence.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Distinguish the four types of intellectual property (copyright, patent, trademark, trade secret)
+- Explain the difference between permissive and copyleft (GPL) licences and the consequences
+- State the core data protection principles
+- Describe the legal implications of handling personal data
+- Explain why a professional development process provides legal protection (due diligence)
+
+**Likely question:**
+> "Explain the difference between permissive (e.g., MIT) and copyleft (e.g., GPL) open-source licences. What are the legal consequences for a company that incorporates GPL-licensed code into a proprietary product? What core principles must a system handling personal student data comply with?" (12 marks)

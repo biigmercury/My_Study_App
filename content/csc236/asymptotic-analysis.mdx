@@ -1,0 +1,245 @@
+---
+title: "Asymptotic Analysis and Growth of Functions"
+description: "Big-O, Omega, and Theta notation — the formal language for describing how algorithm running time grows, and why the dominant term is all that matters."
+duration: "45 min"
+difficulty: "intermediate"
+---
+
+## Why We Need Asymptotic Notation
+
+When we analyse an algorithm, we get expressions like $T(n) = 3n^2 + 7n + 12$. This is exact, but it tells us more than we need. The $7n$ and $12$ terms matter when $n = 5$, but when $n = 1{,}000{,}000$, the $3n^2 = 3 \times 10^{12}$ completely overwhelms the $7n = 7 \times 10^6$ and $12$.
+
+**Asymptotic analysis** captures the growth rate of an algorithm for large $n$, discarding constant factors and lower-order terms. It answers: "how does the algorithm scale?"
+
+**Real-world analogy:** If you are estimating a road trip, you say "about 5 hours." You do not say "4 hours, 52 minutes, 37 seconds." The precise number is unnecessary — the magnitude is what matters.
+
+---
+
+## Big-O Notation (Upper Bound)
+
+### Definition
+
+$f(n) = O(g(n))$ means there exist positive constants $c$ and $n_0$ such that:
+
+$$f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0$$
+
+**In plain English:** $f$ grows no faster than $g$. $O(g(n))$ is an upper bound on $f$.
+
+### Visualisation
+
+```
+ f(n)  ≤  c·g(n)    for all n ≥ n₀
+ 
+  ▲
+  │            c·g(n)
+  │          /
+  │         / ← f(n) always stays below c·g(n)
+  │       /  /
+  │      / /
+  │     //
+  │    |
+  │    n₀
+  └────────────────────────► n
+```
+
+### Key Examples
+
+**Claim:** $3n^2 + 7n + 12 = O(n^2)$
+
+**Proof:** For $n \geq 1$:
+$$3n^2 + 7n + 12 \leq 3n^2 + 7n^2 + 12n^2 = 22n^2$$
+
+Choose $c = 22$ and $n_0 = 1$. Then $f(n) \leq 22 \cdot n^2$ for all $n \geq 1$. ✓
+
+**Claim:** $7n + 3 = O(n)$
+
+**Proof:** For $n \geq 3$: $7n + 3 \leq 7n + n = 8n$. Choose $c = 8$, $n_0 = 3$. ✓
+
+**Claim:** $n^2 \neq O(n)$ (n-squared is not big-O of n)
+
+**Proof by contradiction:** If $n^2 \leq cn$ for all $n \geq n_0$, then $n \leq c$ for all $n \geq n_0$. But $n$ grows without bound, so no fixed $c$ can bound it. Contradiction. ✓
+
+---
+
+## Big-Omega Notation (Lower Bound)
+
+### Definition
+
+$f(n) = \Omega(g(n))$ means there exist positive constants $c$ and $n_0$ such that:
+
+$$f(n) \geq c \cdot g(n) \quad \text{for all } n \geq n_0$$
+
+**In plain English:** $f$ grows at least as fast as $g$. $\Omega(g(n))$ is a lower bound on $f$.
+
+### Example
+
+**Claim:** $3n^2 + 7n + 12 = \Omega(n^2)$
+
+**Proof:** $3n^2 + 7n + 12 \geq 3n^2$ for all $n \geq 0$. Choose $c = 3$, $n_0 = 0$. ✓
+
+Lower bounds are especially important when we prove something like "any comparison sort requires $\Omega(n \log n)$ comparisons" — meaning no algorithm can be faster.
+
+---
+
+## Theta Notation (Tight Bound)
+
+### Definition
+
+$f(n) = \Theta(g(n))$ if and only if:
+
+$$f(n) = O(g(n)) \quad \text{AND} \quad f(n) = \Omega(g(n))$$
+
+Equivalently, there exist positive constants $c_1$, $c_2$, and $n_0$ such that:
+
+$$c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) \quad \text{for all } n \geq n_0$$
+
+**In plain English:** $f$ and $g$ grow at exactly the same rate (up to constant factors). $\Theta$ is the tightest possible bound.
+
+### Example
+
+**Claim:** $3n^2 + 7n + 12 = \Theta(n^2)$
+
+From above: $3n^2 \leq 3n^2 + 7n + 12 \leq 22n^2$ for all $n \geq 1$.
+
+So $c_1 = 3$, $c_2 = 22$, $n_0 = 1$ gives us the Theta bound. ✓
+
+---
+
+## The Notation at a Glance
+
+| Notation | Meaning | Analogy |
+|---|---|---|
+| $O(g(n))$ | $f$ grows at most as fast as $g$ | $\leq$ |
+| $\Omega(g(n))$ | $f$ grows at least as fast as $g$ | $\geq$ |
+| $\Theta(g(n))$ | $f$ grows at exactly the same rate as $g$ | $=$ |
+
+---
+
+## Dropping Lower-Order Terms and Constants
+
+The formal rules for big-O arithmetic:
+
+1. **Drop constants:** $O(3n) = O(n)$, $O(100 n^2) = O(n^2)$
+2. **Drop lower-order terms:** $O(n^2 + n) = O(n^2)$, $O(n^3 + n^2 \log n) = O(n^3)$
+3. **Sum rule:** $O(f(n) + g(n)) = O(\max(f(n), g(n)))$
+4. **Product rule:** $O(f(n)) \cdot O(g(n)) = O(f(n) \cdot g(n))$
+
+**Worked simplifications:**
+
+| Expression | Simplified |
+|---|---|
+| $5n^2 + 3n + 10$ | $O(n^2)$ |
+| $n \log n + 100n$ | $O(n \log n)$ |
+| $2^n + n^{100}$ | $O(2^n)$ |
+| $10\log n + 1000$ | $O(\log n)$ |
+| $3$ (constant) | $O(1)$ |
+
+---
+
+## Growth Rate Ordering
+
+From slowest-growing (most efficient) to fastest-growing (most expensive):
+
+$$O(1) < O(\log n) < O(\sqrt{n}) < O(n) < O(n \log n) < O(n^2) < O(n^3) < O(2^n) < O(n!)$$
+
+**What these mean for $n = 1{,}000{,}000$:**
+
+| Class | Operations for $n = 10^6$ |
+|---|---|
+| $O(1)$ | 1 |
+| $O(\log n)$ | ~20 |
+| $O(\sqrt{n})$ | ~1,000 |
+| $O(n)$ | 1,000,000 |
+| $O(n \log n)$ | ~20,000,000 |
+| $O(n^2)$ | $10^{12}$ (1 trillion) |
+| $O(2^n)$ | $10^{301,030}$ (inconceivably large) |
+
+---
+
+## Worked Example 1: Counting Operations in a Loop
+
+```
+FOR i FROM 1 TO n:
+  FOR j FROM 1 TO n:
+    print(i, j)
+```
+
+Outer loop runs $n$ times. For each, inner loop runs $n$ times. Total iterations: $n \times n = n^2$.
+
+$$T(n) = n^2 = O(n^2)$$
+
+---
+
+## Worked Example 2: Loop with Shrinking Inner Bound
+
+```
+FOR i FROM 1 TO n:
+  FOR j FROM i TO n:
+    do_work()
+```
+
+For $i = 1$: inner runs $n$ times.
+For $i = 2$: inner runs $n - 1$ times.
+$\vdots$
+For $i = n$: inner runs $1$ time.
+
+$$T(n) = \sum_{i=1}^{n} (n - i + 1) = n + (n-1) + \cdots + 1 = \frac{n(n+1)}{2} = O(n^2)$$
+
+---
+
+## Worked Example 3: Halving Loop
+
+```
+i = n
+WHILE i > 1:
+  i = i / 2
+```
+
+| Iteration | $i$ |
+|---|---|
+| 0 | $n$ |
+| 1 | $n/2$ |
+| 2 | $n/4$ |
+| $k$ | $n/2^k$ |
+
+Loop ends when $n/2^k \leq 1 \Rightarrow k \geq \log_2 n$.
+
+$$T(n) = O(\log n)$$
+
+---
+
+## Common Algorithm Complexities
+
+| Algorithm | Time Complexity |
+|---|---|
+| Sequential search | $O(n)$ |
+| Binary search | $O(\log n)$ |
+| Bubble / Selection / Insertion sort | $O(n^2)$ |
+| Merge sort | $O(n \log n)$ |
+| Quick sort (average) | $O(n \log n)$ |
+| Matrix multiplication (naive) | $O(n^3)$ |
+
+---
+
+## Key Takeaway
+
+> Asymptotic notation ($O$, $\Omega$, $\Theta$) describes how algorithms scale by capturing growth rate and discarding irrelevant constants. Big-O gives the upper bound (worst case), Omega gives the lower bound (best case guarantee), and Theta gives the tight bound. The hierarchy $O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2)$ determines whether an algorithm is practical for large inputs.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Formally prove $f(n) = O(g(n))$ by finding constants $c$ and $n_0$
+- Simplify expressions: "what is $O(3n^2 + 5n + 8)$?"
+- Order a list of functions by growth rate
+- Count iterations in a loop and state the big-O
+
+**Common mistakes:**
+- Saying "$O(n^2)$ means exactly $n^2$ operations" — it means at most $cn^2$ for some $c$
+- Confusing $O$ (upper) with $\Theta$ (tight) — "$O(n^2)$" technically applies to all faster algorithms too; $\Theta(n^2)$ is more precise
+- Dropping the wrong term: $n^3 + n^2$ is $O(n^3)$, NOT $O(n^2)$
+
+**Likely question:**
+> "Prove that $5n^2 + 3n + 7 = O(n^2)$ using the formal definition of big-O. State the values of $c$ and $n_0$." (6 marks)  
+> "Order these functions from slowest to fastest growth: $n^2$, $\log n$, $n!$, $n \log n$, $2^n$, $\sqrt{n}$." (4 marks)

@@ -1,0 +1,222 @@
+---
+title: "Divide and Conquer II: Matrix Multiplication"
+description: "Strassen's algorithm — how divide and conquer reduces matrix multiplication from O(n³) to O(n^2.81) by saving one recursive multiplication."
+duration: "45 min"
+difficulty: "advanced"
+---
+
+## Matrix Multiplication: The Problem
+
+Given two $n \times n$ matrices $A$ and $B$, compute their product $C = A \times B$.
+
+The entry at row $i$, column $j$ of $C$ is:
+
+$$C[i][j] = \sum_{k=1}^{n} A[i][k] \cdot B[k][j]$$
+
+That is, the dot product of the $i$-th row of $A$ with the $j$-th column of $B$.
+
+**Example ($2 \times 2$):**
+
+$$A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix}$$
+
+$$C[1][1] = 1 \times 5 + 2 \times 7 = 19$$
+$$C[1][2] = 1 \times 6 + 2 \times 8 = 22$$
+$$C[2][1] = 3 \times 5 + 4 \times 7 = 43$$
+$$C[2][2] = 3 \times 6 + 4 \times 8 = 50$$
+
+$$C = \begin{pmatrix} 19 & 22 \\ 43 & 50 \end{pmatrix}$$
+
+---
+
+## The Naive Algorithm
+
+```
+ALGORITHM NaiveMatMul(A, B, n):
+  FOR i FROM 1 TO n:
+    FOR j FROM 1 TO n:
+      C[i][j] = 0
+      FOR k FROM 1 TO n:
+        C[i][j] = C[i][j] + A[i][k] * B[k][j]
+```
+
+**Complexity:** Three nested loops, each running $n$ times.
+
+$$T(n) = n \times n \times n = O(n^3)$$
+
+For $n = 1000$: about $10^9$ multiplications. For $n = 10{,}000$: about $10^{12}$ — completely impractical.
+
+Can we do better? For decades, people assumed $O(n^3)$ was a fundamental limit. Then Strassen showed it was not.
+
+---
+
+## Step 1: Divide into Sub-matrices
+
+Assume $n$ is a power of 2 (if not, pad with zeros). Partition each matrix into four $(n/2) \times (n/2)$ sub-matrices:
+
+$$A = \begin{pmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{pmatrix}$$
+
+Then:
+
+$$C = A \times B = \begin{pmatrix} C_{11} & C_{12} \\ C_{21} & C_{22} \end{pmatrix}$$
+
+where:
+
+$$C_{11} = A_{11}B_{11} + A_{12}B_{21}$$
+$$C_{12} = A_{11}B_{12} + A_{12}B_{22}$$
+$$C_{21} = A_{21}B_{11} + A_{22}B_{21}$$
+$$C_{22} = A_{21}B_{12} + A_{22}B_{22}$$
+
+---
+
+## The Naive Recursive Approach (8 Multiplications)
+
+Computing $C_{11}, C_{12}, C_{21}, C_{22}$ as above requires **8 recursive matrix multiplications** of size $n/2$, plus 4 additions.
+
+**Recurrence:**
+
+$$T(n) = 8T(n/2) + O(n^2)$$
+
+By Master Theorem: $a=8$, $b=2$, $\log_2 8 = 3$. Since $f(n) = O(n^2) = O(n^{\log_2 8 - 1})$ (Case 1):
+
+$$T(n) = O(n^3)$$
+
+No improvement over the naive algorithm. The recursion did not help unless we reduce the number of sub-multiplications.
+
+---
+
+## Strassen's Algorithm (7 Multiplications)
+
+In 1969, Volker Strassen showed that only **7 recursive multiplications** are needed (instead of 8). The savings come from algebraic re-arrangement.
+
+### The 7 Products
+
+Define 7 matrices (each a $(n/2) \times (n/2)$ product):
+
+$$M_1 = (A_{11} + A_{22})(B_{11} + B_{22})$$
+$$M_2 = (A_{21} + A_{22})B_{11}$$
+$$M_3 = A_{11}(B_{12} - B_{22})$$
+$$M_4 = A_{22}(B_{21} - B_{11})$$
+$$M_5 = (A_{11} + A_{12})B_{22}$$
+$$M_6 = (A_{21} - A_{11})(B_{11} + B_{12})$$
+$$M_7 = (A_{12} - A_{22})(B_{21} + B_{22})$$
+
+### Recovering the Result
+
+$$C_{11} = M_1 + M_4 - M_5 + M_7$$
+$$C_{12} = M_3 + M_5$$
+$$C_{21} = M_2 + M_4$$
+$$C_{22} = M_1 - M_2 + M_3 + M_6$$
+
+**Verification ($2 \times 2$ example):**
+
+Using $A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$, $B = \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix}$ (scalars now):
+
+- $M_1 = (1+4)(5+8) = 5 \times 13 = 65$
+- $M_2 = (3+4) \times 5 = 35$
+- $M_3 = 1 \times (6-8) = -2$
+- $M_4 = 4 \times (7-5) = 8$
+- $M_5 = (1+2) \times 8 = 24$
+- $M_6 = (3-1)(5+6) = 2 \times 11 = 22$
+- $M_7 = (2-4)(7+8) = -2 \times 15 = -30$
+
+Then:
+- $C_{11} = 65 + 8 - 24 + (-30) = 19$ ✓
+- $C_{12} = -2 + 24 = 22$ ✓
+- $C_{21} = 35 + 8 = 43$ ✓
+- $C_{22} = 65 - 35 + (-2) + 22 = 50$ ✓
+
+---
+
+## Strassen's Recurrence and Complexity
+
+**Recurrence:**
+
+$$T(n) = 7T(n/2) + O(n^2)$$
+
+- 7 recursive multiplications (each size $n/2$)
+- 18 matrix additions/subtractions for computing $M_1 \ldots M_7$ and $C_{11} \ldots C_{22}$ — each $O(n^2)$
+
+**Master Theorem:** $a=7$, $b=2$, $f(n) = O(n^2)$.
+
+$$n^{\log_b a} = n^{\log_2 7} \approx n^{2.807}$$
+
+Since $f(n) = O(n^2) = O(n^{2.807 - 0.807})$ — so $f$ grows slower than $n^{\log_b a}$, this is Case 1:
+
+$$T(n) = \Theta(n^{\log_2 7}) \approx O(n^{2.807})$$
+
+Often stated as $O(n^{2.81})$.
+
+---
+
+## The Comparison
+
+| Algorithm | Recurrence | Complexity |
+|---|---|---|
+| Naive | — | $O(n^3)$ |
+| Naive recursive (8 mults) | $T(n) = 8T(n/2) + O(n^2)$ | $O(n^3)$ |
+| Strassen (7 mults) | $T(n) = 7T(n/2) + O(n^2)$ | $O(n^{2.81})$ |
+
+**How much does this help?**
+
+For $n = 1000$:
+- $n^3 = 10^9$
+- $n^{2.81} \approx 10^{8.43} \approx 2.7 \times 10^8$
+
+About 4× faster. For $n = 10{,}000$:
+- $n^3 = 10^{12}$
+- $n^{2.81} \approx 10^{11.24} \approx 1.7 \times 10^{11}$
+
+About 6× faster. The advantage grows with $n$.
+
+---
+
+## Why Saving One Multiplication Matters
+
+The exponent in Strassen's complexity is $\log_2 7$. This comes from 7 sub-problems of half the size. Compare:
+
+| Sub-problems | Exponent | Complexity |
+|---|---|---|
+| 8 | $\log_2 8 = 3$ | $O(n^3)$ |
+| 7 | $\log_2 7 \approx 2.807$ | $O(n^{2.807})$ |
+| 6 | $\log_2 6 \approx 2.585$ | $O(n^{2.585})$ |
+| 4 | $\log_2 4 = 2$ | $O(n^2)$ |
+
+Each saved multiplication shaves off a fraction of the exponent. The divide-and-conquer framework turns arithmetic savings at the base level into asymptotic improvements.
+
+---
+
+## Current State of Research
+
+Strassen's $O(n^{2.81})$ was not the final word. Subsequent algorithms improved the exponent:
+
+| Year | Algorithm | Complexity |
+|---|---|---|
+| 1969 | Strassen | $O(n^{2.807})$ |
+| 1990 | Coppersmith-Winograd | $O(n^{2.376})$ |
+| 2012–2024 | Various improvements | Down to $O(n^{2.371})$ |
+
+The theoretical lower bound is not known. Some believe $O(n^2)$ might be achievable. This is an open problem.
+
+---
+
+## Key Takeaway
+
+> Strassen's algorithm shows that the naive $O(n^3)$ matrix multiplication is not optimal. By algebraically reorganising to need only 7 (not 8) recursive sub-multiplications, the complexity drops to $O(n^{2.81})$ — a meaningful improvement for large matrices. The general lesson: in divide-and-conquer, saving even one recursive call can change the exponent, because the exponent is $\log_b a$ where $a$ = number of sub-problems.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Write the Strassen recurrence $T(n) = 7T(n/2) + O(n^2)$ and apply Master Theorem
+- Explain why the naive recursive approach (8 multiplications) gives $O(n^3)$, not an improvement
+- State and verify the 7 Strassen products for $2 \times 2$ matrices
+- Compare Strassen to naive: when is the improvement noticeable?
+
+**Common mistakes:**
+- Forgetting that matrix additions are $O(n^2)$, which is why the combine step is $O(n^2)$
+- Computing $\log_2 7$ incorrectly — it is approximately 2.807, not 2.5 or 3
+- Thinking Strassen is always faster — for small $n$, constants matter and naive is faster
+
+**Likely question:**
+> "Describe Strassen's algorithm for $n \times n$ matrix multiplication. Write the recurrence relation and derive the time complexity using the Master Theorem. Compare with the naive algorithm." (12 marks)

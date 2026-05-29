@@ -1,0 +1,225 @@
+---
+title: "Recurrence Equations for Modeling Running Time"
+description: "How to express the running time of recursive algorithms as recurrences — setting them up correctly is the first step to solving them."
+duration: "45 min"
+difficulty: "advanced"
+---
+
+## What Is a Recurrence Equation?
+
+When an algorithm calls itself recursively, its running time depends on the running time of the smaller sub-problems. A **recurrence equation** (or recurrence relation) captures this dependency:
+
+$$T(n) = \text{cost of sub-problems} + \text{cost of non-recursive work}$$
+
+**Analogy:** Imagine calculating the total time to process a company's payroll. The total time is the time for each department's sub-report, plus the time to compile the final summary. If each department of size $n/k$ takes $T(n/k)$ time, and the final compile takes $f(n)$, then $T(n) = k \cdot T(n/k) + f(n)$.
+
+---
+
+## Setting Up a Recurrence
+
+Three questions to answer:
+
+1. **How many recursive calls are made?** Call this $a$.
+2. **What is the size of each sub-problem?** If the original problem is size $n$, each sub-problem might be size $n/b$, $n-1$, $n-c$, etc.
+3. **What non-recursive work is done?** Call this $f(n)$.
+
+The recurrence is then:
+
+$$T(n) = a \cdot T\!\left(\frac{n}{b}\right) + f(n)$$
+
+for divide-and-conquer algorithms, or:
+
+$$T(n) = T(n-k) + f(n)$$
+
+for algorithms that reduce by a fixed amount.
+
+---
+
+## Standard Forms and Examples
+
+### Form 1: Divide and Conquer — $T(n) = a \cdot T(n/b) + f(n)$
+
+Used when: problem is split into $a$ sub-problems of size $n/b$ each.
+
+**Merge Sort:**
+- 2 sub-problems of size $n/2$
+- Merge takes $O(n)$
+
+$$T(n) = 2T(n/2) + n, \quad T(1) = 1$$
+
+**Binary Search:**
+- 1 sub-problem of size $n/2$
+- Comparison takes $O(1)$
+
+$$T(n) = T(n/2) + 1, \quad T(1) = 1$$
+
+**Strassen's Algorithm:**
+- 7 sub-problems of size $n/2$
+- Matrix additions take $O(n^2)$
+
+$$T(n) = 7T(n/2) + n^2, \quad T(1) = 1$$
+
+### Form 2: Linear Reduction — $T(n) = T(n-1) + f(n)$
+
+Used when: one recursive call on a problem one step smaller.
+
+**Factorial:**
+- $n! = n \times (n-1)!$
+- One multiplication per call
+
+$$T(n) = T(n-1) + 1, \quad T(1) = 1$$
+
+**Linear Search (recursive version):**
+- Check one element, then recurse on $n-1$
+
+$$T(n) = T(n-1) + 1, \quad T(0) = 1$$
+
+### Form 3: Two Reductions — $T(n) = T(n-1) + T(n-2) + f(n)$
+
+Used when: two recursive calls, each reducing by a different amount.
+
+**Naive Fibonacci:**
+- Two calls: one on $n-1$, one on $n-2$
+- Constant work per call
+
+$$T(n) = T(n-1) + T(n-2) + 1$$
+
+This grows exponentially (solution: $T(n) = O(\phi^n)$ where $\phi \approx 1.618$).
+
+---
+
+## Full Setup Examples
+
+### Example 1: Quick Sort
+
+Quick Sort partitions the array (taking $O(n)$ work) and makes two recursive calls.
+
+**Best case / average:** Both sub-problems have size $n/2$:
+
+$$T(n) = 2T(n/2) + n \quad \Rightarrow \quad T(n) = O(n \log n)$$
+
+**Worst case:** One sub-problem has size $n-1$, the other has size $0$:
+
+$$T(n) = T(n-1) + T(0) + n = T(n-1) + n$$
+
+$$\Rightarrow \quad T(n) = O(n^2)$$
+
+### Example 2: Finding Maximum and Minimum Simultaneously
+
+**Algorithm:** Split array in half, find max and min of each half, combine.
+
+```
+ALGORITHM MaxMin(A, lo, hi):
+  IF lo == hi: RETURN (A[lo], A[lo])     // base: 1 element
+  IF hi == lo + 1:                        // base: 2 elements
+    RETURN (max(A[lo],A[hi]), min(A[lo],A[hi]))
+  mid = (lo + hi) / 2
+  (max1, min1) = MaxMin(A, lo, mid)
+  (max2, min2) = MaxMin(A, mid+1, hi)
+  RETURN (max(max1,max2), min(min1,min2))
+```
+
+**Recurrence:**
+
+$$T(n) = 2T(n/2) + 2, \quad T(2) = 1$$
+
+The $+2$ is for the two comparisons when combining (max and min).
+
+By Master Theorem Case 2: $T(n) = O(n)$. This takes $\frac{3n}{2} - 2$ comparisons, better than the $2n-2$ comparisons of finding max and min separately.
+
+### Example 3: Tower of Hanoi
+
+Move $n$ disks from peg A to peg C using peg B as auxiliary.
+
+**Key insight:** To move $n$ disks: move $n-1$ to B (recursive), move disk $n$ to C (1 move), move $n-1$ from B to C (recursive).
+
+$$T(n) = 2T(n-1) + 1, \quad T(1) = 1$$
+
+This grows exponentially: $T(n) = 2^n - 1$.
+
+### Example 4: Recursive Sum of Array
+
+```
+ALGORITHM Sum(A, n):
+  IF n == 0: RETURN 0
+  RETURN A[n-1] + Sum(A, n-1)
+```
+
+$$T(n) = T(n-1) + 1, \quad T(0) = 1$$
+
+---
+
+## The Base Case
+
+Every recurrence needs a **base case** — the stopping condition. Common base cases:
+
+| Algorithm | Base Case |
+|---|---|
+| Merge Sort | $T(1) = 1$ (array of 1 is sorted, no work) |
+| Binary Search | $T(1) = 1$ (one element, one comparison) |
+| Factorial | $T(1) = 1$ (return 1 directly) |
+| Tower of Hanoi | $T(1) = 1$ (move one disk directly) |
+
+The base case anchors the recurrence — without it, the solution is underdetermined.
+
+---
+
+## Common Recurrences Reference Table
+
+| Recurrence | Algorithm(s) | Solution |
+|---|---|---|
+| $T(n) = T(n/2) + 1$ | Binary Search | $O(\log n)$ |
+| $T(n) = T(n-1) + 1$ | Factorial, Linear Search | $O(n)$ |
+| $T(n) = 2T(n/2) + 1$ | — | $O(n)$ |
+| $T(n) = 2T(n/2) + n$ | Merge Sort | $O(n \log n)$ |
+| $T(n) = T(n-1) + n$ | Quick Sort worst | $O(n^2)$ |
+| $T(n) = 2T(n-1) + 1$ | Tower of Hanoi | $O(2^n)$ |
+| $T(n) = 7T(n/2) + n^2$ | Strassen | $O(n^{2.807})$ |
+| $T(n) = T(n-1) + T(n-2) + 1$ | Naive Fibonacci | $O(\phi^n)$ |
+
+---
+
+## Worked Example: Setting Up from Pseudocode
+
+**Problem:** Analyse this algorithm.
+
+```
+ALGORITHM Mystery(A, lo, hi):
+  IF lo >= hi: RETURN            // base case
+  mid = (lo + hi) / 2
+  Mystery(A, lo, mid)            // call 1: left half
+  Mystery(A, mid+1, hi)          // call 2: right half
+  FOR k FROM lo TO hi:           // combine: O(n) work
+    process(A[k])
+```
+
+**Setting up the recurrence:**
+- 2 recursive calls, each on sub-problem of size $n/2$
+- Non-recursive work (the `FOR` loop): $n$ operations
+
+$$T(n) = 2T(n/2) + n, \quad T(1) = 1$$
+
+This is the Merge Sort recurrence — $T(n) = O(n \log n)$.
+
+---
+
+## Key Takeaway
+
+> A recurrence equation models the running time of a recursive algorithm by expressing $T(n)$ in terms of $T$ on smaller inputs. To set one up: count the number of recursive calls ($a$), identify the sub-problem size ($n/b$ or $n-k$), measure the non-recursive work ($f(n)$), and write $T(n) = a \cdot T(n/b) + f(n)$. The base case anchors the recurrence. Solving the recurrence (next topic) gives the algorithm's complexity.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Given pseudocode, write the recurrence relation (with base case)
+- Given a recurrence, identify what kind of algorithm it models
+- Explain why Tower of Hanoi is exponential from its recurrence
+
+**Common mistakes:**
+- Forgetting the base case — the recurrence is incomplete without it
+- Writing $T(n) = T(n-1) + T(n-2)$ for Merge Sort — this is Fibonacci's recurrence, not Merge Sort's
+- Confusing $T(n/2)$ (divide) with $T(n-1)$ (reduce by 1) — always check how the sub-problem size relates to $n$
+
+**Likely question:**
+> "Write the recurrence relation for Merge Sort. Show the base case. Describe what each term represents." (6 marks)

@@ -1,0 +1,168 @@
+---
+title: "Scripting Languages"
+description: "What scripting languages are, how they differ from compiled languages, and why they dominate web development, automation, and rapid prototyping."
+duration: "25 min"
+difficulty: "beginner"
+---
+
+## What Is a Scripting Language?
+
+A **scripting language** is a programming language designed to automate tasks that would otherwise be done manually, typically by controlling other programs or gluing components together.
+
+The word "script" comes from theatre — a script tells actors what to do without them having to improvise everything from scratch. Similarly, a scripting language tells existing systems and programs what to do, rather than building those systems from scratch.
+
+**Real-world analogy:** Imagine you have a filing cabinet (an existing system). Writing a compiled language is like *building* the filing cabinet. Writing a scripting language is like writing the instructions for *how to use* the filing cabinet — "open drawer 3, find files with today's date, move them to the archive cabinet."
+
+---
+
+## Key Characteristics of Scripting Languages
+
+| Characteristic | Description | Example |
+|---|---|---|
+| **Interpreted** | Usually run without compilation | Python, JavaScript, Bash |
+| **Dynamically typed** | Variable types determined at runtime | No need to declare `int x` |
+| **High-level** | Short code for complex tasks | 1 line of Python = 10 lines of Java |
+| **Glue code** | Connects existing programs/systems | Shell scripts combining Unix tools |
+| **Rapid development** | Write and run immediately | No compile step |
+
+---
+
+## Common Scripting Languages and Their Uses
+
+| Language | Primary Use | Where You See It |
+|---|---|---|
+| Python | Data science, automation, web backends | Google, Instagram backends; machine learning |
+| JavaScript | Web front-end interactivity | Every website in a browser |
+| PHP | Web server-side pages | WordPress (powers 40% of the web) |
+| Bash / Shell | Unix system automation | Linux server administration |
+| Ruby | Web development | GitHub, Shopify (Ruby on Rails) |
+| Perl | Text processing, system administration | Bioinformatics pipelines |
+
+---
+
+## Scripting vs. Compiled Languages
+
+| Property | Scripting (Python, JS) | Compiled (Java, C++) |
+|---|---|---|
+| Translation | Line-by-line at runtime | Entire program before running |
+| Speed | Slower execution | Faster execution |
+| Development speed | Faster — no compile step | Slower — must compile |
+| Error detection | Runtime (when it runs) | Compile-time (before it runs) |
+| Use case | Automation, glue, web | Systems, large applications |
+| Type checking | Dynamic (at runtime) | Static (at compile time) |
+
+### Why Java Is Not Typically Called a Scripting Language
+
+Java compiles to bytecode before execution and is statically typed (you declare variable types). It is designed for large, long-running applications, not for quick automation tasks.
+
+```java
+// Java — you must declare type, compile, then run
+int score = 85;
+System.out.println("Score: " + score);
+```
+
+```python
+# Python scripting — no declaration, run immediately
+score = 85  # type inferred automatically
+print(f"Score: {score}")
+```
+
+The Python version can be run immediately with `python script.py`. The Java version requires `javac` first.
+
+---
+
+## Example: Automation with a Scripting Language
+
+**Task:** Process a list of student names — convert them all to uppercase, remove duplicates, and print them.
+
+**Python (scripting):**
+
+```python
+# Python — 4 lines
+names = ["Emeka", "ada", "Emeka", "BOLA", "ada"]
+unique_upper = list(set(name.upper() for name in names))
+unique_upper.sort()
+print(unique_upper)
+# Output: ['ADA', 'BOLA', 'EMEKA']
+```
+
+**Java (compiled) — same task:**
+
+```java
+import java.util.*;
+import java.util.stream.*;
+
+public class NameProcessor {
+    public static void main(String[] args) {
+        List<String> names = Arrays.asList("Emeka", "ada", "Emeka", "BOLA", "ada");
+        
+        List<String> result = names.stream()
+                                   .map(String::toUpperCase)          // uppercase
+                                   .distinct()                         // remove duplicates
+                                   .sorted()                           // sort
+                                   .collect(Collectors.toList());      // collect
+        
+        System.out.println(result);
+        // Output: [ADA, BOLA, EMEKA]
+    }
+}
+```
+
+Python achieves this in 4 lines with no type declarations and no compilation step. Java uses more boilerplate but provides compile-time type checking and is more suitable for large enterprise applications.
+
+---
+
+## JavaScript: The Web Scripting Language
+
+JavaScript is the scripting language of the web. It runs in every browser and makes web pages interactive.
+
+```javascript
+// JavaScript (scripting) — runs directly in the browser
+// No compilation, no type declarations
+
+let score = 75;                          // variable — type inferred
+
+if (score >= 50) {
+    document.getElementById("result").innerText = "You passed!";  // modify webpage
+} else {
+    document.getElementById("result").innerText = "Try again.";
+}
+```
+
+Notice: `let score = 75` — no type declaration (JavaScript figures out it is a number). `document.getElementById` — this is scripting an existing system (the browser's document model).
+
+---
+
+## When to Use Which?
+
+| Scenario | Language Choice | Why |
+|---|---|---|
+| Build a mobile app | Java / Kotlin | Performance, type safety |
+| Quick data analysis | Python | Fast development, libraries |
+| Make a web page interactive | JavaScript | Runs in browsers |
+| Automate file processing | Python / Bash | Short, powerful one-liners |
+| Build enterprise backend | Java | Scale, reliability, tools |
+| Server-side web pages | Python / PHP | Easy deployment |
+
+---
+
+## Key Takeaway
+
+> Scripting languages are typically interpreted, dynamically typed, and designed for rapid development and automation. They trade execution speed for development speed. Python, JavaScript, and Bash are the most common examples. Java is a compiled, statically typed language designed for large applications — not scripting. Understanding both categories helps you choose the right tool for each job.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Define scripting language and its key characteristics
+- Distinguish scripting (interpreted, dynamic) from compiled languages (compiled, static)
+- Give 3 examples of scripting languages with their use cases
+- Explain why Java is NOT typically classified as a scripting language
+
+**Common mistakes:**
+- Saying scripting languages are "weak" or "not real programming" — Python and JavaScript power the world's largest platforms
+- Confusing "script" (a scripting language program) with "Java script" — JavaScript is unrelated to Java despite the name
+
+**Likely question:**
+> "What is a scripting language? Give three examples, stating the main use of each. How do scripting languages differ from compiled languages like Java?" (8 marks)

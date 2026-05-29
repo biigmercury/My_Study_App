@@ -1,0 +1,138 @@
+---
+title: "Concepts and Principles of Software Engineering"
+description: "The core principles that underpin all software engineering practice — what makes software good, how to think about software systems, and the professional obligations of a software engineer."
+duration: "40 min"
+difficulty: "beginner"
+---
+
+## Software Is More Than Code
+
+A fundamental misconception about software engineering is that it is primarily about writing code. In reality, code is only one output among many. A software engineer is responsible for the entire process of bringing a system from concept to operational use — and keeping it working through its entire life.
+
+**Real-world analogy:** A civil engineer does not just pour concrete. They design, plan, supervise construction, inspect the finished work, and ensure the structure meets safety standards. Software engineering is the same — a discipline, not just a craft.
+
+---
+
+## What Makes Software "Good"?
+
+The four essential qualities of good software (defined by Sommerville):
+
+### 1. Maintainability
+Software must be able to evolve to meet changing needs. Change is inevitable — customer requirements shift, operating environments change, bugs are discovered after deployment.
+
+**Factors that enable maintainability:**
+- Clear, well-documented code
+- Modular design (easy to change one module without breaking others)
+- Use of standards and conventions
+
+**Example:** A grading system built as one 10,000-line function is nearly impossible to maintain. The same system built as separate, well-named modules (StudentRecord, GradeCalculator, ReportGenerator) is easy to maintain.
+
+### 2. Dependability and Security
+The system must not cause physical or economic damage when it fails. Dependability includes reliability (performing correctly over time), security (resistance to attacks), and safety (no physical harm to users or environment).
+
+**Example:** A hospital patient monitoring system that crashes and emits false alarms could cause nurses to ignore real emergencies. A banking system with security holes could expose customer funds.
+
+### 3. Efficiency
+The system should not waste system resources — memory, processing time, network bandwidth. It must be responsive enough for its users.
+
+**Example:** A mobile application that drains the battery in 30 minutes has poor efficiency. A query that takes 10 seconds when it could take 1 second is inefficient.
+
+### 4. Acceptability
+Software must be acceptable to the people it is designed for. This means:
+- **Understandable** — users can learn to use it
+- **Usable** — the interface fits the users' tasks
+- **Compatible** — works with other systems users already have
+
+---
+
+## Four Fundamental Principles of Software Engineering
+
+1. **Use a managed and understood development process.** Without a process, progress cannot be measured and problems cannot be predicted.
+
+2. **Dependability and performance are important for all systems.** Even a simple student management system has real consequences if it is unreliable.
+
+3. **Understanding and managing the specification and requirements is important.** Requirements are the foundation — if they are wrong, everything built on them is wrong.
+
+4. **Effective use of existing resources — reuse.** Do not build what already exists. Reusing tested, proven software reduces cost and increases quality.
+
+---
+
+## The Kinds of Problems Software Engineers Face
+
+Software systems fall into different categories, and each presents different challenges:
+
+| System Type | Description | Challenge |
+|---|---|---|
+| Stand-alone applications | Run locally, no network needed | Usability, performance |
+| Interactive transaction-based | Web/cloud apps used by many users | Concurrency, scalability |
+| Embedded control systems | Software inside physical devices | Reliability, real-time constraints |
+| Batch processing systems | Process large volumes of data automatically | Throughput, correctness |
+| Entertainment systems | Games, streaming | User experience |
+| Data collection systems | IoT, sensors in the field | Fault-tolerance, remote operation |
+| Systems of systems | Composed of multiple software sub-systems | Integration, interface management |
+
+---
+
+## Professional Ethics in Software Engineering
+
+Software engineers produce products that affect people's lives. A professional software engineer has ethical obligations:
+
+### Key Ethical Principles
+
+**Public interest first:** Software engineers shall act consistently with the public interest. The public should not be harmed by software they create.
+
+**Client and employer:** Software engineers shall act in a manner that is in the best interests of their client and employer, consistent with the public interest.
+
+**Product quality:** Software engineers shall ensure that their products and related modifications meet the highest professional standards possible.
+
+**Integrity:** Software engineers shall maintain integrity and independence in their professional judgment. They shall not engage in deceptive practices.
+
+**Management responsibility:** Software engineering managers and leaders shall subscribe to and promote an ethical approach to the management of software development.
+
+**Profession advancement:** Software engineers shall advance the integrity and reputation of the profession consistent with the public interest.
+
+**Colleague respect:** Software engineers shall be fair to and supportive of their colleagues.
+
+**Lifelong learning:** Software engineers shall participate in lifelong learning regarding the practice of their profession.
+
+### Real-World Ethical Dilemmas
+
+**Scenario 1:** Your manager asks you to delay reporting a critical security vulnerability until after a product launch. What do you do?
+- **Ethical response:** Escalate through proper channels. Users' safety overrides business pressure.
+
+**Scenario 2:** You discover that a colleague has copied proprietary code from a previous employer.
+- **Ethical response:** Report it to your manager — the company and your colleague are both at legal and reputational risk.
+
+---
+
+## Software Engineering vs. Computer Science
+
+| Computer Science | Software Engineering |
+|---|---|
+| Theories and algorithms | Application of theories to build systems |
+| Mathematical foundations | Practical methods and processes |
+| "Can it be computed?" | "How do we build it well?" |
+| Research-oriented | Practice-oriented |
+| Produces knowledge | Produces systems |
+
+Both are needed: software engineers rely on computer science foundations; the field advances because of CS research.
+
+---
+
+## Key Takeaway
+
+> Software engineering is the disciplined application of scientific principles to the development, operation, and maintenance of software. Good software is maintainable, dependable, efficient, and acceptable. The four fundamental principles are: use a managed process, prioritise dependability and performance, manage requirements, and reuse existing software. Professional engineers have ethical obligations to the public, clients, employers, and their profession.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- List and explain the four essential attributes of good software
+- State the four fundamental principles of software engineering
+- Explain the difference between software engineering and computer science
+- Describe what a software engineer's ethical responsibilities include
+- Give examples of software systems of each application type
+
+**Likely question:**
+> "What four attributes make software good? For each attribute, give an example of a software system where that attribute is critically important." (12 marks)

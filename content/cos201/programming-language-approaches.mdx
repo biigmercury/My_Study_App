@@ -1,0 +1,260 @@
+---
+title: "Programming Language Approaches"
+description: "Imperative, object-oriented, functional, and declarative approaches compared — and how modern Java combines all of them."
+duration: "35 min"
+difficulty: "intermediate"
+---
+
+## Every Language Has an Approach
+
+By now you have encountered several programming paradigms. A **programming paradigm** is a fundamental approach to organising and expressing computational ideas. Different paradigms suit different types of problems.
+
+Most modern languages — including Java — are **multi-paradigm**: they support several approaches, and skilled programmers choose the most appropriate one for each situation.
+
+**Real-world analogy:** Cooking has different approaches — grilling, boiling, baking, frying. They all produce food, but each suits different ingredients and goals. A chef knows all methods and chooses based on what they are cooking. A programmer should similarly know all paradigms and choose appropriately.
+
+---
+
+## The Four Main Paradigms
+
+### 1. Imperative Programming
+
+**Core idea:** Tell the computer exactly what to do, step by step. The program is a sequence of statements that change the program's state.
+
+**Analogy:** Following a cooking recipe — instruction by instruction.
+
+**Java example:**
+
+```java
+public class ImperativeSum {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+        int sum = 0;
+        
+        // STEP 1: initialise sum
+        // STEP 2: go through each number
+        for (int i = 0; i < numbers.length; i++) {
+            sum = sum + numbers[i];  // STEP 3: add to sum
+        }
+        // STEP 4: print
+        System.out.println("Sum: " + sum);  // Output: Sum: 15
+    }
+}
+```
+
+**Key features:** Variables, loops, conditional statements, sequences of operations.  
+**Best for:** Performance-critical code, algorithms with precise control requirements.
+
+---
+
+### 2. Object-Oriented Programming (OOP)
+
+**Core idea:** Organise the program around **objects** — entities that combine data (fields) and behaviour (methods). Objects interact by sending messages (calling methods).
+
+**Analogy:** A company organisation — each department (object) has its own data and knows what it does. HR has employee records and handles hiring. Finance has budgets and handles payments. They interact by requesting services from each other.
+
+**Java example:**
+
+```java
+// An object represents a bank account — data + behaviour together
+public class BankAccount {
+    // DATA (fields)
+    private String owner;
+    private double balance;
+    
+    // BEHAVIOUR (constructor — creates the object)
+    public BankAccount(String owner, double initialBalance) {
+        this.owner = owner;         // store who owns it
+        this.balance = initialBalance;  // store initial amount
+    }
+    
+    // BEHAVIOUR (method — what the object can do)
+    public void deposit(double amount) {
+        if (amount > 0) {           // validate input
+            balance += amount;      // modify state
+            System.out.println("Deposited: " + amount);
+        }
+    }
+    
+    // BEHAVIOUR (method)
+    public double getBalance() {
+        return balance;             // report state
+    }
+}
+
+public class OOPDemo {
+    public static void main(String[] args) {
+        // Create an object (instance) of BankAccount
+        BankAccount acc = new BankAccount("Emeka", 5000.0);
+        
+        acc.deposit(1500.0);        // call the deposit method on the object
+        System.out.println("Balance: " + acc.getBalance());
+        // Output:
+        // Deposited: 1500.0
+        // Balance: 6500.0
+    }
+}
+```
+
+**Key features:** Classes, objects, inheritance, encapsulation, polymorphism.  
+**Best for:** Large applications, modelling real-world entities, code reuse.  
+**Java is primarily OOP** — everything in Java is inside a class.
+
+---
+
+### 3. Functional Programming
+
+**Core idea:** Express computations as transformations through functions. Avoid mutable state and side effects.
+
+**Analogy:** An assembly line — material goes in one end, gets transformed at each station, and a product comes out the other end. No station modifies what came before it.
+
+**Java example (Streams):**
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public class FunctionalSum {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+        
+        // Describe WHAT to compute: sum all numbers
+        int sum = numbers.stream()
+                         .mapToInt(Integer::intValue)   // convert to int stream
+                         .sum();                         // compute sum
+        
+        System.out.println("Sum: " + sum);  // Output: Sum: 15
+    }
+}
+```
+
+**Key features:** Pure functions, lambdas, streams, immutability.  
+**Best for:** Data transformation, concurrency (immutable data is safe to share), concise pipelines.
+
+---
+
+### 4. Declarative Programming
+
+**Core idea:** Specify *what* result you want, not *how* to achieve it. The implementation is hidden inside the language/library.
+
+**Analogy:** Using a dishwasher — you load the dishes and press start. You do not specify the water temperature schedule, the wash cycle timing, or the drying mechanism.
+
+**Java example (SQL via JDBC):**
+
+```java
+// SQL: describe WHAT you want
+String query = "SELECT name, score FROM students WHERE score >= 50 ORDER BY score DESC";
+// The database engine figures out HOW to execute this efficiently
+```
+
+**Or using Java Streams declaratively:**
+
+```java
+// Describe: keep evens, double them, sum them
+int result = numbers.stream()
+                    .filter(n -> n % 2 == 0)    // WHAT: even numbers only
+                    .mapToInt(n -> n * 2)         // WHAT: double each
+                    .sum();                        // WHAT: sum them
+```
+
+**Key features:** Abstraction of control flow, rules-based or query-based.  
+**Best for:** Database queries, transformations, configuration.
+
+---
+
+## Comparison Table
+
+| Paradigm | Focus | State | Control Flow | Java Support |
+|---|---|---|---|---|
+| Imperative | How to do it | Mutable | Explicit (loops, if) | Core language |
+| OOP | Objects with data+behaviour | Mutable (encapsulated) | Method calls | Core language |
+| Functional | Transformations | Immutable | Hidden in functions | Since Java 8 |
+| Declarative | What to produce | None (or abstracted) | None | Streams, SQL |
+
+---
+
+## Modern Java: All Four Paradigms in One Program
+
+Real Java applications use all four paradigms. Here is a complete example:
+
+```java
+import java.util.*;
+import java.util.stream.*;
+
+// OOP: class represents a student
+class Student {
+    private String name;   // encapsulated data
+    private int score;
+
+    public Student(String name, int score) {
+        this.name = name;
+        this.score = score;
+    }
+
+    // OOP: methods (behaviour)
+    public String getName() { return name; }
+    public int getScore() { return score; }
+    
+    // OOP: toString method for easy printing
+    public String toString() {
+        return name + " (" + score + ")";
+    }
+}
+
+public class AllParadigms {
+    public static void main(String[] args) {
+        // IMPERATIVE: create objects step by step
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Emeka", 78));
+        students.add(new Student("Ada", 45));
+        students.add(new Student("Bola", 92));
+        students.add(new Student("Chidi", 61));
+
+        // DECLARATIVE + FUNCTIONAL: describe what we want
+        List<Student> topStudents = students.stream()
+            .filter(s -> s.getScore() >= 60)          // keep scores >= 60
+            .sorted((a, b) -> b.getScore() - a.getScore())  // sort descending
+            .collect(Collectors.toList());
+
+        // IMPERATIVE: print results
+        System.out.println("Top students:");
+        for (Student s : topStudents) {
+            System.out.println("  " + s);
+        }
+        // Output:
+        // Top students:
+        //   Bola (92)
+        //   Emeka (78)
+        //   Chidi (61)
+    }
+}
+```
+
+This single program uses:
+- **OOP:** `Student` class with encapsulated fields and methods
+- **Imperative:** `for` loop and `add()` calls to build the list
+- **Functional:** lambdas in `filter()` and `sorted()`
+- **Declarative:** stream pipeline describes *what* we want (filter, sort, collect)
+
+---
+
+## Key Takeaway
+
+> Programming paradigms are fundamental approaches to structuring code: imperative (step-by-step), object-oriented (objects with data and behaviour), functional (transformations through pure functions), and declarative (describe what, not how). Java is a multi-paradigm language that supports all four. Expert programmers choose the approach that best fits the problem: OOP for modelling entities, functional for data pipelines, imperative for precise algorithms, declarative for queries.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Define and distinguish the four programming paradigms
+- Give a Java code example of each paradigm
+- Explain why Java is described as multi-paradigm
+- Identify which paradigm a given code snippet uses
+
+**Common mistakes:**
+- Saying Java is "only OOP" — since Java 8, it strongly supports functional programming
+- Confusing functional with declarative — functional is about how you express computation (with pure functions); declarative is about not specifying how (can include functional or SQL)
+
+**Likely question:**
+> "Distinguish between imperative, object-oriented, functional, and declarative programming. For each, give a Java code example and state one scenario where it is most appropriate." (16 marks)

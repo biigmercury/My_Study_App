@@ -1,0 +1,330 @@
+---
+title: "Strings in Java"
+description: "Working with text in Java — creating Strings, common String methods, concatenation, comparison, and why Strings are special in Java."
+duration: "40 min"
+difficulty: "beginner"
+---
+
+## What Is a String?
+
+A **String** is a sequence of characters enclosed in double quotes. Unlike `char` (which holds a single character with single quotes), a `String` holds text of any length — one letter, a name, a sentence, or an entire paragraph.
+
+```java
+char c = 'A';            // single character — single quotes
+String s = "Hello";      // sequence of characters — double quotes
+String name = "Emeka";
+String empty = "";        // empty string — zero characters
+String sentence = "Java is fun to learn.";
+```
+
+**Important:** `String` is NOT a primitive type like `int` or `double`. It is a **class** — a reference type. The name starts with a capital `S` (`String`, not `string`).
+
+---
+
+## Creating Strings
+
+### Method 1: String Literal (Most Common)
+
+```java
+String greeting = "Good morning!";
+String university = "University of Ibadan";
+```
+
+Java stores string literals in a special memory area called the **String pool**. If two variables hold the same literal, they may share the same memory.
+
+### Method 2: Using `new String()`
+
+```java
+String name = new String("Emeka");
+// This always creates a new object in memory — avoid unless necessary
+```
+
+**Prefer method 1** (string literals) in almost all cases.
+
+---
+
+## String Concatenation
+
+Joining strings together uses the `+` operator.
+
+```java
+public class ConcatDemo {
+    public static void main(String[] args) {
+        String firstName = "Emeka";
+        String lastName  = "Obi";
+        int age = 21;
+        
+        // Concatenate two strings
+        String fullName = firstName + " " + lastName;
+        System.out.println(fullName);       // Emeka Obi
+        
+        // Concatenate string with a number — Java converts the number to string
+        String info = firstName + " is " + age + " years old.";
+        System.out.println(info);           // Emeka is 21 years old.
+        
+        // Common mistake — adding numbers before the string:
+        System.out.println("Sum: " + 3 + 4);    // Sum: 34  (string concat!)
+        System.out.println("Sum: " + (3 + 4));  // Sum: 7   (arithmetic first!)
+    }
+}
+```
+
+**Output:**
+```
+Emeka Obi
+Emeka is 21 years old.
+Sum: 34
+Sum: 7
+```
+
+---
+
+## String Length
+
+```java
+String name = "University";
+int length = name.length();   // length() method — number of characters
+System.out.println(length);   // 10
+
+String empty = "";
+System.out.println(empty.length());  // 0
+```
+
+---
+
+## Accessing Individual Characters
+
+```java
+String word = "Hello";
+
+// charAt(index) — get the character at position index
+// Indexes start at 0 (first character = index 0)
+//  H  e  l  l  o
+//  0  1  2  3  4
+char first = word.charAt(0);   // 'H'
+char last  = word.charAt(4);   // 'o'
+char middle = word.charAt(2);  // 'l'
+
+System.out.println(first);    // H
+System.out.println(last);     // o
+
+// IndexOutOfBoundsException if index >= length:
+// word.charAt(5);   // ERROR! String only has indexes 0-4
+```
+
+---
+
+## Common String Methods
+
+```java
+public class StringMethods {
+    public static void main(String[] args) {
+        String message = "Hello, Java World!";
+        
+        // Length
+        System.out.println(message.length());          // 18
+        
+        // Uppercase and lowercase
+        System.out.println(message.toUpperCase());     // HELLO, JAVA WORLD!
+        System.out.println(message.toLowerCase());     // hello, java world!
+        
+        // Check if contains a substring
+        System.out.println(message.contains("Java")); // true
+        System.out.println(message.contains("Python")); // false
+        
+        // Find position of first occurrence
+        System.out.println(message.indexOf("Java"));  // 7
+        System.out.println(message.indexOf("xyz"));   // -1 (not found)
+        
+        // Extract a portion (substring)
+        System.out.println(message.substring(7));      // Java World!
+        System.out.println(message.substring(7, 11)); // Java  (index 7 to 10)
+        
+        // Remove leading/trailing spaces
+        String padded = "   hello   ";
+        System.out.println(padded.trim());             // "hello"
+        
+        // Replace characters or substrings
+        System.out.println(message.replace("Java", "Python")); // Hello, Python World!
+        
+        // Split into an array
+        String csv = "name,age,score";
+        String[] parts = csv.split(",");
+        System.out.println(parts[0]);   // name
+        System.out.println(parts[1]);   // age
+        System.out.println(parts[2]);   // score
+        
+        // Check start/end
+        System.out.println(message.startsWith("Hello")); // true
+        System.out.println(message.endsWith("!"));        // true
+        
+        // isEmpty and isBlank
+        System.out.println("".isEmpty());         // true
+        System.out.println("   ".isBlank());      // true (Java 11+)
+    }
+}
+```
+
+---
+
+## String Comparison: `equals()` vs `==`
+
+**This is one of the most common beginner mistakes in Java.**
+
+```java
+public class CompareDemo {
+    public static void main(String[] args) {
+        String a = "hello";
+        String b = "hello";
+        String c = new String("hello");
+        
+        // == compares MEMORY ADDRESSES (references), not content
+        System.out.println(a == b);         // true (same String pool object)
+        System.out.println(a == c);         // false (different objects in memory!)
+        
+        // .equals() compares CONTENT — this is what you almost always want
+        System.out.println(a.equals(b));    // true
+        System.out.println(a.equals(c));    // true  ← correct comparison!
+        
+        // Case-insensitive comparison
+        System.out.println("Hello".equalsIgnoreCase("hello"));  // true
+        
+        // Compare alphabetically (for sorting)
+        System.out.println("apple".compareTo("banana"));  // negative (apple < banana)
+        System.out.println("banana".compareTo("apple"));  // positive (banana > apple)
+        System.out.println("apple".compareTo("apple"));   // 0 (equal)
+    }
+}
+```
+
+**Rule:** **Always use `.equals()` to compare String values in Java.** The `==` operator checks if two references point to the same object — not whether they have the same content.
+
+---
+
+## Strings Are Immutable
+
+Once a String is created, its content cannot be changed. Every "modification" creates a new String.
+
+```java
+public class ImmutableDemo {
+    public static void main(String[] args) {
+        String s = "Hello";
+        
+        // This does NOT modify s — it creates a new String
+        s.toUpperCase();
+        System.out.println(s);  // Still "Hello" — unchanged!
+        
+        // To "change" a String, assign the result to a variable:
+        String upper = s.toUpperCase();
+        System.out.println(upper);  // "HELLO"
+        System.out.println(s);      // Still "Hello"
+        
+        // Or reassign:
+        s = s.toUpperCase();
+        System.out.println(s);  // "HELLO" — but this is a NEW object, not modified
+    }
+}
+```
+
+**Why immutability matters:** You cannot accidentally change a String you pass to a function. It makes Strings safe to share between parts of a program.
+
+---
+
+## Converting Between Strings and Numbers
+
+```java
+public class ConversionDemo {
+    public static void main(String[] args) {
+        // String → number
+        String numStr = "42";
+        int n = Integer.parseInt(numStr);          // "42" → 42
+        double d = Double.parseDouble("3.14");      // "3.14" → 3.14
+        
+        System.out.println(n + 10);   // 52 (arithmetic, not concatenation)
+        
+        // number → String
+        int score = 85;
+        String scoreStr = String.valueOf(score);    // 85 → "85"
+        String scoreStr2 = Integer.toString(score); // also works
+        String scoreStr3 = "" + score;              // quick trick: concatenate with empty string
+        
+        System.out.println(scoreStr + " points");   // "85 points"
+    }
+}
+```
+
+---
+
+## Worked Example: Student Grade Report
+
+```java
+import java.util.Scanner;
+
+public class GradeReport {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Enter student name: ");
+        String name = sc.nextLine();   // read full name (with spaces)
+        
+        System.out.print("Enter exam score: ");
+        int score = sc.nextInt();
+        
+        // Build grade message
+        String grade;
+        if      (score >= 70) grade = "A - Excellent";
+        else if (score >= 60) grade = "B - Good";
+        else if (score >= 50) grade = "C - Pass";
+        else                  grade = "F - Fail";
+        
+        // String operations
+        String upperName = name.toUpperCase();
+        int nameLength = name.length();
+        
+        System.out.println("\n=== Grade Report ===");
+        System.out.println("Student: " + upperName);
+        System.out.println("Name length: " + nameLength + " characters");
+        System.out.println("Score: " + score);
+        System.out.println("Grade: " + grade);
+        System.out.println("First char of name: " + name.charAt(0));
+    }
+}
+```
+
+**Sample run:**
+```
+Enter student name: Emeka Obi
+Enter exam score: 73
+
+=== Grade Report ===
+Student: EMEKA OBI
+Name length: 9 characters
+Score: 73
+Grade: A - Excellent
+First char of name: E
+```
+
+---
+
+## Key Takeaway
+
+> `String` in Java is a class (reference type), not a primitive. Use double quotes. Compare with `.equals()`, never `==`. Strings are immutable — methods like `toUpperCase()` return new Strings. Common methods: `length()`, `charAt()`, `substring()`, `toUpperCase()`, `toLowerCase()`, `contains()`, `trim()`, `split()`. Convert between String and number using `Integer.parseInt()` / `String.valueOf()`.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- State the difference between `char` and `String` (single quotes vs. double quotes)
+- Explain why `==` does not work for String comparison — use `.equals()` instead
+- Trace the output of `System.out.println("Score: " + 3 + 4)` vs `"Score: " + (3 + 4)`
+- Write code to reverse a string, count vowels, or find a substring
+- Explain String immutability with a code example
+
+**Common mistakes:**
+- Using `==` to compare Strings — will give wrong results for `new String()` objects
+- Forgetting that String methods return new Strings — `s.toUpperCase()` without reassignment changes nothing
+- Off-by-one in `charAt()` or `substring()` — remember indexes start at 0
+
+**Likely question:**
+> "Explain why `==` should not be used to compare Strings in Java. Write a program that reads a student's name and score, and prints a report showing the name in uppercase, the first character of their name, and their grade." (12 marks)

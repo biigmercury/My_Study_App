@@ -1,0 +1,196 @@
+---
+title: "Running Time Analysis of Randomized Algorithms"
+description: "How to calculate the expected running time of randomized algorithms using expected values, linearity of expectation, and indicator random variables."
+duration: "45 min"
+difficulty: "advanced"
+---
+
+## The New Challenge
+
+For deterministic algorithms, $T(n)$ is a fixed number: the number of operations on input size $n$. Every run is identical.
+
+For randomized algorithms, $T(n, r)$ depends on both the input size $n$ and the random choices $r$. The same algorithm on the same input might take different amounts of time on different runs.
+
+So how do we characterise the running time? We use the **expected value** $E[T(n)]$ — the average over all possible random choices.
+
+---
+
+## Expected Value — Foundations
+
+If a random variable $X$ takes values $x_1, x_2, \ldots, x_k$ with probabilities $p_1, p_2, \ldots, p_k$, then:
+
+$$E[X] = \sum_{i=1}^{k} x_i \cdot p_i$$
+
+**Example 1: Die Roll**
+
+A fair six-sided die takes values $1$ through $6$ equally.
+
+$$E[X] = \frac{1}{6}(1 + 2 + 3 + 4 + 5 + 6) = \frac{21}{6} = 3.5$$
+
+**Example 2: Geometric Distribution**
+
+If each trial succeeds independently with probability $p$, the number of trials until first success has:
+
+$$E[X] = \frac{1}{p}$$
+
+This is the expected number of coin flips until heads (with probability $p$). For $p = 1/2$: expected 2 flips. For $p = 1/4$: expected 4 flips.
+
+---
+
+## Linearity of Expectation
+
+The most powerful tool in probabilistic analysis of algorithms:
+
+$$E[X + Y] = E[X] + E[Y]$$
+
+This holds **even when $X$ and $Y$ are dependent** random variables. This is counterintuitive but true, and it enormously simplifies analysis.
+
+**Example:** Expected number of heads in $n$ coin flips.
+
+Let $X_i = 1$ if flip $i$ is heads, $X_i = 0$ otherwise. Then:
+
+$$E\left[\sum_{i=1}^n X_i\right] = \sum_{i=1}^n E[X_i] = \sum_{i=1}^n \frac{1}{2} = \frac{n}{2}$$
+
+We do not need to worry about whether different flips are correlated (they are independent here, but linearity would still work even if they weren't).
+
+---
+
+## Indicator Random Variables
+
+An **indicator random variable** is a random variable that takes only values 0 and 1:
+
+$$X_i = \begin{cases} 1 & \text{if event } A_i \text{ occurs} \\ 0 & \text{otherwise} \end{cases}$$
+
+**Key property:** $E[X_i] = P(A_i)$
+
+This lets us count the expected number of times an event occurs by summing probabilities.
+
+**Example:** Expected number of comparisons in Linear Search
+
+If the array contains the target at each position equally, and we search an $n$-element array:
+- Let $X_i = 1$ if we compare the $i$-th element
+
+For position $i$ to be compared, positions $1, 2, \ldots, i-1$ must not have matched. This gets complex, but the expected number of comparisons until finding the element at random position is directly $\frac{n+1}{2}$ by symmetry.
+
+---
+
+## Full Analysis: Expected Running Time of Randomized Quick Sort
+
+This is the standard analysis taught in algorithms courses.
+
+### Setup
+
+We want to find $E[\text{total comparisons}]$ made by Randomized Quick Sort on an array of $n$ distinct elements.
+
+**Rename:** Let the sorted order of elements be $z_1 < z_2 < \cdots < z_n$.
+
+**Key observation:** Two elements $z_i$ and $z_j$ are compared **at most once** during the entire algorithm — the first time one of them is chosen as a pivot, they are compared and then separated into different sub-problems (one goes to the left partition, the other to the right).
+
+### Indicator Variables
+
+Define: $X_{ij} = 1$ if $z_i$ and $z_j$ are compared at some point during the algorithm, $0$ otherwise.
+
+Then:
+
+$$\text{Total comparisons} = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} X_{ij}$$
+
+By linearity of expectation:
+
+$$E[\text{Total comparisons}] = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} E[X_{ij}] = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} P(z_i \text{ and } z_j \text{ are compared})$$
+
+### Computing $P(z_i \text{ and } z_j \text{ are compared})$
+
+$z_i$ and $z_j$ are compared if and only if **the first element chosen as a pivot from the set $\{z_i, z_{i+1}, \ldots, z_j\}$ is either $z_i$ or $z_j$**.
+
+Why? If some $z_k$ with $i < k < j$ is chosen first, then $z_i$ and $z_j$ go to different sub-problems and are never compared. If $z_i$ or $z_j$ itself is chosen, they are compared when the pivot is partitioned.
+
+The set $\{z_i, z_{i+1}, \ldots, z_j\}$ has $j - i + 1$ elements. Each is equally likely to be chosen first (with random pivoting).
+
+$$P(z_i \text{ and } z_j \text{ compared}) = \frac{2}{j - i + 1}$$
+
+(2 out of $j - i + 1$ choices of first pivot lead to comparison.)
+
+### Summing Up
+
+$$E[\text{Total comparisons}] = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} \frac{2}{j - i + 1}$$
+
+Let $k = j - i$ (the "gap" between indices):
+
+$$= \sum_{i=1}^{n-1} \sum_{k=1}^{n-i} \frac{2}{k+1} \leq \sum_{i=1}^{n-1} \sum_{k=1}^{n} \frac{2}{k}$$
+
+The inner sum is $2H_n$ where $H_n = \sum_{k=1}^{n} \frac{1}{k}$ is the $n$-th harmonic number.
+
+**Harmonic numbers:** $H_n = \ln n + O(1) = O(\log n)$
+
+Therefore:
+
+$$E[\text{Total comparisons}] \leq n \cdot 2H_n = 2nH_n = O(n \log n)$$
+
+This confirms:
+
+$$E[T_\text{RandQuickSort}(n)] = O(n \log n)$$
+
+---
+
+## Analysis: Expected Running Time of QuickSelect
+
+**QuickSelect** finds the $k$-th smallest element.
+
+At each step, we pick a random pivot. The pivot has rank $r$ (uniformly distributed in $\{1, \ldots, n\}$).
+
+- If $r = k$: done
+- If $r > k$: recurse on the left sub-array of size $r-1$
+- If $r < k$: recurse on the right sub-array of size $n-r$
+
+The expected size of the sub-problem we recurse on is:
+
+$$E[\text{sub-problem size}] = \frac{1}{n} \sum_{r=1}^{n} \max(r-1, n-r) \leq \frac{3n}{4}$$
+
+(The pivot is "good" — splits at least 25%-75% — with probability $1/2$, leaving a sub-problem of size at most $3n/4$.)
+
+**Recurrence for expected time:**
+
+$$E[T(n)] \leq E[T(3n/4)] + O(n)$$
+
+**Unrolling:**
+
+$$E[T(n)] \leq O(n) + O(3n/4) + O(9n/16) + \cdots = O(n) \cdot \sum_{k=0}^{\infty} (3/4)^k = O(n) \cdot \frac{1}{1-3/4} = O(4n) = O(n)$$
+
+$$\boxed{E[T_\text{QuickSelect}(n)] = O(n)}$$
+
+This is remarkable: finding the $k$-th smallest element takes expected $O(n)$ time — no sorting required.
+
+---
+
+## Summary: Expected Times of Key Algorithms
+
+| Algorithm | Expected Time | Notes |
+|---|---|---|
+| Randomized Quick Sort | $O(n \log n)$ | Holds for all inputs |
+| QuickSelect | $O(n)$ | $k$-th smallest, any $k$ |
+| Monte Carlo (k trials) | Fixed $\times k$ | Error $\leq \varepsilon^k$ |
+| FindWitness ($\rho$ fraction) | $O(1/\rho)$ trials | Geometric expectation |
+
+---
+
+## Key Takeaway
+
+> The expected running time of a randomized algorithm is computed using $E[T] = \sum x \cdot P(X=x)$, and often simplified using **linearity of expectation** and **indicator random variables**. For Randomized Quick Sort, the key insight is that each pair of elements is compared at most once, with probability $2/(j-i+1)$. Summing over all pairs gives $O(n \log n)$ via harmonic numbers. For QuickSelect, a geometric series argument shows expected $O(n)$.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- State linearity of expectation and explain why it is powerful
+- Define indicator random variable: $X_i = 1$ if event $A_i$ occurs; $E[X_i] = P(A_i)$
+- Explain the key step in Randomized Quick Sort analysis: $P(z_i, z_j \text{ compared}) = 2/(j-i+1)$
+- State the expected time of Randomized Quick Sort and QuickSelect with brief justification
+
+**Common mistakes:**
+- Thinking $E[X \cdot Y] = E[X] \cdot E[Y]$ in general — this only holds when $X$ and $Y$ are independent. Linearity ($E[X+Y] = E[X]+E[Y]$) always holds.
+- Confusing expected time with worst-case: $E[T] = O(n \log n)$ does not mean the algorithm always takes $O(n \log n)$
+- Forgetting the harmonic number bound: $H_n = \sum_{k=1}^n \frac{1}{k} = O(\log n)$
+
+**Likely question:**
+> "State the expected running time of Randomized Quick Sort. Outline the analysis using indicator random variables, identifying the probability that two elements $z_i$ and $z_j$ are ever compared." (10 marks)

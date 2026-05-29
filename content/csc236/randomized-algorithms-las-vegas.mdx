@@ -1,0 +1,205 @@
+---
+title: "Randomized Algorithms II: Las Vegas"
+description: "The other kind of randomized algorithm — Las Vegas always gives the right answer, but its running time varies by chance."
+duration: "40 min"
+difficulty: "advanced"
+---
+
+## The Las Vegas Guarantee
+
+In the previous topic, Monte Carlo algorithms ran in guaranteed time but might give wrong answers. Las Vegas algorithms are the opposite:
+
+> **Las Vegas algorithms always produce the correct answer.** Their running time, however, is a random variable.
+
+**Real-world analogy:** Las Vegas casinos always pay out your winnings correctly — they do not cheat on correctness. But how long you play (and how long it takes to win) depends on luck. The casino always pays the right amount; it just does not guarantee when.
+
+---
+
+## Formal Definition
+
+A **Las Vegas algorithm** is a randomized algorithm that:
+- Always produces a correct result (or reports "failure" and asks to try again)
+- Has a running time $T(n, r)$ that depends on the random choices $r$
+- Has an expected running time $E[T(n, r)]$ that we can analyse
+
+The key property: **no wrong answers, ever**.
+
+---
+
+## Las Vegas vs. Monte Carlo
+
+| Property | Monte Carlo | Las Vegas |
+|---|---|---|
+| Correctness | Probabilistic ($1-\varepsilon$) | Always correct |
+| Running time | Fixed upper bound | Random variable |
+| Error | Can produce wrong output | Never |
+| Analysis metric | Fixed time, error probability | Expected time |
+| Example | Fermat primality test | Randomized Quick Sort |
+| Names | "Fast gambler" | "Lucky but honest gambler" |
+
+**The trade:** Las Vegas trades time certainty for correctness certainty. Monte Carlo trades correctness certainty for time certainty.
+
+---
+
+## Example 1: Randomized Quick Sort
+
+### Why Randomize Quick Sort?
+
+Deterministic Quick Sort with a fixed pivot rule (e.g., always the first element) has:
+- Average case: $O(n \log n)$
+- Worst case: $O(n^2)$ (when input is already sorted)
+
+An adversary who knows we use the first element as pivot can always present a sorted array and guarantee $O(n^2)$ performance.
+
+**Solution:** Choose the pivot **randomly**. Now:
+- The worst case still exists in theory (all randoms choices could land the same way)
+- But the probability of the adversary being able to force it drops to zero
+
+### Algorithm
+
+```
+ALGORITHM RandQuickSort(A, lo, hi):
+  IF lo >= hi: RETURN
+  
+  // Choose random pivot
+  pivot_idx = random integer in [lo, hi]
+  SWAP A[pivot_idx] WITH A[hi]    // move pivot to end
+  
+  // Partition around A[hi]
+  q = Partition(A, lo, hi)
+  
+  RandQuickSort(A, lo, q - 1)
+  RandQuickSort(A, q + 1, hi)
+```
+
+**Las Vegas properties:**
+- Always produces the correct sorted array — no wrong answers
+- Running time depends on random pivot choices — it is a random variable
+- Expected running time: $O(n \log n)$
+- Worst case: $O(n^2)$ — still possible, but with probability that decreases exponentially
+
+### Why It Is Las Vegas (Not Monte Carlo)
+
+If we run Randomized Quick Sort on any input and wait for it to finish, the result is **always** the correctly sorted array. We never get a wrong sort. The randomness only affects *how long* it takes.
+
+---
+
+## Example 2: Randomized Selection (QuickSelect)
+
+**Problem:** Given an unsorted array $A$ of $n$ distinct numbers, find the $k$-th smallest element.
+
+**Naive:** Sort then index → $O(n \log n)$. Overkill.
+
+**QuickSelect (Las Vegas):**
+```
+ALGORITHM QuickSelect(A, lo, hi, k):
+  IF lo == hi: RETURN A[lo]          // base case
+  
+  pivot_idx = random integer in [lo, hi]
+  SWAP A[pivot_idx] WITH A[hi]
+  q = Partition(A, lo, hi)           // q = final position of pivot
+  
+  rank = q - lo + 1                  // rank of pivot in A[lo..hi]
+  
+  IF k == rank: RETURN A[q]          // pivot is the k-th smallest!
+  ELSE IF k < rank:
+    RETURN QuickSelect(A, lo, q-1, k)
+  ELSE:
+    RETURN QuickSelect(A, q+1, hi, k - rank)
+```
+
+**Why Las Vegas:** The algorithm always returns the correct $k$-th smallest element. The only question is how many partition steps it takes.
+
+**Example:** Find the 3rd smallest in $A = [7, 2, 9, 4, 1, 6, 3, 8, 5]$
+
+- Pick random pivot: say index 4, value $1$
+- Partition: $[1, 2, 9, 4, 7, 6, 3, 8, 5]$, pivot at position 0
+- rank = 1. We want rank 3. Since $3 > 1$: recurse right on $[2, 9, 4, 7, 6, 3, 8, 5]$, $k=2$
+
+- Pick random pivot: say index 2, value $4$  
+- Partition: $[2, 3, 4, 7, 6, 9, 8, 5]$, pivot at position 2 (relative)
+- rank = 3. We want rank 2 in the new sub-array. Since $2 < 3$: recurse left on $[2, 3]$, $k=2$
+
+- Pick pivot index 1, value $3$
+- rank = 2. We want rank 2. **Return 3.** ✓
+
+The 3rd smallest of $\{1,2,3,4,5,6,7,8,9\}$ is indeed 3.
+
+**Expected time analysis:** $E[T(n)] = O(n)$ — significantly better than sorting!
+
+---
+
+## Example 3: Finding a Random Witness
+
+**Problem:** Find a number $x$ in $[1, n]$ with some desired property $P(x)$, where a $\rho$ fraction of numbers satisfy $P$.
+
+```
+ALGORITHM FindWitness(n, P, ρ):
+  WHILE TRUE:
+    x = random integer in [1, n]
+    IF P(x) THEN RETURN x     // found a valid witness!
+```
+
+**Analysis:**
+- Each trial succeeds with probability $\rho$
+- Expected number of trials: $1/\rho$ (geometric distribution)
+- Expected time: $O(f(n)/\rho)$ where $f(n)$ = time to check $P(x)$
+
+This is Las Vegas: always returns a valid $x$, but number of tries is random.
+
+For $\rho = 1/2$: expected 2 trials. For $\rho = 1/n$: expected $n$ trials.
+
+---
+
+## Expected Running Time Analysis
+
+For Las Vegas algorithms, we analyse the **expected running time** $E[T(n)]$.
+
+**Key tool:** The expected value of a geometric random variable.
+
+If each trial of a Las Vegas algorithm succeeds with probability $p$, the expected number of trials is:
+
+$$E[\text{trials}] = \frac{1}{p}$$
+
+**Example:** Randomized Quick Sort analysis sketch.
+
+Define: a partition is "good" if the pivot lands in the middle 50% of the sorted order (i.e., creates at least a 25-75 split).
+
+- Probability of a good partition: $1/2$
+- A good partition reduces problem size to at most $3n/4$
+
+After $O(\log n)$ good partitions, the sub-problems reach size 1. Each partition is $O(n)$. Expected number of partitions per level: 2 (since each has probability $1/2$ of being good). Total: $O(n \log n)$.
+
+---
+
+## Converting Between Las Vegas and Monte Carlo
+
+**Las Vegas → Monte Carlo:** If Las Vegas runs too long, stop it and report what you have. You get a time bound but may have an incomplete/wrong answer.
+
+**Monte Carlo → Las Vegas:** If you can quickly verify a Monte Carlo answer (checking a solution is often faster than finding it), re-run the Monte Carlo until it produces a verifiable correct answer.
+
+This conversion is not always possible — it depends on the problem.
+
+---
+
+## Key Takeaway
+
+> Las Vegas algorithms always produce the correct result; their running time is the random variable. Randomized Quick Sort and QuickSelect are the canonical examples: they always sort/select correctly, but the time taken depends on random pivot choices. The expected time for both is $O(n \log n)$ and $O(n)$ respectively — better than or equal to deterministic alternatives, with no adversarially exploitable worst case.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Define Las Vegas and contrast with Monte Carlo (table comparison)
+- Explain why Randomized Quick Sort is Las Vegas (always correct, time is random)
+- Describe QuickSelect and state its expected running time
+- Calculate expected trials for FindWitness with given $\rho$
+
+**Common mistakes:**
+- Saying "Las Vegas can fail" — it cannot. If a Las Vegas algorithm "fails," it reports failure and retries; it never silently returns a wrong answer
+- Confusing expected running time with worst-case: $E[T] = O(n \log n)$ for RandQuickSort but worst case is still $O(n^2)$ (extremely rare)
+- Thinking randomization eliminates worst case — it makes worst case have negligible probability, not zero
+
+**Likely question:**
+> "Explain the difference between Monte Carlo and Las Vegas randomized algorithms. Give one example of each, and state the correctness and running time properties of your examples." (10 marks)
