@@ -109,6 +109,34 @@ Software often uses third-party libraries. If a library has a known vulnerabilit
 
 ---
 
+## Hardware Vulnerabilities
+
+Not every weakness lives in code. **Hardware vulnerabilities** come from design flaws in the physical components of a system — the chips, memory, and devices themselves — rather than from the software running on them. Because they exist *below* the software layer, they can sometimes bypass software defences entirely.
+
+**Real-world analogy:** A software vulnerability is an unlocked window in the house. A hardware vulnerability is a weakness in the bricks the house is built from — no amount of locking the windows helps if the wall itself can be pushed through.
+
+### Rowhammer
+
+RAM (memory) is made of tiny capacitors packed extremely close together, each storing one bit as an electrical charge. Because they are so densely packed, repeatedly changing one capacitor electrically disturbs its neighbours.
+
+The **Rowhammer** exploit abuses this physical side effect: by repeatedly rewriting the *same* memory addresses, an attacker can read data from *nearby* memory cells — **even if those cells are protected**.
+
+### SYNful Knock (2015)
+
+A vulnerability in **Cisco IOS** (the operating system that runs on Cisco routers) that let attackers take over enterprise routers — including the **Cisco 1841, 2811, and 3825** models. Once a router was compromised, an attacker could:
+- monitor all network traffic passing through it
+- use the router as a foothold to infect other devices on the network
+
+It was introduced when an **altered or fake IOS version** was installed on the routers — so the compromise entered through the software image loaded onto the hardware.
+
+**Prevention:**
+- **Verify the integrity of the downloaded IOS image** before installing it, so a tampered image is detected and rejected.
+- **Restrict physical access** to equipment to authorised personnel only.
+
+> **Note:** Hardware attacks are usually **targeted**, not random — they require effort and specific knowledge of the victim's equipment. For everyday use, normal antivirus combined with basic physical security is sufficient protection.
+
+---
+
 ## The OWASP Top 10
 
 The **Open Web Application Security Project (OWASP)** publishes the "Top 10" most critical web application security risks. It is the industry-standard reference. The list includes:
@@ -141,6 +169,26 @@ flowchart LR
 **Zero-day vulnerability:** A vulnerability that is discovered and exploited by attackers BEFORE the vendor knows about it or has a patch. These are extremely dangerous because no defense exists yet.
 
 **The patching gap:** Even after a patch is released, many systems remain unpatched for months — attackers exploit this window. Applying security updates promptly is one of the most important defenses.
+
+---
+
+## How Attackers Exploit a Vulnerability
+
+Finding and using a vulnerability is a deliberate, staged process. Understanding it shows defenders exactly where they can break the chain.
+
+```mermaid
+flowchart LR
+    A["1. Gather info\n(scan / social engineering)"] --> B["2. Identify OS,\nversion & services"]
+    B --> C["3. Search for known\nvulnerabilities"]
+    C --> D["4. Find or write\nan exploit"]
+```
+
+1. **Gather information about the target.** The attacker collects data using a tool such as a **port scanner**, or through **social engineering** (tricking people into revealing details).
+2. **Identify the system.** From that information they determine the **operating system, its exact version, and the services running** on it.
+3. **Search for known vulnerabilities.** They look up vulnerabilities specific to that OS version or service — public databases list thousands.
+4. **Obtain an exploit.** They find a **previously written exploit** to use against the weakness; if none exists, a skilled attacker may **write their own**.
+
+Each step depends on the one before it, so defences like limiting information disclosure (step 1) and promptly patching known vulnerabilities (step 3) break the chain before an exploit is ever launched.
 
 ---
 
