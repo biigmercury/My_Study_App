@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import AnimatedNavIcon from '@/components/AnimatedNavIcon'
 
 const tabs = [
   {
     href: '/',
     label: 'Home',
+    name: 'home',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 2.4 : 2} strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -19,6 +21,7 @@ const tabs = [
   {
     href: '/courses',
     label: 'Courses',
+    name: 'courses',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 2.4 : 2} strokeLinecap="round" strokeLinejoin="round">
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
@@ -29,6 +32,7 @@ const tabs = [
   {
     href: '/progress',
     label: 'Progress',
+    name: 'progress',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 2.4 : 2} strokeLinecap="round" strokeLinejoin="round">
         <line x1="18" y1="20" x2="18" y2="10"/>
@@ -40,6 +44,7 @@ const tabs = [
   {
     href: '/search',
     label: 'Search',
+    name: 'search',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.4 : 2} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="11" cy="11" r="8"/>
@@ -50,6 +55,7 @@ const tabs = [
   {
     href: '/settings',
     label: 'Settings',
+    name: 'settings',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 2.4 : 2} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="3"/>
@@ -63,6 +69,8 @@ export default function BottomNav() {
   const pathname = usePathname()
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  // Per-tab counter; bumping it tells AnimatedNavIcon to replay (hover / tap).
+  const [playTokens, setPlayTokens] = useState<Record<string, number>>({})
 
   useEffect(() => setMounted(true), [])
 
@@ -73,6 +81,9 @@ export default function BottomNav() {
     return pathname.startsWith(href)
   }
 
+  const triggerPlay = (href: string) =>
+    setPlayTokens(t => ({ ...t, [href]: (t[href] ?? 0) + 1 }))
+
   const pillBg     = isDark ? 'rgba(8,12,50,0.75)'        : 'rgba(255,255,255,0.88)'
   const pillBorder = isDark ? 'rgba(144,224,239,0.12)'     : 'rgba(3,4,94,0.07)'
   const pillShadow = isDark
@@ -80,6 +91,9 @@ export default function BottomNav() {
     : '0 10px 30px -12px rgba(3,4,94,0.18), 0 0 0 1px rgba(255,255,255,0.7) inset'
   const activeColor   = '#00B4D8'
   const inactiveColor = isDark ? 'rgba(202,240,248,0.40)' : 'rgba(3,4,94,0.35)'
+  // Hex equivalents for the Lottie colorize (which needs a solid colour).
+  const iconActive   = '#00B4D8'
+  const iconInactive = isDark ? '#7E8BB6' : '#9398AC'
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
@@ -100,10 +114,19 @@ export default function BottomNav() {
               <Link
                 key={tab.href}
                 href={tab.href}
+                onMouseEnter={() => triggerPlay(tab.href)}
+                onClick={() => triggerPlay(tab.href)}
                 className="flex flex-col items-center gap-0.5 flex-1 py-2 px-1 rounded-[18px] transition-colors"
                 style={{ color: active ? activeColor : inactiveColor }}
               >
-                {tab.icon(active)}
+                <AnimatedNavIcon
+                  name={tab.name}
+                  active={active}
+                  color={active ? iconActive : iconInactive}
+                  size={28}
+                  playToken={playTokens[tab.href] ?? 0}
+                  fallback={tab.icon(active)}
+                />
                 <span className={`text-[10px] tracking-[0.1px] ${active ? 'font-bold' : 'font-medium'}`}>
                   {tab.label}
                 </span>
