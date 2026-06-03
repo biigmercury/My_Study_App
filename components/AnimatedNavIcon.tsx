@@ -13,6 +13,17 @@ const ICON_LOADERS: Record<string, () => Promise<{ default: unknown }>> = {
   settings: () => import('@/icons/settings.json'),
 }
 
+// Each icon's default "hover" animation state (the segment we rest on and play).
+// Resting on this state shows the fully-drawn icon; the file's global frame 0
+// is the "reveal-in" start, which is blank — so we must pin the state.
+const ICON_STATES: Record<string, string> = {
+  home: 'hover-3d-roll',
+  courses: 'hover-pinch',
+  progress: 'hover-pinch',
+  search: 'hover-spin',
+  settings: 'hover-machine',
+}
+
 interface Props {
   /** key into ICON_LOADERS (home | courses | progress | search | settings) */
   name: string
@@ -37,6 +48,10 @@ export default function AnimatedNavIcon({
   const [iconData, setIconData] = useState<unknown>(null)
   const playerRef = useRef<LordPlayer>(null)
 
+  // Land on a visible, fully-drawn frame (end of the hover state) instead of
+  // the blank reveal-in start frame.
+  const showResting = () => playerRef.current?.goToLastFrame()
+
   // Load the player + this icon's data once, client-side only.
   useEffect(() => {
     let alive = true
@@ -50,9 +65,11 @@ export default function AnimatedNavIcon({
     return () => { alive = false }
   }, [name])
 
-  // Play when this tab becomes active.
+  // Play when this tab becomes active; otherwise sit on the resting frame.
   useEffect(() => {
-    if (Player && active) playerRef.current?.playFromBeginning()
+    if (!Player) return
+    if (active) playerRef.current?.playFromBeginning()
+    else showResting()
   }, [Player, active])
 
   // Play when the parent bumps the token (hover / tap).
@@ -60,7 +77,22 @@ export default function AnimatedNavIcon({
     if (Player && playToken > 0) playerRef.current?.playFromBeginning()
   }, [Player, playToken])
 
+  // Re-colouring (active/theme change) refreshes the lottie and can reset it to
+  // the blank start frame — restore a visible resting frame after that.
+  useEffect(() => {
+    if (Player && !active) showResting()
+  }, [Player, color, active])
+
   if (!Player || !iconData) return <>{fallback}</>
 
-  return <Player ref={playerRef} icon={iconData} size={size} colorize={color} />
+  return (
+    <Player
+      ref={playerRef}
+      icon={iconData}
+      size={size}
+      colorize={color}
+      state={ICON_STATES[name]}
+      onReady={showResting}
+    />
+  )
 }
