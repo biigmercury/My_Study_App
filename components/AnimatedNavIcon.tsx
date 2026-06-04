@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { Player as LordPlayer } from '@lordicon/react'
+import SafeBoundary from '@/components/SafeBoundary'
 
 // Lazy loaders — keeps lottie-web and the icon JSON out of the shared bundle.
 // Each is a separate async chunk fetched on the client after hydration.
@@ -78,14 +79,16 @@ export default function AnimatedNavIcon({
   if (!Player || !iconData) return <>{fallback}</>
 
   return (
-    <span style={{ display: 'block', animation: 'navIconFade 220ms ease-out' }}>
-      <Player
-        ref={playerRef}
-        icon={iconData}
-        size={size}
-        colorize={color}
-        state={ICON_STATES[name]}
-      />
-    </span>
+    <SafeBoundary fallback={fallback}>
+      <span style={{ display: 'block', animation: 'navIconFade 220ms ease-out' }}>
+        <Player
+          ref={playerRef}
+          icon={iconData}
+          size={size}
+          colorize={color}
+          state={ICON_STATES[name]}
+        />
+      </span>
+    </SafeBoundary>
   )
 }
