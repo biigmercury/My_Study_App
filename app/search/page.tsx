@@ -48,7 +48,6 @@ export default function SearchPage() {
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search topics, courses, formulas…"
-            autoFocus
             className="w-full pl-[42px] pr-4 py-[13px] rounded-2xl text-[14px] text-brand-navy dark:text-white placeholder:text-brand-navy/35 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-royal/30 dark:focus:ring-brand-sky/30"
             style={{
               background: 'var(--search-input-bg)',
