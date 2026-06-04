@@ -34,3 +34,10 @@
     border-width: 3px;
   }
 }
+
+/* Bottom-nav animated icons fade in once their lottie chunk loads, so they
+   don't pop in abruptly (and never flash the old static icons). */
+@keyframes navIconFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
