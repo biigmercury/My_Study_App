@@ -1,0 +1,190 @@
+---
+title: "Logic Gates and Logic Functions"
+description: "The seven fundamental logic gates — AND, OR, NOT, NAND, NOR, XOR, XNOR — their truth tables and symbols, plus universal gates and how any logic function is built from them."
+duration: "50 min"
+difficulty: "beginner"
+---
+
+## From Switches to Gates
+
+A **logic gate** is the basic building block of every digital circuit. It takes one or more binary inputs (0 or 1) and produces a single binary output, according to a fixed logical rule. Physically a gate is a small network of transistors, but for design we treat it as a black box defined entirely by its **truth table**.
+
+A **logic function** is what a circuit *computes* — the relationship between its inputs and output. Every logic function, no matter how complex, can be expressed using just these basic gates.
+
+**Real-world analogy:** Think of gates as decision rules at a checkpoint. An AND gate is a guard who lets you pass *only if* you have both a ticket AND a passport. An OR gate is happy with either one.
+
+---
+
+## The Three Basic Gates
+
+### NOT (Inverter)
+
+One input, one output. It simply **flips** the value.
+
+$$Y = \overline{A}$$
+
+| A | Y |
+|---|---|
+| 0 | 1 |
+| 1 | 0 |
+
+### AND
+
+Output is 1 **only if all inputs are 1**.
+
+$$Y = A \cdot B$$
+
+| A | B | Y |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+### OR
+
+Output is 1 **if at least one input is 1**.
+
+$$Y = A + B$$
+
+| A | B | Y |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+<Analogy>
+AND behaves like series switches — current flows only if **both** switches are closed. OR behaves like parallel switches — current flows if **either** switch is closed.
+</Analogy>
+
+---
+
+## The Derived Gates
+
+### NAND (NOT-AND)
+
+AND followed by an inverter. Output is 0 only when all inputs are 1.
+
+$$Y = \overline{A \cdot B}$$
+
+| A | B | Y |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+### NOR (NOT-OR)
+
+OR followed by an inverter. Output is 1 only when all inputs are 0.
+
+$$Y = \overline{A + B}$$
+
+| A | B | Y |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 0 |
+
+### XOR (Exclusive-OR)
+
+Output is 1 when the inputs are **different**.
+
+$$Y = A \oplus B = \overline{A}B + A\overline{B}$$
+
+| A | B | Y |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+### XNOR (Exclusive-NOR)
+
+Output is 1 when the inputs are **the same** — the equality detector.
+
+$$Y = \overline{A \oplus B} = AB + \overline{A}\,\overline{B}$$
+
+| A | B | Y |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+---
+
+## Summary Table
+
+| Gate | Symbol expression | Output is 1 when… |
+|---|---|---|
+| NOT | $\overline{A}$ | input is 0 |
+| AND | $A \cdot B$ | all inputs are 1 |
+| OR | $A + B$ | any input is 1 |
+| NAND | $\overline{A \cdot B}$ | not all inputs are 1 |
+| NOR | $\overline{A + B}$ | all inputs are 0 |
+| XOR | $A \oplus B$ | inputs differ |
+| XNOR | $\overline{A \oplus B}$ | inputs are equal |
+
+---
+
+## Universal Gates
+
+A gate is **universal** if any logic function can be built using *only copies of that gate*. **NAND** and **NOR** are each universal. This is hugely important industrially — a chip can be manufactured from a single repeated gate type.
+
+### Building the basic gates from NAND
+
+```mermaid
+graph LR
+    A1[A] --> N1[NAND]
+    A1 --> N1
+    N1 --> O1["NOT = A NAND A"]
+```
+
+- **NOT:** tie both NAND inputs together → $\overline{A \cdot A} = \overline{A}$
+- **AND:** NAND followed by a NAND-inverter → $\overline{\overline{A \cdot B}} = A \cdot B$
+- **OR:** invert both inputs, then NAND → $\overline{\overline{A} \cdot \overline{B}} = A + B$ (by DeMorgan)
+
+The same three constructions work with NOR (in dual form). Because every function reduces to AND/OR/NOT, and those reduce to NAND (or NOR), a single gate type suffices.
+
+<ExamTip>
+"Show that NAND is a universal gate" is an extremely common exam question. Answer by drawing NOT, AND and OR built purely from NAND gates — three small diagrams earn full marks.
+</ExamTip>
+
+---
+
+## Multi-Input Gates and Logic Functions
+
+Gates extend to more than two inputs (a 3-input AND outputs 1 only if all three inputs are 1). Any **logic function** is described by listing the input combinations that make the output 1, then expressing it with gates.
+
+**Example:** "Output is 1 when exactly two of three inputs A, B, C are 1." From the truth table, the function is:
+
+$$Y = AB\overline{C} + A\overline{B}C + \overline{A}BC$$
+
+— three AND gates feeding one OR gate. (You will learn to write and simplify such expressions systematically in the **SOP/POS** and **K-Map** topics.)
+
+---
+
+## Key Takeaway
+
+> The seven gates — **NOT, AND, OR, NAND, NOR, XOR, XNOR** — are the complete vocabulary of digital logic, each defined by its truth table. AND needs all-1s, OR needs any-1, XOR detects difference, XNOR detects equality. **NAND and NOR are universal**: any circuit can be built from copies of either one, which is why real chips lean on them. Every logic function is just a combination of these gates derived from its truth table.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Reproduce the truth table and Boolean expression for any named gate
+- Prove NAND (or NOR) is universal by constructing NOT, AND, OR from it
+- Identify a gate from a given truth table
+- Write the function "output is 1 when inputs differ/are equal" as XOR/XNOR
+
+**Common mistakes:**
+- Swapping NAND and NOR truth tables (NAND output is 0 only for all-1 inputs; NOR output is 1 only for all-0 inputs)
+- Confusing XOR (difference) with OR (at-least-one)
+- Forgetting that tying a NAND's inputs together makes an inverter
+
+**Likely question:**
+> "(a) Give the truth tables of the NAND and NOR gates. (b) Show, with circuit diagrams, how the NOT, AND and OR functions can each be realised using NAND gates only. (c) Hence explain why NAND is called a universal gate." (12 marks)

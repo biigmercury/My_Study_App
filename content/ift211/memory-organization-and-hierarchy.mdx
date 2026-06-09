@@ -1,0 +1,120 @@
+---
+title: "Memory Organization and Hierarchy"
+description: "How memory is structured and layered in a computer — the memory hierarchy, locality of reference, cache mapping and hit/miss performance, and the address-word organization of memory."
+duration: "55 min"
+difficulty: "advanced"
+---
+
+## The Memory Problem
+
+Designers want memory that is **fast, large, and cheap** — but you can only pick two. Fast memory (SRAM) is expensive and small; cheap memory (disk) is huge but slow. The solution is a **memory hierarchy**: layer several memory types so the system *behaves* as if it were as fast as the quickest level and as large as the cheapest.
+
+**Real-world analogy:** Your desk (registers) holds the few papers you're using right now. A drawer (cache) holds today's files. A filing cabinet (RAM) holds this month's. The basement archive (disk) holds everything. You keep what you use most within arm's reach, and only walk to the basement rarely.
+
+---
+
+## The Memory Hierarchy
+
+From fastest/smallest/costliest to slowest/largest/cheapest:
+
+| Level | Technology | Typical access time | Size | Cost/bit |
+|---|---|---|---|---|
+| Registers | flip-flops in CPU | < 1 ns | bytes | highest |
+| Cache (L1/L2/L3) | SRAM | 1–10 ns | KB–MB | high |
+| Main memory | DRAM | ~50–100 ns | GB | medium |
+| Secondary storage | SSD/HDD | µs–ms | TB | low |
+| Tertiary / backup | tape, cloud | seconds | huge | lowest |
+
+As you move **down** the hierarchy: capacity ↑, access time ↑ (slower), cost/bit ↓. The CPU always talks to the top; lower levels feed the ones above them on demand.
+
+---
+
+## Why It Works: Locality of Reference
+
+The hierarchy succeeds because real programs do not access memory randomly — they exhibit **locality**:
+
+- **Temporal locality:** a location used now is likely to be used again **soon** (e.g. a loop counter). → keep recently used data in fast memory.
+- **Spatial locality:** locations **near** one used now are likely to be used soon (e.g. array elements, sequential instructions). → fetch data in **blocks**, not single bytes.
+
+Because of locality, a small fast cache can satisfy the **vast majority** of accesses even though it holds a tiny fraction of total data.
+
+---
+
+## Cache Memory
+
+**Cache** is a small, fast SRAM buffer between the CPU and main memory. When the CPU requests an address:
+
+- **Hit:** the data is in the cache → fast.
+- **Miss:** not in cache → fetch the containing **block** from main memory into the cache (exploiting spatial locality), then deliver it.
+
+### Performance: Hit Ratio and Average Access Time
+
+$$\text{Hit ratio } h = \frac{\text{number of hits}}{\text{total accesses}}$$
+
+$$T_{avg} = h \cdot T_{cache} + (1 - h)\cdot T_{miss}$$
+
+**Worked example:** cache access 2 ns, miss penalty (main memory) 100 ns, hit ratio 0.95:
+
+$$T_{avg} = 0.95(2) + 0.05(100) = 1.9 + 5.0 = 6.9 \text{ ns}$$
+
+A 95% hit ratio turns 100 ns memory into an effective 6.9 ns — that is the payoff.
+
+---
+
+## Cache Mapping Techniques
+
+How does a main-memory block decide where it lives in the cache? Three schemes:
+
+| Mapping | Where a block may go | Hardware | Conflict misses |
+|---|---|---|---|
+| **Direct-mapped** | exactly one cache line (block mod #lines) | simple, cheap | many |
+| **Fully associative** | any cache line | complex (compare all tags) | fewest |
+| **Set-associative** | any line within one set (n-way) | moderate | balanced |
+
+**Set-associative** (e.g. 2-way, 4-way) is the practical compromise used in real CPUs: a block maps to one *set*, but can occupy any line within it.
+
+<ExamTip>
+For cache calculations, remember the address split: a memory address divides into **Tag | Index (set/line) | Block-offset**. The offset selects the byte within a block, the index selects the set/line, and the tag is compared to confirm a hit. Be ready to compute each field's width from the cache and block sizes.
+</ExamTip>
+
+---
+
+## Memory Organization (Address × Word)
+
+A memory is organised as a number of **words**, each of a fixed **width**, each reached by an **address**:
+
+$$\text{addressable locations} = 2^{(\text{number of address lines})}$$
+
+A memory described as **"1K × 8"** has 1024 words of 8 bits = 8192 bits, needing 10 address lines and an 8-bit data path. The **memory address register (MAR)** holds the address being accessed; the **memory data/buffer register (MDR/MBR)** holds the data going in or out.
+
+---
+
+## Virtual Memory (Brief)
+
+**Virtual memory** extends the hierarchy in software: the OS lets programs use an address space larger than physical RAM by keeping inactive **pages** on disk and loading them on demand. Hardware (the MMU) translates **virtual addresses → physical addresses**, and a **page fault** triggers a load from disk — the same hit/miss idea one level down.
+
+---
+
+## Key Takeaway
+
+> No single memory is fast, big and cheap, so computers use a **hierarchy** — registers → cache → main memory → disk — fast/small/costly at the top, slow/large/cheap at the bottom. It works because programs show **temporal and spatial locality**, letting a tiny **cache** serve most accesses. Cache performance is captured by the **hit ratio** and $T_{avg} = h\,T_{cache} + (1-h)\,T_{miss}$. Blocks map to the cache by **direct**, **fully associative** or **set-associative** schemes, and memory itself is organised as $2^k$ words of fixed width.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- List the memory hierarchy levels and their speed/size/cost trends
+- Define temporal and spatial locality and explain why cache works
+- Compute average memory access time from a hit ratio and penalties
+- Compare direct, associative and set-associative mapping
+- Determine address lines/word width for a given memory organization
+
+**Common mistakes:**
+- Reversing the hierarchy trends (going down means slower *and* cheaper, but **larger**)
+- Confusing temporal (same location, later) with spatial (nearby locations) locality
+- Forgetting the $(1-h)$ miss term in the access-time formula
+- Mixing up tag/index/offset fields in cache address calculations
+
+**Likely question:**
+> "(a) Draw the memory hierarchy and state how access time, capacity and cost vary across it. (b) Define temporal and spatial locality and explain how each is exploited by cache memory. (c) A cache has an access time of 5 ns and a hit ratio of 0.90; main memory access is 80 ns. Calculate the average access time." (15 marks)

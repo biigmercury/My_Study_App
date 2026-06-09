@@ -1,0 +1,160 @@
+---
+title: "Latches and Flip-Flops"
+description: "The memory elements of digital systems — SR, D, JK and T latches and flip-flops, level vs edge triggering, characteristic tables and excitation tables."
+duration: "60 min"
+difficulty: "intermediate"
+---
+
+## Adding Memory to Logic
+
+Every circuit so far has been **combinational** — output depends only on present inputs. To build counters, registers and processors we need circuits that **remember**. The basic memory element is the **latch**, and its clock-disciplined version is the **flip-flop**. A single latch or flip-flop stores exactly **one bit**.
+
+**Real-world analogy:** A combinational gate is like a calculator that forgets everything the instant you release a key. A flip-flop is like a light switch — flip it on, walk away, and it *stays* on until something flips it again. It holds state.
+
+---
+
+## The Idea: Feedback Creates Memory
+
+Memory comes from **feedback** — routing an output back to an input so the circuit can hold its own value. Cross-couple two NOR (or two NAND) gates and you get a bistable element: it has two stable states (0 and 1) and stays in whichever one it was last put.
+
+---
+
+## The SR Latch
+
+The **SR (Set-Reset) latch** is the simplest memory cell. Built from two cross-coupled NOR gates, with inputs **S** (set) and **R** (reset) and outputs $Q$ and $\overline{Q}$.
+
+| S | R | Q (next) | Meaning |
+|---|---|---|---|
+| 0 | 0 | $Q$ (no change) | Hold / remember |
+| 0 | 1 | 0 | Reset |
+| 1 | 0 | 1 | Set |
+| 1 | 1 | invalid | Forbidden |
+
+- **Set (S=1):** force $Q=1$.
+- **Reset (R=1):** force $Q=0$.
+- **Hold (0,0):** the latch keeps its previous value — this is the memory.
+- **Forbidden (1,1):** both outputs would go to 0, violating $Q = \overline{\overline{Q}}$; avoid it.
+
+<Analogy>
+The SR latch is a push-button lamp with separate ON and OFF buttons. Press ON (Set) and it lights and stays lit. Press OFF (Reset) and it goes dark and stays dark. Press nothing (Hold) and it keeps its state. Pressing both at once (Forbidden) is undefined behaviour.
+</Analogy>
+
+---
+
+## Gated (Enabled) Latches and the Clock
+
+A plain SR latch reacts the instant its inputs change. We usually want changes only at controlled moments, so we add an **enable** input. When enable = 1 the latch is "transparent" (follows its inputs); when enable = 0 it holds.
+
+This leads to the central idea of synchronous design: a shared **clock** signal coordinates *when* every memory element may change.
+
+### Level-triggered vs Edge-triggered
+
+| Type | Responds during | Term |
+|---|---|---|
+| **Latch** | the whole time the clock/enable is at its active *level* | level-triggered |
+| **Flip-flop** | only at the instant of a clock *edge* (rising or falling) | edge-triggered |
+
+The distinction between **latch** (level) and **flip-flop** (edge) is a favourite exam point. Edge triggering makes timing precise — every flip-flop updates together at the clock edge.
+
+---
+
+## The D Flip-Flop
+
+The **D (Data) flip-flop** has a single data input D. At each active clock edge, the output simply **takes the value of D**.
+
+$$Q_{next} = D$$
+
+| D | $Q_{next}$ |
+|---|---|
+| 0 | 0 |
+| 1 | 1 |
+
+It eliminates the forbidden state of the SR latch (D is derived as $S = D$, $R = \overline{D}$). The D flip-flop is the workhorse for **registers and data storage** — store one bit per clock tick.
+
+---
+
+## The JK Flip-Flop
+
+The **JK flip-flop** is the universal one — it fixes the SR forbidden state by defining the $1,1$ case as **toggle**.
+
+| J | K | $Q_{next}$ | Meaning |
+|---|---|---|---|
+| 0 | 0 | $Q$ | Hold |
+| 0 | 1 | 0 | Reset |
+| 1 | 0 | 1 | Set |
+| 1 | 1 | $\overline{Q}$ | Toggle |
+
+**Characteristic equation:**
+
+$$Q_{next} = J\overline{Q} + \overline{K}Q$$
+
+The toggle behaviour (J=K=1) makes JK flip-flops ideal for **counters**.
+
+---
+
+## The T Flip-Flop
+
+The **T (Toggle) flip-flop** has one input T. When T=1 it toggles each clock edge; when T=0 it holds. It is a JK flip-flop with J and K tied together.
+
+| T | $Q_{next}$ |
+|---|---|
+| 0 | $Q$ (hold) |
+| 1 | $\overline{Q}$ (toggle) |
+
+**Characteristic equation:**
+
+$$Q_{next} = T \oplus Q$$
+
+A T flip-flop that is permanently toggling (T=1) divides the clock frequency by 2 — the basis of ripple counters.
+
+---
+
+## Characteristic vs Excitation Tables
+
+Two complementary views you must master:
+
+- **Characteristic table** answers: "given the inputs, what is the *next* output?" (used for **analysis**).
+- **Excitation table** answers: "to go from current $Q$ to a desired $Q_{next}$, what inputs do I need?" (used for **design** of sequential circuits).
+
+**JK excitation table:**
+
+| $Q$ | $Q_{next}$ | J | K |
+|---|---|---|---|
+| 0 | 0 | 0 | X |
+| 0 | 1 | 1 | X |
+| 1 | 0 | X | 1 |
+| 1 | 1 | X | 0 |
+
+(X = don't-care.) The excitation table is exactly what you use when designing counters and state machines — the next topic.
+
+---
+
+## Asynchronous Inputs: Preset and Clear
+
+Real flip-flops add **PRESET** (force Q=1) and **CLEAR/RESET** (force Q=0) inputs that act *immediately*, independent of the clock. They are used to initialise a system to a known state at power-up.
+
+---
+
+## Key Takeaway
+
+> A latch/flip-flop stores one bit using **feedback**. The **SR latch** sets, resets or holds (with a forbidden 1,1 state). Adding an enable and a **clock** gives controlled timing: **latches are level-triggered**, **flip-flops are edge-triggered**. The **D** flip-flop stores data ($Q_{next}=D$), the **JK** is universal and adds toggle ($Q_{next}=J\overline{Q}+\overline{K}Q$), and the **T** flip-flop toggles ($Q_{next}=T\oplus Q$). Use the **characteristic table** to analyse and the **excitation table** to design.
+
+---
+
+## Exam Tips
+
+**What lecturers test:**
+- Draw an SR latch from cross-coupled NOR/NAND gates and give its truth table
+- State the difference between a latch and a flip-flop (level vs edge triggering)
+- Give characteristic tables and equations for D, JK and T flip-flops
+- Convert one flip-flop type into another (e.g. JK → D, JK → T)
+- Produce an excitation table for use in design
+
+**Common mistakes:**
+- Calling an edge-triggered device a "latch" — latch = level, flip-flop = edge
+- Forgetting the SR forbidden state (S=R=1)
+- Mixing up characteristic (analysis) and excitation (design) tables
+- Writing the JK toggle row as "hold" instead of $\overline{Q}$
+
+**Likely question:**
+> "(a) Distinguish between a latch and a flip-flop. (b) Give the characteristic table and characteristic equation of a JK flip-flop. (c) Show how a JK flip-flop can be converted into a T flip-flop." (12 marks)
