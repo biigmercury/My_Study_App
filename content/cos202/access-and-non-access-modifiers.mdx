@@ -1,0 +1,441 @@
+---
+title: "Access and Non-Access Modifiers (public, private, final, static, abstract)"
+description: "Java modifiers in full: access modifiers (public, protected, default/package-private, private) with the visibility table and real error messages; then non-access modifiers — final for constants, methods and classes, static fields and methods shared by the class (with a traced object counter), abstract, and the concurrency and serialisation modifiers transient, synchronized and volatile — with the course's exercises solved."
+duration: "45 min"
+difficulty: "intermediate"
+---
+
+## What Are Modifiers?
+
+You've written `public class Main` and `public static void main` in almost every program. **`public`** and **`static`** are **modifiers** — keywords placed before a class, attribute, method or constructor to change how it behaves.
+
+Java divides modifiers into **two groups**:
+
+| Group | Purpose | Examples |
+|---|---|---|
+| **Access modifiers** | **Control the access level** — *who can see and use* it | `public`, `protected`, *(default)*, `private` |
+| **Non-access modifiers** | **Don't control visibility**, but **add other features** | `final`, `static`, `abstract`, `transient`, `synchronized`, `volatile` |
+
+They can be combined: `public static final double PI = 3.14159;` is **public** (access) and **static final** (non-access).
+
+---
+
+## Access Modifiers
+
+| Modifier | Description |
+|---|---|
+| **`public`** | The code is **accessible from all classes** |
+| **`private`** | The code is **only accessible within the declared class** |
+| ***default*** *(no keyword)* | The code is **only accessible in the same package**. Used when you **don't specify a modifier**; also called **package-private** |
+| **`protected`** | The code is **accessible in the same package and in subclasses** (even subclasses in other packages) |
+
+### The Visibility Table
+
+| Modifier | Same class | Same package | Subclass in another package | Any other class |
+|---|---|---|---|---|
+| `public` | ✅ | ✅ | ✅ | ✅ |
+| `protected` | ✅ | ✅ | ✅ | ❌ |
+| *default* | ✅ | ✅ | ❌ | ❌ |
+| `private` | ✅ | ❌ | ❌ | ❌ |
+
+Read it from top (**most open**) to bottom (**most restricted**).
+
+<Analogy>
+- **`public`** — a **public park**: everyone can enter.
+- **`protected`** — the **family compound**: household members, plus relatives living elsewhere (subclasses), may enter.
+- ***default*** — the **estate's shared facilities**: anyone living in the same estate (package) can use them.
+- **`private`** — **your house key**: only you (the class itself) can use it.
+</Analogy>
+
+### Public vs Private Example
+
+```java
+class Person {
+    public String name = "John";   // Public — accessible everywhere
+    private int age = 30;          // Private — only accessible inside this class
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Person p = new Person();
+        System.out.println(p.name);  // Works fine
+        System.out.println(p.age);   // ✗ Error: age has private access in Person
+    }
+}
+```
+
+`name` is **public**, so `Main` can read it. `age` is **private**, so it can only be used **inside `Person`**. The compiler stops you with:
+
+```text
+error: age has private access in Person
+```
+
+To let other classes *read* the age safely, `Person` would provide a public method such as `getAge()` — the heart of **encapsulation** (a later lesson).
+
+### Rules Worth Knowing
+
+- A **top-level class** can only be **`public`** or ***default*** (never `private` or `protected`).
+- Only **one `public` class** per `.java` file, named like the file.
+- **Local variables** (inside methods) take **no access modifier** — they're already visible only in their method.
+- Good practice: make **fields `private`**, and expose only the **methods** others genuinely need. Start with the most restrictive access and open up only when required.
+
+---
+
+## Non-Access Modifiers
+
+**Non-access modifiers do not control visibility; instead they add other features to classes, methods and attributes.** The most commonly used are **`final`**, **`static`** and **`abstract`**.
+
+### final
+
+**If you don't want the ability to change an existing value, declare the attribute `final`.** A final variable can be assigned **only once**:
+
+```java
+public class FinalClass {
+    final int x = 10;
+    final double PI = 3.14;
+
+    public static void main(String[] args) {
+        FinalClass myObj = new FinalClass();
+        myObj.x = 50;    // ✗ Error: cannot assign a value to final variable x
+        myObj.PI = 25;   // ✗ Error: cannot assign a value to final variable PI
+        System.out.println(myObj.x);
+    }
+}
+```
+
+`final` has a different meaning depending on what it's applied to:
+
+| Applied to | Meaning | Example |
+|---|---|---|
+| **Variable / attribute** | Its value **can't be changed** after it's set — a **constant** | `final int MAX_UNITS = 24;` |
+| **Method** | It **can't be overridden** in a subclass | `final void computeGPA() { … }` |
+| **Class** | It **can't be inherited** (no subclasses) | `final class String` — Java's own `String` class is final |
+
+> A **blank final** field has no value at its declaration but **must** be assigned exactly once in **every constructor** — useful for values that differ per object but never change afterwards, like a matric number: `private final String matricNo;`.
+
+**Constants shared by the whole class** are written **`static final`** with **UPPER_CASE** names: `public static final double INTEREST_RATE = 0.05;`
+
+### static
+
+**A static member belongs to the class, not to any specific object.**
+
+- A **static method** can be called **without creating an object**: `ClassName.method()`.
+- A **static attribute** has **one copy shared by all objects** of the class.
+
+```java
+public class StaticClass {
+    static void myStaticMethod() {
+        System.out.println("Static methods can be called without creating objects");
+    }
+
+    public static void main(String[] args) {
+        myStaticMethod();                 // direct call (same class)
+        StaticClass.myStaticMethod();     // via the class name
+    }
+}
+```
+
+You already use static members from the Java API: `Math.sqrt(16)`, `Math.PI`, `Integer.parseInt("42")`, `Arrays.sort(a)` — no objects needed.
+
+**A static method belongs to the class itself. It can be called without an object, but it cannot use instance variables or instance methods directly** — there's no `this` object for it to use:
+
+```java
+public class Demo {
+    int x = 5;                          // instance variable
+    static void show() {
+        System.out.println(x);          // ✗ Error: non-static variable x cannot be referenced from a static context
+    }
+}
+```
+
+That's why `main` (which is static) must **create an object** before using instance members: `Demo d = new Demo(); System.out.println(d.x);`.
+
+### A Shared Counter (Exercise 3)
+
+A **static counter incremented in the constructor** counts how many objects have been created — every object updates the **same** variable:
+
+<CodeTrace title="static vs instance fields">
+
+```java
+class Counter {
+    static int count = 0;
+    int id;
+
+    Counter() {
+        count++;
+        id = count;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Counter a = new Counter();
+        Counter b = new Counter();
+        Counter c = new Counter();
+        Counter d = new Counter();
+        System.out.println("Objects created: " + Counter.count);
+        System.out.println("b's id: " + b.id);
+    }
+}
+```
+
+```trace
+13 | Counter.count=0 | | main > Counter() | Before any object exists, the class's single count is 0. The constructor runs for a.
+6 | Counter.count=1 | | main > Counter() | count++ updates the SHARED static field.
+7 | Counter.count=1, a.id=1 | | main > Counter() | a's own id is 1.
+14 | Counter.count=2, a.id=1, b.id=2 | | main | Constructing b increments the same count to 2; b.id = 2.
+15 | Counter.count=3, a.id=1, b.id=2, c.id=3 | | main | c: count 3.
+16 | Counter.count=4, a.id=1, b.id=2, c.id=3, d.id=4 | | main | d: count 4. Four objects, four ids, ONE count.
+17 | Counter.count=4, a.id=1, b.id=2, c.id=3, d.id=4 | Objects created: 4\n | main | Read the static field through the class name.
+18 | Counter.count=4, a.id=1, b.id=2, c.id=3, d.id=4 | b's id: 2\n | main | Each object keeps its own id.
+```
+
+</CodeTrace>
+
+| | `static` member | Instance member |
+|---|---|---|
+| Belongs to | **The class** | **Each object** |
+| Copies | **One**, shared | One **per object** |
+| Accessed via | `ClassName.member` | `object.member` |
+| Can use `this`? | **No** | Yes |
+| Typical uses | Counters, constants, utility methods (`Math.max`), `main` | Each object's own data (name, balance) |
+
+### abstract
+
+**An abstract method belongs to an abstract class and does not have a body — the body is provided by the subclass.** An abstract class **cannot be used to create objects**:
+
+```java
+// abstract class
+abstract class Main {
+    public String fname = "John";
+    public int age = 24;
+    public abstract void study();        // abstract method: no body
+}
+
+// Subclass (inherits from Main)
+class Student extends Main {
+    public int graduationYear = 2018;
+    public void study() {                // the body of the abstract method is provided here
+        System.out.println("Studying all day long");
+    }
+}
+
+// Code from filename: Second.java
+class Second {
+    public static void main(String[] args) {
+        Student myObj = new Student();   // create an object of the subclass
+        System.out.println("Name: " + myObj.fname);
+        System.out.println("Age: " + myObj.age);
+        System.out.println("Graduation Year: " + myObj.graduationYear);
+        myObj.study();                   // call the implemented abstract method
+    }
+}
+```
+
+```text
+Name: John
+Age: 24
+Graduation Year: 2018
+Studying all day long
+```
+
+(Abstraction gets its own lesson later.)
+
+### transient, synchronized and volatile
+
+These three matter in **serialisation** (saving objects) and **multithreading** (several threads running at once):
+
+| Modifier | Meaning | Typical use |
+|---|---|---|
+| **`transient`** | The attribute is **skipped when the object is serialised** (written to a file/network) | A password or a cached value that shouldn't be saved |
+| **`synchronized`** | The method **can only be run by one thread at a time** (per object) | Updating a shared bank balance safely |
+| **`volatile`** | The attribute's value is **never cached thread-locally** — it's **always read from main memory** | A `running` flag one thread sets to stop another |
+
+```java
+class Account implements java.io.Serializable {
+    private double balance;
+    private transient String sessionToken;          // not saved when serialised
+    private volatile boolean frozen = false;        // always read fresh by every thread
+
+    public synchronized void deposit(double amt) {  // one thread at a time
+        balance += amt;
+    }
+}
+```
+
+`synchronized` and `volatile` are explained properly in the **Multithreading** lesson.
+
+### Summary Tables
+
+**Non-access modifiers for classes:**
+
+| Modifier | Description |
+|---|---|
+| `final` | The class **cannot be inherited** by other classes |
+| `abstract` | The class **cannot be used to create objects**; it must be inherited from |
+
+**Non-access modifiers for attributes and methods:**
+
+| Modifier | Description |
+|---|---|
+| `final` | Attributes **can't be modified**; methods **can't be overridden** |
+| `static` | **Belongs to the class, not to objects**; all objects share the same static attribute, and static methods can be called without creating objects |
+| `abstract` | **Only in an abstract class, only on methods**; the method has **no body** (e.g. `abstract void run();`) — the body is supplied by the subclass |
+| `transient` | Skipped when **serialising** the object |
+| `synchronized` | Accessible by **only one thread at a time** |
+| `volatile` | Value is **not cached thread-locally**; always read from **main memory** |
+
+---
+
+## Exercises (Week 6)
+
+<Reveal question="Exercise 1: A final class Circle with final double PI = 3.14159. What happens if a subclass tries to extend it?">
+```java
+final class Circle {
+    final double PI = 3.14159;
+    double radius;
+
+    Circle(double radius) { this.radius = radius; }
+
+    double area() { return PI * radius * radius; }
+}
+
+// class ColouredCircle extends Circle { }   // ✗ Error: cannot inherit from final Circle
+```
+Because the class is **final**, the compiler refuses any `extends Circle`: *"cannot inherit from final Circle"*. And because `PI` is **final**, `c.PI = 3;` fails: *"cannot assign a value to final variable PI"*.
+</Reveal>
+
+<Reveal question="Exercise 2: A MathUtils class with a static square(int n); call it without creating an object.">
+```java
+class MathUtils {
+    static int square(int n) {
+        return n * n;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(MathUtils.square(7));   // 49 — no object needed
+    }
+}
+```
+</Reveal>
+
+<Reveal question="Exercise 4: Why can't a static method directly call an instance method, while an instance method can call a static one?">
+An **instance method** always runs **on a particular object** (`this`), and the class's static members are available to every object, so it can call static members freely. A **static method** runs **without any object** — there is no `this`, so there's no object whose instance fields or methods it could use. It must first obtain an object: `new Demo().instanceMethod();`.
+```java
+public class Demo {
+    int x = 5;
+    static void helper() { System.out.println("helper"); }
+
+    void instanceMethod() {
+        helper();                     // ✓ instance → static: fine
+        System.out.println(x);
+    }
+
+    public static void main(String[] args) {
+        // instanceMethod();          // ✗ static → instance: which object?
+        new Demo().instanceMethod();  // ✓ create an object first
+    }
+}
+```
+</Reveal>
+
+<Reveal question="Assignment 6: A BankAccount class whose interest rate is a final static double shared by all accounts.">
+```java
+public class BankAccount {
+    public static final double INTEREST_RATE = 0.05;   // one shared, unchangeable rate
+    private final String accountNo;                    // set once per account
+    private double balance;
+
+    public BankAccount(String accountNo, double balance) {
+        this.accountNo = accountNo;
+        this.balance = balance;
+    }
+
+    public void addInterest() {
+        balance += balance * INTEREST_RATE;
+    }
+
+    public double getBalance() { return balance; }
+
+    public static void main(String[] args) {
+        BankAccount a = new BankAccount("0123456789", 100000);
+        BankAccount b = new BankAccount("9876543210", 50000);
+        a.addInterest();
+        b.addInterest();
+        System.out.println(a.getBalance() + " " + b.getBalance());   // 105000.0 52500.0
+        // BankAccount.INTEREST_RATE = 0.1;   // ✗ cannot assign a value to final variable
+    }
+}
+```
+**`static`** makes the rate **shared by all accounts**; **`final`** means **no object (or anyone else) can change it**.
+</Reveal>
+
+---
+
+## Check Your Understanding
+
+<MCQ question="A field has no access modifier. Which class can NOT access it?">
+<Option>A method in the same class</Option>
+<Option>Another class in the same package</Option>
+<Option correct>A subclass in a different package</Option>
+<Option>None — default means public</Option>
+<Explain>
+No modifier means **default (package-private)**: visible to the **same class and same package only**. A subclass in another package can't see it — that would need **`protected`** (or `public`).
+</Explain>
+</MCQ>
+
+<MCQ question="Which declaration creates a constant that all objects share and nobody can change?">
+<Option>private int MAX = 24;</Option>
+<Option>static int MAX = 24;</Option>
+<Option>final int MAX = 24;</Option>
+<Option correct>static final int MAX = 24;</Option>
+<Explain>
+**`static`** gives **one copy for the whole class** (shared), and **`final`** makes it **unchangeable**. `final` alone makes one constant copy **per object**; `static` alone can still be changed.
+</Explain>
+</MCQ>
+
+<MCQ question="What does this print?  class C — static int n = 0; its constructor does n++. main creates new C() three times, then prints C.n.">
+<Option>0</Option>
+<Option>1</Option>
+<Option correct>3</Option>
+<Option>It doesn't compile</Option>
+<Explain>
+`n` is **static**, so all three objects share the **same** variable; each constructor call increments it: 0 → 1 → 2 → **3**.
+</Explain>
+</MCQ>
+
+## Practice Questions
+
+<Reveal question="Distinguish between access modifiers and non-access modifiers, giving two examples of each.">
+**Access modifiers** control **visibility** — which classes can use a class, attribute, method or constructor: e.g. **`public`** (accessible everywhere) and **`private`** (only within the declaring class); also `protected` and default. **Non-access modifiers** don't affect visibility but **add behaviour**: e.g. **`final`** (value can't change / method can't be overridden / class can't be extended) and **`static`** (belongs to the class, shared by all objects); also `abstract`, `transient`, `synchronized`, `volatile`.
+</Reveal>
+
+<Reveal question="Explain the three uses of final.">
+A **final variable** can be assigned only once — it becomes a constant. A **final method** cannot be **overridden** by subclasses. A **final class** cannot be **inherited** (e.g. `String`).
+</Reveal>
+
+<Reveal question="Contrast synchronized and volatile.">
+**`synchronized`** (on a method or block) allows **only one thread at a time** to execute it for a given object, preventing two threads from interleaving a multi-step update such as `balance += amt` (it provides **mutual exclusion** and visibility). **`volatile`** (on a field) guarantees every read sees the **latest value written by any thread** (no stale cached copy), but it does **not** make compound operations like `count++` atomic. Use `volatile` for a simple flag (`running = false`), `synchronized` for updates that must happen as one unit.
+</Reveal>
+
+<Takeaway>
+**Modifiers** change how classes and members behave. **Access modifiers** control **who can use** them: **`public`** (everyone), **`protected`** (package + subclasses), **default/package-private** (no keyword — same package), **`private`** (same class only; e.g. *"age has private access in Person"*). Keep fields `private`. **Non-access modifiers** add features: **`final`** — variable can't change (constant), method can't be overridden, class can't be inherited; **`static`** — belongs to the **class**, **one shared copy**, called via `ClassName.member`, and can't touch instance members directly; **`static final` UPPER_CASE** = class constant; **`abstract`** — class can't be instantiated / method has no body, supplied by the subclass; **`transient`** — skipped in serialisation; **`synchronized`** — one thread at a time; **`volatile`** — always read from main memory.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- The access modifier table (public, private, default, protected) — and the default/package meaning
+- The two non-access modifier tables (for classes; for attributes and methods)
+- `final` and `static` with code examples and **error messages**
+- Static vs instance members (the counter; calling static methods without objects)
+
+**Common mistakes:**
+- Thinking *default* means public
+- Calling an instance method or field from `static main` without an object
+- Forgetting that `final` on a class stops inheritance and on a method stops overriding
+
+**Likely question:**
+> "Distinguish between access and non-access modifiers in Java. With examples, explain the use of the final and static modifiers, and write a class that counts how many of its objects have been created." (15 marks)

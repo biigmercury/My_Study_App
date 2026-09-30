@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 600" width="620" height="600" font-family="Arial, Helvetica, sans-serif">
+  <rect width="620" height="600" fill="#ffffff"/>
+  <text x="310" y="32" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2a44">The three pillars of sustainability</text>
+  <g fill-opacity="0.45" stroke-width="3">
+    <circle cx="310" cy="215" r="150" fill="#5cb85c" stroke="#3d7f3d"/>
+    <circle cx="225" cy="360" r="150" fill="#f0ad4e" stroke="#b7791f"/>
+    <circle cx="395" cy="360" r="150" fill="#5bc0de" stroke="#2b8aa8"/>
+  </g>
+  <g font-weight="700" text-anchor="middle" fill="#1f2a44">
+    <text x="310" y="130" font-size="22">Environment</text>
+    <text x="310" y="154" font-size="15" font-weight="400">biodiversity, natural</text>
+    <text x="310" y="173" font-size="15" font-weight="400">resources, pollution</text>
+    <text x="150" y="420" font-size="22">Society</text>
+    <text x="150" y="444" font-size="15" font-weight="400">equity, poverty,</text>
+    <text x="150" y="463" font-size="15" font-weight="400">participation, culture</text>
+    <text x="470" y="420" font-size="22">Economy</text>
+    <text x="470" y="444" font-size="15" font-weight="400">growth, efficiency,</text>
+    <text x="470" y="463" font-size="15" font-weight="400">stability</text>
+    <text x="222" y="275" font-size="18">Bearable</text>
+    <text x="398" y="275" font-size="18">Viable</text>
+    <text x="310" y="445" font-size="18">Equitable</text>
+    <text x="310" y="318" font-size="19" fill="#ffffff" stroke="#1f2a44" stroke-width="4" paint-order="stroke">Sustainable</text>
+  </g>
+  <text x="310" y="548" text-anchor="middle" font-size="16" fill="#1f2a44">Only where all three overlap is development sustainable.</text>
+  <text x="310" y="572" text-anchor="middle" font-size="16" fill="#1f2a44">In business this is the "triple bottom line": people, planet, profit.</text>
+</svg>

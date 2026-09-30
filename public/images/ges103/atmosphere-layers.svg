@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 560" width="620" height="560" font-family="Arial, Helvetica, sans-serif">
+  <rect width="620" height="560" fill="#ffffff"/>
+  <text x="310" y="30" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2a44">Layers of the atmosphere (not to scale)</text>
+  <!-- bands, bottom to top -->
+  <rect x="96" y="440" width="500" height="80" fill="#cfe8fb"/>
+  <rect x="96" y="345" width="500" height="95" fill="#a9d4f5"/>
+  <rect x="96" y="255" width="500" height="90" fill="#7fb8e6"/>
+  <rect x="96" y="130" width="500" height="125" fill="#4f8fca"/>
+  <rect x="96" y="50" width="500" height="80" fill="#2f5f96"/>
+  <rect x="96" y="520" width="500" height="18" fill="#8d6e4c"/>
+  <text x="346" y="534" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="700">Earth's surface</text>
+  <!-- boundaries and altitude marks -->
+  <g stroke="#1f2a44" stroke-width="1.5">
+    <line x1="96" y1="440" x2="596" y2="440"/><line x1="96" y1="345" x2="596" y2="345"/>
+    <line x1="96" y1="255" x2="596" y2="255"/><line x1="96" y1="130" x2="596" y2="130"/>
+  </g>
+  <g font-size="15" fill="#1f2a44" text-anchor="end" font-weight="700">
+    <text x="88" y="524">0 km</text>
+    <text x="88" y="445">~12 km</text>
+    <text x="88" y="350">~50 km</text>
+    <text x="88" y="260">~85 km</text>
+    <text x="88" y="135">~600 km</text>
+  </g>
+  <!-- Karman line -->
+  <line x1="96" y1="238" x2="596" y2="238" stroke="#ffffff" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="590" y="232" text-anchor="end" font-size="14" fill="#ffffff" font-weight="700">Kármán line, 100 km — edge of space</text>
+  <!-- names and notes -->
+  <g font-weight="700" font-size="21">
+    <text x="112" y="474" fill="#1f2a44">Troposphere</text>
+    <text x="112" y="380" fill="#1f2a44">Stratosphere</text>
+    <text x="112" y="290" fill="#10243f">Mesosphere</text>
+    <text x="112" y="170" fill="#ffffff">Thermosphere</text>
+    <text x="112" y="86" fill="#ffffff">Exosphere</text>
+  </g>
+  <g font-size="15">
+    <text x="112" y="496" fill="#1f2a44">Weather and clouds; most of the air's mass.</text>
+    <text x="112" y="514" fill="#1f2a44">Temperature falls ~6.5 °C per km.</text>
+    <text x="112" y="402" fill="#1f2a44">Ozone layer absorbs ultraviolet rays.</text>
+    <text x="112" y="421" fill="#1f2a44">Temperature rises with height.</text>
+    <text x="112" y="312" fill="#10243f">Meteors burn up; the coldest layer.</text>
+    <text x="112" y="331" fill="#10243f">Temperature falls with height.</text>
+    <text x="112" y="193" fill="#ffffff">Auroras; satellites (ISS at ~400 km).</text>
+    <text x="112" y="212" fill="#ffffff">Temperature rises sharply with height.</text>
+    <text x="112" y="108" fill="#ffffff">Gases thin out and escape into space.</text>
+  </g>
+</svg>

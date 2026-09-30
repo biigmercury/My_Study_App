@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 400" font-family="Segoe UI, Calibri, Arial, sans-serif">
+  <rect width="660" height="400" fill="#ffffff"/>
+  <g font-size="15" fill="#1f2937" text-anchor="middle">
+    <g transform="translate(20,14)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="25" y="30" width="140" height="24" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="45" y="62" width="100" height="14" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <text x="95" y="127">Title Slide</text>
+    </g>
+    <g transform="translate(235,14)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="12" y="8" width="166" height="18" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="12" y="32" width="166" height="66" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <g fill="#b6bcc6"><rect x="77" y="52" width="10" height="8"/><rect x="90" y="52" width="10" height="8"/><rect x="103" y="52" width="10" height="8"/><rect x="77" y="64" width="10" height="8"/><rect x="90" y="64" width="10" height="8"/><rect x="103" y="64" width="10" height="8"/></g>
+      <text x="95" y="127">Title and Content</text>
+    </g>
+    <g transform="translate(450,14)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="18" y="40" width="154" height="26" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="18" y="70" width="154" height="14" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <text x="95" y="127">Section Header</text>
+    </g>
+    <g transform="translate(20,144)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="12" y="8" width="166" height="18" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="12" y="32" width="79" height="66" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <rect x="99" y="32" width="79" height="66" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <text x="95" y="127">Two Content</text>
+    </g>
+    <g transform="translate(235,144)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="12" y="8" width="166" height="16" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="12" y="28" width="79" height="12" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="99" y="28" width="79" height="12" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="12" y="44" width="79" height="54" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <rect x="99" y="44" width="79" height="54" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <text x="95" y="127">Comparison</text>
+    </g>
+    <g transform="translate(450,144)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="12" y="8" width="166" height="18" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <text x="95" y="127">Title Only</text>
+    </g>
+    <g transform="translate(20,274)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <text x="95" y="127">Blank</text>
+    </g>
+    <g transform="translate(235,274)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="10" y="10" width="60" height="18" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="10" y="32" width="60" height="64" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <rect x="78" y="10" width="102" height="86" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <text x="95" y="127">Content with Caption</text>
+    </g>
+    <g transform="translate(450,274)">
+      <rect width="190" height="107" fill="#fff" stroke="#9ca3af"/>
+      <rect x="10" y="10" width="60" height="18" fill="none" stroke="#6b7280" stroke-dasharray="3 2"/>
+      <rect x="10" y="32" width="60" height="64" fill="none" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <rect x="78" y="10" width="102" height="86" fill="#eef0f3" stroke="#9ca3af" stroke-dasharray="3 2"/>
+      <path d="M104 72 l16 -18 l12 12 l8 -8 l14 14 z" fill="#b6bcc6"/>
+      <circle cx="150" cy="38" r="6" fill="#b6bcc6"/>
+      <text x="95" y="127">Picture with Caption</text>
+    </g>
+  </g>
+</svg>

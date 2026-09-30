@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" width="760" height="540" font-family="Arial, Helvetica, sans-serif">
+  <rect width="760" height="540" fill="#ffffff"/>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b45309"/>
+    </marker>
+  </defs>
+
+  <!-- floor -->
+  <line x1="40" y1="480" x2="720" y2="480" stroke="#94a3b8" stroke-width="3"/>
+
+  <!-- desk -->
+  <rect x="320" y="258" width="340" height="12" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+  <line x1="650" y1="270" x2="650" y2="480" stroke="#475569" stroke-width="6"/>
+  <!-- keyboard -->
+  <rect x="340" y="250" width="80" height="8" rx="2" fill="#334155"/>
+  <!-- monitor (side view) -->
+  <rect x="588" y="128" width="12" height="108" rx="3" fill="#0f172a"/>
+  <line x1="594" y1="236" x2="594" y2="256" stroke="#0f172a" stroke-width="6"/>
+  <rect x="570" y="252" width="48" height="6" rx="2" fill="#0f172a"/>
+
+  <!-- chair -->
+  <rect x="165" y="328" width="140" height="12" rx="4" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="2"/>
+  <rect x="150" y="190" width="14" height="150" rx="5" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="2"/>
+  <line x1="235" y1="340" x2="235" y2="450" stroke="#1d4ed8" stroke-width="6"/>
+  <line x1="185" y1="455" x2="285" y2="455" stroke="#1d4ed8" stroke-width="6"/>
+  <circle cx="190" cy="470" r="9" fill="#1d4ed8"/><circle cx="280" cy="470" r="9" fill="#1d4ed8"/>
+
+  <!-- person -->
+  <g stroke="#0369a1" stroke-width="16" stroke-linecap="round" fill="none">
+    <line x1="228" y1="160" x2="222" y2="318"/>         <!-- torso -->
+    <line x1="232" y1="175" x2="246" y2="252"/>         <!-- upper arm -->
+    <line x1="246" y1="252" x2="372" y2="252"/>         <!-- forearm -->
+    <line x1="222" y1="318" x2="340" y2="318"/>         <!-- thigh -->
+    <line x1="340" y1="318" x2="340" y2="466"/>         <!-- lower leg -->
+    <line x1="340" y1="470" x2="380" y2="470"/>         <!-- foot -->
+  </g>
+  <circle cx="238" cy="118" r="30" fill="#0369a1"/>
+  <circle cx="260" cy="112" r="4" fill="#ffffff"/>
+
+  <!-- sightline -->
+  <line x1="266" y1="112" x2="586" y2="128" stroke="#b45309" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="430" y="100" font-size="14" text-anchor="middle" fill="#b45309" font-weight="bold">Top of screen at or slightly below eye level</text>
+
+  <!-- viewing distance -->
+  <line x1="268" y1="60" x2="584" y2="60" stroke="#b45309" stroke-width="2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <text x="426" y="50" font-size="14" text-anchor="middle" fill="#0f172a">Viewing distance 50–70 cm (about an arm’s length)</text>
+
+  <!-- angle labels -->
+  <g font-size="14" font-weight="bold" fill="#15803d">
+    <text x="262" y="244">≈90°</text>
+    <text x="236" y="306">≈90°</text>
+    <text x="350" y="340">≈90°</text>
+  </g>
+  <text x="258" y="226" font-size="12" fill="#15803d">elbow</text>
+  <text x="192" y="306" font-size="12" fill="#15803d">hip</text>
+  <text x="350" y="356" font-size="12" fill="#15803d">knee</text>
+
+  <!-- callouts -->
+  <g font-size="13" fill="#334155">
+    <text x="400" y="206">Wrists straight,</text>
+    <text x="400" y="222">forearms parallel to the floor</text>
+    <text x="40" y="215">Lower back</text>
+    <text x="40" y="231">supported</text>
+    <text x="392" y="462">Feet flat on the floor</text>
+    <text x="392" y="478">(or on a footrest)</text>
+    <text x="400" y="300">Leg clearance under the desk</text>
+  </g>
+
+  <!-- desk height -->
+  <line x1="690" y1="262" x2="690" y2="476" stroke="#b45309" stroke-width="2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <text x="700" y="360" font-size="13" fill="#0f172a" transform="rotate(90 700 360)" text-anchor="middle">Desk height 68–75 cm</text>
+
+  <text x="380" y="525" font-size="13" text-anchor="middle" fill="#64748b">The “90-90-90 rule” is a starting heuristic — comfort and movement matter more than exact angles.</text>
+</svg>

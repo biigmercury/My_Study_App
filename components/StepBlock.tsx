@@ -11,7 +11,7 @@ export default function StepBlock({ step, title, children }: StepBlockProps) {
         {step}
       </div>
       <div className="flex-1 pt-0.5">
-        <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-1">{title}</h4>
+        <h4 className="mt-0 font-semibold text-slate-800 dark:text-slate-100 mb-1">{title}</h4>
         <div className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{children}</div>
       </div>
     </div>

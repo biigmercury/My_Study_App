@@ -1,0 +1,173 @@
+---
+title: "Visual Design: Colour, Typography and Icons"
+description: "The visual layer of a GUI done properly: colour harmony, contrast and cultural meaning, the WCAG 4.5:1 rule and designing for colour blindness; typographic hierarchy, line length and leading, and the squint test; and icon design for universality, simplicity and consistency."
+duration: "40 min"
+difficulty: "intermediate"
+---
+
+## Why the Visual Layer Is Not Decoration
+
+Topic 14 showed that **usable ≠ pretty**. But the visual layer still matters enormously — not for looking nice, but because **colour, type and icons carry meaning**. Chosen badly, they make an interface **illegible, misleading or inaccessible**. Chosen well, they make structure obvious at a glance.
+
+---
+
+## 6.3 Colour Theory: Harmony, Contrast, Meaning
+
+![An RGB colour wheel shaped like a star: red opposite cyan, green opposite magenta, blue opposite yellow, with in-between hues such as orange, chartreuse, spring green, azure, violet and rose](/images/ins202/rgb-colour-wheel.png)
+
+*Figure: An RGB colour wheel — complementary colours sit opposite each other. Image: DanPMK, CC BY-SA 3.0, via Wikimedia Commons.*
+
+<Tabs>
+<Tab label="Colour wheel">
+
+- **Complementary colours** (opposite on the wheel — e.g., blue and yellow/orange) create **strong contrast** — good for a single call-to-action button that must stand out.
+- **Analogous colours** (adjacent on the wheel — e.g., blue, azure and cyan) create a **subdued, harmonious** feel — good for backgrounds and grouped elements.
+
+</Tab>
+<Tab label="Contrast">
+
+**Contrast** is the **difference in luminance or colour between foreground and background** — it determines **legibility**.
+
+Low contrast (light grey on white) looks "clean" in a mock-up but is hard to read in sunlight, on cheap screens, or for older and low-vision users.
+
+</Tab>
+<Tab label="Cultural meaning">
+
+Colour meanings are **not universal**. **White** signals **purity** in many Western contexts but **mourning** in some East Asian cultures. **Red** can mean danger, luck or celebration depending on culture.
+
+Products deployed globally with one design must be tested with each audience.
+
+</Tab>
+</Tabs>
+
+**Colour carries functional meaning** in most interfaces — **red** often signals **error or danger**, **green** often signals **success**. Poor choices make an interface **illegible** or create **unintended associations**. In good design, **colour is never chosen arbitrarily**: it balances **visual harmony, function and accessibility**.
+
+### Accessibility Is Not Optional
+
+> **4.5 : 1** — the **WCAG minimum contrast ratio for normal-sized body text** (W3C, 2018).
+
+Check your own colour pairs (you met this tool in Topic 5):
+
+<ContrastChecker />
+
+> **Colour alone should never be the only way of conveying critical information.** A red border alone for a form error must be paired with **text or an icon**.
+
+**Why:** approximately **8% of men and 0.5% of women** of Northern European descent have some form of **red–green colour blindness** (Nielsen Norman Group, 2021). Designs that rely **solely on red vs green** for critical information are a **widespread and avoidable** accessibility failure.
+
+![Two rows of transfer status badges. With colour only, a green and a red badge look almost identical olive-brown under simulated red-green colour blindness. With colour plus a tick or cross icon and the words Successful or Failed, the meaning is still clear under colour blindness](/images/ins202/colour-blindness-redundancy.svg)
+
+*Figure: Colour-only status (top) versus colour + icon + text (bottom), as seen with normal vision and with simulated deuteranopia.*
+
+- **Real-life example:** a banking app uses **green** for a successful transfer and **red** for a failed one — **plus a checkmark icon for success and an "X" for failure**, so meaning survives even if colour isn't perceived.
+- **Industry example:** **Google's Material Design** defines **"primary", "secondary" and "error" colour roles** with documented minimum contrast, so Android designers apply consistent, accessible colour systems instead of choosing colours ad hoc.
+
+<ExamTip>
+The lecture's key takeaway: **"Redundancy is accessibility."** Colour, icons and text should **reinforce each other** — never rely on a single channel for critical information. A form error = **red border + error icon + written message**.
+</ExamTip>
+
+---
+
+## 6.4 Typography: Hierarchy, Line Length, Leading
+
+| Principle | Guideline | Why |
+|---|---|---|
+| **Hierarchy** | Vary **size, weight and style** to show relative importance — heading vs body | Users scan before they read; hierarchy tells them what matters |
+| **Line length** | Roughly **50–75 characters per line** | Too long and the eye **loses its place** returning to the next line |
+| **Leading** (line spacing) | Typically **120–150% of the font size** | Cramped lines blur together; generous leading aids reading |
+
+**Hierarchy** is built from a **limited set** of sizes and weights — a large bold heading, a medium subheading, standard body text — **not** lots of different fonts and styles, which create **visual noise**.
+
+**Why it matters:** poor typography — **text too small, lines too long, cramped spacing** — increases **reading time, eye strain** (Lecture 4) and **comprehension errors**, especially in dense content like **legal terms or medical instructions**.
+
+<Analogy>
+Typography is like the layout of a newspaper front page. The headline is huge and bold, subheadings are medium, the body text is small but comfortable, and columns are narrow enough to read quickly. Imagine the whole front page in one font size with no columns — every story would look equally important, and nobody would read any of them.
+</Analogy>
+
+### Legibility Has Real Stakes
+
+- **Real-life example:** a hospital portal showing **medication instructions in a small, dense paragraph** with minimal line spacing risks patients **misreading critical dosages**. Reformatting with a **clear heading, adequately sized body text, generous leading and short lines** significantly reduces this risk.
+- **Industry example:** **Apple's Human Interface Guidelines** recommend a minimum body text size of about **17 pt on iOS**, for legibility across iPhone screen sizes and viewing distances.
+
+> **Tip — the squint test:** slightly blur your vision (or step back from the screen) and see whether the **visual hierarchy is still clear** without reading the words. **If everything looks equally prominent, the hierarchy needs work.**
+
+<Reveal question="Think–pair–share: apply the squint test to one screen of any app. What stayed clear, and what didn't?">
+Typical finding on a **banking home screen**: the **balance** (large, bold) and the **primary action buttons** stay clear — good hierarchy. The **list of recent transactions** blurs into one grey mass because amounts, dates and names are all the same size and weight — the designer should make **amounts bold and right-aligned** and dates lighter, so the list can be scanned.
+</Reveal>
+
+---
+
+## 6.5 Icon Design: Recognition Over Recall
+
+> An **icon** is a **small graphical symbol representing an object, action or concept**, intended to be **quickly recognised** — often in place of, or alongside, text.
+
+| Principle | Meaning | Example |
+|---|---|---|
+| **Universality** | Prefer **broadly shared, cross-cultural** meanings over learned, product-specific symbols | Magnifying glass = search; gear = settings |
+| **Simplicity** | **Clean, recognisable shapes** that stay legible at **small sizes** | A simple outline envelope for mail, not a detailed 3-D letter |
+| **Consistency** | **Uniform visual style** — line weight, detail level, colour — across the whole icon set | All icons outlined, or all filled — not a mix |
+
+**Even common icons rely partly on learned convention.** The **"hamburger"** (three horizontal lines) is now widely recognised as "menu" — but it is **not universally intuitive** for first-time or less tech-familiar users.
+
+- **Real-life example:** a generic **gear icon** for "Settings" relies on a broadly universal convention that most users recognise without explanation. A custom **"Submit Assignment"** icon shaped like an **abstract swirl**, chosen purely for style, would likely **confuse first-time users**.
+- **Common mistake:** assuming that **because *you* understand a custom icon, all users will too**. Icon meaning should be **validated with representative users** (Lecture 5 research methods), not assumed from the designer's familiarity.
+- **Safe practice:** for important or unfamiliar actions, **pair the icon with a text label**.
+
+<MCQ question="A new learning app uses an icon of three wavy lines, with no label, for 'Submit assignment'. What is the main problem?">
+<Option>It breaks the 50–75 character line-length rule</Option>
+<Option correct>It relies on recall of a non-universal symbol — users won't recognise its meaning</Option>
+<Option>Wavy lines are not allowed in Material Design</Option>
+<Option>It violates the 4.5:1 contrast ratio</Option>
+<Explain>
+Icons should use **universal, recognisable** meanings, or be **paired with a label**. A novel symbol forces users to learn (recall) its meaning — and for a critical action like submitting an assignment, that risks missed deadlines. Fix: use a recognisable "upload/send" icon **with the text "Submit assignment"**.
+</Explain>
+</MCQ>
+
+<MCQ question="A form marks errors only with a red field border. Which principle does this violate?">
+<Option>Typographic hierarchy</Option>
+<Option correct>Colour must never be the sole method of conveying critical information</Option>
+<Option>Tab-bar discoverability</Option>
+<Option>Contextual menu grouping</Option>
+<Explain>
+Colour-blind users (about 8% of men of Northern European descent) may not see the red border. Pair it with an **error icon and a specific written message** next to the field.
+</Explain>
+</MCQ>
+
+---
+
+## Practice Questions
+
+<Reveal question="Distinguish complementary from analogous colour schemes and give a use for each in an interface.">
+**Complementary** colours sit **opposite** on the colour wheel and create **strong contrast** — use them to make a primary call-to-action stand out (e.g., an orange "Pay now" button on a blue app). **Analogous** colours sit **next to each other** and create a **calm, harmonious** feel — use them for backgrounds, cards and grouped sections.
+</Reveal>
+
+<Reveal question="State three typography guidelines from the lecture with their values.">
+**Hierarchy** through a limited set of sizes and weights; **line length** of about **50–75 characters**; **leading** of about **120–150% of the font size**. (Apple also recommends about **17 pt** body text on iOS.)
+</Reveal>
+
+<Reveal question="Why should a successful and a failed transaction not be distinguished by green vs red alone? How should they be shown?">
+About 8% of men (of Northern European descent) have red–green colour blindness, so the two states may look identical to them. Show **colour + icon + text**: green with a ✓ and "Successful", red with an ✗ and "Failed". **Redundancy is accessibility.**
+</Reveal>
+
+<Reveal question="State the three principles of good icon design, with an example of each.">
+**Universality** — use widely understood symbols (magnifying glass for search). **Simplicity** — clean shapes that remain legible when small (an outline envelope for messages). **Consistency** — one visual style across the set (all outline icons with the same line weight).
+</Reveal>
+
+<Takeaway>
+Colour, typography and icons **carry meaning**. **Colour** balances harmony (complementary for contrast, analogous for calm), **contrast** (WCAG **4.5:1** for body text) and **cultural meaning** — and must **never be the only carrier of critical information**, because about 8% of men have red–green colour blindness. **Typography** creates **hierarchy** with a few sizes and weights, keeps **lines to 50–75 characters** and **leading at 120–150%**; the **squint test** checks hierarchy at a glance. **Icons** should be **universal, simple and consistent**, validated with users, and **labelled** when their meaning isn't obvious. **Redundancy is accessibility.**
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Colour theory: complementary vs analogous, contrast, cultural meaning
+- WCAG **4.5:1** and designing for colour blindness (8% of men)
+- Typography values: **50–75 characters**, **120–150% leading**; the squint test
+- The three icon-design principles; the hamburger-menu caveat
+
+**Common mistakes:**
+- Using colour alone for status or errors
+- Many fonts and sizes instead of a small, clear hierarchy
+- Assuming a custom icon is self-explanatory
+
+**Likely question:**
+> "Explain how colour, typography and icons should be used in designing a hospital patient portal, with reference to accessibility guidelines." (15 marks)

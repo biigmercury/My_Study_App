@@ -1,0 +1,255 @@
+---
+title: "Excel III: Styles, Data Formatting, Rows, Columns and Freeze Panes"
+description: "Formatting cells from the Home tab and the Format Cells dialog, cell styles and Format as Table, number formats (General, Number, Currency with ₦, Accounting, Percentage, Date, Text) and why formatting never changes the stored value, copy, cut and the Paste options, inserting and deleting rows, columns and cells, column widths and row heights (drag, double-click AutoFit, exact sizes, ####), selecting the whole sheet, and freezing and unfreezing panes."
+duration: "40 min"
+difficulty: "intermediate"
+---
+
+## Formatting on the Home Tab
+
+As in Word, Excel's most used features live on the **HOME** tab, and many of its groups look familiar (Clipboard, Font). To format cells:
+
+1. **Select** the cells.
+2. Click the option in the **Font** group — font, size, **bold**, *italic*, underline, **borders**, **fill colour**, font colour. Rest the mouse on a button for a ScreenTip.
+3. For every option, click the **Dialog Box Launcher** of the Font group: the **Format Cells** dialog opens (also **Ctrl+1** or right-click → Format Cells).
+
+**Format Cells** has six tabs:
+
+| Tab | Controls |
+|---|---|
+| **Number** | How numbers look: General, Number, Currency, Accounting, Date, Time, Percentage, Fraction, Scientific, Text, Custom |
+| **Alignment** | Horizontal/vertical alignment, indent, **orientation (text direction/angle)**, Wrap text, Shrink to fit, Merge cells |
+| **Font** | Font, style, size, underline, colour, effects (strikethrough, superscript, subscript) |
+| **Border** | Line style and colour, outline/inside borders |
+| **Fill** | Background colour and pattern |
+| **Protection** | Locked / Hidden (takes effect when the sheet is protected) |
+
+### Cell styles and Format as Table
+
+- **Cell Styles** (HOME → Styles) are ready-made formats for particular kinds of data — *Good*, *Bad*, *Neutral*, *Heading 1*, *Title*, *Total*, *Currency*, *Percent* — so important items stand out consistently.
+- **Format as Table** (HOME → Styles) turns a block of data into a styled **table** with banded rows, header formatting and **filter** arrows. Select the cells → Format as Table → pick a style → confirm *My table has headers*.
+  - To go back to an ordinary range: click in the table → **TABLE TOOLS DESIGN** → Tools → **Convert to Range**. The table features (filters, banding that follows sorting) go, but the **formatting stays**.
+
+---
+
+## Number Formats
+
+Besides text, a workbook holds numbers, dates and money. To tell **20%** apart from **₦200**, you **format** the numbers.
+
+1. Select the cells.
+2. HOME → **Number** group → the arrow beside **General** → choose a format — or use the quick buttons: **Accounting** (currency), **Percent Style** (%), **Comma Style** (,), **Increase/Decrease Decimal**.
+
+| Format | 1234.5 looks like | 0.256 looks like | Notes |
+|---|---|---|---|
+| **General** | 1234.5 | 0.256 | The default — shows what you typed |
+| **Number** (2 dp) | 1234.50 | 0.26 | Choose decimal places and the thousands separator |
+| **Currency** (₦) | ₦1,234.50 | ₦0.26 | Symbol next to the number |
+| **Accounting** | ₦ 1,234.50 | ₦ 0.26 | Symbol lined up at the left edge of the column |
+| **Percentage** | 123450% | 26% | Multiplies by 100 for display |
+| **Comma Style** | 1,234.50 | 0.26 | Thousands separator, 2 decimals |
+| **Short Date** | 18/05/1903 | — | Dates are numbers counted from 1 Jan 1900 |
+| **Text** | 1234.5 (left-aligned) | — | Stores what you type as text — for IDs and phone numbers |
+
+**Currency symbol.** Your computer's regional settings decide the default symbol (it may be € or `$`). To use the **naira**: open **Format Cells** (Number group launcher) → **Number** tab → **Currency** → choose the **Symbol** → OK. If ₦ is not in the list, use **Custom** with the format code `₦#,##0.00`. The default date style and percentage decimals are changed in the same dialog.
+
+<ExamTip>
+**Formatting changes how a number looks, never the value stored.** A cell showing **₦1,235** (0 decimals) still contains 1234.5, and formulas use 1234.5. The formula bar always shows the real value. If you want the value itself rounded, use the ROUND function (next lesson).
+</ExamTip>
+
+---
+
+## Copying, Cutting and Pasting
+
+**Copy and paste** duplicates data: an electronic "image" of the cells is placed on the **Clipboard**.
+
+1. Select the range → **Ctrl+C** (or Copy). A **flashing ("marching ants") border** appears round it.
+2. Click the cell where the **first (top-left)** cell of the copy should go.
+3. **Paste** (Ctrl+V). The original stays; you now have a copy. You can keep pasting elsewhere.
+4. Press **Esc** to switch off the flashing border (it also stops when you do another task).
+
+**Cut and paste** moves data instead (Ctrl+X, then Paste) — the data disappears from the original place.
+
+**Paste options** (arrow under Paste, or the button that appears after pasting): **Paste** (everything), **Formulas**, **Keep Source Formatting**, **Keep Source Column Widths**, **Transpose** (rows become columns), **Values** (just the results — no formulas), **Formatting**, **Paste Link** — and **Paste Special…** for operations such as *Add* or *Multiply* (e.g. add 5 marks to every score).
+
+<Analogy>
+Copying a formula is like giving someone **directions** ("the house two doors to your left") rather than an **address**. Pasted somewhere else, the directions point to a different house — that is why a copied `=B2*C2` becomes `=B3*C3` one row down. **Paste Values** gives them the answer instead of the directions.
+</Analogy>
+
+---
+
+## Rows and Columns
+
+The Insert, Delete and Format buttons are in HOME → **Cells**.
+
+| Task | Steps | Where it appears |
+|---|---|---|
+| **Insert a row** | Click in the row **below** where you want it → Insert ▾ → **Insert Sheet Rows**. Or right-click a row number → **Insert** | **Above** the selected row |
+| **Insert a column** | Click in the column to the **right** → Insert ▾ → **Insert Sheet Columns**. Or right-click the column letter → Insert | To the **left** of the selected column |
+| **Insert cells** | Right-click a cell → **Insert…** → *Shift cells right* / *Shift cells down* (or entire row / column) | Neighbouring data moves — check it still lines up (Undo if not) |
+| **Delete rows/columns** | Select the row numbers / column letters → right-click → **Delete** (or Delete ▾ → Delete Sheet Rows/Columns) | Everything below / right moves up / left |
+
+Pressing the **Delete key** on a selected row only **clears the data** — the empty row stays.
+
+Formulas **adjust automatically** when you insert or delete: insert a row inside a summed range and `=SUM(B2:B6)` becomes `=SUM(B2:B7)`; delete a cell a formula refers to and it shows **#REF!**.
+
+### Column width and row height
+
+| To… | Do this |
+|---|---|
+| **Widen / narrow** a column | Point at the **right edge of the column heading** until the pointer becomes a double arrow ↔, then drag |
+| **Best fit** (AutoFit) | **Double-click** that edge — the column fits its widest entry. Or HOME → Format → **AutoFit Column Width** |
+| **Exact width** | HOME → Format → **Column Width…** → type (default **8.43** characters) |
+| **Change row height** | Drag the **bottom edge of the row number**; double-click for AutoFit; Format → **Row Height…** (default **15** points) |
+
+A cell full of **#####** means the column is **too narrow to display the number** (or date) — widen it; the value is still there.
+
+### Selecting the whole worksheet
+
+To format everything at once, click the **Select All** button — the box above row 1 and left of column A — (or **Ctrl+A**), then apply the formatting.
+
+---
+
+## Freeze Panes
+
+On a long list, the headings scroll out of sight and you lose track of which column is which. **Freeze Panes** keeps chosen rows and/or columns **visible while you scroll** the rest.
+
+**First, pick the right cell:**
+
+| To keep visible… | Click… |
+|---|---|
+| Rows at the top | The row **below** the rows to freeze (e.g. A2 for row 1) |
+| Columns at the left | The column to the **right** of the columns to freeze |
+| Rows **and** columns | The cell **below and to the right** — e.g. to freeze the top **4 rows and the first 2 columns**, click **C5** |
+
+**Then:** VIEW → Window → **Freeze Panes** ▾ →
+
+1. **Freeze Panes** — freezes the rows above and the columns to the left of the active cell.
+2. **Freeze Top Row** — row 1 only (no need to select a cell).
+3. **Freeze First Column** — column A only.
+
+**To unfreeze:** VIEW → Freeze Panes ▾ → **Unfreeze Panes** (this option replaces *Freeze Panes* while panes are frozen).
+
+### Try it on a real class list
+
+The sheet has **30 students**. Try these tasks:
+
+1. **Freeze panes:** click **C2**, then VIEW → Freeze Panes → *Freeze Panes*. Scroll down and right — the headings (row 1) and S/N and matric numbers (columns A–B) stay put. Then *Unfreeze Panes* and try *Freeze Top Row*.
+2. **Widths:** double-click the border between the **C** and **D** headings to AutoFit the surnames; drag column **J** narrower until the averages turn into **####**, then AutoFit it back.
+3. **Formats:** select **J2:J31** and use the **.00→.0** button to show 1 decimal place — the formula bar still shows the full value. Try **Percentage** on K2 after typing `0.65`.
+4. **Rows:** click row **5** → HOME → Insert → *Insert Sheet Rows*. Click **I6** and look at the formula — it adjusted. Undo.
+5. **Paste Values:** copy **I2:I6**, click **M2**, Paste ▾ → *Paste Values*: numbers, no formulas.
+6. **Style:** select **A1:J1**, make it **bold** with a **fill colour** and centre it.
+
+<ExcelSheet title="CSC 272 class list — formatting and freeze panes" height="320" rows="36" cols="13">
+
+```sheet
+[Class List]
+@width A 36
+@width B 64
+@width C 70
+@width D 64
+@width E 52
+@width F:H 56
+@width I 50
+@width J 64
+@bold A1:J1
+S/N | Matric No | Surname | First Name | Gender | CSC272 | MTH201 | STA201 | Total | Average
+1 | 210023 | Adeyemi | Tunde | M | 59 | 90 | 59 | =SUM(F2:H2) | =AVERAGE(F2:H2)
+2 | 210065 | Okafor | Chioma | F | 94 | 42 | 90 | =SUM(F3:H3) | =AVERAGE(F3:H3)
+3 | 210139 | Bello | Aisha | F | 36 | 84 | 87 | =SUM(F4:H4) | =AVERAGE(F4:H4)
+4 | 210173 | Eze | Emeka | M | 80 | 50 | 49 | =SUM(F5:H5) | =AVERAGE(F5:H5)
+5 | 210185 | Ogunleye | Bolaji | M | 39 | 74 | 53 | =SUM(F6:H6) | =AVERAGE(F6:H6)
+6 | 210201 | Musa | Hauwa | F | 70 | 67 | 88 | =SUM(F7:H7) | =AVERAGE(F7:H7)
+7 | 210244 | Nwosu | Ngozi | F | 38 | 83 | 88 | =SUM(F8:H8) | =AVERAGE(F8:H8)
+8 | 210281 | Adebayo | Kemi | F | 83 | 69 | 33 | =SUM(F9:H9) | =AVERAGE(F9:H9)
+9 | 210349 | Ibrahim | Sani | M | 67 | 53 | 32 | =SUM(F10:H10) | =AVERAGE(F10:H10)
+10 | 210350 | Okonkwo | Ifeoma | F | 43 | 28 | 87 | =SUM(F11:H11) | =AVERAGE(F11:H11)
+11 | 210365 | Afolabi | Seun | M | 92 | 61 | 49 | =SUM(F12:H12) | =AVERAGE(F12:H12)
+12 | 210368 | Danjuma | Zainab | F | 52 | 65 | 92 | =SUM(F13:H13) | =AVERAGE(F13:H13)
+13 | 210377 | Chukwu | Obinna | M | 43 | 44 | 34 | =SUM(F14:H14) | =AVERAGE(F14:H14)
+14 | 210407 | Olawale | Wale | M | 70 | 29 | 82 | =SUM(F15:H15) | =AVERAGE(F15:H15)
+15 | 210489 | Yusuf | Fatima | F | 70 | 58 | 34 | =SUM(F16:H16) | =AVERAGE(F16:H16)
+16 | 210511 | Obi | Chidi | M | 65 | 49 | 66 | =SUM(F17:H17) | =AVERAGE(F17:H17)
+17 | 210522 | Akinola | Yemi | F | 56 | 41 | 82 | =SUM(F18:H18) | =AVERAGE(F18:H18)
+18 | 210548 | Garba | Bala | M | 30 | 76 | 58 | =SUM(F19:H19) | =AVERAGE(F19:H19)
+19 | 210612 | Nnamdi | Ada | F | 61 | 79 | 96 | =SUM(F20:H20) | =AVERAGE(F20:H20)
+20 | 210626 | Salami | Lateef | M | 88 | 41 | 93 | =SUM(F21:H21) | =AVERAGE(F21:H21)
+21 | 210668 | Ojo | Tolu | F | 63 | 69 | 56 | =SUM(F22:H22) | =AVERAGE(F22:H22)
+22 | 210707 | Uche | Nneka | F | 47 | 56 | 32 | =SUM(F23:H23) | =AVERAGE(F23:H23)
+23 | 210801 | Abubakar | Musa | M | 62 | 43 | 73 | =SUM(F24:H24) | =AVERAGE(F24:H24)
+24 | 210806 | Ayodele | Funke | F | 61 | 86 | 55 | =SUM(F25:H25) | =AVERAGE(F25:H25)
+25 | 210838 | Ekwueme | Ike | M | 79 | 31 | 60 | =SUM(F26:H26) | =AVERAGE(F26:H26)
+26 | 210890 | Lawal | Rukayat | F | 69 | 89 | 37 | =SUM(F27:H27) | =AVERAGE(F27:H27)
+27 | 210899 | Oni | Dayo | M | 52 | 77 | 82 | =SUM(F28:H28) | =AVERAGE(F28:H28)
+28 | 210903 | Ibe | Amaka | F | 31 | 67 | 69 | =SUM(F29:H29) | =AVERAGE(F29:H29)
+29 | 210960 | Aliyu | Umar | M | 95 | 77 | 80 | =SUM(F30:H30) | =AVERAGE(F30:H30)
+30 | 210986 | Fashola | Bisi | F | 88 | 60 | 92 | =SUM(F31:H31) | =AVERAGE(F31:H31)
+@select C2
+```
+
+</ExcelSheet>
+
+---
+
+## Practice Questions
+
+<MCQ question="You want to keep rows 1–3 and columns A–B visible while scrolling. Which cell must be active before choosing Freeze Panes?">
+<Option>B3</Option>
+<Option>A4</Option>
+<Option correct>C4</Option>
+<Option>D3</Option>
+<Explain>Freeze Panes freezes everything above and to the left of the active cell. The cell below row 3 and right of column B is C4.</Explain>
+</MCQ>
+
+<MCQ question="A cell shows ######## after you entered a long number. What does it mean?">
+<Option>The number is an error</Option>
+<Option correct>The column is too narrow to display the number</Option>
+<Option>The cell is protected</Option>
+<Option>The number is stored as text</Option>
+<Explain>##### appears when a number or date doesn't fit the column width. Widen the column (double-click the heading border) — the value was never lost.</Explain>
+</MCQ>
+
+<MCQ question="Where does a new row appear when you choose Insert Sheet Rows with a cell in row 7 selected?">
+<Option>Below row 7</Option>
+<Option correct>Above row 7 (the old row 7 becomes row 8)</Option>
+<Option>At the end of the data</Option>
+<Option>At row 1</Option>
+<Explain>New rows are inserted above the selected row, and new columns to the left of the selected column.</Explain>
+</MCQ>
+
+<Reveal question="1. Describe how to display a column of prices with the naira symbol and two decimal places.">
+Select the cells → open **Format Cells** (Ctrl+1, or the Number group's dialog box launcher) → **Number** tab → **Currency** → set **Decimal places: 2** and choose the ₦ **Symbol** (or use Custom `₦#,##0.00`) → OK.
+</Reveal>
+
+<Reveal question="2. What is the difference between pressing Delete on a selected row and right-clicking the row → Delete?">
+Pressing the **Delete key** clears the **contents** but leaves the empty row in place. **Right-click → Delete** removes the **row itself**; the rows below move up (and formulas referring to it adjust or show #REF!).
+</Reveal>
+
+<Reveal question="3. Give two ways to make a column exactly fit its longest entry.">
+**Double-click** the right border of the column heading, or HOME → Cells → **Format → AutoFit Column Width**.
+</Reveal>
+
+<Reveal question="4. What does Format as Table do, and how do you undo the table while keeping the look?">
+It applies a table style with a formatted header row, banded rows and filter buttons, and makes the range a table object. To return to a normal range, click inside it → TABLE TOOLS **DESIGN** → **Convert to Range**; the formatting remains but table features are removed.
+</Reveal>
+
+<Reveal question="5. Explain Freeze Panes and its three options.">
+Freeze Panes keeps selected rows and/or columns visible while the rest of the sheet scrolls. **Freeze Panes** freezes the rows above and columns to the left of the active cell; **Freeze Top Row** freezes row 1; **Freeze First Column** freezes column A. **Unfreeze Panes** releases them.
+</Reveal>
+
+<Takeaway>
+- Format from HOME (Font, Alignment, Number, Styles) or the **Format Cells** dialog (Ctrl+1): Number, Alignment, Font, Border, Fill, Protection.
+- **Cell Styles** and **Format as Table** (Convert to Range keeps the formatting).
+- Number formats: General, Number, **Currency/Accounting** (₦), **Percentage**, Comma, Date, Text. Formatting changes the **display, not the value**.
+- Copy (marching ants, Esc to stop), Cut, Paste; **Paste Values / Formulas / Transpose / Formatting / Paste Special**.
+- Insert rows **above** / columns **left**; delete with right-click → Delete (Delete key only clears). Formulas adjust.
+- Widths/heights: drag the heading border, **double-click to AutoFit**, or exact Column Width (8.43) / Row Height (15). **####** = column too narrow.
+- **Freeze Panes** at the cell below-right of what must stay visible; Freeze Top Row / First Column; Unfreeze Panes.
+</Takeaway>
+
+## Exam Tips
+
+- The **Freeze Panes** cell rule (below and to the right) is a favourite: "to freeze the top 4 rows and first 2 columns, click C5".
+- Know that **#####** is a width problem, not an error value.
+- In practical tasks, **format money as currency** and **percentages as %**, AutoFit columns so nothing shows ####, and bold/shade the heading row — tidy output earns presentation marks.
+- When asked for the *values* of a calculation (not formulas) somewhere else, use **Paste Values**.

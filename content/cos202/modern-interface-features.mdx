@@ -1,0 +1,417 @@
+---
+title: "Modern Interface Features: Default, Static, Functional and Private Methods"
+description: "What Java 8 and 9 added to interfaces and why: default methods for evolving interfaces without breaking existing classes, static helper methods called through the interface name, functional interfaces with lambda expressions and method references (plus the built-in Runnable, Comparator, Predicate, Function, Consumer and Supplier), private helper methods, and interfaces extending interfaces — with outputs, a traced lambda call, and the Week 10 exercises solved."
+duration: "40 min"
+difficulty: "advanced"
+---
+
+## Why Interfaces Changed
+
+Before **Java 8 (2014)**, an interface could only contain **abstract methods** and **constants**. That caused a real problem: if you **added a new method** to an interface, **every class that implemented it stopped compiling** until it implemented the new method too. For an interface like `List`, used by millions of classes worldwide, that made improvements almost impossible.
+
+Java 8 and 9 added four features:
+
+| Feature | Version | In one line |
+|---|---|---|
+| **Default methods** | Java 8 | Interface methods **with a body**, inherited by implementers, **overridable** |
+| **Static methods** | Java 8 | Helper methods **called through the interface name**, **not inherited** |
+| **Functional interfaces** | Java 8 | Interfaces with **exactly one abstract method**, usable with **lambdas** |
+| **Private methods** | Java 9 | **Internal helpers** for default/static methods, **hidden** from implementers |
+
+---
+
+## Default Methods (Java 8)
+
+**Interfaces can define methods with default implementations**, using the `default` keyword. Implementing classes **inherit** them automatically — and may **override** them.
+
+**Main use: adding new methods to interfaces without breaking the classes that already implement them.**
+
+```java
+interface TestInterface {
+    final int a = 10;
+    default void display() {
+        System.out.println("hello");
+    }
+}
+
+class TestClass implements TestInterface {
+    public static void main(String[] args) {
+        TestClass t = new TestClass();
+        t.display();                    // inherited default method
+    }
+}
+```
+
+```text
+hello
+```
+
+`TestClass` implements **nothing** itself, yet `display()` works — it inherits the default body. That's exactly how Java 8 added `forEach()`, `sort()` and `removeIf()` to the collection interfaces without breaking existing code.
+
+**Overriding a default** is just like overriding any method:
+
+```java
+class LoudClass implements TestInterface {
+    @Override
+    public void display() {
+        System.out.println("HELLO!");
+    }
+}
+```
+
+---
+
+## Static Methods (Java 8)
+
+**Interfaces can include static methods.** They are **called directly through the interface name**, and they are **not inherited** by implementing classes:
+
+```java
+interface TestInterface {
+    final int a = 10;
+    static void display() {
+        System.out.println("hello");
+    }
+}
+
+class TestClass implements TestInterface {
+    public static void main(String[] args) {
+        TestInterface.display();        // ✓ through the interface name
+        // TestClass.display();         // ✗ error: static interface methods are not inherited
+    }
+}
+```
+
+Static interface methods hold **utility code related to the interface** — for example `Comparator.comparing(...)` and `List.of(...)` in the Java API.
+
+---
+
+## Functional Interfaces and Lambdas (Java 8)
+
+> **A functional interface has exactly one abstract method.** It can be implemented with a **lambda expression** or a **method reference**. The **`@FunctionalInterface`** annotation is **optional but recommended** — the compiler then checks there's exactly one abstract method.
+
+```java
+@FunctionalInterface
+public interface Calculator {
+    int compute(int x, int y);          // the single abstract method
+}
+```
+
+### Lambda Expressions
+
+Instead of writing a whole class to implement `Calculator`, you can write a **lambda** — an anonymous function:
+
+```java
+Calculator add = (x, y) -> x + y;
+Calculator multiply = (x, y) -> x * y;
+Calculator power = (x, y) -> {
+    int result = 1;
+    for (int i = 0; i < y; i++) result *= x;
+    return result;
+};
+```
+
+| Lambda part | Meaning |
+|---|---|
+| `(x, y)` | The **parameters** (types inferred from `compute(int, int)`) |
+| `->` | "goes to" |
+| `x + y` | The **body** — a single expression is returned automatically |
+| `{ … return …; }` | A **block body** when you need several statements |
+
+Compare the old way — an **anonymous class**:
+
+```java
+Calculator add = new Calculator() {
+    @Override
+    public int compute(int x, int y) {
+        return x + y;
+    }
+};
+```
+
+Five lines of ceremony become one: **`(x, y) -> x + y`**.
+
+<CodeTrace title="Calling a lambda through a functional interface">
+
+```java
+Calculator add = (x, y) -> x + y;
+Calculator multiply = (x, y) -> x * y;
+int a = add.compute(3, 4);
+int b = multiply.compute(3, 4);
+System.out.println(a + " " + b);
+```
+
+```trace
+1 | add=→ lambda (x; y) -> x + y | | main | A Calculator object is created from the lambda. The lambda body becomes compute()'s body.
+2 | add=→ lambda (x; y) -> x + y, multiply=→ lambda (x; y) -> x * y | | main | A second Calculator with different behaviour.
+3 | add=→ lambda (x; y) -> x + y, multiply=→ lambda (x; y) -> x * y | | main > add.compute(3, 4) | compute(3, 4) runs the lambda body with x = 3, y = 4: 3 + 4.
+3 | add=→ lambda (x; y) -> x + y, multiply=→ lambda (x; y) -> x * y, a=7 | | main | a = 7.
+4 | add=→ lambda (x; y) -> x + y, multiply=→ lambda (x; y) -> x * y, a=7, b=12 | | main | Same method name compute, different behaviour: 3 × 4 = 12.
+5 | add=→ lambda (x; y) -> x + y, multiply=→ lambda (x; y) -> x * y, a=7, b=12 | 7 12\n | main | 
+```
+
+</CodeTrace>
+
+### Built-in Functional Interfaces
+
+The package **`java.util.function`** (and a few others) provides ready-made functional interfaces, so you rarely need to write your own:
+
+| Interface | Abstract method | Takes → gives | Example lambda |
+|---|---|---|---|
+| `Runnable` | `void run()` | nothing → nothing | `() -> System.out.println("Hi")` |
+| `Supplier<T>` | `T get()` | nothing → a T | `() -> Math.random()` |
+| `Consumer<T>` | `void accept(T t)` | a T → nothing | `s -> System.out.println(s)` |
+| `Predicate<T>` | `boolean test(T t)` | a T → true/false | `n -> n % 2 == 0` |
+| `Function<T, R>` | `R apply(T t)` | a T → an R | `s -> s.length()` |
+| `Comparator<T>` | `int compare(T a, T b)` | two Ts → order | `(a, b) -> a.length() - b.length()` |
+
+```java
+import java.util.*;
+import java.util.function.*;
+
+List<String> names = new ArrayList<>(List.of("Oluwasemilore", "Ada", "Babatunde", "Musa"));
+names.sort((a, b) -> a.length() - b.length());      // Comparator as a lambda
+System.out.println(names);                          // [Ada, Musa, Babatunde, Oluwasemilore]
+
+Predicate<Integer> isPass = score -> score >= 40;
+System.out.println(isPass.test(39));                // false
+
+names.forEach(System.out::println);                 // a method reference: same as s -> System.out.println(s)
+```
+
+A **method reference** like `System.out::println` or `String::toUpperCase` is shorthand for a lambda that just calls an existing method.
+
+---
+
+## Private Methods (Java 9)
+
+**Interfaces can include private methods.** They are **for internal use only** — helpers shared by the interface's default or static methods — and are **not accessible to, or overridable by, implementing classes**:
+
+```java
+interface Vehicle {
+    private void startEngine() {
+        System.out.println("Engine started.");
+    }
+
+    default void drive() {
+        startEngine();                       // private helper, called from a default method
+        System.out.println("Vehicle is now driving.");
+    }
+}
+
+class Car implements Vehicle { }
+
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.drive();
+        // car.startEngine();                // ✗ error: startEngine() has private access in Vehicle
+    }
+}
+```
+
+```text
+Engine started.
+Vehicle is now driving.
+```
+
+Private methods let several default methods **share code** without exposing that code as part of the interface's public contract.
+
+---
+
+## Extending Interfaces
+
+**One interface can inherit another using `extends`.** A class implementing the **child** interface must implement **all methods in the inheritance chain**:
+
+```java
+interface A {
+    void method1();
+    void method2();
+}
+
+interface B extends A {
+    void method3();
+}
+
+class GFG implements B {
+    public void method1() { System.out.println("Method 1"); }
+    public void method2() { System.out.println("Method 2"); }
+    public void method3() { System.out.println("Method 3"); }
+}
+```
+
+`GFG` implements `B`, so it must supply `method3()` **and** everything `B` inherited from `A`. A `GFG` object IS-A `B` and IS-A `A`.
+
+---
+
+## Summary Table
+
+| Feature | Behaviour |
+|---|---|
+| **Default methods** (Java 8) | Provide a **body**; **inherited** by implementing classes; **can be overridden** |
+| **Static methods** (Java 8) | Called via the **interface name**; **not inherited** |
+| **Functional interfaces** (Java 8) | **Exactly one abstract method**; usable with **lambdas** and method references |
+| **Private methods** (Java 9) | **Internal helper logic** for default/static methods; **not inherited, not overridable** |
+| **`extends` between interfaces** | The child interface **inherits all parent abstract methods** |
+
+---
+
+## Exercises (Week 10)
+
+<Reveal question="Exercise 1: Add a default method honk() to the Vehicle interface from Week 9 without breaking Bicycle or Bike.">
+```java
+interface Vehicle {
+    void changeGear(int a);
+    void speedUp(int a);
+    void applyBrakes(int a);
+
+    default void honk() {                  // new method WITH a body
+        System.out.println("Beep beep!");
+    }
+}
+```
+`Bicycle` and `Bike` compile **unchanged** — they inherit the default `honk()`. A class that wants a different sound (say, a `Truck`) simply overrides it: `@Override public void honk() { System.out.println("HOOONK!"); }`. Had `honk()` been **abstract**, both existing classes would fail to compile.
+</Reveal>
+
+<Reveal question="Exercise 2: A functional interface StringTransformer used with a lambda to convert a string to upper case.">
+```java
+@FunctionalInterface
+interface StringTransformer {
+    String transform(String s);
+}
+
+public class Main {
+    public static void main(String[] args) {
+        StringTransformer upper = s -> s.toUpperCase();
+        StringTransformer shout = s -> s.toUpperCase() + "!";
+        StringTransformer initials = s -> s.substring(0, 1);
+
+        System.out.println(upper.transform("university of ibadan"));   // UNIVERSITY OF IBADAN
+        System.out.println(shout.transform("cos 202"));                // COS 202!
+        System.out.println(initials.transform("Ayinla"));              // A
+    }
+}
+```
+`upper` could also be written with a method reference: `StringTransformer upper = String::toUpperCase;`
+</Reveal>
+
+<Reveal question="Exercise 3: Add a second private helper checkFuelLevel(), called from drive().">
+```java
+interface Vehicle {
+    private void startEngine() {
+        System.out.println("Engine started.");
+    }
+
+    private void checkFuelLevel() {
+        System.out.println("Fuel level OK.");
+    }
+
+    default void drive() {
+        checkFuelLevel();
+        startEngine();
+        System.out.println("Vehicle is now driving.");
+    }
+}
+```
+```text
+Fuel level OK.
+Engine started.
+Vehicle is now driving.
+```
+Both helpers stay hidden from `Car`; only `drive()` is part of the public contract.
+</Reveal>
+
+<Reveal question="Exercise 4: Chain interface A → B → C (adding method4) and implement C in one class.">
+```java
+interface A { void method1(); void method2(); }
+interface B extends A { void method3(); }
+interface C extends B { void method4(); }
+
+class AllMethods implements C {
+    public void method1() { System.out.println("Method 1"); }
+    public void method2() { System.out.println("Method 2"); }
+    public void method3() { System.out.println("Method 3"); }
+    public void method4() { System.out.println("Method 4"); }
+
+    public static void main(String[] args) {
+        A ref = new AllMethods();   // an AllMethods IS-A C, B and A
+        ref.method1();
+    }
+}
+```
+Implementing `C` means implementing **every** method from `A`, `B` and `C`.
+</Reveal>
+
+---
+
+## Check Your Understanding
+
+<MCQ question="Why were default methods added to Java interfaces?">
+<Option>To let interfaces have constructors.</Option>
+<Option correct>To add new methods to existing interfaces without breaking the classes that already implement them.</Option>
+<Option>To make interface methods private.</Option>
+<Option>To allow a class to extend two classes.</Option>
+<Explain>
+A new **abstract** method forces every implementing class to change; a **default** method supplies a body, so existing classes inherit it and keep compiling. That's how `forEach()` and `sort()` were added to the collection interfaces in Java 8.
+</Explain>
+</MCQ>
+
+<MCQ question="Which interface is a valid functional interface?">
+<Option>An interface with two abstract methods</Option>
+<Option correct>An interface with one abstract method and two default methods</Option>
+<Option>An interface with only default methods</Option>
+<Option>An interface with no methods</Option>
+<Explain>
+A functional interface needs **exactly one abstract method**; default, static and private methods **don't count**. So one abstract method plus any number of defaults is still functional — and can be implemented with a lambda.
+</Explain>
+</MCQ>
+
+<MCQ question="Given interface Util with static void help(), and class Tool implements Util, which call compiles?">
+<Option>new Tool().help();</Option>
+<Option>Tool.help();</Option>
+<Option correct>Util.help();</Option>
+<Option>super.help(); inside Tool</Option>
+<Explain>
+**Static interface methods are not inherited**; they can only be called through the **interface name**: `Util.help()`.
+</Explain>
+</MCQ>
+
+## Practice Questions
+
+<Reveal question="Explain default and static methods in interfaces, with an example of each.">
+A **default method** (Java 8) has a body in the interface (`default void display() { … }`); implementing classes **inherit** it and may **override** it — used to evolve interfaces without breaking implementers. A **static method** (Java 8) also has a body (`static void display() { … }`) but belongs to the interface itself: it's called as **`TestInterface.display()`** and is **not inherited** by implementing classes — used for helper/utility code.
+</Reveal>
+
+<Reveal question="What is a functional interface? Show how a lambda implements one.">
+An interface with **exactly one abstract method** (optionally annotated `@FunctionalInterface`), which can therefore be implemented by a **lambda expression** or method reference.
+```java
+@FunctionalInterface
+interface Calculator { int compute(int x, int y); }
+
+Calculator subtract = (x, y) -> x - y;
+System.out.println(subtract.compute(10, 4));   // 6
+```
+The lambda's parameters and body become the implementation of `compute`.
+</Reveal>
+
+<Reveal question="What is the purpose of private methods in interfaces?">
+Introduced in **Java 9**, private interface methods hold **internal helper code** shared by the interface's **default or static** methods, avoiding duplication. They are **not visible to implementing classes**, cannot be **overridden**, and are not part of the interface's public contract.
+</Reveal>
+
+<Takeaway>
+Java 8/9 modernised interfaces. **Default methods** (Java 8) have a body, are **inherited** and **overridable** — they let interfaces **evolve without breaking** existing implementers. **Static methods** (Java 8) are called via the **interface name** and are **not inherited**. A **functional interface** has **exactly one abstract method** (`@FunctionalInterface` recommended) and can be implemented by a **lambda** — `(x, y) -> x + y` — or a **method reference** (`String::toUpperCase`); built-ins include `Runnable`, `Supplier`, `Consumer`, `Predicate`, `Function` and `Comparator`. **Private methods** (Java 9) are **internal helpers** for default/static methods — not inherited or overridable. Interfaces **extend** interfaces; implementers must supply **every** method in the chain.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- The **summary table**: default, static, functional, private, extending interfaces — with versions
+- Code for each feature and its **output** (TestInterface, Vehicle `drive()`)
+- Writing a **functional interface** and a **lambda** (StringTransformer, Calculator)
+
+**Common mistakes:**
+- Calling a static interface method through the implementing class or an object
+- Calling an interface's private method from outside the interface
+- Declaring two abstract methods in a `@FunctionalInterface`
+
+**Likely question:**
+> "Discuss the enhancements made to Java interfaces in Java 8 and Java 9. Write a functional interface StringTransformer and use a lambda expression to convert a string to upper case. Explain why default methods were introduced." (15 marks)

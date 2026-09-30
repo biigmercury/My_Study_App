@@ -1,0 +1,714 @@
+---
+title: "Server-Side PHP II: Control Structures, Functions and Arrays"
+description: "Making decisions with if, elseif, else and switch; repeating work with for, while, do-while and foreach; indexed, associative and multidimensional arrays with the most useful array functions; strings and string functions; writing functions with parameters, defaults and return values; variable scope; and reusing code with include and require — all runnable in the browser."
+duration: "55 min"
+difficulty: "intermediate"
+---
+
+## Conditional Statements
+
+**Conditional statements allow programs to make decisions.** PHP runs a block of code only if a condition is `true`.
+
+<Tabs>
+<Tab label="if">
+
+```php
+$age = 20;
+if ($age >= 18) {
+    echo "Adult";
+}
+```
+
+Runs the block **only when** the condition is true; otherwise nothing happens.
+
+</Tab>
+<Tab label="if…else">
+
+```php
+$age = 16;
+if ($age >= 18) {
+    echo "Adult";
+} else {
+    echo "Minor";
+}
+```
+
+**Exactly one** of the two blocks runs.
+
+</Tab>
+<Tab label="if…elseif…else">
+
+```php
+$score = 75;
+if ($score >= 70) {
+    echo "A";
+} elseif ($score >= 60) {
+    echo "B";
+} elseif ($score >= 50) {
+    echo "C";
+} else {
+    echo "F";
+}
+```
+
+Conditions are checked **from top to bottom**, and **the first true one wins** — so 75 prints **A** even though 75 is also ≥ 60. That's why the **highest** grade boundary must come **first**.
+
+</Tab>
+</Tabs>
+
+> **PHP writes `elseif` as one word** (`else if` with a space also works). JavaScript uses `else if`.
+
+### Practice 3: Grade Calculator
+
+The course's grading scale: **70–100 = A, 60–69 = B, 50–59 = C, 45–49 = D, 40–44 = E, 0–39 = F**. This version reads the score from the **URL** — after running it, **edit the address bar to `index.php?score=47`** and press **Go**, then try other scores (and a score like `130` or `abc`):
+
+<PhpPlayground title="Practice 3 — grade calculator">
+
+```php
+<?php
+// Read ?score=… from the URL; use 75 if none was given
+$score = $_GET["score"] ?? 75;
+
+if (!is_numeric($score) || $score < 0 || $score > 100) {
+    echo "Please enter a score between 0 and 100.";
+} elseif ($score >= 70) {
+    $grade = "A";
+} elseif ($score >= 60) {
+    $grade = "B";
+} elseif ($score >= 50) {
+    $grade = "C";
+} elseif ($score >= 45) {
+    $grade = "D";
+} elseif ($score >= 40) {
+    $grade = "E";
+} else {
+    $grade = "F";
+}
+
+if (isset($grade)) {
+    echo "<h2>Score: $score</h2>";
+    echo "<p>Grade: <strong>$grade</strong></p>";
+}
+```
+
+</PhpPlayground>
+
+`$_GET["score"] ?? 75` uses the **null coalescing operator `??`**: *use the left value if it exists and isn't null, otherwise the right one*. You'll use `$_GET` and `$_POST` properly in the next lesson.
+
+---
+
+## The switch Statement
+
+**A `switch` compares one value against several possible values.** It's neater than a long `if…elseif` chain when you test the **same variable** for **exact matches**:
+
+```php
+$day = "Monday";
+switch ($day) {
+    case "Monday":
+        echo "Start of the week";
+        break;
+    case "Friday":
+        echo "Almost weekend";
+        break;
+    default:
+        echo "Regular day";
+}
+```
+
+- **`break` prevents execution from continuing into the next case.** Without it, PHP "falls through" and runs the following cases too.
+- **`default`** runs when no case matches (like `else`).
+
+<PhpPlayground title="switch — and what happens without break">
+
+```php
+<?php
+$day = "Monday";
+
+switch ($day) {
+    case "Monday":
+        echo "Start of the week<br>";
+        break;
+    case "Friday":
+        echo "Almost weekend<br>";
+        break;
+    default:
+        echo "Regular day<br>";
+}
+
+echo "<hr>Now without the breaks:<br>";
+switch ($day) {
+    case "Monday":
+        echo "Start of the week<br>";
+    case "Friday":
+        echo "Almost weekend<br>";
+    default:
+        echo "Regular day<br>";
+}
+```
+
+</PhpPlayground>
+
+Grouped cases are a deliberate use of fall-through: `case "Saturday": case "Sunday": echo "Weekend"; break;`
+
+> **PHP 8 `match`** is a stricter, shorter alternative that returns a value and needs no `break`:
+> `$msg = match($day) { "Monday" => "Start of the week", "Friday" => "Almost weekend", default => "Regular day" };`
+
+---
+
+## Loops
+
+**Loops allow a block of code to execute repeatedly.**
+
+| Loop | Use when… | Runs at least once? |
+|---|---|---|
+| **`for`** | **the number of repetitions is known** | No |
+| **`while`** | you repeat **while a condition is true** | No |
+| **`do…while`** | the body must run **at least once** | **Yes** |
+| **`foreach`** | you visit **every element of an array** | — |
+
+<Tabs>
+<Tab label="for">
+
+```php
+for ($i = 1; $i <= 5; $i++) {
+    echo $i . "<br>";
+}
+// 1 2 3 4 5
+```
+
+**Start** (`$i = 1`) → **condition** checked before each pass (`$i <= 5`) → **update** after each pass (`$i++`).
+
+</Tab>
+<Tab label="while">
+
+```php
+$i = 1;
+while ($i <= 5) {
+    echo $i . "<br>";
+    $i++;            // forget this and the loop never ends!
+}
+```
+
+</Tab>
+<Tab label="do…while">
+
+```php
+$i = 1;
+do {
+    echo $i . "<br>";
+    $i++;
+} while ($i <= 5);
+```
+
+The condition is checked **after** the body, so it **executes at least once** — even if `$i` started at 10.
+
+</Tab>
+<Tab label="foreach">
+
+```php
+$courses = ["HTML", "CSS", "PHP"];
+foreach ($courses as $course) {
+    echo $course . "<br>";
+}
+
+// With keys:
+foreach ($courses as $index => $course) {
+    echo ($index + 1) . ". $course<br>";
+}
+```
+
+**Especially useful for arrays** — no counter to manage.
+
+</Tab>
+</Tabs>
+
+**`break`** leaves a loop early; **`continue`** skips to the next pass.
+
+### Practice 4: Display Courses
+
+**Create an array of five courses and use `foreach` to display them as a list:**
+
+<PhpPlayground title="Practice 4 — loops">
+
+```php
+<?php
+$courses = ["IFT 302", "INS 204", "INS 202", "COS 202", "CSC 272"];
+
+echo "<h3>My courses (foreach)</h3><ol>";
+foreach ($courses as $course) {
+    echo "<li>$course</li>";
+}
+echo "</ol>";
+
+echo "<h3>Multiplication table (for)</h3>";
+for ($i = 1; $i <= 5; $i++) {
+    echo "7 × $i = " . (7 * $i) . "<br>";
+}
+
+echo "<h3>do…while runs once even though the condition is false</h3>";
+$n = 10;
+do {
+    echo "n is $n<br>";
+    $n++;
+} while ($n <= 5);
+```
+
+</PhpPlayground>
+
+---
+
+## PHP Arrays
+
+**An array stores multiple values in a single variable.** PHP has three kinds.
+
+### 1. Indexed Arrays
+
+**Each item has a numerical index, starting from 0:**
+
+```php
+$students = ["Ada", "John", "Mary"];
+echo $students[0];     // Ada
+echo $students[2];     // Mary
+```
+
+### 2. Associative Arrays
+
+**Associative arrays use named keys** instead of numbers — written `"key" => value`:
+
+```php
+$student = [
+    "name" => "Ada",
+    "age" => 21,
+    "department" => "Computer Science"
+];
+echo $student["name"];     // Ada
+```
+
+They're like a record: perfect for one student, one product, one form submission.
+
+### 3. Multidimensional Arrays
+
+**A multidimensional array contains other arrays** — for example, a list of students where each student is an associative array (just like rows from a database table):
+
+```php
+$students = [
+    ["name" => "Ada", "department" => "Computer Science"],
+    ["name" => "John", "department" => "ICT"]
+];
+echo $students[0]["name"];     // Ada  — first row, "name" column
+```
+
+### Useful Array Functions
+
+| Function | Does | Example |
+|---|---|---|
+| `count($a)` | **Counts** the items | `count($courses)` → 5 |
+| `$a[] = x` | **Adds** an item to the end | `$courses[] = "MySQL";` |
+| `array_push($a, x)` | Also adds to the end | `array_push($courses, "Git");` |
+| `sort($a)` / `rsort($a)` | **Sorts** values ascending / descending (re-numbers keys) | `sort($courses);` |
+| `asort($a)` / `ksort($a)` | Sorts an associative array **by value / by key**, keeping pairs together | `ksort($student);` |
+| `in_array(x, $a)` | **Searches**: is `x` in the array? | `in_array("PHP", $courses)` → true/false |
+| `array_keys($a)` | List of the keys | `array_keys($student)` |
+| `implode(", ", $a)` | Joins items into one **string** | `"HTML, CSS, PHP"` |
+| `explode(",", $s)` | Splits a **string** into an array | `explode(",", "a,b,c")` |
+| `print_r($a)` | Prints the whole array readably (debugging) | wrap in `<pre>` |
+
+<PhpPlayground title="Arrays — indexed, associative, multidimensional">
+
+```php
+<?php
+// Indexed
+$courses = ["PHP", "HTML", "CSS", "JavaScript"];
+$courses[] = "MySQL";                       // add one
+echo "Number of courses: " . count($courses) . "<br>";
+sort($courses);
+echo "Sorted: " . implode(", ", $courses) . "<br>";
+echo in_array("PHP", $courses) ? "PHP is offered<br>" : "No PHP<br>";
+
+// Associative
+$student = ["name" => "Ada", "age" => 21, "department" => "Computer Science"];
+foreach ($student as $key => $value) {
+    echo ucfirst($key) . ": $value<br>";
+}
+
+// Multidimensional — displayed as an HTML table
+$students = [
+    ["name" => "Ada",  "department" => "Computer Science", "level" => 300],
+    ["name" => "John", "department" => "ICT",              "level" => 200],
+    ["name" => "Mary", "department" => "Software Eng.",    "level" => 400],
+];
+echo "<table border='1' cellpadding='6'><tr><th>Name</th><th>Department</th><th>Level</th></tr>";
+foreach ($students as $s) {
+    echo "<tr><td>{$s['name']}</td><td>{$s['department']}</td><td>{$s['level']}</td></tr>";
+}
+echo "</table>";
+
+echo "<pre>";
+print_r($student);
+echo "</pre>";
+```
+
+</PhpPlayground>
+
+Notice **`{$s['name']}`** — inside double quotes, wrap array elements in **curly braces** so PHP knows where the variable ends.
+
+<MCQ question="Given $fruits = ['mango', 'orange', 'pawpaw']; what does echo $fruits[1]; print?">
+<Option>mango</Option>
+<Option correct>orange</Option>
+<Option>pawpaw</Option>
+<Option>An error: there is no item 1</Option>
+<Explain>
+**Array indexes start from 0**, so `$fruits[0]` is mango, **`$fruits[1]` is orange** and `$fruits[2]` is pawpaw.
+</Explain>
+</MCQ>
+
+---
+
+## PHP Strings
+
+**A string is a sequence of characters**, written in **single** or **double** quotes:
+
+| | Single quotes `'…'` | Double quotes `"…"` |
+|---|---|---|
+| Variables inside | **Printed literally**: `'Hi $name'` → `Hi $name` | **Replaced by their value** (interpolation): `"Hi $name"` → `Hi Ada` |
+| Escapes like `\n`, `\t` | Not processed | Processed |
+| Use for | Fixed text | Text containing variables |
+
+**Concatenation** — the **dot (`.`) operator joins strings**:
+
+```php
+$firstName = "John";
+$lastName = "Smith";
+echo $firstName . " " . $lastName;     // John Smith
+```
+
+**Interpolation** — **double-quoted strings can directly contain variables**:
+
+```php
+$name = "John";
+echo "Welcome $name";                  // Welcome John
+```
+
+### Useful String Functions
+
+| Function | Result |
+|---|---|
+| `strlen("Hello")` | **5** — the length |
+| `strtoupper("hello")` | **HELLO** |
+| `strtolower("HELLO")` | **hello** |
+| `ucfirst("ada")` / `ucwords("ada obi")` | **Ada** / **Ada Obi** |
+| `trim("  Ada  ")` | **"Ada"** — removes surrounding whitespace |
+| `str_replace("PHP", "JavaScript", $text)` | Replaces every "PHP" with "JavaScript" |
+| `strpos($text, "PHP")` | Position of the first "PHP" (or `false`) |
+| `str_contains($text, "PHP")` | **true/false** (PHP 8) |
+| `substr("Ibadan", 0, 3)` | **"Iba"** — part of a string |
+| `number_format(2500.5, 2)` | **"2,500.50"** — great for money |
+
+<PhpPlayground title="Strings">
+
+```php
+<?php
+$first = "ada";
+$last = "obi";
+$text = "  I love PHP. PHP runs on the server.  ";
+
+echo "Full name: " . ucfirst($first) . " " . ucfirst($last) . "<br>";
+echo "Double quotes: Welcome $first<br>";
+echo 'Single quotes: Welcome $first<br>';
+echo "Length of 'Ibadan': " . strlen("Ibadan") . "<br>";
+echo "Upper: " . strtoupper($first) . "<br>";
+echo "Trimmed: [" . trim($text) . "]<br>";
+echo "Replaced: " . str_replace("PHP", "JavaScript", trim($text)) . "<br>";
+echo "First 3 letters: " . substr("Ibadan", 0, 3) . "<br>";
+echo "Fees: ₦" . number_format(185000.5, 2) . "<br>";
+echo str_contains($text, "server") ? "Mentions the server" : "No server";
+```
+
+</PhpPlayground>
+
+---
+
+## PHP Functions
+
+**A function is a reusable block of code that performs a particular task.** PHP has **thousands of built-in functions** (`strlen`, `count`, `date`…) and lets you write your own.
+
+<Tabs>
+<Tab label="Basic">
+
+```php
+function greet() {
+    echo "Welcome to PHP!";
+}
+greet();          // call it
+```
+
+</Tab>
+<Tab label="Parameters">
+
+**Parameters allow information to be passed into a function:**
+
+```php
+function greet($name) {
+    echo "Welcome " . $name;
+}
+greet("Ada");     // Welcome Ada
+```
+
+A parameter can have a **default value**, used when no argument is given:
+
+```php
+function greet($name = "Student") {
+    echo "Welcome $name";
+}
+greet();          // Welcome Student
+```
+
+</Tab>
+<Tab label="Return values">
+
+**A function can return a result** to the code that called it:
+
+```php
+function add($a, $b) {
+    return $a + $b;
+}
+$result = add(10, 5);
+echo $result;     // 15
+```
+
+`return` **ends the function** and hands back the value. **Returning** is more flexible than **echoing** — the caller decides what to do with the result (store it, add it, print it).
+
+</Tab>
+<Tab label="Type declarations">
+
+Modern PHP lets you declare parameter and return **types**:
+
+```php
+function add(int $a, int $b): int {
+    return $a + $b;
+}
+```
+
+Passing something that can't be converted to `int` then raises an error — catching bugs early.
+
+</Tab>
+</Tabs>
+
+### Variable Scope
+
+Variables created **inside** a function are **local** — they don't exist outside it — and a function **can't see** variables from outside unless they're passed in as parameters:
+
+```php
+$rate = 0.075;
+function vat($amount) {
+    return $amount * $rate;     // ✗ Warning: Undefined variable $rate
+}
+```
+
+Fix: pass it in — `function vat($amount, $rate) { … }` — or declare `global $rate;` inside the function (passing is cleaner).
+
+### Practice 5: Create Functions
+
+The course asks for three functions: **area of a rectangle**, **whether a number is even**, and **Celsius to Fahrenheit** ($F = C \times \frac{9}{5} + 32$):
+
+<PhpPlayground title="Practice 5 — your own functions">
+
+```php
+<?php
+function rectangleArea($length, $width) {
+    return $length * $width;
+}
+
+function isEven($number) {
+    return $number % 2 === 0;
+}
+
+function celsiusToFahrenheit($c) {
+    return $c * 9 / 5 + 32;
+}
+
+echo "Area of a 12 × 5 rectangle: " . rectangleArea(12, 5) . "<br>";
+
+foreach ([4, 7, 10] as $n) {
+    echo "$n is " . (isEven($n) ? "even" : "odd") . "<br>";
+}
+
+echo "37°C = " . celsiusToFahrenheit(37) . "°F<br>";
+echo "100°C = " . celsiusToFahrenheit(100) . "°F";
+```
+
+</PhpPlayground>
+
+`isEven(...) ? "even" : "odd"` is the **ternary operator**: *condition ? value-if-true : value-if-false*.
+
+---
+
+## Including Other PHP Files
+
+**Large applications should not put everything in one file.** PHP lets you reuse code with **`include`** and **`require`**, which **insert the contents of another file** at that point:
+
+```php
+include "header.php";
+```
+
+A common structure:
+
+```text
+website/
+├── index.php
+├── about.php
+├── header.php     ← shared top of every page (logo, menu)
+├── footer.php     ← shared bottom of every page
+└── style.css
+```
+
+Change the menu once in `header.php` and **every page updates** — the same idea as an external stylesheet.
+
+### include vs require
+
+**Both include another PHP file. The difference is how they handle failure:**
+
+| | `include` | `require` |
+|---|---|---|
+| File missing | **Warning** — **execution continues** | **Fatal error** — **the script stops** |
+| Use for | Optional parts (a sidebar, an advert) | **Essential files** — **configuration**, database connection |
+
+`include_once` and `require_once` do the same but **skip the file if it was already included** — this prevents "cannot redeclare function" errors when several files include the same functions file.
+
+This playground is a small **multi-page site**. Look at each file's tab, **Run**, then **click the links in the result** — each page is built from the shared header and footer. Then change the menu in `header.php`, Run again, and visit both pages:
+
+<PhpPlayground title="A multi-page site with include and require" height="280">
+
+```php
+<?php // file: index.php
+$pageTitle = "Home";
+require "header.php";
+?>
+<h2>Welcome to UI Tech Hub</h2>
+<p>We teach web development with HTML, CSS, JavaScript and PHP.</p>
+<?php include "footer.php"; ?>
+```
+
+```php
+<?php // file: about.php
+$pageTitle = "About us";
+require "header.php";
+?>
+<h2>About Us</h2>
+<p>Founded by students of the Department of ICT.</p>
+<?php include "footer.php"; ?>
+```
+
+```php
+<?php // file: header.php ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title><?= $pageTitle ?> | UI Tech Hub</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; }
+    nav { background: #1e3a8a; padding: 10px; }
+    nav a { color: white; margin-right: 14px; }
+    main { padding: 12px; }
+    footer { color: #64748b; font-size: 13px; padding: 12px; border-top: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+<nav><a href="index.php">Home</a><a href="about.php">About</a></nav>
+<main>
+```
+
+```php
+<?php // file: footer.php ?>
+</main>
+<footer>&copy; <?= date("Y") ?> UI Tech Hub — page: <?= $pageTitle ?></footer>
+</body>
+</html>
+```
+
+</PhpPlayground>
+
+**Experiment:** in `about.php`, change `require "header.php";` to `require "headr.php";` (a typo) and visit About — **fatal error, nothing else prints**. Change it to `include "headr.php";` — a **warning**, but the rest of the page still appears.
+
+<MCQ question="A page must not run at all if config.php (which holds the database settings) is missing. Which statement should load it?">
+<Option>include "config.php";</Option>
+<Option correct>require "config.php";</Option>
+<Option>include_once "config.php"; because it is safer</Option>
+<Option>echo "config.php";</Option>
+<Explain>
+**`require`** stops the script with a **fatal error** if the file can't be loaded — right for **essential** files such as configuration. `include` only warns and carries on, which could leave the page running without database settings. (`require_once` would also be a good choice.)
+</Explain>
+</MCQ>
+
+---
+
+## Practice Questions
+
+<Reveal question="Write a PHP program that determines whether a number is even or odd.">
+```php
+<?php
+$number = 17;
+if ($number % 2 === 0) {
+    echo "$number is even";
+} else {
+    echo "$number is odd";
+}
+```
+The **modulus** operator `%` gives the remainder after division by 2: 0 means even.
+</Reveal>
+
+<Reveal question="Differentiate between for, while and do…while loops.">
+**`for`** is used when the **number of repetitions is known** — start, condition and update are written together. **`while`** repeats **while a condition is true**, checking **before** each pass (it may run zero times). **`do…while`** checks **after** each pass, so its body **always runs at least once**.
+</Reveal>
+
+<Reveal question="What is an associative array? Create one for a student and display the values.">
+An associative array stores values under **named keys** instead of numeric indexes.
+```php
+<?php
+$student = ["name" => "Ada", "age" => 21, "department" => "ICT", "level" => 300];
+foreach ($student as $key => $value) {
+    echo "$key: $value<br>";
+}
+```
+</Reveal>
+
+<Reveal question="Explain the purpose of functions in PHP and write one that returns the area of a rectangle.">
+Functions **group code into reusable, named blocks**, so the same task isn't rewritten (DRY), programs are **easier to read, test and maintain**, and values can be passed in (**parameters**) and returned.
+```php
+function rectangleArea($length, $width) {
+    return $length * $width;
+}
+echo rectangleArea(12, 5);   // 60
+```
+</Reveal>
+
+<Reveal question="Differentiate between include and require.">
+Both **insert another file's code**. If the file can't be loaded, **`include` gives a warning and the script continues**, while **`require` gives a fatal error and the script stops**. Use `require` for essential files (configuration, database connection) and `include` for optional parts. The `_once` variants load a file only once.
+</Reveal>
+
+<Reveal question="What does the break statement do in a switch, and what happens without it?">
+`break` **ends the switch** once a matching case has run. Without it, execution **falls through** into the following cases and runs their code too, until a `break` or the end of the switch.
+</Reveal>
+
+<Takeaway>
+**Decisions:** `if`, `if…else`, `if…elseif…else` (first true condition wins — put the highest boundary first); **`switch`** compares one value against exact cases (**`break`** stops fall-through; `default` catches the rest). **Loops:** `for` (known count), `while` (condition first), `do…while` (**runs at least once**), `foreach` (every array element, optionally `$key => $value`). **Arrays:** **indexed** (from **0**), **associative** (`"key" => value`), **multidimensional** (arrays of arrays, like table rows); key functions `count`, `[]=`, `sort`, `in_array`, `implode`/`explode`, `print_r`. **Strings:** `.` joins; **double quotes interpolate**, single quotes don't; `strlen`, `strtoupper`, `trim`, `str_replace`, `substr`, `number_format`. **Functions:** `function name($param = default) { return …; }` — variables inside are **local**. **`include`** warns and continues; **`require`** stops with a fatal error — use it for essential files.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Writing **if…elseif…else** (grade calculator — the course's own scale), **switch**, and each **loop**
+- Differences between the loops; the role of `break`
+- The **three kinds of arrays** with examples; common array functions
+- String concatenation vs interpolation; common string functions
+- Writing functions with parameters and return values (area, even/odd, temperature conversion)
+- **include vs require**
+
+**Common mistakes:**
+- Grade boundaries in the wrong order (`>= 50` checked before `>= 70`)
+- Forgetting `$i++` in a `while` loop (infinite loop)
+- Starting array indexes at 1
+- Writing `echo` inside a function that should `return` a value
+
+**Likely question:**
+> "Write a PHP function that accepts a student's score and returns the grade using the scale 70–100 A, 60–69 B, 50–59 C, 45–49 D, 40–44 E, 0–39 F. Use it with a foreach loop to display the grades of five students stored in an associative array." (15 marks)

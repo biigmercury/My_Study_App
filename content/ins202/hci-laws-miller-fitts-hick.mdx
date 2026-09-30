@@ -1,0 +1,200 @@
+---
+title: "HCI Laws: Miller's 7±2, Fitts's Law and Hick's Law"
+description: "The quantitative side of HCI: cognitive load, Miller's Law and chunking, Fitts's Law for predicting how long it takes to hit a target, and Hick's Law for predicting how long it takes to choose — with the lecture's worked examples, an interactive calculator and a summary of design implications."
+duration: "50 min"
+difficulty: "advanced"
+---
+
+## The Laws Are Computable
+
+Most design advice sounds like opinion: "make the button bigger", "don't show too many options". This topic shows that some of it can be **calculated**. Three classic models — **Miller's Law, Fitts's Law and Hick's Law** — together with **cognitive load theory** let you **predict, not just guess**, how a design choice affects human performance.
+
+---
+
+## 3.7 Cognitive Load
+
+> **Cognitive load** is the **total amount of mental effort being used in working memory** (Sweller, 1988).
+
+Interfaces with **excessive simultaneous information** — many open windows, cluttered dashboards — **increase cognitive load and degrade performance**, especially **under time pressure**.
+
+**Application:** a **hospital dashboard showing only the relevant patient vitals** minimises cognitive load during emergencies. Everything else (billing, admin notes) can wait on another screen.
+
+---
+
+## Miller's Law: The Magical Number 7 ± 2
+
+> People can typically hold about **seven (ranging from five to nine) discrete items** in short-term memory at once. *(Miller, 1956)*
+
+**Design rule:** **group menu items into chunks of 5–9 options** rather than a flat list of twenty — beyond this range, **recall accuracy drops sharply**.
+
+### Chunking
+
+**Chunking** means grouping individual items into meaningful units so they take up fewer "slots" in working memory.
+
+| Unchunked | Chunked |
+|---|---|
+| 08031234567 | 0803 123 4567 |
+| 0123456789 (account number) | 012 345 6789 |
+| A flat list of 20 menu items | 4 categories of about 5 items each |
+
+<Analogy>
+Try remembering **"N-N-P-C-B-V-N-J-A-M-B"** — eleven letters, hard. Now try **"NNPC, BVN, JAMB"** — three familiar chunks, easy. The information is identical; chunking made it fit in working memory. That's why ATM menus group options into a few categories instead of listing every transaction at once.
+</Analogy>
+
+<ExamTip>
+**Careful with Miller's Law:** it describes the capacity of **short-term memory**, not a rule that every menu must have exactly seven items. Its practical lesson is **"keep simultaneous items few and chunked"**. (Later research — e.g., Cowan, 2001 — suggests the true limit may be closer to **about four chunks**, which only strengthens the advice.)
+</ExamTip>
+
+---
+
+## Fitts's Law: Predicting Selection Time
+
+Fitts's Law (Fitts, 1954) predicts **how long it takes to move to and select a target**, based on its **distance** and **size**:
+
+$$
+T = a + b \times \log_2\!\left(\frac{2D}{W}\right)
+$$
+
+| Symbol | Meaning |
+|---|---|
+| $T$ | Time to select the target |
+| $D$ | **Distance** to the target |
+| $W$ | **Width** (size) of the target |
+| $a$, $b$ | Empirical constants (measured for a device and user group) |
+
+The logarithm term, $\log_2(2D/W)$, is called the **index of difficulty** (in bits): **far and small = hard; near and large = easy**.
+
+### Worked Example (from the lecture)
+
+Two "Confirm Purchase" buttons, each **200 px** away. Constants: $a = 50$ ms, $b = 150$ ms.
+
+<Step step="1" title="Button A — 100 px wide">
+$T = 50 + 150 \times \log_2(2 \times 200 / 100) = 50 + 150 \times \log_2(4) = 50 + 150 \times 2 =$ **350 ms**
+</Step>
+
+<Step step="2" title="Button B — 20 px wide">
+$T = 50 + 150 \times \log_2(2 \times 200 / 20) = 50 + 150 \times \log_2(20) \approx 50 + 150 \times 4.32 \approx$ **698 ms**
+</Step>
+
+<Step step="3" title="Interpret">
+**Button B is roughly twice as slow** — and more error-prone — **purely because it is smaller**. **Critical buttons** (checkout, emergency call, "Send") should be **large and easily reachable**.
+</Step>
+
+**Design implications of Fitts's Law:**
+- Make **important targets big**.
+- Put frequently used targets **close** to where the pointer or thumb already is.
+- **Screen edges and corners** are fast targets on desktops (the pointer stops there, acting like infinite width).
+- On phones, keep key actions within **thumb reach** at the bottom of the screen.
+
+---
+
+## Hick's Law: Predicting Decision Time
+
+Hick's Law (Hick, 1952) predicts **how long it takes to decide** among a number of choices:
+
+$$
+T = b \times \log_2(n + 1)
+$$
+
+| Symbol | Meaning |
+|---|---|
+| $T$ | Decision time |
+| $n$ | Number of **choices** |
+| $b$ | Empirical constant |
+
+### Worked Example (from the lecture)
+
+A **hospital check-in kiosk**, $b = 200$ ms.
+
+<Step step="1" title="4 choices at check-in">
+$T = 200 \times \log_2(4 + 1) = 200 \times \log_2(5) \approx 200 \times 2.32 \approx$ **464 ms**
+</Step>
+
+<Step step="2" title="16 choices at once">
+$T = 200 \times \log_2(16 + 1) = 200 \times \log_2(17) \approx 200 \times 4.09 \approx$ **818 ms** *(with more decimals, $\log_2 17 = 4.087$, giving 817 ms — the calculator below shows this unrounded value)*
+</Step>
+
+<Step step="3" title="Interpret">
+Four times as many choices nearly **doubles** the decision time. Because the growth is **logarithmic**, the fix is not to delete features but to **reduce simultaneous choices** — group them into **hierarchical menus** so users make a few small decisions instead of one big one.
+</Step>
+
+---
+
+## Try It: Fitts's and Hick's Law Calculator
+
+Use the presets to reproduce the worked examples, then experiment — what width would Button B need to match Button A? What happens with 64 choices?
+
+<FittsHickCalculator />
+
+---
+
+## Table 3.1 — Summary of Cognitive Limitation Models
+
+| Model | What it predicts | Design implication | Example |
+|---|---|---|---|
+| **Miller's Law (7 ± 2)** | Working-memory capacity for discrete items | Group menu options into chunks of 5–9 | ATM transaction menu categories |
+| **Fitts's Law** | Time to select a target from its **distance and size** | Make critical buttons **large and close** | "Confirm Purchase" button sizing |
+| **Hick's Law** | Decision time from the **number of choices** | **Reduce simultaneous choices**; use hierarchical menus | Airport kiosk service selection |
+| **Cognitive Load Theory** | Total working-memory demand of a task | **Minimise simultaneous on-screen information** | Hospital dashboard: relevant vitals only |
+
+**Two contrasting examples:**
+- **Airport kiosk:** presenting too many options at once (language, seat class, baggage, boarding-pass type) **exceeds Miller's chunking limits and Hick's decision-time predictions**.
+- **Google homepage:** a **single, large search box** with minimal other choices deliberately **minimises Hick's Law decision time** — and the big box is an easy **Fitts's Law** target.
+
+---
+
+## Class Activity: Measure an App
+
+<Reveal question="Class activity: pick an app with a small button and a long menu. Using a = 50 ms, b = 150 ms (Fitts) and b = 200 ms (Hick), calculate the times, then redesign. Here is a worked model answer.">
+**Current design:** a "Buy Data" button **24 px** wide, **300 px** from the thumb's resting point; a plans menu with **15** options.
+- **Fitts:** $T = 50 + 150 \times \log_2(600/24) = 50 + 150 \times \log_2(25) \approx 50 + 150 \times 4.64 \approx$ **746 ms**.
+- **Hick:** $T = 200 \times \log_2(16) = 200 \times 4 =$ **800 ms**.
+
+**Redesign:** enlarge the button to **96 px** and move it to **150 px** away (bottom of the screen); group plans into **3 categories** (Daily, Weekly, Monthly) of about 5 each.
+- **Fitts:** $T = 50 + 150 \times \log_2(300/96) \approx 50 + 150 \times 1.64 \approx$ **296 ms**.
+- **Hick:** two small decisions — $200 \times \log_2(4) = 400$ ms to pick a category, then $200 \times \log_2(6) \approx 517$ ms to pick a plan — each far easier to scan and remember than one list of 15, and within Miller's 5–9 range.
+</Reveal>
+
+---
+
+## Practice Questions
+
+<Reveal question="State Fitts's Law and explain the effect of halving a button's width.">
+$T = a + b \log_2(2D/W)$. Halving $W$ doubles $2D/W$, which **adds exactly 1 bit** to the index of difficulty, so selection time increases by $b$ milliseconds (150 ms in the lecture's example). Smaller targets are slower and more error-prone.
+</Reveal>
+
+<Reveal question="Using Hick's Law with b = 200 ms, find the decision time for 7 choices.">
+$T = 200 \times \log_2(7 + 1) = 200 \times \log_2(8) = 200 \times 3 =$ **600 ms**.
+</Reveal>
+
+<Reveal question="A button is 300 px away and 50 px wide. With a = 50 ms and b = 150 ms, what is the selection time?">
+$2D/W = 600/50 = 12$; $\log_2(12) \approx 3.585$; $T = 50 + 150 \times 3.585 \approx$ **588 ms**.
+</Reveal>
+
+<Reveal question="What does Miller's Law state, and how should it influence menu design?">
+People can hold about **7 ± 2** discrete items in short-term memory (Miller, 1956). Menus should present options in **chunks of about 5–9**, grouping long lists into categories so users don't have to hold too much in mind.
+</Reveal>
+
+<Reveal question="Are Fitts's and Hick's Laws equally applicable to voice and gesture interfaces?">
+**Hick's Law applies strongly to voice** — spoken menus ("Press 1 for…") make choices even harder because users must also *remember* them, so keep voice menus very short. **Fitts's Law doesn't apply directly to voice** (there's no target to point at), but it **does apply to gestures** that aim at targets (tapping, pointing in AR/VR) — larger, closer gesture targets are faster. Free-form gestures (swipes) depend more on learnability and recall than on target size.
+</Reveal>
+
+<Takeaway>
+Human performance can be **predicted**. **Cognitive load** is the total demand on working memory — minimise simultaneous information. **Miller's Law (7 ± 2)** limits how many items people hold at once — **chunk** options into groups of 5–9. **Fitts's Law**, $T = a + b\log_2(2D/W)$, says **small, distant targets are slow** — make critical buttons **large and close** (100 px: 350 ms vs 20 px: 698 ms). **Hick's Law**, $T = b\log_2(n+1)$, says **more choices take longer** — reduce simultaneous options and use hierarchical menus (4 choices: 464 ms vs 16: 818 ms).
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Define cognitive load and Miller's Law
+- **Calculate** Fitts's and Hick's Law times (show every step)
+- Interpret the results as design recommendations
+- Table 3.1: which law predicts what, and the design implication of each
+
+**Common mistakes:**
+- Using $\log_2(D/W)$ instead of $\log_2(2D/W)$ in the course's version of Fitts's Law
+- Forgetting the **+1** in Hick's Law: $\log_2(n+1)$
+- Using natural log or $\log_{10}$ instead of $\log_2$ — on a calculator, $\log_2 x = \log x \div \log 2$
+
+**Likely question:**
+> "State Fitts's Law and Hick's Law. A 'Pay Now' button is 240 px from the user's thumb; calculate its selection time when it is 30 px and when it is 120 px wide (a = 50 ms, b = 150 ms), and advise the designer." (15 marks)

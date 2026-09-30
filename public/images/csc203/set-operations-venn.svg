@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 560" width="720" height="560" font-family="Arial, Helvetica, sans-serif">
+  <rect width="720" height="560" fill="#ffffff"/>
+  <defs>
+    <!-- circle positions are relative to each panel's origin (translate) -->
+    <clipPath id="inB"><circle cx="210" cy="150" r="72"/></clipPath>
+    <mask id="aMinusB">
+      <rect x="0" y="0" width="360" height="280" fill="black"/>
+      <circle cx="150" cy="150" r="72" fill="white"/>
+      <circle cx="210" cy="150" r="72" fill="black"/>
+    </mask>
+    <mask id="notA">
+      <rect x="0" y="0" width="360" height="280" fill="black"/>
+      <rect x="30" y="50" width="300" height="200" fill="white"/>
+      <circle cx="150" cy="150" r="72" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- Panel 1: union -->
+  <g transform="translate(0,0)">
+    <text x="180" y="34" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">Union  A ∪ B</text>
+    <rect x="30" y="50" width="300" height="200" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="150" cy="150" r="72" fill="#60a5fa"/>
+    <circle cx="210" cy="150" r="72" fill="#60a5fa"/>
+    <circle cx="150" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+    <circle cx="210" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+  </g>
+
+  <!-- Panel 2: intersection -->
+  <g transform="translate(360,0)">
+    <text x="180" y="34" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">Intersection  A ∩ B</text>
+    <rect x="30" y="50" width="300" height="200" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="150" cy="150" r="72" fill="#60a5fa" clip-path="url(#inB)"/>
+    <circle cx="150" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+    <circle cx="210" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+  </g>
+
+  <!-- Panel 3: difference -->
+  <g transform="translate(0,280)">
+    <text x="180" y="34" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">Difference  A − B</text>
+    <rect x="30" y="50" width="300" height="200" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <rect x="0" y="0" width="360" height="280" fill="#60a5fa" mask="url(#aMinusB)"/>
+    <circle cx="150" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+    <circle cx="210" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+  </g>
+
+  <!-- Panel 4: complement -->
+  <g transform="translate(360,280)">
+    <text x="180" y="34" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">Complement  Aᶜ</text>
+    <rect x="0" y="0" width="360" height="280" fill="#60a5fa" mask="url(#notA)"/>
+    <rect x="30" y="50" width="300" height="200" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="150" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+    <circle cx="210" cy="150" r="72" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+  </g>
+
+  <!-- labels on every panel -->
+  <g font-size="17" font-weight="bold" fill="#0f172a">
+    <text x="112" y="100">A</text><text x="236" y="100">B</text><text x="40" y="72" font-size="14" fill="#64748b">U</text>
+    <text x="472" y="100">A</text><text x="596" y="100">B</text><text x="400" y="72" font-size="14" fill="#64748b">U</text>
+    <text x="112" y="380">A</text><text x="236" y="380">B</text><text x="40" y="352" font-size="14" fill="#64748b">U</text>
+    <text x="472" y="380">A</text><text x="596" y="380">B</text><text x="400" y="352" font-size="14" fill="#64748b">U</text>
+  </g>
+</svg>

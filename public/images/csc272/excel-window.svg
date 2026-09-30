@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 650" font-family="Segoe UI, Calibri, Arial, sans-serif">
+  <rect width="620" height="650" fill="#ffffff"/>
+  <rect x="10" y="10" width="600" height="440" fill="#ffffff" stroke="#9ca3af"/>
+  <!-- title bar -->
+  <rect x="10" y="10" width="600" height="26" fill="#217346"/>
+  <g fill="none" stroke="#ffffff" stroke-width="1.3">
+    <rect x="20" y="17" width="10" height="11"/>
+    <path d="M40 27 q4 -9 12 -4"/>
+    <path d="M68 27 q-4 -9 -12 -4"/>
+  </g>
+  <text x="310" y="28" font-size="11.5" fill="#fff" text-anchor="middle">Book1 - Excel</text>
+  <text x="598" y="28" font-size="11" fill="#fff" text-anchor="end">?   –    ☐    ✕</text>
+  <!-- tabs -->
+  <rect x="10" y="36" width="600" height="20" fill="#ffffff"/>
+  <rect x="10" y="36" width="36" height="20" fill="#217346"/>
+  <g font-size="9.5">
+    <text x="28" y="50" fill="#fff" text-anchor="middle" font-weight="700">FILE</text>
+    <text x="54" y="50" fill="#217346" font-weight="700">HOME</text>
+    <text x="92" y="50" fill="#444">INSERT</text>
+    <text x="134" y="50" fill="#444">PAGE LAYOUT</text>
+    <text x="206" y="50" fill="#444">FORMULAS</text>
+    <text x="262" y="50" fill="#444">DATA</text>
+    <text x="298" y="50" fill="#444">REVIEW</text>
+    <text x="344" y="50" fill="#444">VIEW</text>
+  </g>
+  <!-- ribbon -->
+  <rect x="10" y="56" width="600" height="50" fill="#f7f7f7" stroke="#d4d4d4"/>
+  <g font-size="8.5" fill="#666" text-anchor="middle">
+    <text x="42" y="100">Clipboard</text><text x="130" y="100">Font</text><text x="225" y="100">Alignment</text><text x="315" y="100">Number</text><text x="410" y="100">Styles</text><text x="495" y="100">Cells</text><text x="570" y="100">Editing</text>
+  </g>
+  <g stroke="#dcdcdc"><line x1="75" y1="60" x2="75" y2="102"/><line x1="185" y1="60" x2="185" y2="102"/><line x1="270" y1="60" x2="270" y2="102"/><line x1="360" y1="60" x2="360" y2="102"/><line x1="460" y1="60" x2="460" y2="102"/><line x1="530" y1="60" x2="530" y2="102"/></g>
+  <!-- name box & formula bar -->
+  <rect x="10" y="106" width="600" height="24" fill="#ffffff" stroke="#d4d4d4"/>
+  <rect x="16" y="110" width="70" height="16" fill="#fff" stroke="#c6c6c6"/><text x="22" y="122" font-size="10.5" fill="#222">C3</text>
+  <text x="100" y="122" font-size="10.5" fill="#999">✕  ✓</text><text x="136" y="122" font-size="11" font-style="italic" fill="#555">fx</text>
+  <rect x="152" y="110" width="452" height="16" fill="#fff" stroke="#c6c6c6"/><text x="158" y="122" font-size="10.5" fill="#222">=B3*2</text>
+  <!-- grid -->
+  <rect x="10" y="130" width="600" height="18" fill="#e6e6e6"/>
+  <g font-size="10" fill="#444" text-anchor="middle">
+    <text x="82" y="143">A</text><text x="162" y="143">B</text><text x="242" y="143">C</text><text x="322" y="143">D</text><text x="402" y="143">E</text><text x="482" y="143">F</text><text x="562" y="143">G</text>
+  </g>
+  <rect x="202" y="130" width="80" height="18" fill="#d2d2d2"/><text x="242" y="143" font-size="10" fill="#217346" font-weight="700" text-anchor="middle">C</text>
+  <rect x="10" y="148" width="32" height="250" fill="#e6e6e6"/>
+  <g font-size="10" fill="#444" text-anchor="middle">
+    <text x="26" y="162">1</text><text x="26" y="182">2</text><text x="26" y="222">4</text><text x="26" y="242">5</text><text x="26" y="262">6</text><text x="26" y="282">7</text><text x="26" y="302">8</text><text x="26" y="322">9</text><text x="26" y="342">10</text><text x="26" y="362">11</text><text x="26" y="382">12</text>
+  </g>
+  <rect x="10" y="188" width="32" height="20" fill="#d2d2d2"/><text x="26" y="202" font-size="10" fill="#217346" font-weight="700" text-anchor="middle">3</text>
+  <g stroke="#e1e1e1">
+    <line x1="42" y1="168" x2="610" y2="168"/><line x1="42" y1="188" x2="610" y2="188"/><line x1="42" y1="208" x2="610" y2="208"/><line x1="42" y1="228" x2="610" y2="228"/><line x1="42" y1="248" x2="610" y2="248"/><line x1="42" y1="268" x2="610" y2="268"/><line x1="42" y1="288" x2="610" y2="288"/><line x1="42" y1="308" x2="610" y2="308"/><line x1="42" y1="328" x2="610" y2="328"/><line x1="42" y1="348" x2="610" y2="348"/><line x1="42" y1="368" x2="610" y2="368"/><line x1="42" y1="388" x2="610" y2="388"/>
+    <line x1="122" y1="148" x2="122" y2="398"/><line x1="202" y1="148" x2="202" y2="398"/><line x1="282" y1="148" x2="282" y2="398"/><line x1="362" y1="148" x2="362" y2="398"/><line x1="442" y1="148" x2="442" y2="398"/><line x1="522" y1="148" x2="522" y2="398"/>
+  </g>
+  <g font-size="11" fill="#222">
+    <text x="46" y="162">Item</text><text x="126" y="162">Price</text><text x="206" y="162">Double</text>
+    <text x="46" y="182">Pen</text><text x="196" y="182" text-anchor="end">150</text><text x="278" y="182" text-anchor="end">300</text>
+    <text x="46" y="202">Book</text><text x="196" y="202" text-anchor="end">900</text><text x="278" y="202" text-anchor="end">1800</text>
+  </g>
+  <!-- column B highlight to show a column -->
+  <rect x="122" y="148" width="80" height="250" fill="#217346" fill-opacity="0.06"/>
+  <!-- row 7 highlight -->
+  <rect x="42" y="268" width="568" height="20" fill="#2563eb" fill-opacity="0.06"/>
+  <!-- active cell -->
+  <rect x="202" y="188" width="80" height="20" fill="none" stroke="#217346" stroke-width="2.5"/>
+  <rect x="278" y="204" width="7" height="7" fill="#217346" stroke="#fff"/>
+  <!-- sheet tabs -->
+  <rect x="10" y="398" width="600" height="24" fill="#f0f0f0" stroke="#d4d4d4"/>
+  <text x="22" y="414" font-size="10" fill="#777">◀ ▶</text>
+  <rect x="56" y="398" width="54" height="20" fill="#ffffff"/><text x="83" y="412" font-size="10.5" fill="#217346" font-weight="700" text-anchor="middle">Sheet1</text>
+  <text x="122" y="413" font-size="13" fill="#555">⊕</text>
+  <!-- status bar -->
+  <rect x="10" y="422" width="600" height="28" fill="#217346"/>
+  <text x="20" y="440" font-size="10" fill="#fff">READY</text>
+  <text x="330" y="440" font-size="10" fill="#fff">AVERAGE: 525   COUNT: 2   SUM: 1050</text>
+  <line x1="520" y1="436" x2="580" y2="436" stroke="#fff"/><circle cx="550" cy="436" r="4" fill="#fff"/><text x="604" y="440" font-size="9" fill="#fff" text-anchor="end">100%</text>
+  <!-- badges -->
+  <g font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">
+    <circle cx="302" cy="198" r="9" fill="#b45309"/><text x="302" y="202">1</text>
+    <circle cx="162" cy="330" r="9" fill="#b45309"/><text x="162" y="334">2</text>
+    <circle cx="470" cy="278" r="9" fill="#b45309"/><text x="470" y="282">3</text>
+    <circle cx="296" cy="222" r="9" fill="#b45309"/><text x="296" y="226">4</text>
+    <circle cx="62" cy="118" r="9" fill="#b45309"/><text x="62" y="122">5</text>
+    <circle cx="300" cy="118" r="9" fill="#b45309"/><text x="300" y="122">6</text>
+    <circle cx="230" cy="23" r="9" fill="#b45309"/><text x="230" y="27">7</text>
+    <circle cx="28" cy="66" r="9" fill="#b45309"/><text x="28" y="70">8</text>
+    <circle cx="86" cy="23" r="9" fill="#b45309"/><text x="86" y="27">9</text>
+    <circle cx="390" cy="46" r="9" fill="#b45309"/><text x="390" y="50">10</text>
+    <circle cx="150" cy="410" r="9" fill="#b45309"/><text x="150" y="414">11</text>
+    <circle cx="80" cy="436" r="9" fill="#b45309"/><text x="80" y="440">12</text>
+  </g>
+  <!-- legend -->
+  <g font-size="14" fill="#111">
+    <text x="10" y="482"><tspan font-weight="700" fill="#b45309">1</tspan>  Active cell (C3)</text>
+    <text x="10" y="506"><tspan font-weight="700" fill="#b45309">2</tspan>  Column (B) — letters A … XFD</text>
+    <text x="10" y="530"><tspan font-weight="700" fill="#b45309">3</tspan>  Row (7) — numbers 1 … 1,048,576</text>
+    <text x="10" y="554"><tspan font-weight="700" fill="#b45309">4</tspan>  Fill handle</text>
+    <text x="10" y="578"><tspan font-weight="700" fill="#b45309">5</tspan>  Name Box ("address bar")</text>
+    <text x="10" y="602"><tspan font-weight="700" fill="#b45309">6</tspan>  Formula bar</text>
+    <text x="320" y="482"><tspan font-weight="700" fill="#b45309">7</tspan>  Title bar (Book1 - Excel)</text>
+    <text x="320" y="506"><tspan font-weight="700" fill="#b45309">8</tspan>  FILE tab (the File menu)</text>
+    <text x="320" y="530"><tspan font-weight="700" fill="#b45309">9</tspan>  Quick Access Toolbar</text>
+    <text x="320" y="554"><tspan font-weight="700" fill="#b45309">10</tspan>  Ribbon tabs</text>
+    <text x="320" y="578"><tspan font-weight="700" fill="#b45309">11</tspan>  Worksheet tabs, ⊕ New sheet</text>
+    <text x="320" y="602"><tspan font-weight="700" fill="#b45309">12</tspan>  Status bar (mode, sum, zoom)</text>
+  </g>
+  <text x="10" y="636" font-size="12.5" fill="#4b5563">The formula bar shows the active cell's contents (=B3*2); the cell shows the result (1800).</text>
+</svg>

@@ -1,0 +1,239 @@
+---
+title: "Navigation Patterns, Menus and Form Design"
+description: "The structural tools that turn principles into working interfaces: four navigation patterns (tab bar, hamburger, breadcrumb, sidebar) and their trade-offs in discoverability, efficiency and orientation; pull-down, pop-up and contextual menus; and form design — grouping, labels, required fields, real-time validation and error messages that help."
+duration: "45 min"
+difficulty: "intermediate"
+---
+
+## 6.6 Navigation Patterns
+
+Navigation design balances three things:
+
+| Goal | Question |
+|---|---|
+| **Discoverability** | Can users **find** where to go? |
+| **Efficiency** | Can they **get there quickly**? |
+| **Orientation** | Do they know **where they are**? |
+
+**Why it matters:** poor navigation is one of the **most common sources of frustration** — even excellent individual screens are undermined if users can't reliably find their way **between** them.
+
+<Tabs>
+<Tab label="Tab bar">
+
+A **horizontal row of 3–5 icons** (usually with labels) **fixed at the bottom** of a mobile screen.
+
+- ✅ **High discoverability** — every primary section is always visible
+- ✅ Sits in the **thumb's natural zone** (Lecture 4)
+- ❌ Room for only **3–5** sections
+
+*Example:* Instagram, WhatsApp, most banking apps — and the bottom navigation of this StudyOS app.
+
+</Tab>
+<Tab label="Hamburger menu">
+
+**Three horizontal lines** that reveal a **hidden side panel**.
+
+- ✅ **Saves space** — minimal until opened
+- ❌ **Low discoverability** — options are **hidden** from immediate view ("out of sight, out of mind")
+- ❌ Not intuitive to every first-time user
+
+*Best for:* **secondary** options (settings, help, about), not primary sections.
+
+</Tab>
+<Tab label="Breadcrumb">
+
+A **trail showing location in a hierarchy**: *Home › Electronics › Laptops*.
+
+- ✅ Excellent **orientation** — users see where they are and can jump back up levels
+- ✅ Uses a single line of space
+- ❌ Only useful for **hierarchical** content
+
+*Example:* the "Courses / HCI / Navigation Patterns…" trail at the top of this very page.
+
+</Tab>
+<Tab label="Sidebar">
+
+A **persistent vertical panel** of navigation links.
+
+- ✅ Shows **many top-level sections** at once
+- ❌ Costs **screen space** — suits desktops and tablets more than phones
+
+*Example:* Gmail on desktop; a university LMS course menu.
+
+</Tab>
+</Tabs>
+
+### Figure 6.3 — Navigation Patterns Compared
+
+| Pattern | Screen space | Discoverability | Best for |
+|---|---|---|---|
+| **Tab bar** | Persistent, moderate | **High** | **3–5 primary sections** |
+| **Hamburger** | Minimal until opened | **Low** | **Secondary** options |
+| **Breadcrumb** | Minimal, single line | Moderate | **Deep hierarchical** content |
+| **Sidebar** | Larger | High | **Many top-level sections** |
+
+**Patterns combine:** a **government tax-filing portal** uses a **sidebar** on desktop listing all sections, **plus breadcrumbs** at the top showing the active subsection — maximising both **orientation and flexibility** in a complex multi-step process.
+
+### Why Instagram Skips the Hamburger
+
+**Industry insight:** Nielsen Norman Group research found that mobile navigation with **visible tab bars** produced **measurably higher engagement** with app features than the same navigation **hidden behind a hamburger** (NNG, 2021) — which is why most major consumer apps moved away from hamburger-only navigation for primary sections.
+
+**Common mistakes:**
+- Hiding **primary, frequently used actions** behind a hamburger just for a "clean" look
+- **Not indicating the currently active** navigation item
+- Mixing **inconsistent navigation metaphors** within one product
+
+<MCQ question="Which navigation pattern typically offers the HIGHEST discoverability with the LEAST screen-space cost?">
+<Option>Hamburger menu</Option>
+<Option correct>Tab bar</Option>
+<Option>Sidebar</Option>
+<Option>None achieve both</Option>
+<Explain>
+A tab bar keeps every primary section **visible** (high discoverability) in a **single slim row** at the bottom — a sidebar is equally discoverable but takes far more space, and a hamburger saves space by hiding options.
+</Explain>
+</MCQ>
+
+<Reveal question="Think–pair–share: a course-registration mobile app has five primary sections — Browse Courses, My Schedule, Grades, Messages, Profile. Which navigation pattern(s) would you choose, and why?">
+A **bottom tab bar** with all five sections (icon + label), because five primary sections is exactly the 3–5 a tab bar suits; they stay **visible** (discoverability), are one tap away (efficiency), sit in the **thumb zone**, and the highlighted active tab gives **orientation**. Inside **Browse Courses**, which is hierarchical (Faculty › Department › Course), add **breadcrumbs**. Put **secondary** items (settings, help, log out) inside Profile or a small menu — **not** primary sections behind a hamburger.
+</Reveal>
+
+---
+
+## 6.7 Menus
+
+<Tabs>
+<Tab label="Pull-down">
+
+Appears when clicking a **labelled heading in a horizontal menu bar** ("File", "Edit", "View") — common in **desktop** toolbars. It holds an application's **full command range**.
+
+</Tab>
+<Tab label="Pop-up">
+
+Appears **at the cursor or tap location**, often triggered by a button, **without being anchored** to a fixed bar.
+
+*Example:* an e-commerce **"Sort by: Price, Rating, Newest"** pop-up — complex filtering **without permanently occupying** screen space.
+
+</Tab>
+<Tab label="Contextual">
+
+Presents **options specific to the selected object** (the **right-click** menu, or long-press on mobile) — it **changes dynamically** with context.
+
+*Example:* right-clicking selected text in a word processor shows only **Cut, Copy, Paste, Font** — not the whole pull-down structure.
+
+Contextual menus **reduce choices to only what's relevant**, supporting Nielsen's **aesthetic and minimalist design** heuristic (and Hick's Law — fewer choices, faster decisions).
+
+</Tab>
+</Tabs>
+
+**Effective menu design:**
+- **Group** related items
+- **Order** by **frequency** or logical sequence
+- **Limit** visible items at once, using **submenus sparingly** for overflow
+
+**Common mistakes:**
+- **Overly long, ungrouped** menu lists
+- Relying on **hover-triggered menus** on touchscreens, where **hovering doesn't exist**
+- Not visually distinguishing **destructive** actions (like "Delete") from routine ones
+
+<MCQ question="Why are hover-based pull-down menus less discoverable on mobile touchscreens?">
+<Option>Screens are too small</Option>
+<Option correct>Hover states don't exist on touch — there's no pointer resting over the menu</Option>
+<Option>Menus require a mouse to render</Option>
+<Option>They are never used on mobile</Option>
+<Explain>
+On a touchscreen your finger either taps or it doesn't — there's no "hovering" state to reveal a menu. Menus that only appear on hover are effectively invisible; mobile menus must open on **tap**.
+</Explain>
+</MCQ>
+
+---
+
+## 6.8 Forms: Where Tasks Succeed or Fail
+
+> A **form** is a structured component of **input fields, controls and labels** through which users **enter and submit data** — a login, a checkout, a patient registration.
+
+Five form-design guidelines from the lecture:
+
+<Step step="1" title="Group related fields">
+Put all address fields in **one block**, all payment fields in another (Gestalt **proximity**).
+</Step>
+
+<Step step="2" title="Use clear labels, positioned consistently">
+**Labels above each field** are scanned **faster** than labels beside them.
+</Step>
+
+<Step step="3" title="Mark required vs optional explicitly">
+Don't assume users know — label optional fields "(optional)" or mark required ones clearly.
+</Step>
+
+<Step step="4" title="Validate input in real time">
+Check data against the expected format **as the user types or leaves the field**, not only after full submission.
+</Step>
+
+<Step step="5" title="Write specific, actionable error messages next to the field">
+Say **what's wrong and how to fix it**, **right beside the relevant field**.
+</Step>
+
+![Side-by-side forms. Poor: a vague 'Invalid input' banner at the top, side labels with abbreviations, and a date-of-birth field marked only with a red border. Good: labels above fields with a format hint, a red border plus an error icon plus the message 'Enter your date of birth as DD/MM/YYYY, for example 14/03/2005' directly under the field, and an optional field clearly marked](/images/ins202/form-error-handling.svg)
+
+*Figure: Poor vs well-designed form error handling.*
+
+> ⚠️ **Never rely on colour alone** (e.g., a red border) to show a form error — it excludes colour-blind users. Always pair colour with **explicit text** and, ideally, an **icon**.
+
+- **Real-life example:** a hospital registration form showing **"Invalid input"** beside a date-of-birth field gives no guidance. **"Please enter your date of birth in DD/MM/YYYY format"**, validated in real time, prevents the frustration of finding the error only after submitting.
+- **Industry example:** government digital services increasingly use **"one thing per page"** forms — a **single question** (or a small group of related fields) per screen instead of one long page — shown through extensive testing to **reduce abandonment** among users with lower digital literacy or on small screens.
+- **Common mistakes:** validating **only after full submission**, forcing users to scroll back; **vague messages** ("Invalid entry"); not distinguishing required from optional fields.
+- **Trade-off to weigh:** splitting a form into many small steps can feel **slower for expert users** completing simple, familiar forms — it's a **genuine trade-off, not a universal rule**.
+
+<MCQ question="A red field border with no accompanying text or icon violates which principle?">
+<Option>Typographic hierarchy</Option>
+<Option correct>Colour must never be the sole method of conveying critical information</Option>
+<Option>Tab-bar discoverability</Option>
+<Option>Contextual menu grouping</Option>
+<Explain>
+Users with red–green colour blindness may not see the red border at all. Add an icon and a specific message beside the field.
+</Explain>
+</MCQ>
+
+---
+
+## Discussion Questions
+
+<Reveal question="Nielsen's heuristics and Shneiderman's rules were developed around desktop interfaces. How well do they translate to mobile and voice?">
+Most translate well because they describe **human needs**, not devices: **visibility of system status** becomes spoken confirmations in voice ("Sending ₦5,000 to Ada…"); **user control** becomes "cancel"/"stop" commands and undo; **error recovery** still needs plain language. Some need reinterpretation: **recognition rather than recall** is hard in voice (no visible menu), so voice systems must keep options very few; **flexibility and efficiency** on mobile means gestures and shortcuts. The frameworks remain valid but must be applied with the new context in mind.
+</Reveal>
+
+<Reveal question="Hamburger menus reduce discoverability, yet remain common. When might the trade-off be justified?">
+Designers keep them for **visual simplicity**, **limited screen space**, and apps with **many sections** that don't fit a 3–5 item tab bar. The trade-off is justified for **secondary, rarely used** items (settings, help, legal pages) or content-heavy sites with many categories — **not** for the primary actions users need every day.
+</Reveal>
+
+<Reveal question="Discuss the tension between minimalist trends (fewer text labels) and 'recognition rather than recall'.">
+Minimalism removes labels to look clean, but **icon-only interfaces force users to recall** what each unlabelled icon means — breaking recognition rather than recall and hurting novices and less tech-familiar users most. The balance: keep **labels for primary and unfamiliar actions**, use icons alone only for truly universal ones, and validate with users.
+</Reveal>
+
+---
+
+## Class Activity: Mini Heuristic Evaluation of a Form
+
+<Reveal question="Apply this lesson's form guidelines to a typical checkout form. (Model answer.)">
+**Grouping:** ✅ delivery address in one card; ❌ payment fields mixed with coupon codes → separate them. **Labels:** ❌ placeholder-only labels that disappear when typing → persistent labels above fields. **Required/optional:** ❌ no indication → mark "Landmark (optional)". **Validation:** ❌ card number checked only after "Pay" → validate as typed, with spaces every four digits. **Errors:** ❌ "Payment error" banner at the top → "Your card's expiry date has passed. Check the date or use another card," shown under the expiry field with an icon.
+</Reveal>
+
+<Takeaway>
+**Navigation** balances **discoverability, efficiency and orientation**: **tab bars** (3–5 primary sections, high discoverability, thumb-friendly), **hamburgers** (save space but hide options — use for secondary items), **breadcrumbs** (orientation in hierarchies) and **sidebars** (many sections, more space); patterns combine. **Menus** — **pull-down** (full command range), **pop-up** (at the point of need) and **contextual** (only relevant options) — should be grouped, ordered by frequency and never rely on hover on touchscreens. **Forms** succeed when fields are **grouped**, **labelled above**, **required/optional marked**, **validated in real time**, and errors are **specific, actionable, beside the field — and never shown by colour alone**.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- The four navigation patterns with their trade-offs (Figure 6.3)
+- The three menu types and when to use each
+- The five form-design guidelines and good error messaging
+- Choosing a navigation pattern for a scenario (e.g., the five-section registration app)
+
+**Common mistakes:**
+- Putting primary sections behind a hamburger
+- Hover-only menus on mobile
+- Validation only on submit; "Invalid input" messages; colour-only errors
+
+**Likely question:**
+> "Compare tab bars, hamburger menus, breadcrumbs and sidebars. Design the navigation and registration form for a student hostel-booking mobile app, justifying your choices." (20 marks)

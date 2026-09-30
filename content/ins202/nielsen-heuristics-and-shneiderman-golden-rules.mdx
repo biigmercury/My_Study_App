@@ -1,0 +1,241 @@
+---
+title: "Nielsen's 10 Heuristics and Shneiderman's 8 Golden Rules"
+description: "What separates a good GUI from a bad one, Nielsen's ten usability heuristics with examples and how heuristic evaluation works, Shneiderman's eight golden rules for interactive dialogue, where the two frameworks overlap, and plenty of practice naming the exact principle a design violates."
+duration: "50 min"
+difficulty: "intermediate"
+---
+
+## Two Apps, One Function
+
+| App A | App B |
+|---|---|
+| The transfer button is a **small grey icon buried in a submenu** | A clear **"Send Money"** button on the home screen |
+| **No summary** before submitting | A **confirmation screen** shows amount and recipient in **large text** |
+| An error mid-process shows only **"Error 4402"** | Errors **explain what happened and what to do next** |
+
+Both apps move money. **Only one of them respects its users.** This topic covers the accumulated design knowledge that separates a **functioning** GUI from a genuinely **usable** one.
+
+**Did you know?** The term **"WIMP"** (Windows, Icons, Menus, Pointer) was coined in the **early 1980s** for the GUI paradigm popularised by the **Xerox Alto**, then commercialised by the **Macintosh (1984)** and **Microsoft Windows**.
+
+---
+
+## Good vs Bad Interfaces
+
+> A **good** interface lets users accomplish goals **efficiently, accurately and with a subjectively positive experience**. A **bad** interface **obstructs, confuses or frustrates** users — **even when the functionality is technically present**.
+
+**Usability is not visual attractiveness.** An interface can be **visually polished yet deeply unusable** (illogical navigation), or **visually plain yet highly usable** (clear, predictable, efficient). Good design **aligns the system's visual and interactive behaviour with users' expectations, mental models and goals**.
+
+**Why it matters:** interface quality directly affects **task success rates, error frequency and user trust** — and in banking or healthcare, **real-world safety and money**.
+
+| Context | ❌ Bad | ✅ Good |
+|---|---|---|
+| **Government portal** | 40 unlabelled fields on one dense page, tiny buttons, no progress indication | Five clear steps with a visible progress bar; each field validates immediately |
+| **E-commerce checkout** | Shipping cost hidden until the final payment screen — "surprise cost" abandonment | An itemised running total including shipping, visible at every step |
+| **Learning dashboard** | Assignment deadlines buried in a generic notification icon, indistinguishable from ads | Upcoming deadlines shown prominently, distinct from promotional content |
+
+**Real-life example:** a poorly designed **airport check-in kiosk** makes users go through **six unlabelled screens** before passport scanning, causing queues and missed flights. A good one shows **one clear instruction per screen**: "Scan your passport" → "Confirm your flight" → "Print your boarding pass".
+
+---
+
+## 6.1 Nielsen's Ten Usability Heuristics
+
+**Jakob Nielsen (1994)** proposed ten broad principles used both to **guide new designs** and to **evaluate existing interfaces** through **heuristic evaluation**.
+
+> A **heuristic** is a **general rule of thumb**, not a rigid, testable specification — intentionally broad so it applies to anything from a 1990s desktop app to a modern mobile banking app.
+
+<FlowDiagram title="Nielsen's ten usability heuristics">
+<FlowStep title="1. Visibility of system status">
+Keep users **informed about what is going on**, through timely feedback. *Example:* a spinner with **"Processing your payment…"** rather than a frozen screen.
+</FlowStep>
+<FlowStep title="2. Match with the real world">
+Speak the **users' language** and follow real-world conventions. *Example:* a **"cart"** icon and **"Checkout"**, not "Finalize transaction object".
+</FlowStep>
+<FlowStep title="3. User control and freedom">
+Give users a clearly marked **"emergency exit"** from unwanted states. *Example:* a **"Cancel"** option during an in-progress appointment booking.
+</FlowStep>
+<FlowStep title="4. Consistency and standards">
+Users shouldn't wonder whether different words, icons or actions mean the same thing. *Example:* the **same icon and colour for "delete"** throughout an app.
+</FlowStep>
+<FlowStep title="5. Error prevention">
+Better than good error messages is a design that **prevents errors** in the first place. *Example:* **greying out "Submit"** until all required fields are valid.
+</FlowStep>
+<FlowStep title="6. Recognition rather than recall">
+Make options **visible** so users don't have to remember them. *Example:* showing **"Recently viewed items"** instead of making users search again.
+</FlowStep>
+<FlowStep title="7. Flexibility and efficiency of use">
+**Accelerators** for experts that novices never need to see. *Example:* **keyboard shortcuts** alongside full menus.
+</FlowStep>
+<FlowStep title="8. Aesthetic and minimalist design">
+Don't show **irrelevant** information — every extra item competes for attention. *Example:* showing **only the fields needed for this step**.
+</FlowStep>
+<FlowStep title="9. Recognise, diagnose, recover from errors">
+Error messages in **plain language**, stating the problem and **suggesting a solution**. *Example:* **"Your card was declined — insufficient funds. Try another card,"** not "Error 402".
+</FlowStep>
+<FlowStep title="10. Help and documentation">
+Help should be **easy to search, focused on the task, and concise**. *Example:* a contextual **"?"** beside a complex tax field, linking to guidance.
+</FlowStep>
+</FlowDiagram>
+
+<ExamTip>
+Examiners **frequently ask you to identify which specific heuristic is violated** in a described scenario. Practise matching short scenarios to **one (or more) heuristic by name** — "it's bad design" earns nothing. Try the quiz below.
+</ExamTip>
+
+### Heuristic Evaluation
+
+**Heuristic evaluation** means experts inspect an interface screen by screen and rate it against all ten heuristics.
+
+| Advantages | Limitations |
+|---|---|
+| **Fast** and **inexpensive** | Relies on **evaluator expertise** |
+| **No external users** needed | May **miss problems only real users** would reveal |
+| Works on **wireframes and prototypes** | Nielsen recommends **multiple evaluators** |
+
+- **Industry example:** **Nielsen Norman Group** and other consultancies run formal heuristic evaluations for banking, healthcare and retail clients — structured reports rating each screen against all ten heuristics, as an **efficient first-pass audit** before more costly user testing.
+- **Common mistakes:** applying heuristics as a **rigid checklist** without context; **skipping real user testing** entirely; using **only one evaluator**.
+- **Best practices:** use **multiple independent evaluators**; **combine** with genuine user testing (Topic 13); treat violations as **hypotheses to validate**, not automatic verdicts.
+
+### Practise: Name the Heuristic
+
+<MCQ question="A form shows 'Error 4402' with no explanation. Which heuristic is most clearly violated?">
+<Option>Aesthetic and minimalist design</Option>
+<Option correct>Help users recognise, diagnose and recover from errors</Option>
+<Option>Flexibility and efficiency of use</Option>
+<Option>Match between system and the real world</Option>
+<Explain>
+Heuristic 9 requires error messages in plain language that **state the problem and suggest a solution**. A bare code does neither. (It arguably also breaks heuristic 2 — "4402" isn't the user's language — but heuristic 9 is the most direct violation.)
+</Explain>
+</MCQ>
+
+<MCQ question="A payment app's screen freezes for 8 seconds after tapping Pay, with no spinner or message. Which heuristic is violated?">
+<Option correct>Visibility of system status</Option>
+<Option>Error prevention</Option>
+<Option>Consistency and standards</Option>
+<Option>Help and documentation</Option>
+<Explain>
+Users can't tell whether the payment is processing, failed or froze — so they may tap Pay again and be charged twice. A progress indicator ("Processing your payment…") fixes it.
+</Explain>
+</MCQ>
+
+<MCQ question="In one app, 'Delete' is a red bin icon on the Messages screen but a grey X on the Photos screen. Which heuristic is violated?">
+<Option>Recognition rather than recall</Option>
+<Option>User control and freedom</Option>
+<Option correct>Consistency and standards</Option>
+<Option>Aesthetic and minimalist design</Option>
+<Explain>
+The same action should look and behave the same everywhere, so users don't have to wonder whether two symbols mean the same thing.
+</Explain>
+</MCQ>
+
+<MCQ question="A course-registration wizard has no Back or Cancel button once you begin. Which heuristic is violated?">
+<Option>Visibility of system status</Option>
+<Option correct>User control and freedom</Option>
+<Option>Flexibility and efficiency of use</Option>
+<Option>Error prevention</Option>
+<Explain>
+Users need a clearly marked "emergency exit" to leave or undo an unwanted state. Trapping them in a wizard violates user control and freedom.
+</Explain>
+</MCQ>
+
+---
+
+## 6.2 Shneiderman's Eight Golden Rules
+
+**Ben Shneiderman** (Shneiderman & Plaisant, 2010) proposed eight rules focused on the **design of interactive dialogue and control** between users and systems. They overlap with Nielsen's heuristics but emphasise **consistency, error handling and cognitive burden during multi-step interactions** — reflecting Shneiderman's work on direct manipulation.
+
+**Why it matters:** especially useful for evaluating **sequences** of interaction — **multi-step forms and transactional flows** — rather than isolated screens.
+
+<FlowDiagram title="Shneiderman's eight golden rules">
+<FlowStep title="1. Strive for consistency">
+Consistent sequences, terminology, layout and colour. *Example:* every **"Submit"** button uses the **same colour, size and label**.
+</FlowStep>
+<FlowStep title="2. Enable shortcuts for frequent users">
+*Example:* **swipe to archive** an email, alongside a visible Archive button.
+</FlowStep>
+<FlowStep title="3. Offer informative feedback">
+Feedback proportional to the action. *Example:* a **subtle checkmark** for a minor change vs a **full confirmation** for a bank transfer.
+</FlowStep>
+<FlowStep title="4. Design dialogues to yield closure">
+Sequences should have a **beginning, middle and end**. *Example:* a clear **"Order Confirmed"** screen with an order number.
+</FlowStep>
+<FlowStep title="5. Offer simple error handling">
+Prevent serious errors, and make recovery simple. *Example:* a **warning dialog** before permanently deleting a file.
+</FlowStep>
+<FlowStep title="6. Permit easy reversal of actions">
+*Example:* **"Undo Send"** for a few seconds after sending an email.
+</FlowStep>
+<FlowStep title="7. Support internal locus of control">
+Users should feel **in charge**, not controlled by the system. *Example:* letting users **cancel a long upload** instead of waiting helplessly.
+</FlowStep>
+<FlowStep title="8. Reduce short-term memory load">
+*Example:* a multi-step visa form showing a **summary of previous answers** alongside the current step.
+</FlowStep>
+</FlowDiagram>
+
+| Advantages | Limitations |
+|---|---|
+| Clear, actionable guidance for **multi-step and transactional** interfaces | General principles that **need interpretation** |
+| | Strict **consistency (Rule 1)** can occasionally conflict with introducing a genuinely **better new pattern** |
+
+### Rules Working Together
+
+- **Real-life example:** an **airport boarding-pass kiosk** with identical navigation buttons on every screen (**Rule 1**), **"Start Over"** at any point (**Rule 6**), ending with **"Boarding Pass Printed — Proceed to Gate 14"** (**Rule 4**).
+- **Industry example:** hospital **electronic health record (EHR)** vendors have been criticised when clinical interfaces violate **Rule 8** — nurses must **remember patient information across disconnected screens** — renewing attention to Shneiderman's principles in safety-critical software.
+- **Common mistakes:** treating the eight rules as **independent** (breaking one strains others); neglecting **reversibility (Rule 6)** for destructive actions.
+- **Best practice:** when designing **any multi-step process** — a loan application, hospital intake form or course registration — **check it against all eight rules** as a structured review before finalising.
+
+---
+
+## Two Frameworks, One Goal
+
+### Table 6.1 — Points of Overlap
+
+| Nielsen's heuristic | Related Shneiderman rule | Shared emphasis |
+|---|---|---|
+| Visibility of system status | Offer informative feedback | Keeping users informed of system state |
+| Consistency and standards | Strive for consistency | Predictable terminology and layout |
+| User control and freedom | Permit easy reversal of actions | Reducing anxiety through control |
+| Recognition rather than recall | Reduce short-term memory load | Minimising cognitive burden |
+| Recognise, diagnose, recover from errors | Offer simple error handling | Clear, constructive error communication |
+| Flexibility and efficiency of use | Enable frequent users to use shortcuts | Supporting both novices and experts |
+
+<MCQ question="A hospital portal makes nurses remember a patient's allergy information while moving to a completely different screen to enter a prescription. Which pair of principles is most clearly violated?">
+<Option>Nielsen: Visibility of system status · Shneiderman: Offer informative feedback</Option>
+<Option correct>Nielsen: Recognition rather than recall · Shneiderman: Reduce short-term memory load</Option>
+<Option>Nielsen: Help and documentation · Shneiderman: Design dialogues to yield closure</Option>
+<Option>Nielsen: Aesthetic and minimalist design · Shneiderman: Enable shortcuts</Option>
+<Explain>
+The nurse must **hold** safety-critical information in working memory across screens. The fix is to **show the allergies persistently** on the prescription screen (recognition), which reduces memory load — and prevents a dangerous prescribing error.
+</Explain>
+</MCQ>
+
+---
+
+## Class Activity: Mini Heuristic Evaluation
+
+<Reveal question="Evaluate a login or checkout screen against five heuristics, noting a strength and a violation for each and proposing fixes. (Model answer for a typical bank app login.)">
+1. **Visibility of system status** — ✅ spinner while logging in; ❌ no message when the fingerprint fails. *Fix:* "Fingerprint not recognised — try again or use your PIN."
+2. **Match with the real world** — ✅ "Log in" and "Forgot PIN?" are plain; ❌ "User ID" is ambiguous. *Fix:* relabel "Phone or Account Number".
+3. **Error prevention** — ✅ PIN field accepts only digits; ❌ no warning before the account locks. *Fix:* "2 attempts left before your account is locked."
+4. **Recognition rather than recall** — ✅ remembers the last user; ❌ asks users to recall a security answer with no hint. *Fix:* show the question clearly and allow "Reset another way".
+5. **Help and documentation** — ✅ a "Need help?" link; ❌ it opens a long general FAQ. *Fix:* link to context-specific help on login problems.
+</Reveal>
+
+<Takeaway>
+A **good GUI** lets users reach goals efficiently, accurately and pleasantly — **usable ≠ pretty**. **Nielsen's ten heuristics** — visibility of system status, match with the real world, user control and freedom, consistency and standards, error prevention, recognition rather than recall, flexibility and efficiency, aesthetic and minimalist design, error recovery, and help and documentation — guide design and power **heuristic evaluation** (fast and cheap, but use several evaluators and still test with users). **Shneiderman's eight golden rules** — consistency, shortcuts, informative feedback, closure, simple error handling, easy reversal, internal locus of control and reduced memory load — focus on **multi-step dialogues**. The frameworks overlap heavily; your job in an exam is to **name the exact violation**.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- List and explain **Nielsen's ten heuristics** with examples
+- List and explain **Shneiderman's eight golden rules**
+- **Identify the heuristic/rule violated** in a scenario (very common)
+- Advantages and limitations of heuristic evaluation; Table 6.1 overlaps
+
+**Common mistakes:**
+- Vague answers ("the design is confusing") instead of naming the principle
+- Mixing up heuristic 5 (error **prevention**) with heuristic 9 (error **recovery**)
+- Relying on one evaluator and no user testing
+
+**Likely question:**
+> "Explain five of Nielsen's usability heuristics. For each, describe a violation you might find in a university result-checking portal and propose a fix." (20 marks)

@@ -1,0 +1,465 @@
+---
+title: "Excel IV: Formulas and Functions (SUM, AVERAGE, COUNT, MAX, MIN)"
+description: "Writing formulas with the = sign, arithmetic operators and the order of operations, building formulas by clicking cells, automatic recalculation, relative, absolute ($A$1) and mixed references, functions and their arguments, AutoSum, SUM, AVERAGE, COUNT, COUNTA, MAX, MIN, ROUND, IF and nested IF, COUNTIF and COUNTIFS across sheets, SUMIF, RANK and VLOOKUP, text functions LEFT, RIGHT, MID, LEN, UPPER, PROPER and &, volatile functions (TODAY, NOW, RAND), error values, circular references and Data Validation — with live worksheets for every topic."
+duration: "50 min"
+difficulty: "intermediate"
+---
+
+## Formulas
+
+**Formulas** perform calculations on the worksheet. They **link cells together**, and Excel's calculation is **automatic**: change a value and every formula that refers to it recalculates at once. That is the whole point of a spreadsheet.
+
+Every formula starts with an **equal sign `=`** — it tells Excel that what follows is a formula, not text. After it you may type your own formula or use a pre-set formula called a **function (fx)**.
+
+### Operators and the order of calculation
+
+| Operator | Meaning | Example | Result |
+|---|---|---|---|
+| `+` | Addition | `=5+3` | 8 |
+| `-` | Subtraction (or negation) | `=5-3` | 2 |
+| `*` | Multiplication | `=5*3` | 15 |
+| `/` | Division | `=15/3` | 5 |
+| `^` | Exponent (power) | `=5^2` | 25 |
+| `%` | Percent | `=20%*50` | 10 |
+| `&` | Join text | `="CSC"&272` | CSC272 |
+| `=  <>  <  >  <=  >=` | Comparison (gives TRUE/FALSE) | `=B2>=40` | TRUE or FALSE |
+
+Excel calculates in this order (like BODMAS): **brackets** first, then negation, percent, **powers**, **multiplication and division** (left to right), **addition and subtraction** (left to right), joining text, and comparisons last.
+
+| Formula | Calculated as | Result |
+|---|---|---|
+| `=2+3*4` | 3×4 first, then +2 | **14** |
+| `=(2+3)*4` | brackets first | **20** |
+| `=10/2*5` | left to right | **25** |
+| `=2^3*2` | power first | **16** |
+
+Use **brackets** to make Excel calculate in the order you intend.
+
+### Entering a formula by pointing
+
+1. Click the cell that will hold the **answer**.
+2. Type **=**.
+3. **Click** the first cell to use — its address appears in the formula (the status bar shows **Point** mode).
+4. Type the operator (`+`, `*`…).
+5. Click the next cell. Repeat steps 4–5 as needed.
+6. Press **Enter** (or click ✓). The **cell shows the result**; the **formula bar shows the formula**.
+
+Clicking cells instead of typing their addresses avoids typing mistakes.
+
+---
+
+## Functions
+
+A **function** is a **predefined formula** that operates on one or more values (its **arguments**) and returns a value. Many functions are shorthand for long formulas:
+
+| Formula | Function |
+|---|---|
+| `=A1+A2+A3+A4+A5+A6+A7+A8` | `=SUM(A1:A8)` |
+
+**Elements of every function:**
+
+| Element | Rule |
+|---|---|
+| `=` | Every formula (and so every function) starts with an equal sign |
+| **Function name** | e.g. SUM, AVERAGE, IF |
+| **( arguments )** | Arguments in brackets, separated by **commas** — cells, ranges, numbers, text in quotes, or other functions. A few functions take no arguments but still need the brackets: **NOW()**, **TODAY()**, **RAND()** |
+
+### Inserting functions
+
+- **AutoSum Σ** (HOME → Editing, or FORMULAS): click the cell **below** a column (or **right** of a row) of numbers → **AutoSum** → Excel guesses the range and inserts `=SUM(…)`. If the guess is wrong, drag over the correct range (hold **Ctrl** for non-adjacent cells) → **Enter**. The arrow beside AutoSum gives **Average, Count Numbers, Max, Min** and **More Functions**. Shortcut **Alt+=**.
+- **Type it**: `=SUM(B5:B7)` — as you type, Excel lists matching functions and shows a **ScreenTip** of the arguments.
+- **FORMULAS → Function Library**: functions by category (Financial, **Logical**, **Text**, **Date & Time**, Lookup & Reference, **Math & Trig**, More Functions → **Statistical**).
+- **Insert Function (fx)**: type a short description of what you want ("count cells that meet a condition") → Excel suggests functions, each with a description → the **Function Arguments** dialog helps you fill each argument.
+
+### The core functions
+
+| Function | Does | Example | Notes |
+|---|---|---|---|
+| **SUM** | Adds | `=SUM(B2:D2)` | Ignores text and blanks |
+| **AVERAGE** | Arithmetic mean | `=AVERAGE(B2:B31)` | Ignores blanks and text — a blank is *not* a zero |
+| **COUNT** | Counts cells containing **numbers** | `=COUNT(B2:B31)` | |
+| **COUNTA** | Counts **non-empty** cells (any data) | `=COUNTA(A2:A31)` | Use for names |
+| **COUNTBLANK** | Counts empty cells | `=COUNTBLANK(C2:C31)` | e.g. missing scores |
+| **MAX / MIN** | Largest / smallest | `=MAX(B2:B31)` | |
+| **ROUND** | Rounds to *n* decimal places | `=ROUND(D2,1)` | Changes the value (formatting only changes the look) |
+
+### Try it: the lecture's post-test
+
+Fill in **Total Sales** and **Average Sales** for Rice, Beans and Yam:
+
+1. Click **E2**, type `=SUM(` then drag over **B2:D2**, press **Enter** → 13500.
+2. Click **F2**, type `=AVERAGE(B2:D2)` → 4500.
+3. Select **E2:F2** and drag the **fill handle** down to row 4 — the formulas adjust to rows 3 and 4.
+4. In **B5** use **AutoSum** (HOME tab) for the January total, then fill it right to **E5**.
+5. Use **Show Formulas** (FORMULAS tab, or **Ctrl+`**) to see every formula at once.
+
+<ExcelSheet title="Post-test: sales by product" height="230">
+
+```sheet
+[Sales]
+@width A 76
+@width B:F 74
+@bold A1:F1 A5
+@wrap A1:F1
+Product | January Sales (kg) | February Sales (kg) | March Sales (kg) | Total Sales | Average Sales
+Rice | 5000 | 4000 | 4500
+Beans | 4000 | 4860 | 3005
+Yam | 7000 | 6000 | 4500
+Total
+@select E2
+```
+
+</ExcelSheet>
+
+---
+
+## Relative, Absolute and Mixed References
+
+When you **copy** a formula (or AutoFill it), Excel **adjusts the cell references** relative to the new position. This is **relative referencing**, the default: `=B2*C2` copied one row down becomes `=B3*C3`. That is exactly what you want for a column of totals.
+
+Sometimes a formula must always point to **one fixed cell** — a tax rate, an exchange rate, a total. Put a **dollar sign** before the column letter and/or row number to **lock** it:
+
+| Reference | Type | When copied down/right… |
+|---|---|---|
+| `B2` | **Relative** | both column and row change |
+| `$B$2` | **Absolute** | never changes |
+| `$B2` | **Mixed** | column fixed, row changes |
+| `B$2` | **Mixed** | row fixed, column changes |
+
+While typing a formula, press **F4** on a reference to cycle through `B2 → $B$2 → B$2 → $B2`.
+
+**Try it.** VAT in Nigeria is **7.5%**, stored once in **F1**.
+
+1. In **C2** type `=B2*F1` and fill down to C5. Only C2 is right — the copies point at F2, F3… (empty cells, so 0).
+2. Undo, change C2 to `=B2*$F$1`, fill down again: every row now uses the rate in F1.
+3. Change **F1** to `10%` and watch every VAT figure update.
+
+<ExcelSheet title="Absolute references: VAT" height="210">
+
+```sheet
+[VAT]
+@width A 76
+@width B:D 96
+@width E 70
+@bold A1:D1 E1
+@format currency B2:D5
+Item | Price | VAT | Total | VAT rate: | 7.5%
+Laptop | 250000
+Printer | 85000
+Router | 32000
+Flash drive | 6500
+@select C2
+```
+
+</ExcelSheet>
+
+---
+
+## Logical Functions: IF
+
+**IF** makes a decision:
+
+```text
+=IF(logical_test, value_if_true, value_if_false)
+=IF(B2>=40, "Passed", "Failed")
+```
+
+Text results must be in **double quotes**. You can **nest** IFs (put one inside another) to choose between more than two results — for example a typical grading scale (A 70–100, B 60–69, C 50–59, D 45–49, E 40–44, F below 40):
+
+```text
+=IF(B2>=70,"A",IF(B2>=60,"B",IF(B2>=50,"C",IF(B2>=45,"D",IF(B2>=40,"E","F")))))
+```
+
+Test from the **highest** band down, so each IF only needs one condition. **AND** and **OR** combine conditions: `=IF(AND(B2>=40,C2="Present"),"Eligible","Not eligible")`.
+
+### Counting and adding with conditions
+
+| Function | Example | Meaning |
+|---|---|---|
+| **COUNTIF**(range, criteria) | `=COUNTIF(D2:D11,"Passed")` | How many cells equal *Passed* |
+| | `=COUNTIF(B2:B11,">=70")` | How many scores are 70 or more (put comparison criteria in quotes) |
+| **COUNTIFS**(range1, criteria1, range2, criteria2…) | `=COUNTIFS(B2:B11,">=26",B2:B11,"<=50")` | Scores **between** 26 and 50 — **all** conditions must be true |
+| **SUMIF**(range, criteria, sum_range) | `=SUMIF(E2:E11,"F",B2:B11)` | Add the scores of female students |
+| **AVERAGEIF** | `=AVERAGEIF(E2:E11,"M",B2:B11)` | Average of male students' scores |
+| **RANK**(number, ref) | `=RANK(B2,$B$2:$B$11)` | Position in the class (largest = 1); use **absolute** ref so it can be filled down |
+| **VLOOKUP**(value, table, column, FALSE) | `=VLOOKUP(210045,$A$2:$C$11,2,FALSE)` | Find a matric number in the first column of a table and return the value from column 2 — **FALSE** means exact match (#N/A if not found) |
+
+Criteria can use wildcards: `"A*"` (starts with A), `"?? *"`.
+
+### Try it: a result sheet
+
+1. **C2**: `=IF(B2>=70,"A",IF(B2>=60,"B",IF(B2>=50,"C",IF(B2>=45,"D",IF(B2>=40,"E","F")))))` — fill down to C11.
+2. **D2**: `=IF(B2>=40,"Passed","Failed")` — fill down.
+3. **E2**: `=RANK(B2,$B$2:$B$11)` — fill down (try it without the `$` signs and see the ranks go wrong).
+4. In **G1:G5** compute: number who passed (`=COUNTIF(D2:D11,"Passed")`), class average, highest, lowest, and the number of A grades.
+5. Change a score and watch the grade, remark, rank and summary update together.
+
+<ExcelSheet title="Result sheet: IF, COUNTIF, RANK" height="300" cols="8">
+
+```sheet
+[Results]
+@width A 70
+@width B:E 60
+@width F 104
+@width G 60
+@bold A1:E1 F1:F6
+Matric No | Score | Grade | Remark | Rank | Passed:
+210045 | 78 | | | | Class average:
+210051 | 39 | | | | Highest score:
+210063 | 64 | | | | Lowest score:
+210072 | 45 | | | | Number of As:
+210088 | 52
+210091 | 71
+210104 | 42
+210117 | 88
+210123 | 27
+210139 | 60
+@select C2
+```
+
+</ExcelSheet>
+
+---
+
+## The Exam Workbook: Raw Scores → Summary
+
+A past practical asked for **three sheets**: *Raw Scores* (Matric No and Score for at least 20 students), *Summary* (how many scores fall in 0–25, 26–50, 51–75 and 76–100) and *Graph* (a chart of Range vs %). The summary must be **calculated from** Raw Scores with formulas, so it updates when a score changes.
+
+On the **Summary** sheet:
+
+1. Click **B2**, type `=COUNTIFS(` then click the **Raw Scores** tab and drag over **B2:B21** — Excel writes `'Raw Scores'!B2:B21` (a **cross-sheet reference**: *sheet name* `!` *range*, in single quotes because the name has a space).
+2. Finish it: `=COUNTIFS('Raw Scores'!B2:B21,">=0",'Raw Scores'!B2:B21,"<=25")` and press **Enter** — you return to the Summary sheet.
+3. Do the same for the other bands (26–50, 51–75, 76–100). Why can't you simply fill B2 down? (Try it: the ranges move down to B3:B22… — make them absolute with `$`, and the criteria still need editing.)
+4. **B6**: `=SUM(B2:B5)` should equal 20. **C2**: `=B2/$B$6`, format as **Percentage**, fill down.
+5. Go back to *Raw Scores*, change a few scores and check the Summary follows.
+
+The chart on the *Graph* sheet is built in the next lesson.
+
+<ExcelSheet title="Raw Scores → Summary (past exam)" height="300">
+
+```sheet
+[Raw Scores]
+@width A 80
+@bold A1:B1
+Matric No | Score
+210001 | 67
+210002 | 12
+210003 | 40
+210004 | 76
+210005 | 51
+210006 | 100
+210007 | 26
+210008 | 88
+210009 | 45
+210010 | 58
+210011 | 73
+210012 | 19
+210013 | 91
+210014 | 50
+210015 | 33
+210016 | 62
+210017 | 79
+210018 | 25
+210019 | 55
+210020 | 70
+[Summary]
+@width A 80
+@bold A1:C1 A6
+Range | Count | %
+0 to 25
+26 to 50
+51 to 75
+76 to 100
+Total
+@select B2
+[Graph]
+@select A1
+```
+
+</ExcelSheet>
+
+---
+
+## Text Functions
+
+| Function | Returns | Example with A2 = `csc/2021/045` | Result |
+|---|---|---|---|
+| **LEFT**(text, n) | The first *n* characters | `=LEFT(A2,3)` | csc |
+| **RIGHT**(text, n) | The last *n* characters | `=RIGHT(A2,3)` | 045 |
+| **MID**(text, start, n) | *n* characters starting at position *start* | `=MID(A2,5,4)` | 2021 |
+| **LEN**(text) | Number of characters (spaces count) | `=LEN(A2)` | 12 |
+| **UPPER / LOWER / PROPER** | Changes case | `=UPPER(LEFT(A2,3))` | CSC |
+| **TRIM** | Removes extra spaces | `=TRIM("  Ade   Tunde ")` | Ade Tunde |
+| **CONCATENATE** or **&** | Joins text | `=B2&" "&C2` | Tunde Adeyemi |
+
+<ExcelSheet title="Text functions" height="220">
+
+```sheet
+[Text]
+@width A 100
+@width B:D 70
+@bold A1:F1
+Code | Surname | First name | Dept | Year | Full name
+csc/2021/045 | adeyemi | tunde
+mth/2022/118 | okafor | chioma
+sta/2020/007 | bello | aisha
+@select D2
+```
+
+</ExcelSheet>
+
+Try: **D2** `=UPPER(LEFT(A2,3))`, **E2** `=MID(A2,5,4)`, **F2** `=PROPER(C2&" "&B2)`, then fill down.
+
+---
+
+## Date and Volatile Functions
+
+| Function | Returns |
+|---|---|
+| **TODAY()** | Today's date |
+| **NOW()** | Today's date **and** the current time |
+| **YEAR / MONTH / DAY**(date) | Parts of a date — `=YEAR(TODAY())-1998` gives an age |
+| **RAND()** | A random decimal between 0 and 1 |
+| **RANDBETWEEN**(bottom, top) | A random whole number, e.g. `=RANDBETWEEN(1,100)` |
+
+A **volatile function** is one that **recalculates every time the worksheet recalculates** — after *any* change anywhere, or when you press **F9** (Calculate Now) — even if its own inputs have not changed. **NOW, TODAY, RAND** and **RANDBETWEEN** are volatile (so are OFFSET and INDIRECT). Too many volatile formulas slow a big workbook down.
+
+Type something in any empty cell below and watch the random numbers change; press **F9** (FORMULAS → Calculate Now) to recalculate without changing anything.
+
+<ExcelSheet title="Volatile functions" height="200">
+
+```sheet
+[Volatile]
+@width A 120
+@width B 130
+@bold A1:B1
+Function | Result
+'=TODAY() | =TODAY()
+'=NOW() | =NOW()
+'=RAND() | =RAND()
+'=RANDBETWEEN(1,100) | =RANDBETWEEN(1,100)
+@select A7
+```
+
+</ExcelSheet>
+
+(Column A shows each formula as text — it was typed with a leading apostrophe — while column B calculates it.)
+
+---
+
+## Error Values
+
+| Error | Meaning | Typical cause |
+|---|---|---|
+| **#DIV/0!** | Division by zero | `=B2/C2` when C2 is empty or 0 |
+| **#VALUE!** | Wrong type of value | `=A2+1` when A2 contains text |
+| **#NAME?** | Excel doesn't recognise a name | Misspelt function (`=SUMM(…)`), or text without quotes |
+| **#REF!** | Invalid cell reference | The cell the formula used was deleted |
+| **#N/A** | Value not available | VLOOKUP couldn't find the value |
+| **#NUM!** | Invalid number | `=SQRT(-4)` |
+| **#####** | Not an error — column too narrow | Widen the column |
+
+**IFERROR** replaces an error with something friendlier: `=IFERROR(B2/C2,"-")`.
+
+A **circular reference** is a formula that refers to its own cell (directly, like `=A1+1` in A1, or through other cells). Excel warns and shows 0 until you fix it.
+
+---
+
+## Data Validation
+
+A past question: *"You employed people to help enter data in Excel. How would you make sure that as soon as data is entered it is checked — e.g. Gender must be Male or Female, a score must be between 0 and 100?"* The answer is **Data Validation**, which **restricts what can be typed** in cells:
+
+1. Select the cells (e.g. the Gender column).
+2. DATA → Data Tools → **Data Validation**.
+3. **Settings** tab → **Allow**:
+
+| Allow | Example rule |
+|---|---|
+| **Whole number** | *between* 0 and 100 (scores) |
+| **Decimal** | *greater than or equal to* 0 |
+| **List** | Source: `Male,Female` — gives a **drop-down** in each cell |
+| **Date** | *between* 01/01/1990 and 31/12/2010 (date of birth) |
+| **Text length** | *equal to* 6 (a six-digit matric number) |
+| **Custom** | a formula, e.g. `=COUNTIF(A:A,A2)=1` to prevent duplicates |
+
+4. **Input Message** tab: a hint shown when the cell is selected ("Enter a score from 0 to 100").
+5. **Error Alert** tab: **Stop** (refuses the entry), **Warning** (asks "Continue?") or **Information**, with your own title and message.
+6. **OK**. DATA → Data Validation → **Circle Invalid Data** marks entries made before the rule existed.
+
+---
+
+## Practice Questions
+
+<MCQ question="What is the result of =2+3*4^2?">
+<Option>400</Option>
+<Option>80</Option>
+<Option correct>50</Option>
+<Option>146</Option>
+<Explain>Power first: 4 to the power 2 = 16; then multiplication: 3 × 16 = 48; then addition: 2 + 48 = 50.</Explain>
+</MCQ>
+
+<MCQ question="The formula =B2*F1 in C2 is filled down to C3. What does C3 contain?">
+<Option>`=B2*F1`</Option>
+<Option correct>`=B3*F2`</Option>
+<Option>`=B3*F1`</Option>
+<Option>`=C3*F2`</Option>
+<Explain>Both references are relative, so both move down one row. To keep F1 fixed, write `$F$1` (absolute).</Explain>
+</MCQ>
+
+<MCQ question="Which function counts the scores that are between 51 and 75 inclusive in B2:B21?">
+<Option>`=COUNT(B2:B21,51,75)`</Option>
+<Option>`=COUNTIF(B2:B21,"51-75")`</Option>
+<Option correct>`=COUNTIFS(B2:B21,">=51",B2:B21,"<=75")`</Option>
+<Option>`=SUMIF(B2:B21,">=51")`</Option>
+<Explain>COUNTIFS counts cells that satisfy every criterion — here, greater than or equal to 51 AND less than or equal to 75.</Explain>
+</MCQ>
+
+<MCQ question="Which of these is a volatile function?">
+<Option>SUM</Option>
+<Option>LEFT</Option>
+<Option correct>NOW</Option>
+<Option>ROUND</Option>
+<Explain>NOW (like TODAY, RAND and RANDBETWEEN) recalculates every time the worksheet recalculates, even when nothing it depends on has changed.</Explain>
+</MCQ>
+
+<Reveal question="1. State the three elements of an Excel function and give an example.">
+An **equal sign**, the **function name**, and the **arguments in brackets** (separated by commas). Example: `=AVERAGE(B2:B31)`. Some functions such as NOW() take no arguments but still need the brackets.
+</Reveal>
+
+<Reveal question="2. Differentiate between relative and absolute cell references with an example.">
+A **relative** reference (B2) changes when the formula is copied — one row down it becomes B3. An **absolute** reference (`$B$2`) stays the same wherever the formula is copied. E.g. `=B2*$F$1` filled down becomes `=B3*$F$1`, `=B4*$F$1`: the price changes but the VAT rate in F1 stays fixed. Mixed references (`$B2`, `B$2`) fix only the column or only the row.
+</Reveal>
+
+<Reveal question="3. What are LEFT(), RIGHT() and MID() used for? Give an example of each.">
+They extract part of a text string: **LEFT(text, n)** the first n characters (`=LEFT("CSC272",3)` → CSC); **RIGHT(text, n)** the last n characters (`=RIGHT("CSC272",3)` → 272); **MID(text, start, n)** n characters starting at position start (`=MID("CSC/2021/045",5,4)` → 2021).
+</Reveal>
+
+<Reveal question="4. What is a volatile function in MS Excel? Name two.">
+A function that is recalculated every time the worksheet recalculates (any change, or F9), whether or not its arguments changed. Examples: **NOW()**, **TODAY()**, **RAND()**, **RANDBETWEEN()** (also OFFSET, INDIRECT).
+</Reveal>
+
+<Reveal question="5. Write a formula that shows 'Passed' if the score in B2 is 40 or more and 'Failed' otherwise, and one that counts how many passed in D2:D31.">
+`=IF(B2>=40,"Passed","Failed")` and `=COUNTIF(D2:D31,"Passed")`.
+</Reveal>
+
+<Reveal question="6. How would you ensure data-entry clerks can only type Male or Female in the Gender column?">
+Select the Gender cells → DATA → **Data Validation** → Settings: Allow **List**, Source `Male,Female` (tick In-cell dropdown) → Error Alert: style **Stop** with a message such as "Choose Male or Female" → OK.
+</Reveal>
+
+<Takeaway>
+- Formulas start with **=**; operators `+ - * / ^ % &` and comparisons; Excel follows brackets → powers → × ÷ → + −. Results recalculate automatically.
+- Build formulas by **clicking cells** (Point mode); the cell shows the result, the formula bar the formula.
+- **Relative** (`B2`) references move when copied; **absolute** (`$B$2`) stay fixed; **mixed** (`$B2`, `B$2`); F4 toggles.
+- A **function** = `=NAME(arguments)`. Core: **SUM, AVERAGE, COUNT, COUNTA, MAX, MIN, ROUND**; AutoSum Σ (Alt+=); Insert Function fx.
+- **IF** (and nested IF, AND, OR), **COUNTIF/COUNTIFS/SUMIF/AVERAGEIF**, **RANK**, **VLOOKUP**; cross-sheet refs `'Raw Scores'!B2:B21`.
+- Text: **LEFT, RIGHT, MID, LEN, UPPER, LOWER, PROPER, TRIM, &**. Dates: TODAY, NOW. **Volatile** = recalculates every time (NOW, TODAY, RAND, RANDBETWEEN).
+- Errors: #DIV/0!, #VALUE!, #NAME?, #REF!, #N/A, #NUM! (##### = narrow column). **Data Validation** restricts entries.
+</Takeaway>
+
+## Exam Tips
+
+- Always **show formulas, not typed answers** — the marker clicks the cell. A typed 13500 in a Total column scores nothing.
+- **COUNTIFS with two criteria** is the way to count a range of scores; cross-sheet references need the **sheet name in quotes and an exclamation mark**.
+- Use `$` whenever a copied formula must keep pointing at one cell (rates, totals for percentages, RANK ranges).
+- Memorise the **function syntax** for IF, COUNTIF, LEFT/RIGHT/MID — theory questions ask you to write or explain them.
+- Know one-line definitions of a **volatile function** and **Data Validation** — both have appeared in past papers.

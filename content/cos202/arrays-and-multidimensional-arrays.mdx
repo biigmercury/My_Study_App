@@ -1,0 +1,531 @@
+---
+title: "Arrays and Multi-Dimensional Arrays (Review)"
+description: "The COS 202 roadmap, then a thorough review of Java arrays: what an array is, primitive vs reference arrays in memory, declaring, allocating and initialising (with default values), indexing and updating, traversal with for and for-each loops, common array tasks and the java.util.Arrays helpers, aliasing, and multi-dimensional arrays — rows, columns, nested loops and jagged arrays — with step-by-step code traces."
+duration: "45 min"
+difficulty: "beginner"
+---
+
+## Welcome to COS 202
+
+**COS 202 — Computer Programming II (Advanced Object-Oriented Programming in Java)** builds directly on COS 201. The first two weeks **review arrays and methods** to give a solid foundation for the new material.
+
+**Course outline:**
+- Polymorphism
+- Abstract classes and interfaces
+- Class hierarchies and packages (namespaces)
+- Using the Java API — iterators/enumerators; List, Stack, Queue
+- Searching, sorting and recursion
+- Event-driven programming, event handling and propagation, exceptions
+- GUI programming
+
+**By the end of the course you should be able to:**
+1. Develop solutions to problems using **object-oriented programming**
+2. Use **packages/namespaces** to organise programs
+3. Use **APIs** in writing applications
+4. Apply **divide-and-conquer** to searching and sorting (iterative or recursive)
+5. Explain **exceptions** and how to handle them
+6. Write simple **multithreading** applications
+7. Design and implement a simple **GUI** application
+
+---
+
+## What Is an Array?
+
+> **Definition:** An **array** is a **collection of elements of the same data type**, stored in **contiguous memory locations** and accessed using an **index**.
+
+Key facts:
+- An array can hold **primitive types** (`int`, `char`, `boolean`, `double`…) **or objects** (`String`, `Integer`, your own classes…).
+- **Primitive arrays** store the **values** themselves in contiguous locations; **non-primitive arrays** store **references** (addresses of objects) in contiguous locations.
+- **Once created, an array's size is fixed** and cannot change. (For growable lists, use `ArrayList` — covered in the Java API lesson.)
+- **Indexing starts at 0**: an array of length 5 has indexes 0 to 4.
+
+![Three memory diagrams. First, an int array arr holding 10, 20, 30 and 40 in four adjacent cells with indexes 0 to 3. Second, a String array names whose three cells each contain a reference arrow pointing to separate String objects "Ada", "Musa" and "Chioma". Third, a 2D array m whose two row cells point to two separate int arrays, 1 2 3 and 4 5 6, with element positions labelled from [0][0] to [1][2]](/images/cos202/java-array-memory.svg)
+
+*Figure: How Java stores a primitive array, an array of objects, and a 2D array.*
+
+<Analogy>
+A **primitive array** is like a **row of lockers holding the items themselves** — locker 0 has a 10, locker 1 has a 20. An **array of objects** is like a row of lockers holding **tickets** that say where each item is stored in the warehouse. Either way, every locker is the same size and you reach one instantly by its number.
+</Analogy>
+
+### Primitive vs Non-Primitive Arrays
+
+```java
+public class ArrayDemo {
+    public static void main(String[] args) {
+        int[] arr = {10, 20, 30, 40};                                  // primitive array
+        for (int i = 0; i < arr.length; i++)
+            System.out.print(arr[i] + " ");
+
+        String[] names = {"Babatunde", "Ayinla", "Oluwasemilore"};     // non-primitive array
+        for (int i = 0; i < names.length; i++)
+            System.out.print(names[i] + " ");
+    }
+}
+```
+
+**Output** (both loops use `print`, so everything stays on one line):
+
+```text
+10 20 30 40 Babatunde Ayinla Oluwasemilore
+```
+
+> The lecture slide shows different names in the output ("Lakshit Rahul Pankaj") — that's left over from the source example. The program prints **whatever is stored in the array**.
+
+---
+
+## Declaring, Creating and Initialising Arrays
+
+| Step | Syntax | What it does |
+|---|---|---|
+| **Declare** | `int[] arr;` *(preferred)* or `int arr[];` *(also legal)* | Creates a **reference variable** only — **no array exists yet** |
+| **Allocate** | `arr = new int[5];` | Creates an array of **5** ints **on the heap** |
+| **Both at once** | `int[] arr = new int[5];` | Declare and allocate |
+| **Array literal** | `int[] arr = {1, 2, 3};` | Declare, allocate and fill; **length inferred** (3). No `new` needed |
+| **Anonymous array** | `new int[]{1, 2, 3}` | Useful when passing an array to a method |
+
+### Default Values
+
+**Elements are automatically initialised** when an array is created with `new`:
+
+| Element type | Default value |
+|---|---|
+| `byte`, `short`, `int`, `long` | `0` |
+| `float`, `double` | `0.0` |
+| `char` | `'\u0000'` (the null character) |
+| `boolean` | `false` |
+| Any **reference** type (`String`, objects) | **`null`** |
+
+```java
+int[] scores = new int[3];          // [0, 0, 0]
+String[] names = new String[3];     // [null, null, null]
+boolean[] paid = new boolean[3];    // [false, false, false]
+```
+
+<ExamTip>
+`int[] a;` **does not create an array** — it only declares a variable that *can* refer to one. Using it before `new` is a compile error ("variable a might not have been initialized"); a field left as `null` gives a **`NullPointerException`** at run time. The array itself is created by **`new`** or a **literal**.
+</ExamTip>
+
+---
+
+## Accessing and Updating Elements
+
+**Access** an element with its **index** in square brackets; **indexing starts at 0**:
+
+```java
+int[] arr = {2, 4, 8, 12, 16};
+System.out.print(arr[3] + " ");   // 12
+System.out.print(arr[0]);         // 2
+```
+
+**Update** with the assignment operator:
+
+```java
+arr[0] = 90;
+System.out.println(arr[0]);       // 90
+```
+
+**`arr.length`** gives the number of elements (a **field**, not a method — no brackets). The last element is **`arr[arr.length - 1]`**.
+
+Using an index outside **0 … length − 1** throws an **`ArrayIndexOutOfBoundsException`** at run time:
+
+```java
+int[] arr = new int[5];
+arr[5] = 1;   // ✗ Exception: Index 5 out of bounds for length 5
+```
+
+---
+
+## Traversing an Array
+
+**Traversal** means **visiting each element once**, usually with a loop from **0 to `length − 1`**. Step through it:
+
+<CodeTrace title="Traversing an array with a for loop">
+
+```java
+class Cos202Array {
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 8, 12, 16};
+        for (int i = 0; i < arr.length; i++)
+            System.out.print(arr[i] + " ");
+    }
+}
+```
+
+```trace
+3 | arr=[2; 4; 8; 12; 16] | | main | The array literal creates 5 ints side by side. arr.length is 5.
+4 | arr=[2; 4; 8; 12; 16], i=0 | | main | The loop starts with i = 0. Test: is 0 < 5? Yes, so the body runs.
+5 | arr=[2; 4; 8; 12; 16], i=0 | 2\s | main | Prints arr[0], which is 2, followed by a space.
+4 | arr=[2; 4; 8; 12; 16], i=1 | | main | i++ makes i = 1. Test: 1 < 5, so continue.
+5 | arr=[2; 4; 8; 12; 16], i=1 | 4\s | main | Prints arr[1] = 4.
+4 | arr=[2; 4; 8; 12; 16], i=2 | | main | i = 2. 2 < 5.
+5 | arr=[2; 4; 8; 12; 16], i=2 | 8\s | main | Prints arr[2] = 8.
+4 | arr=[2; 4; 8; 12; 16], i=3 | | main | i = 3. 3 < 5.
+5 | arr=[2; 4; 8; 12; 16], i=3 | 12\s | main | Prints arr[3] = 12.
+4 | arr=[2; 4; 8; 12; 16], i=4 | | main | i = 4. 4 < 5 — the last valid index.
+5 | arr=[2; 4; 8; 12; 16], i=4 | 16\s | main | Prints arr[4] = 16.
+4 | arr=[2; 4; 8; 12; 16], i=5 | | main | i = 5. Test: 5 < 5 is FALSE, so the loop ends. arr[5] is never touched.
+```
+
+</CodeTrace>
+
+**Output:** `2 4 8 12 16`
+
+### The Enhanced for Loop (for-each)
+
+When you only need to **read every element in order**, the **for-each** loop is shorter and can't go out of bounds:
+
+```java
+int[] arr = {2, 4, 8, 12, 16};
+for (int value : arr) {            // "for each int value in arr"
+    System.out.print(value + " ");
+}
+```
+
+| Use a regular `for` loop when you need… | Use for-each when… |
+|---|---|
+| The **index** (e.g. to print positions) | You just read each value |
+| To **change** elements (`arr[i] = …`) | You don't need to modify the array |
+| To go **backwards** or **skip** elements | You visit every element from first to last |
+
+---
+
+## Common Array Tasks
+
+### Sum, Average, Maximum and Minimum
+
+This is **Exercise 1** from the course: find the maximum and minimum of an array. Step through the key idea — start with the first element as "best so far" and compare the rest:
+
+<CodeTrace title="Finding the maximum and minimum">
+
+```java
+int[] scores = {56, 81, 34, 90, 67};
+int max = scores[0];
+int min = scores[0];
+for (int i = 1; i < scores.length; i++) {
+    if (scores[i] > max) max = scores[i];
+    if (scores[i] < min) min = scores[i];
+}
+System.out.println("Max = " + max + ", Min = " + min);
+```
+
+```trace
+1 | scores=[56; 81; 34; 90; 67] | | | Five scores.
+2 | scores=[56; 81; 34; 90; 67], max=56 | | | Assume the first element is the largest so far…
+3 | scores=[56; 81; 34; 90; 67], max=56, min=56 | | | …and also the smallest so far.
+4 | scores=[56; 81; 34; 90; 67], max=56, min=56, i=1 | | | Start at index 1 — index 0 is already counted.
+5 | scores=[56; 81; 34; 90; 67], max=81, min=56, i=1 | | | 81 > 56, so max becomes 81.
+6 | scores=[56; 81; 34; 90; 67], max=81, min=56, i=1 | | | 81 < 56? No, min unchanged.
+4 | scores=[56; 81; 34; 90; 67], max=81, min=56, i=2 | | | Next element.
+5 | scores=[56; 81; 34; 90; 67], max=81, min=56, i=2 | | | 34 > 81? No.
+6 | scores=[56; 81; 34; 90; 67], max=81, min=34, i=2 | | | 34 < 56, so min becomes 34.
+4 | scores=[56; 81; 34; 90; 67], max=81, min=34, i=3 | | | Next element.
+5 | scores=[56; 81; 34; 90; 67], max=90, min=34, i=3 | | | 90 > 81, so max becomes 90.
+6 | scores=[56; 81; 34; 90; 67], max=90, min=34, i=3 | | | 90 < 34? No.
+4 | scores=[56; 81; 34; 90; 67], max=90, min=34, i=4 | | | Last element.
+5 | scores=[56; 81; 34; 90; 67], max=90, min=34, i=4 | | | 67 > 90? No.
+6 | scores=[56; 81; 34; 90; 67], max=90, min=34, i=4 | | | 67 < 34? No.
+4 | scores=[56; 81; 34; 90; 67], max=90, min=34, i=5 | | | 5 < 5 is false — loop ends.
+8 | scores=[56; 81; 34; 90; 67], max=90, min=34 | Max = 90, Min = 34\n | | Print the results.
+```
+
+</CodeTrace>
+
+> Why start `max` at `scores[0]` rather than `0`? If every score were negative, a starting value of 0 would wrongly "win". Starting from a real element always works.
+
+### The java.util.Arrays Helper Class
+
+| Method | Does | Example |
+|---|---|---|
+| `Arrays.toString(a)` | A readable string of the elements | `"[2, 4, 8]"` |
+| `Arrays.sort(a)` | Sorts **in place**, ascending | `{3, 1, 2}` → `{1, 2, 3}` |
+| `Arrays.fill(a, v)` | Sets every element to `v` | fill with `-1` |
+| `Arrays.copyOf(a, n)` | A **new** array with the first `n` elements (pads with defaults) | resize a copy |
+| `Arrays.equals(a, b)` | `true` if same length and same elements in order | compare contents |
+
+```java
+import java.util.Arrays;
+
+int[] a = {5, 2, 9, 1};
+Arrays.sort(a);
+System.out.println(Arrays.toString(a));   // [1, 2, 5, 9]
+```
+
+(`System.out.println(a)` on its own prints something like `[I@1b6d3586` — the array's type and hash code, **not** its contents.)
+
+### Copying: Assignment Doesn't Copy the Array
+
+Because an array variable holds a **reference**, assigning it to another variable makes **both names point to the same array** (called **aliasing**):
+
+<CodeTrace title="Aliasing vs copying">
+
+```java
+int[] a = {1, 2, 3};
+int[] b = a;                         // same array, two names
+b[0] = 99;
+System.out.println(a[0]);
+int[] c = java.util.Arrays.copyOf(a, a.length);   // a real copy
+c[1] = 77;
+System.out.println(a[1] + " " + c[1]);
+```
+
+```trace
+1 | a=→ [1; 2; 3] | | | a refers to a new array.
+2 | a=→ [1; 2; 3], b=→ same array as a | | | b = a copies the REFERENCE, not the elements.
+3 | a=→ [99; 2; 3], b=→ same array as a | | | Changing b[0] changes the one shared array…
+4 | a=→ [99; 2; 3], b=→ same array as a | 99\n | | …so a[0] is 99 too!
+5 | a=→ [99; 2; 3], b=→ same array as a, c=→ [99; 2; 3] (separate) | | | copyOf builds a NEW array with the same values.
+6 | a=→ [99; 2; 3], b=→ same array as a, c=→ [99; 77; 3] (separate) | | | Changing c doesn't affect a.
+7 | a=→ [99; 2; 3], b=→ same array as a, c=→ [99; 77; 3] (separate) | 2 77\n | | a[1] is still 2.
+```
+
+</CodeTrace>
+
+### Arrays of Objects
+
+An array can hold objects of your own classes — remember each slot starts as **`null`** until you create an object for it:
+
+```java
+Student[] group = new Student[3];            // three null references
+group[0] = new Student("Ada", "UI/CSC/2026/001");
+System.out.println(group[1]);                 // null
+System.out.println(group[1].getName());       // ✗ NullPointerException
+```
+
+---
+
+## Multi-Dimensional Arrays
+
+**A multi-dimensional array is an array of arrays.** It stores data in **tabular form (rows and columns)** — matrices, tables, grids, seating plans, timetables. The **2D array** is the most common.
+
+**General syntax:**
+
+```text
+data_type[dim1][dim2]...[dimN] name = new data_type[size1][size2]...[sizeN];
+```
+
+**Total number of elements = the product of all dimension sizes.** For example:
+
+```java
+int[][][] x = new int[3][5][7];     // 3 × 5 × 7 = 105 elements
+```
+
+### 2D Arrays: Rows and Columns
+
+```java
+data_type[][] array_name = new data_type[x][y];     // x rows, y columns
+array_name[row_index][col_index] = value;
+```
+
+A 2D array is viewed as a **table with `x` rows (indexes `0 … x−1`) and `y` columns (indexes `0 … y−1`)**.
+
+| Expression | Meaning |
+|---|---|
+| `m.length` | Number of **rows** |
+| `m[0].length` | Number of **columns** in row 0 |
+| `m[r][c]` | The element in row `r`, column `c` |
+
+The lecture's example — **1 row, 3 columns**:
+
+```java
+public class Cos202Mult {
+    public static void main(String[] args) {
+        int[][] arr;
+        arr = new int[1][3];           // 1 row, 3 columns
+        arr[0][0] = 3; arr[0][1] = 5; arr[0][2] = 7;
+        System.out.println("arr[0][0] = " + arr[0][0]);
+        System.out.println("arr[0][1] = " + arr[0][1]);
+        System.out.println("arr[0][2] = " + arr[0][2]);
+    }
+}
+```
+
+```text
+arr[0][0] = 3
+arr[0][1] = 5
+arr[0][2] = 7
+```
+
+### Literal Initialisation and Nested Loops
+
+Each inner `{…}` is **one row**. To visit every element, use a **nested loop**: the outer loop picks the **row**, the inner loop walks the **columns** of that row:
+
+<CodeTrace title="Printing a 2D array with nested loops">
+
+```java
+int[][] arr = { {1, 2}, {3, 4} };
+for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 2; j++)
+        System.out.print(arr[i][j] + " ");
+    System.out.println();
+}
+```
+
+```trace
+1 | arr=[[1; 2]; [3; 4]] | | | Two rows, each with two columns.
+2 | arr=[[1; 2]; [3; 4]], i=0 | | | Outer loop: row i = 0.
+3 | arr=[[1; 2]; [3; 4]], i=0, j=0 | | | Inner loop: column j = 0.
+4 | arr=[[1; 2]; [3; 4]], i=0, j=0 | 1\s | | arr[0][0] = 1.
+3 | arr=[[1; 2]; [3; 4]], i=0, j=1 | | | j = 1.
+4 | arr=[[1; 2]; [3; 4]], i=0, j=1 | 2\s | | arr[0][1] = 2.
+3 | arr=[[1; 2]; [3; 4]], i=0, j=2 | | | j = 2: 2 < 2 is false, inner loop ends.
+5 | arr=[[1; 2]; [3; 4]], i=0 | \n | | println() ends the row's line.
+2 | arr=[[1; 2]; [3; 4]], i=1 | | | Outer loop: row i = 1.
+3 | arr=[[1; 2]; [3; 4]], i=1, j=0 | | | The inner loop starts again from j = 0.
+4 | arr=[[1; 2]; [3; 4]], i=1, j=0 | 3\s | | arr[1][0] = 3.
+3 | arr=[[1; 2]; [3; 4]], i=1, j=1 | | | j = 1.
+4 | arr=[[1; 2]; [3; 4]], i=1, j=1 | 4\s | | arr[1][1] = 4.
+3 | arr=[[1; 2]; [3; 4]], i=1, j=2 | | | Inner loop ends.
+5 | arr=[[1; 2]; [3; 4]], i=1 | \n | | New line.
+2 | arr=[[1; 2]; [3; 4]], i=2 | | | i = 2: 2 < 2 is false, all rows done.
+```
+
+</CodeTrace>
+
+```text
+1 2
+3 4
+```
+
+> **Better style:** use the array's own sizes — `i < arr.length` and `j < arr[i].length` — instead of hard-coding `2`, so the loops still work if the array changes size.
+
+### Jagged Arrays
+
+Because each row is a separate array, **rows can have different lengths**:
+
+```java
+int[][] triangle = new int[3][];     // 3 rows, sizes not yet fixed
+triangle[0] = new int[1];
+triangle[1] = new int[2];
+triangle[2] = new int[3];
+System.out.println(triangle[2].length);   // 3
+```
+
+Useful for data like "courses registered per student", where each row naturally has a different size.
+
+---
+
+## Exercise 2: Matrix Sum
+
+**Create two 3 × 3 matrices A and B; write a method that computes C = A + B element by element, and print C as a table.**
+
+<Reveal question="Show a complete solution">
+```java
+public class MatrixSum {
+    static int[][] add(int[][] a, int[][] b) {
+        int rows = a.length, cols = a[0].length;
+        int[][] c = new int[rows][cols];
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                c[i][j] = a[i][j] + b[i][j];
+        return c;
+    }
+
+    static void print(int[][] m) {
+        for (int[] row : m) {
+            for (int value : row)
+                System.out.printf("%4d", value);   // each number in a 4-character column
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] A = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+        int[][] B = { {9, 8, 7}, {6, 5, 4}, {3, 2, 1} };
+        print(add(A, B));
+    }
+}
+```
+**Output:**
+```text
+  10  10  10
+  10  10  10
+  10  10  10
+```
+Each element is `A[i][j] + B[i][j]`; for example `C[0][0] = 1 + 9 = 10`.
+</Reveal>
+
+---
+
+## Check Your Understanding
+
+<MCQ question="What does this print?  int[] a = new int[4]; a[1] = 7; System.out.println(a[0] + a[1] + a.length);">
+<Option>7</Option>
+<Option correct>11</Option>
+<Option>074</Option>
+<Option>An exception</Option>
+<Explain>
+`new int[4]` fills the array with **0**s, so `a[0]` is 0. Then `0 + 7 + 4` — all **ints**, so they're **added**: **11**. (If a String came first, `+` would concatenate instead.)
+</Explain>
+</MCQ>
+
+<MCQ question="Given int[][] m = new int[4][6]; which expression gives the number of columns?">
+<Option>m.length</Option>
+<Option correct>m[0].length</Option>
+<Option>m.length * m[0].length</Option>
+<Option>m.columns</Option>
+<Explain>
+`m.length` is the number of **rows** (4). Each row is an array of **6** ints, so **`m[0].length`** is the number of columns. `m.length * m[0].length` is the total number of elements (24).
+</Explain>
+</MCQ>
+
+<MCQ question="The array int[] x holds the three values 5, 10 and 15. Which line throws an ArrayIndexOutOfBoundsException?">
+<Option>x[0] = 1;</Option>
+<Option>System.out.println(x[x.length - 1]);</Option>
+<Option correct>x[3] = 20;</Option>
+<Option>int n = x.length;</Option>
+<Explain>
+The valid indexes are **0, 1 and 2**. `x[3]` is outside the range, so Java throws **`ArrayIndexOutOfBoundsException`** at run time. `x[x.length - 1]` is `x[2]`, the last element.
+</Explain>
+</MCQ>
+
+## Practice Questions
+
+<Reveal question="Define an array and state three of its characteristics.">
+An array is **a collection of elements of the same data type stored in contiguous memory locations and accessed by an index**. Characteristics: **fixed size** once created; **zero-based indexing** (0 to length − 1); elements are **all the same type**; primitive arrays store **values**, object arrays store **references**; elements get **default values** (0, false, null) when created with `new`.
+</Reveal>
+
+<Reveal question="Differentiate between declaring and initialising an array, with examples.">
+**Declaring** creates only a **reference variable**: `int[] marks;` — no array exists yet. **Initialising/allocating** creates the array in memory: `marks = new int[40];` (40 zeros) or with a literal `int[] marks = {70, 65, 82};` (length inferred). Both can be combined: `int[] marks = new int[40];`.
+</Reveal>
+
+<Reveal question="Write a Java program that stores the scores of 8 students in an array and prints the total and average.">
+```java
+public class Scores {
+    public static void main(String[] args) {
+        int[] scores = {56, 81, 34, 90, 67, 72, 49, 88};
+        int total = 0;
+        for (int s : scores) total += s;
+        double average = (double) total / scores.length;
+        System.out.println("Total = " + total);                          // 537
+        System.out.printf("Average = %.2f%n", average);                  // 67.13
+    }
+}
+```
+The `(double)` cast avoids **integer division** (537 / 8 would give 67).
+</Reveal>
+
+<Reveal question="How many elements does new double[4][3][2] hold, and what is their initial value?">
+**4 × 3 × 2 = 24** elements, each initialised to **0.0** (the default for `double`).
+</Reveal>
+
+<Takeaway>
+An **array** stores a **fixed number** of **same-typed** elements in **contiguous memory**, indexed from **0** to **length − 1** (`arr.length` is a field). **Declare** (`int[] a;` — reference only), **allocate** with `new` (elements get defaults: 0, 0.0, false, `'\u0000'`, null) or use a **literal** `{1, 2, 3}`. Access/update with `a[i]`; a bad index throws **`ArrayIndexOutOfBoundsException`**. Traverse with a `for` loop (index needed) or **for-each** (read only). Assignment copies the **reference** (aliasing) — use `Arrays.copyOf` for a real copy; `java.util.Arrays` also gives `toString`, `sort`, `fill`, `equals`. **Multi-dimensional arrays are arrays of arrays**: total size = product of dimensions; in 2D, `m.length` = rows, `m[r].length` = columns; process with **nested loops**; rows may differ in length (**jagged**).
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Definition of an array; primitive vs non-primitive arrays
+- Declaration, `new`, literals, **default values**
+- **Tracing** loops over arrays and writing the exact output
+- Min/max, sum/average; matrix operations with nested loops
+- Multi-dimensional syntax; **counting elements** (product of dimensions)
+
+**Common mistakes:**
+- `i <= arr.length` in a loop (one step too far → exception)
+- Writing `arr.length()` — for arrays it's a field: **`arr.length`** (Strings use `s.length()`)
+- Integer division when computing an average
+- Thinking `b = a` copies an array
+
+**Likely question:**
+> "Write a Java program that declares a 3 × 3 integer array, fills it with values entered in the program, and prints the array in tabular form together with the sum of each row." (10 marks)

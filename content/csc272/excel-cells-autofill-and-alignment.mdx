@@ -1,0 +1,297 @@
+---
+title: "Excel II: Managing Sheets, Cells, Autofill and Alignment"
+description: "Renaming, inserting, colouring and deleting worksheets, saving and closing a workbook, the kinds of data a cell holds and how Excel treats them (numbers, text, dates, percentages, leading zeros), entering, editing and clearing cells, the three mouse-pointer shapes, AutoFill with the fill handle — copying versus continuing a series, built-in lists, text with numbers, formulas — and cell alignment, text direction, Wrap Text and Merge & Center."
+duration: "40 min"
+difficulty: "beginner"
+---
+
+## Working with Worksheet Tabs
+
+The name of each sheet appears on its **tab** at the bottom of the window. The first sheet is called **Sheet1** — rename sheets so the name describes the data (*Raw Scores*, *Summary*, *Graph*…).
+
+| Task | How |
+|---|---|
+| **Rename** a sheet | Right-click its tab → **Rename** → type → **Enter**. Or **double-click** the tab |
+| **Add** a sheet | Click the **New sheet** button **⊕** after the last tab (**Shift+F11**), or right-click a tab → **Insert…** → Worksheet — the new sheet goes to the **left** of the one you clicked |
+| **Move between** sheets | Click the tabs (Ctrl+Page Down / Ctrl+Page Up) |
+| **Tab colour** | Right-click the tab → **Tab Color** → pick a colour |
+| **Delete** a sheet | Right-click the tab → **Delete** → confirm. Or HOME → Cells → Delete → **Delete Sheet** |
+| **Move / copy** a sheet | Drag the tab along the row of tabs (hold **Ctrl** to copy), or right-click → Move or Copy |
+
+<ExamTip>
+**Undo cannot bring back a deleted worksheet.** That is why Excel warns *"Microsoft Excel will permanently delete this sheet. Do you want to continue?"* — read the sheet name twice before clicking Delete.
+</ExamTip>
+
+Sheet names can be up to **31 characters**, cannot be blank, cannot repeat another sheet's name and cannot contain `\ / ? * [ ] :`.
+
+### Saving and closing
+
+It is wise to **save the workbook before you start adding content**, then keep saving (**Ctrl+S**):
+
+1. FILE → **Save As** → double-click **Computer** (or Browse).
+2. Choose the folder, type the **File name** (e.g. `234567_Results`) → **Save**. The name appears in the title bar.
+
+To close: FILE → **Close**, or the **✕** button — Excel asks whether to save any unsaved changes.
+
+---
+
+## Cells and Data
+
+All data is entered into **cells**. A cell must be **active** (selected) before you type into it: click it — its address appears in the **Name Box** and a dark border surrounds it.
+
+### Types of data
+
+| Type | Examples | Default alignment |
+|---|---|---|
+| **Text** (labels) | `Name`, `Oyo`, `CSC272` | **Left** |
+| **Numbers** — integers, decimals, currency, percentages | `67`, `3.5`, `₦1,200`, `50%` | **Right** |
+| **Dates and times** | `15/05/2024`, `9:00` | **Right** (dates are numbers underneath) |
+| **Formulas** — start with `=` | `=B2*C2`, `=SUM(B2:B9)` | Right (for numeric results) |
+| **Logical values** | `TRUE`, `FALSE` | Centre |
+
+Watch how Excel interprets what you type:
+
+| You type | Excel stores / shows | Why |
+|---|---|---|
+| `50%` | 0.5, shown as **50%** | Recognised as a percentage |
+| `1,000` | 1000, shown as **1,000** | Recognised as a number with a thousands separator |
+| `007` or `08031234567` | **7** / **8031234567** | Numbers have no leading zeros — they are dropped |
+| `'007` | **007** (text) | A leading **apostrophe** tells Excel "treat as text" (the apostrophe is not shown) |
+| `Jan-24`, `15/05/2024` | A date | Stored as a date serial number, displayed in date format |
+
+<ExamTip>
+Phone numbers, matric numbers with leading zeros and ID codes are **text**, not numbers — you never add them up. Type them with a leading apostrophe or format the column as **Text** first, otherwise Excel removes the leading zero.
+</ExamTip>
+
+### Entering data
+
+1. Select the cell and **type**. The entry appears in the cell **and** in the formula bar, and two buttons appear beside the formula bar: **✕ (Cancel)** and **✓ (Enter)**.
+2. Finish the entry with any of:
+
+| Key / action | Completes the entry and then… |
+|---|---|
+| **Enter** | moves **down** one cell |
+| **Tab** | moves **right** one cell |
+| An **arrow key** | moves one cell in that direction |
+| Clicking **✓** | stays in the same cell |
+| Clicking another cell with the mouse | goes to that cell |
+
+Press **Esc** (or click ✕) to cancel what you were typing.
+
+### Editing and clearing
+
+| To… | Do this |
+|---|---|
+| **Edit** part of an entry | **Double-click** the cell (or press **F2**) and move the cursor; or select the cell and click in the **formula bar** |
+| **Replace** the whole entry | Select the cell, just **type** the new data, press Enter |
+| **Clear** the contents | Select the cell(s) and press **Delete** (the formatting stays; HOME → Clear → Clear All removes that too) |
+
+The status bar shows **Enter** mode while you type a new entry and **Edit** mode while you edit an existing one (and **Point** while you click cells to build a formula).
+
+### The mouse pointer
+
+In Excel the pointer's **shape changes** depending on where it is — and each shape does a different job:
+
+![Three pointer shapes: a white cross in the centre of a cell selects cells; a four-headed arrow on the border of the selected cell drags the contents to move them; a thin black plus on the fill handle at the bottom-right corner autofills or copies](/images/csc272/excel-pointers.svg)
+
+1. **White cross** (centre of a cell) — **select** cells.
+2. **Four-headed arrow** (on the **border** of the selected cell) — **drag to move** the contents elsewhere (hold **Ctrl** to copy).
+3. **Thin black plus** (on the **fill handle**, bottom-right corner) — **AutoFill** or copy into neighbouring cells.
+
+---
+
+## AutoFill
+
+If you need a series — months, days, numbers — type the **first item(s)** and drag the **fill handle** over the cells to fill. The lecture's example:
+
+1. Click **B1**, type `Jul`. Point at the bottom-right corner until the **thin black plus** appears.
+2. Drag over the two cells to the right: **C1** becomes *Aug* and **D1** *Sep*.
+3. Click **B2**, type `50000`, and drag its fill handle over two cells to the right: **C2** and **D2** become *50000* — a single number is **copied**, not increased.
+
+The rules Excel follows:
+
+| Start with… | Excel… |
+|---|---|
+| **One number** (`50000`) | **Copies** it (hold **Ctrl** while dragging to count up by 1 instead) |
+| **Two or more numbers** (`1, 2` or `5, 10`) | Continues the **pattern** (3, 4, 5… or 15, 20, 25…) |
+| An item from a **built-in list** (`Mon`, `Monday`, `Jan`, `January`) | Continues the list (Tue, Wed… / Feb, Mar…), wrapping round |
+| **Text with a number** (`Product 1`, `Qtr3`, `1st Period`) | Increases the number (Product 2…; Qtr4, Qtr1…; 2nd Period…) |
+| A **time** (`9:00`) | Adds one hour (10:00, 11:00…) |
+| **Plain text** (`Passed`) | Copies it |
+| A **formula** (`=B2*C2`) | Copies it, **adjusting the cell references** (=B3*C3, =B4*C4…) because Excel uses **relative references** by default — covered in the formulas lesson |
+
+Examples of series that can be auto-filled (from the notes, with the typo in the year example corrected):
+
+| Initial selection | Extended series |
+|---|---|
+| 1, 2, 3 | 4, 5, 6, … |
+| 9:00 | 10:00, 11:00, 12:00, … |
+| Mon | Tue, Wed, Thu, … |
+| Jan | Feb, Mar, Apr, … |
+| Jan-07, Apr-07 | Jul-07, Oct-07, Jan-08, … |
+| 15-Jan, 15-Apr | 15-Jul, 15-Oct, … |
+| 2007, 2008 | 2009, 2010, 2011, … |
+| 1-Jan, 1-Mar | 1-May, 1-Jul, 1-Sep, … |
+| Qtr3 (or Q3 or Quarter3) | Qtr4, Qtr1, Qtr2, … |
+| text1, textA | text2, textA, text3, textA, … |
+| 1st Period | 2nd Period, 3rd Period, … |
+| Product 1 | Product 2, Product 3, … |
+
+In Excel 2013 you can AutoFill in **any direction** — down, right, up or left. After filling, the **Auto Fill Options** button lets you switch between *Copy Cells*, *Fill Series*, *Fill Formatting Only* and *Fill Without Formatting*. (HOME → Editing → **Fill → Series…** fills an exact series such as *step 5, stop at 100*.)
+
+### Try AutoFill
+
+Each row holds a starting value (or two) in column A (and B). **Select** the starting cell(s) — click, or Shift+click for two cells — then **drag the green square** at the bottom-right corner across to column F. On a phone, press and drag the square.
+
+<ExcelSheet title="AutoFill practice" height="340" cols="8">
+
+```sheet
+[AutoFill]
+@width A:H 72
+@bold A1:H1
+@fill #E2EFDA A1:H1
+Start → | drag right…
+Jul
+50000
+1 | 2
+5 | 10
+9:00
+Mon
+January
+2007 | 2008
+Qtr3
+1st Period
+Product 1
+text1 | textA
+Passed
+@select A2
+```
+
+</ExcelSheet>
+
+Also try: select **A4:B4** (1 and 2) and fill **down** instead of right; select a single number and fill — then undo (**Ctrl+Z**) and look at what changed.
+
+---
+
+## Cell Alignment
+
+By default **text aligns left** and **numbers and dates align right**. Change it with HOME → **Alignment** group:
+
+| Command | Effect |
+|---|---|
+| **Top / Middle / Bottom Align** | Vertical position inside a tall cell |
+| **Align Left / Center / Align Right** | Horizontal position |
+| **Orientation** | Angle or rotate text (e.g. *Rotate Text Up* for narrow column headings); the **direction** of text can also be set in Format Cells → Alignment |
+| **Decrease / Increase Indent** | Moves content away from the left edge |
+| **Wrap Text** | Displays long text on **several lines inside the cell** |
+| **Merge & Center** | Joins selected cells into **one** and centres the content |
+
+### Wrap Text
+
+Sometimes part of your text is hidden because the column is too narrow (text spills into the next cell only while that cell is **empty**). To make the text appear on multiple lines in the cell:
+
+1. Select the cells.
+2. HOME → Alignment → **Wrap Text**.
+3. The data wraps to fit the column width; when you change the column width, the wrapping adjusts automatically. If some wrapped text is still hidden, increase the **row height**.
+
+### Merge & Center
+
+Like merging table cells in Word: **Merge & Center** joins the selected cells into one large cell and centres the data — ideal for a title above a table.
+
+1. Select two or more **adjacent** cells (e.g. A1:D1).
+2. HOME → Alignment → **Merge & Center**.
+
+<ExamTip>
+Only the data in the **upper-left** cell survives a merge — data in all the other selected cells is **deleted** (Excel warns *"Merging cells only keeps the upper-left value and discards other values."*). Put the title in the first cell before merging. The same button (or its arrow → **Unmerge Cells**) splits it again.
+</ExamTip>
+
+### Try sheets, typing and alignment
+
+1. **Rename** *Sheet1* to `Sales` (double-click the tab), add a new sheet with **⊕**, give it a **tab colour** (Home → Format), then delete it — and notice Undo can't restore it.
+2. In **A12** type `007`, in **A13** `'007`, in **A14** `50%`, in **A15** `1,000`, in **A16** `08031234567`, and compare what you typed with what Excel shows.
+3. Select **A1:C1** and click **Merge**; accept the warning — what happened to "(crates)"?
+4. Click **C2** (the long heading) and click **Wrap** — the row grows taller.
+5. Select the numbers **B3:B6** and try the alignment buttons.
+
+<ExcelSheet title="Sheets, data entry and alignment" height="320">
+
+```sheet
+[Sheet1]
+@width A 90
+@width B:C 80
+@bold A1:C2
+Monthly Sales Analysis of Cocacola | | (crates)
+State | Number of Pack sold | Number of Crates sold in the month of December
+Oyo | 20568 | 857
+Lagos | 42153 | 1756
+Ogun | 10007 | 417
+Osun | 8230 | 343
+@select A1
+```
+
+</ExcelSheet>
+
+---
+
+## Practice Questions
+
+<MCQ question="You type 50000 in B2 and drag its fill handle to D2. What appears in C2 and D2?">
+<Option>50001 and 50002</Option>
+<Option correct>50000 and 50000</Option>
+<Option>100000 and 150000</Option>
+<Option>Nothing — you must type them</Option>
+<Explain>With a single number selected, AutoFill copies it. Select two numbers (e.g. 50000 and 60000) to continue a pattern, or hold Ctrl while dragging to count up by 1.</Explain>
+</MCQ>
+
+<MCQ question="By default, how are text and numbers aligned in a cell?">
+<Option>Both centred</Option>
+<Option>Text right, numbers left</Option>
+<Option correct>Text left, numbers (and dates) right</Option>
+<Option>Both left</Option>
+<Explain>Excel aligns text to the left and numbers, dates and numeric formula results to the right unless you change the alignment.</Explain>
+</MCQ>
+
+<MCQ question="You select A1:D1 where A1 holds a title and C1 holds a note, then click Merge & Center. What happens to the note?">
+<Option>It is moved to A2</Option>
+<Option>It is joined to the title</Option>
+<Option correct>It is deleted — only the upper-left value is kept</Option>
+<Option>Excel refuses to merge</Option>
+<Explain>Excel warns that merging keeps only the upper-left value; if you click OK the other values are discarded.</Explain>
+</MCQ>
+
+<Reveal question="1. Describe three ways of completing a cell entry and where each leaves the active cell.">
+Press **Enter** (moves down one cell), **Tab** (moves right one cell), an **arrow key** (moves in that direction), click the **✓** on the formula bar (stays in the same cell) or click another cell (goes there).
+</Reveal>
+
+<Reveal question="2. Explain the three shapes of the mouse pointer in Excel and their uses.">
+**White cross** over the middle of a cell — selects cells. **Four-headed (move) arrow** over the border of the selection — drags the contents to a new location. **Thin black plus** over the fill handle — AutoFill: copies the contents or continues a series into adjacent cells.
+</Reveal>
+
+<Reveal question="3. What is AutoFill? Give four series Excel can continue automatically.">
+AutoFill fills adjacent cells from a starting value using the fill handle, either copying it or continuing a series. Examples: 1, 2 → 3, 4, 5; Mon → Tue, Wed; Jan → Feb, Mar; Qtr3 → Qtr4, Qtr1; Product 1 → Product 2; 9:00 → 10:00; 2007, 2008 → 2009, 2010.
+</Reveal>
+
+<Reveal question="4. Why might a phone number typed as 08031234567 display as 8031234567, and how do you fix it?">
+Excel treats it as a number and numbers have no leading zeros. Type it with a leading apostrophe (`'08031234567`) or format the cells as **Text** before typing, so it is stored as text.
+</Reveal>
+
+<Reveal question="5. What is the use of Wrap Text?">
+It makes long text display on several lines within the same cell (the row becomes taller) instead of being cut off or spilling into the next cell. The wrapping adjusts automatically when the column width changes.
+</Reveal>
+
+<Takeaway>
+- Sheet tabs: **rename** (double-click), **insert** (⊕ / Shift+F11, left of the selected tab), **tab colour**, **delete** (cannot be undone!), move/copy by dragging.
+- Save early (Save As → folder → name) and often (Ctrl+S).
+- Data types: text (left), numbers and dates (right), formulas (start with =), TRUE/FALSE. `50%` → 0.5; leading zeros vanish unless typed as text (`'007`).
+- Complete entries with Enter (down), Tab (right), arrows, ✓; edit with double-click/F2/formula bar; Delete clears contents.
+- Pointer shapes: **white cross** = select, **four-headed arrow** = move, **thin black plus** = AutoFill.
+- AutoFill: one number copies, two numbers continue the step, lists and text-with-numbers increment, formulas adjust their references; fill in any direction.
+- Alignment group: horizontal/vertical alignment, orientation, indent, **Wrap Text**, **Merge & Center** (keeps only the upper-left value).
+</Takeaway>
+
+## Exam Tips
+
+- Practical tasks start with "create a workbook with three sheets named *Raw Scores*, *Summary* and *Graph*" — rename and add sheets first, and spell the names **exactly** as given.
+- Use **AutoFill** for matric numbers, months and serial numbers instead of typing each one — it is faster and error-free.
+- Remember the Merge & Center **data-loss** warning and the **deleted sheet cannot be undone** fact — both are easy theory marks.
+- Know the default alignments (text left, numbers right) and why a number might appear left-aligned (it was entered as **text**).

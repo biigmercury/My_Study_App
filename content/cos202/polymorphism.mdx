@@ -1,0 +1,345 @@
+---
+title: "Polymorphism: Overloading, Overriding and Dynamic Dispatch"
+description: "Polymorphism — one interface, many forms: compile-time polymorphism by overloading vs runtime polymorphism by overriding, the rules of overriding and the @Override annotation, dynamic method dispatch traced step by step (reference type vs object type), upcasting, downcasting and instanceof, polymorphic arrays (the course's Shape exercise), and the subtle cases — fields and static methods are not polymorphic."
+duration: "45 min"
+difficulty: "intermediate"
+---
+
+## What Is Polymorphism?
+
+> **Definition:** **Polymorphism** means **"many forms"** — the **same method call or object reference shows different behaviour depending on context.**
+
+The lecture's example: calling **`speak()`** produces **"Bark"**, **"Meow"** or **"Moo"** depending on whether the object is a **Dog**, **Cat** or **Cow**. The *call* is the same; the *behaviour* adapts to the object.
+
+<Analogy>
+The instruction **"open"** means different things to different objects: **open** a door (swing it), **open** a bottle (twist the cap), **open** a laptop (lift the lid), **open** an account (fill a form). One word, many forms of behaviour — and the person giving the instruction doesn't need to know the details of each. That's polymorphism.
+</Analogy>
+
+### Two Kinds of Polymorphism
+
+| | **Compile-time polymorphism** | **Runtime polymorphism** |
+|---|---|---|
+| Achieved by | **Method overloading** | **Method overriding** |
+| What varies | **Same name, different parameters** (in one class) | A **subclass redefines** a superclass method (same signature) |
+| Decided | **At compile time**, from the **argument types** | **At run time**, from the **actual object's type** |
+| Also called | **Static binding / early binding** | **Dynamic binding / late binding / dynamic method dispatch** |
+| Needs inheritance? | No | **Yes** (or interfaces) |
+| Example | `plusMethod(int, int)` vs `plusMethod(double, double)` | `Dog.sound()` overriding `Animal.sound()` |
+
+---
+
+## Compile-Time Polymorphism: Overloading (Recap)
+
+You met overloading in the Methods lesson: **several methods share a name but differ in their parameter lists**, and the **compiler** picks one from the argument types:
+
+```java
+class Printer {
+    void print(int n)       { System.out.println("int: " + n); }
+    void print(double d)    { System.out.println("double: " + d); }
+    void print(String s)    { System.out.println("String: " + s); }
+}
+
+Printer p = new Printer();
+p.print(5);        // int: 5
+p.print(2.5);      // double: 2.5
+p.print("IFT");    // String: IFT
+```
+
+**Constructors** are overloaded the same way (`Student(String)`, `Student(String, String)`). Java even overloads an operator for you: **`+`** adds numbers but **concatenates** Strings.
+
+---
+
+## Runtime Polymorphism: Overriding
+
+**Method overriding** happens when **a subclass provides its own implementation of a method already defined in its superclass**, with the **same signature**. The subclass version **replaces** the inherited one for objects of that subclass.
+
+```java
+class Animal {
+    void sound() { System.out.println("Animal makes a sound"); }
+}
+class Dog extends Animal {
+    @Override
+    void sound() { System.out.println("Dog barks"); }
+}
+```
+
+### Rules of Overriding
+
+| Rule | Detail |
+|---|---|
+| **Same name and parameter list** | Otherwise it's an **overload**, not an override |
+| **Return type** | The same type, or a **subtype** (a "covariant" return — e.g. overriding `Animal create()` with `Dog create()`) |
+| **Access** | **Same or wider** — a `public` method can't become `protected` or `private` in the subclass |
+| **Cannot override** | **`final`** methods, **`static`** methods (they're *hidden*, not overridden), **`private`** methods (not inherited), and **constructors** |
+| **Checked exceptions** | The override can't throw **new or broader** checked exceptions than the original |
+| **Call the parent's version** | `super.sound()` inside the override |
+
+### Always Use @Override
+
+The **`@Override`** annotation asks the compiler to **check** that you really are overriding something:
+
+```java
+class Student {
+    @Override
+    public String tostring() {          // ✗ compile error: method does not override or implement a method from a supertype
+        return "Student";
+    }
+}
+```
+
+Without `@Override`, the typo `tostring` (lower-case s) would silently create a **new** method, and `println(student)` would keep using `Object`'s version — a bug that's very hard to spot. With it, the compiler catches the mistake immediately.
+
+---
+
+## Dynamic Method Dispatch
+
+A **superclass reference can refer to a subclass object**:
+
+```java
+Animal a = new Dog();     // reference type: Animal   object type: Dog
+```
+
+When you call an **overridden** method through that reference, **Java decides at run time which version to execute, based on the actual object — not the reference type**. This mechanism is called **dynamic method dispatch**.
+
+**Two different questions, answered at two different times:**
+
+| When | Question | Decided by |
+|---|---|---|
+| **Compile time** | *Is this method call **allowed**?* | The **reference type** — `Animal` must have `sound()` |
+| **Run time** | *Which **version** runs?* | The **object type** — it's a `Dog`, so `Dog.sound()` |
+
+<CodeTrace title="Dynamic method dispatch">
+
+```java
+class Animal {
+    void sound() { System.out.println("Animal makes a sound"); }
+}
+class Dog extends Animal {
+    void sound() { System.out.println("Dog barks"); }
+    void fetch() { System.out.println("Fetching!"); }
+}
+class Cat extends Animal {
+    void sound() { System.out.println("Cat meows"); }
+}
+public class Main {
+    public static void main(String[] args) {
+        Animal a;
+        a = new Dog();
+        a.sound();
+        a = new Cat();
+        a.sound();
+        a = new Animal();
+        a.sound();
+    }
+}
+```
+
+```trace
+13 | a=null | | main | a is declared with type Animal. It can refer to an Animal OR any subclass object.
+14 | a=→ Dog object | | main | Upcasting: a Dog IS-A Animal, so this is allowed automatically.
+15 | a=→ Dog object | | main > Dog.sound() | Compiler: does Animal have sound()? Yes → call allowed. JVM: the object is a Dog → run Dog's version.
+15 | a=→ Dog object | Dog barks\n | main | 
+16 | a=→ Cat object | | main | The same variable now refers to a Cat.
+17 | a=→ Cat object | Cat meows\n | main > Cat.sound() | Same line of code as before, different behaviour: the object is a Cat.
+18 | a=→ Animal object | | main | Now a plain Animal.
+19 | a=→ Animal object | Animal makes a sound\n | main > Animal.sound() | No override involved — Animal's own version runs.
+```
+
+</CodeTrace>
+
+> **But `a.fetch()` would not compile**, even while `a` refers to a Dog: the compiler only knows `a` is an **Animal**, and `Animal` has no `fetch()`. To call it you must **downcast** (next section).
+
+---
+
+## Upcasting, Downcasting and instanceof
+
+| | Upcasting | Downcasting |
+|---|---|---|
+| Direction | Subclass → superclass reference | Superclass reference → subclass reference |
+| Syntax | **Automatic**: `Animal a = new Dog();` | **Explicit cast**: `Dog d = (Dog) a;` |
+| Safe? | **Always** (a Dog IS-A Animal) | Only if the object **really is** that subclass — otherwise **`ClassCastException`** at run time |
+
+```java
+Animal a = new Cat();
+Dog d = (Dog) a;          // compiles, but ✗ ClassCastException: Cat cannot be cast to Dog
+```
+
+**Check first with `instanceof`:**
+
+```java
+if (a instanceof Dog) {
+    Dog d = (Dog) a;
+    d.fetch();
+}
+
+// Java 16+ "pattern matching" does the check and cast together:
+if (a instanceof Dog d) {
+    d.fetch();
+}
+```
+
+---
+
+## Polymorphism in Practice: Exercise 5 (Shape Hierarchy)
+
+**Design an abstract class `Shape` with an abstract method `area()`; subclasses `Circle`, `Rectangle` and `Triangle` each override `area()`; in `main`, store several shapes in a `Shape[]` array and print each area (runtime polymorphism).**
+
+```java
+abstract class Shape {
+    abstract double area();
+
+    public String toString() {
+        return getClass().getSimpleName() + String.format(" with area %.2f", area());
+    }
+}
+
+class Circle extends Shape {
+    private double radius;
+    Circle(double radius) { this.radius = radius; }
+    @Override double area() { return Math.PI * radius * radius; }
+}
+
+class Rectangle extends Shape {
+    private double length, width;
+    Rectangle(double length, double width) { this.length = length; this.width = width; }
+    @Override double area() { return length * width; }
+}
+
+class Triangle extends Shape {
+    private double base, height;
+    Triangle(double base, double height) { this.base = base; this.height = height; }
+    @Override double area() { return 0.5 * base * height; }
+}
+
+public class ShapeDemo {
+    public static void main(String[] args) {
+        Shape[] shapes = { new Circle(1.5), new Rectangle(4, 2.5), new Triangle(6, 3) };
+        double total = 0;
+        for (Shape s : shapes) {
+            System.out.println(s);        // calls toString(), which calls the right area()
+            total += s.area();
+        }
+        System.out.printf("Total area: %.2f%n", total);
+    }
+}
+```
+
+```text
+Circle with area 7.07
+Rectangle with area 10.00
+Triangle with area 9.00
+Total area: 26.07
+```
+
+**Where's the polymorphism?** The loop body `s.area()` is **one line of code**, yet it runs **three different methods**. `toString()` is written **once**, in `Shape`, and its call to `area()` is dispatched to the right subclass each time. Adding a `Pentagon` later needs **no change** to the loop — just a new subclass. That's the power of polymorphism: code written against the **general type** keeps working as **new specific types** are added.
+
+### Why It Matters
+
+- **Flexibility and extensibility** — add new subclasses without touching existing code
+- **Cleaner code** — no long `if (shape is circle) … else if (shape is square) …` chains
+- **Loose coupling** — methods accept the general type (`void printArea(Shape s)`) and work with any subclass
+- **Real frameworks rely on it** — Swing calls *your* overridden `actionPerformed()`; collections call *your* `compareTo()`
+
+---
+
+## The Subtle Cases: Fields and Static Methods
+
+Only **instance methods** are dispatched dynamically. **Fields** and **static methods** are chosen by the **reference type**:
+
+```java
+class Parent {
+    String name = "Parent";
+    static String kind() { return "static Parent"; }
+    String who() { return "Parent.who"; }
+}
+class Child extends Parent {
+    String name = "Child";                         // HIDES the field, doesn't override it
+    static String kind() { return "static Child"; } // HIDES the static method
+    @Override String who() { return "Child.who"; }  // OVERRIDES the instance method
+}
+
+Parent p = new Child();
+System.out.println(p.name);     // Parent        ← field: reference type
+System.out.println(p.kind());   // static Parent ← static method: reference type
+System.out.println(p.who());    // Child.who     ← instance method: object type
+```
+
+This is one reason fields should be **private** and accessed through **methods** — methods behave polymorphically, fields don't.
+
+---
+
+## Check Your Understanding
+
+<MCQ question="Animal a = new Dog(); where Dog overrides speak() and adds bark(). Which call does NOT compile?">
+<Option>a.speak();</Option>
+<Option correct>a.bark();</Option>
+<Option>((Dog) a).bark();</Option>
+<Option>a.toString();</Option>
+<Explain>
+The **compiler** checks calls against the **reference type**, `Animal`, which has no `bark()`. `a.speak()` compiles and runs **Dog's** version (dynamic dispatch). The downcast `((Dog) a).bark()` compiles and works because the object really is a Dog. Every class has `toString()` from `Object`.
+</Explain>
+</MCQ>
+
+<MCQ question="Which of these can be overridden in a subclass?">
+<Option>A final method</Option>
+<Option>A private method</Option>
+<Option>A static method</Option>
+<Option correct>A public, non-final instance method</Option>
+<Explain>
+**Final** methods are locked, **private** methods aren't inherited, and **static** methods are **hidden** (chosen by reference type), not overridden. Only non-final, non-static, non-private **instance** methods take part in dynamic dispatch.
+</Explain>
+</MCQ>
+
+<MCQ question="Which statement correctly contrasts overloading and overriding?">
+<Option>Both are resolved at run time.</Option>
+<Option correct>Overloading: same name, different parameters, resolved at compile time. Overriding: same signature in a subclass, resolved at run time.</Option>
+<Option>Overloading needs inheritance; overriding doesn't.</Option>
+<Option>Overriding may change the parameter list.</Option>
+<Explain>
+**Overloading** = compile-time polymorphism (different parameter lists, usually in one class). **Overriding** = runtime polymorphism (same signature, subclass replaces superclass behaviour; needs inheritance). Changing the parameter list makes an overload, not an override.
+</Explain>
+</MCQ>
+
+## Practice Questions
+
+<Reveal question="Define polymorphism and distinguish compile-time from runtime polymorphism with examples.">
+Polymorphism ("many forms") is the ability of the **same method call or reference to behave differently depending on context**. **Compile-time polymorphism** is achieved by **method overloading** — same name, different parameter lists — and the compiler chooses the method from the argument types (e.g. `area(int)` vs `area(double, double)`). **Runtime polymorphism** is achieved by **method overriding** — a subclass redefines a superclass method with the same signature — and the JVM chooses the version from the **actual object type** at run time (e.g. `Animal a = new Dog(); a.sound();` prints "Dog barks").
+</Reveal>
+
+<Reveal question="State five rules for method overriding.">
+1) Same **method name and parameter list**. 2) Return type the **same or a subtype** (covariant). 3) Access modifier the **same or less restrictive**. 4) **final, static and private methods cannot be overridden** (nor constructors). 5) The overriding method must not throw **new or broader checked exceptions**. (Use `@Override` so the compiler verifies it.)
+</Reveal>
+
+<Reveal question="What is dynamic method dispatch? Illustrate with code.">
+It is the mechanism by which a call to an **overridden method through a superclass reference** is resolved **at run time** according to the **type of the object** actually referred to.
+```java
+Animal a = new Cow();
+a.sound();        // "Cow moos" — Cow's override is chosen at run time
+a = new Cat();
+a.sound();        // "Cat meows" — same call, different object, different method
+```
+</Reveal>
+
+<Reveal question="What is the difference between upcasting and downcasting, and when does ClassCastException occur?">
+**Upcasting** treats a subclass object as its superclass type (`Animal a = new Dog();`) — automatic and always safe. **Downcasting** converts a superclass reference back to a subclass type with an explicit cast (`Dog d = (Dog) a;`) — it compiles, but at run time throws **`ClassCastException`** if the object isn't actually of that subclass (e.g. `a` refers to a `Cat`). Guard downcasts with **`instanceof`**.
+</Reveal>
+
+<Takeaway>
+**Polymorphism** = **"many forms"**: one call, different behaviour depending on context. **Compile-time** (static/early binding) = **overloading** — same name, different parameters, chosen by the **compiler** from argument types. **Runtime** (dynamic/late binding) = **overriding** — a subclass redefines an inherited method with the **same signature** (same/covariant return, same or wider access; not `final`/`static`/`private`); mark it **`@Override`**. With `Animal a = new Dog()`, the **compiler** checks calls against the **reference type**, while the **JVM** runs the **object type's** version — **dynamic method dispatch**. **Upcasting** is automatic; **downcasting** needs a cast and `instanceof`, or risks **`ClassCastException`**. Polymorphic arrays like `Shape[]` let one loop handle every subclass — new types need no code changes. **Fields and static methods are not polymorphic** (reference type decides).
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Definition; **compile-time vs runtime** table
+- Overloading vs **overriding** — with code
+- Predicting output of **dynamic dispatch** (`Animal a = new Dog(); a.sound();`)
+- The **Shape hierarchy** exercise (abstract `area()`, `Shape[]`, loop)
+
+**Common mistakes:**
+- Saying overloading needs inheritance, or that overriding is decided at compile time
+- Expecting `a.fetch()` to compile when `a` is declared as `Animal`
+- Forgetting that fields are chosen by the reference type
+
+**Likely question:**
+> "Distinguish between method overloading and method overriding. Write a Java program in which an abstract class Shape has an abstract method area() implemented by Circle, Rectangle and Triangle, and use an array of Shape references to print each area. Explain how runtime polymorphism occurs in your program." (20 marks)

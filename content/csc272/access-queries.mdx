@@ -1,0 +1,242 @@
+---
+title: "Access II: Modifying Tables and Creating Queries"
+description: "The Access ribbon (Home, Create, External Data, Database Tools and contextual tabs), modifying a table's structure — rearranging, inserting and deleting fields, why structural changes must be saved and why changing a populated field's data type is risky — what queries are, the Simple Query Wizard, Query Design with Sort, Show and Criteria, Access criteria syntax (text, numbers, dates, Like, Between, Is Null, In, And/Or rows), Totals, SQL View, importing and linking Excel data, and relationships between tables."
+duration: "45 min"
+difficulty: "intermediate"
+---
+
+## The Access Ribbon
+
+Before building queries, open Access and explore its **tabs**. Besides **FILE**, the Access ribbon has **four standard tabs**:
+
+| Tab | Main contents |
+|---|---|
+| **HOME** | Views, Clipboard, **Sort & Filter**, **Records** (New, Save, Delete, **Totals**, Spelling), **Find**, Text Formatting |
+| **CREATE** | Create database objects: **Tables** (Table, Table Design), **Queries** (Query Wizard, Query Design), **Forms**, **Reports**, Macros & Code |
+| **EXTERNAL DATA** | **Import & Link** (Excel, Access, ODBC, Text, XML…) and **Export** (Excel, Text, PDF, Word Merge…) |
+| **DATABASE TOOLS** | Advanced features: **Compact and Repair**, **Relationships**, Object Dependencies, Database Documenter and analysers, Visual Basic |
+
+**Contextual tabs** appear depending on the object and view that is active: **TABLE TOOLS** (Fields/Table in Datasheet View, Design in Design View), **QUERY TOOLS**, **FORM LAYOUT TOOLS** and **REPORT LAYOUT TOOLS**.
+
+<RibbonExplorer app="access" />
+
+---
+
+## Modifying a Table's Structure
+
+A table's design is **not fixed** — you can add fields or rearrange them at any time. Using the **Staff** table:
+
+### Rearranging fields
+
+1. Open the table in **Design View**.
+2. Click the **row selector** (the grey box in front of the field name) of **Surname**, then drag it **above FirstName**.
+3. Switch to **Datasheet View** and **save** the table — the columns are swapped.
+
+<ExamTip>
+**Data saves itself; structural changes must be saved manually.** Records are saved the moment you leave them, but when you change a table's *design* Access asks: *"You must save the table first. Do you want to save the table now?"* (or *"Do you want to save changes to the design of table 'Staff'?"* when closing).
+</ExamTip>
+
+### Adding a field
+
+1. In Design View, click the field that should come **after** the new one (e.g. **Address**) → TABLE TOOLS DESIGN → **Insert Rows** — a blank row appears **above** it.
+2. Type the field name (e.g. **StaffBirthDate**) and choose the **appropriate data type** (Date/Time).
+3. Switch to Datasheet View, save the table, and enter the birth dates.
+
+**Delete Rows** removes a field — and **all the data in it**, after a warning.
+
+### Why you may not be able to change a data type
+
+You can usually change a field's data type while the table is **empty**. Once the field holds data, Access must **convert every existing value** — and some cannot be converted: text such as *N/A* or *twelve* can't become a Number, *31/02/2020* isn't a valid date, a longer text can't fit a smaller Field Size. Access warns that it *"encountered errors while converting the data"* and **deletes** the values it could not convert. That is why data types should be chosen carefully **before** data entry.
+
+Try it on the Staff table: move **Surname** above **FirstName**, insert a Date/Time field for the birth date **above Address**, save, and enter a date. Then change **Salary** to *Short Text* and back to *Number* and read the messages.
+
+<AccessTableDesigner preset="staff" />
+
+---
+
+## Queries
+
+**Queries** are a way of **searching for and compiling data from one or more tables**. Running a query is like **asking your database a detailed question**. When you build a query you define **search conditions (criteria)** to find exactly the data you want.
+
+Queries are far more powerful than a simple search in a table: a search finds one customer's name; a **query** can find the **name and phone number of every customer who made a purchase in the past week**. Queries can pull from one or more related **tables** and/or other **queries**.
+
+| View | Shows |
+|---|---|
+| **Datasheet View** | The results — looks like a table. **Data you change here is saved in the underlying table** (the query stores no data of its own) |
+| **Design View** | The structure: the **record source** (tables) at the top and the **design grid** below — fields, **sort order** and **criteria** |
+| **SQL View** | The same query written in **SQL**, which Access generates from the grid |
+
+### The design grid
+
+| Row | Purpose |
+|---|---|
+| **Field** | The field (column) to use — double-click it in the table box, drag it, or pick from the list |
+| **Table** | Which table the field comes from |
+| **Total** | (Only when Σ **Totals** is on) Group By, Sum, Avg, Min, Max, Count, Where… |
+| **Sort** | Ascending / Descending |
+| **Show** | Tick to display the field in the results (untick to use it only for criteria) |
+| **Criteria** | The condition records must meet for this field |
+| **or** | An alternative condition — a record appearing if it meets **either** row |
+
+Criteria in the **same row** are combined with **AND**; criteria on **different rows** (Criteria and or) are combined with **OR**.
+
+### Creating a query with the Query Wizard (lecture steps)
+
+To list all the **male** staff:
+
+1. **CREATE → Query Wizard** (use **Query Design** once you're confident).
+2. Select **Simple Query Wizard** → OK.
+3. Under **Tables/Queries** choose **Table: Staff** — its fields appear under **Available Fields**.
+4. Click **FirstName** and **>** to move it to **Selected Fields**; do the same for **Surname** and **Gender** (**>>** moves all fields). **Next**.
+5. Type a **title** for the query (e.g. *Male Staff*), choose **Open the query to view information** → **Finish**.
+6. The results show **everyone** — because there is no criterion yet!
+7. Right-click the query tab → **Design View**. In the **Criteria** row under **Gender** type `M`. Access displays it as `"M"`. **Save** and switch to **Datasheet View** (or click **Run !**).
+8. Only the male staff are listed.
+
+### Criteria examples
+
+| You type | Access shows | Finds |
+|---|---|---|
+| `M` | `"M"` | Text exactly M (not case-sensitive) |
+| `Not "M"` | `Not "M"` | Everything except M |
+| `>300000` | `>300000` | Numbers greater than 300,000 |
+| `Between 250000 And 350000` | same | From 250,000 to 350,000 inclusive |
+| `<1/1/2015` | `<#01/01/2015#` | Dates before 1 January 2015 (dates go between # signs) |
+| `Like J*` | `Like "J*"` | Text starting with J (`*` = any characters, `?` = one character, `#` = one digit) |
+| `Like "*son"` | same | Text ending in *son* |
+| `Is Null` / `Is Not Null` | same | Blank / not blank |
+| `In ("Physics","Statistics")` | same | Any value in the list |
+| `"Physics" Or "Statistics"` | same | Either value (same as In) |
+| `[Enter gender:]` | same | A **parameter** — Access asks for the value each time the query runs |
+
+<ExamTip>
+`"John"` and `Like "John*"` are different: the first finds only *John*; the second also finds *Johnson*. Read the question carefully and test your criteria on the results.
+</ExamTip>
+
+### Try it: the lecture's queries
+
+The Staff table has 12 records. Build each query, **Run** it, and check the list below ticks it off:
+
+1. The lecture's example — male staff showing FirstName, Surname, Gender (use the **Query Wizard** tab first, then add the criterion in **Design View**).
+2. Post-test 1 — all the **female** staff.
+3. Post-test 2 — everyone whose first name is **John** (make sure *Johnson* is not included).
+4. Challenge — **Computer Science** staff earning **₦300,000 or more** (two criteria in the same row).
+5. Challenge — the **number of staff in each department**: turn on **Σ Totals**, Group By Department, Count StaffID.
+
+Open **SQL View** after each one to see the SQL Access writes.
+
+<QueryDesignGrid />
+
+---
+
+## Summarising with Totals
+
+Click **Σ Totals** (QUERY TOOLS DESIGN → Show/Hide) to add the **Total** row. Each field is then either a **Group By** field (the groups) or an **aggregate**:
+
+| Total | Result per group |
+|---|---|
+| **Count** | Number of records (e.g. CountOfStaffID) |
+| **Sum / Avg** | Total / average of a number or currency field |
+| **Min / Max** | Smallest / largest value |
+| **Where** | Use the field only for criteria (not shown) |
+
+Example: Group By *Department* + Avg of *Salary* gives the average salary per department.
+
+---
+
+## Other Kinds of Query *(beyond the notes)*
+
+The queries above are **select queries** — they only *show* data. QUERY TOOLS DESIGN → Query Type also offers **action queries** that *change* data: **Make Table** (save the results as a new table), **Append** (add records to another table), **Update** (change values, e.g. raise every salary by 10%) and **Delete** (remove the matching records) — use them carefully, they cannot be undone. **Crosstab** queries summarise data in a grid like a spreadsheet.
+
+---
+
+## Importing and Linking Data
+
+Past practicals give you data in **Excel** and ask you to bring it into Access, set identifiers, and link the tables.
+
+**EXTERNAL DATA → Import & Link → Excel:**
+
+1. **Browse** to the workbook.
+2. Choose how to store the data:
+   - **Import the source data into a new table** in the current database (a copy — later changes in Excel are not reflected),
+   - **Append a copy of the records to the table** … (add to an existing table), or
+   - **Link to the data source by creating a linked table** (the data stays in Excel; Access always shows the current Excel data but you can't change the table's design).
+3. Pick the **worksheet** (or named range) → tick **First Row Contains Column Headings**.
+4. Adjust field options (name, data type, indexed, skip a field).
+5. **Primary key**: *Let Access add primary key* (AutoNumber ID), **Choose my own primary key** (e.g. MatricNo — specify the identifier!), or *No primary key*.
+6. Name the table → **Finish** (optionally save the import steps).
+
+### Relationships
+
+To link two tables (e.g. *Students* and *Courses* through a *Registrations* table):
+
+1. DATABASE TOOLS → **Relationships** → add the tables.
+2. **Drag** the primary key (StudentID in Students) onto the matching **foreign key** (StudentID in Registrations).
+3. In *Edit Relationships* tick **Enforce Referential Integrity** — Access then refuses registrations for students who don't exist and won't delete a student who still has registrations — and click **Create**.
+4. The line shows **1** at the primary-key side and **∞** at the many side: a **one-to-many** relationship.
+
+A query can then use fields from **both** tables at once (Show Table → add both — Access joins them along the relationship line).
+
+---
+
+## Practice Questions
+
+<MCQ question="In the query design grid, criteria typed on the same Criteria row under two different fields are combined with…">
+<Option correct>AND — a record must meet both</Option>
+<Option>OR — a record must meet either</Option>
+<Option>Nothing — only the first is used</Option>
+<Option>Whichever field is sorted first</Option>
+<Explain>Conditions on the same row must all be true (AND). Put alternatives on the "or" row to combine with OR.</Explain>
+</MCQ>
+
+<MCQ question="Which criterion finds staff employed before 2010 in a Date/Time field?">
+<Option>`<2010`</Option>
+<Option correct>`<#01/01/2010#`</Option>
+<Option>`Like "2010*"`</Option>
+<Option>`"Before 2010"`</Option>
+<Explain>Dates in criteria go between # signs; less than 1 January 2010 means before 2010.</Explain>
+</MCQ>
+
+<MCQ question="You change data in a query's Datasheet View. Where is the change stored?">
+<Option>In the query</Option>
+<Option correct>In the underlying table</Option>
+<Option>Nowhere — query results are read-only copies</Option>
+<Option>In a new table</Option>
+<Explain>A select query shows data from its tables; editing a record in the query edits the table.</Explain>
+</MCQ>
+
+<Reveal question="1. What is a query? How does it differ from a simple search?">
+A query is a request (question) to the database that retrieves and compiles data from one or more tables using criteria, showing only the fields and records you want (and can sort and total them). A search finds one value in one table; a query can combine tables and conditions, e.g. the names and phone numbers of all customers who bought something in the past week.
+</Reveal>
+
+<Reveal question="2. Describe how to extract all the female staff from the Staff table.">
+CREATE → Query Wizard → Simple Query Wizard → Table: Staff → move FirstName, Surname and Gender to Selected Fields → Next → title "Female Staff" → Finish. Switch to Design View, type `F` in the Criteria row under Gender, save and Run (or open Datasheet View).
+</Reveal>
+
+<Reveal question="3. Why might you be unable to change the data type of a field that already contains data?">
+Access must convert the existing values to the new type; values that don't fit (text in a Number field, invalid dates, text longer than a smaller Field Size) cannot be converted and would be deleted, so Access warns about data loss (or refuses for some conversions, such as to AutoNumber).
+</Reveal>
+
+<Reveal question="4. Explain the difference between importing and linking an Excel sheet in Access.">
+**Importing** copies the data into a new (or existing) Access table — later changes in Excel don't affect it and you can change the design freely. **Linking** creates a linked table that reads the data directly from the Excel file, so Access always shows the current data, but the table's structure can't be changed in Access.
+</Reveal>
+
+<Reveal question="5. How would you list, for each department, the number of staff?">
+Query Design → add Staff → add Department and StaffID to the grid → click Σ Totals → Department: Group By, StaffID: Count → Run. (SQL: `SELECT Department, Count(StaffID) AS CountOfStaffID FROM Staff GROUP BY Department;`)
+</Reveal>
+
+<Takeaway>
+- Access tabs: **HOME, CREATE, EXTERNAL DATA, DATABASE TOOLS** + contextual TABLE/QUERY/FORM/REPORT tools.
+- Modify structure in **Design View**: drag the row selector to rearrange; **Insert Rows** adds a field above; Delete Rows removes a field and its data. **Data saves itself; design changes must be saved.** Changing a populated field's type can delete data.
+- A **query** asks a question of one or more tables: select fields, **criteria**, **sort**, **show**; results in Datasheet View (edits go to the table); SQL View shows the SQL.
+- **Query Wizard**: Simple Query Wizard → table → fields (> / >>) → title → Finish; add criteria in Design View.
+- Criteria: `"M"`, `>300000`, `Between … And …`, `#dates#`, `Like "J*"`, `Is Null`, `In (…)`, `Not`; same row = AND, or row = OR. **Totals**: Group By + Count/Sum/Avg/Min/Max.
+- **EXTERNAL DATA → Excel**: import (copy) vs **link**; choose your own primary key. **Relationships**: drag PK to FK, Enforce Referential Integrity, one-to-many.
+</Takeaway>
+
+## Exam Tips
+
+- Know the Query Wizard steps **and** where the criterion goes (Criteria row under the right field) — the lecture's male/female staff query is the model answer.
+- Write criteria exactly: quotes for text, **#** for dates, **Like** with `*` for patterns, **Between … And …** for ranges.
+- When a practical says "import the tables … ensure you specify the identifier", choose **Choose my own primary key** in the import wizard (or set the Primary Key in Design View afterwards).
+- "Create a new table that will link the two imported tables" = a **linking (junction) table** holding both keys as foreign keys, plus relationships in the Relationships window.

@@ -83,11 +83,11 @@ ALGORITHM LinearSearch(A, n, target):
 
 ```mermaid
 flowchart TD
-    A([Start]) --> B[i = 0]
-    B --> C{i < n?}
-    C -- Yes --> D{A[i] == target?}
+    A([Start]) --> B["i = 0"]
+    B --> C{"i < n?"}
+    C -- Yes --> D{"A[i] == target?"}
     D -- Yes --> E([Return i])
-    D -- No --> F[i = i + 1]
+    D -- No --> F["i = i + 1"]
     F --> C
     C -- No --> G([Return -1])
 ```

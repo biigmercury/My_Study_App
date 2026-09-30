@@ -1,0 +1,255 @@
+---
+title: "Object-Oriented Analysis and Design (OOAD)"
+description: "Modelling a system as interacting objects: OOA versus OOD, objects (identity, state, behaviour), classes, attributes and methods, the four OO principles — encapsulation, inheritance, polymorphism and abstraction — concrete and abstract classes, how to find classes in a problem statement, and the iterative OOAD process."
+duration: "45 min"
+difficulty: "intermediate"
+---
+
+## A Different Way of Seeing a System
+
+Structured analysis views a system as **processes that transform data**. **Object-oriented analysis and design (OOAD)** views it as a collection of **objects** — things that **hold data and behave** — which **collaborate** by sending messages to one another.
+
+> **OOAD** is a software engineering approach that **analyses and designs a software system in terms of objects, their properties, behaviours and relationships.**
+
+<Analogy>
+Think of a university. Structured analysis asks "**what processes happen?**" — register, pay, grade. OOAD asks "**who and what are involved, and what can each one do?**" — a *Student* can register and pay; a *Lecturer* can upload results; a *Course* knows its title and capacity. The system emerges from these objects working together, just as the university works because students, lecturers and courses interact.
+</Analogy>
+
+---
+
+## Object-Oriented Analysis vs Object-Oriented Design
+
+| Object-Oriented Analysis (OOA) | Object-Oriented Design (OOD) |
+|---|---|
+| **What** is required? | **How** will it be implemented? |
+| Focuses on the **problem domain** | Focuses on the **solution** |
+| Identifies **actors, requirements and objects** | Defines **classes, methods and relationships** |
+| Describes **expected behaviour** | Specifies **system structure and interaction** |
+
+This mirrors the general rule from Topic 1: **analysis = what, design = how.**
+
+---
+
+## Objects
+
+> An **object** is an **identifiable entity with identity, state and behaviour.**
+
+| Property | Meaning | Example: a Student object |
+|---|---|---|
+| **State** | The data or current values held by the object | studentID = 245678, name = "Amaka Obi", level = 200, department = "Computer Science" |
+| **Behaviour** | The operations the object can perform | registerCourse(), payFees(), viewResult() |
+| **Identity** | What distinguishes one object from every other — even another object with identical values | This particular student, not any other |
+
+---
+
+## Classes
+
+> A **class** is a **blueprint or template used to create objects.** It specifies the attributes and behaviours that objects of the class will have.
+
+```text
+┌───────────────────────────┐
+│          Student          │  ← class name
+├───────────────────────────┤
+│ - studentID               │  ← attributes
+│ - name                    │    (- = private)
+│ - email                   │
+├───────────────────────────┤
+│ + registerCourse()        │  ← methods
+│ + viewResult()            │    (+ = public)
+│ + payFees()               │
+└───────────────────────────┘
+```
+
+### Class vs Object
+
+| Class | Object |
+|---|---|
+| Blueprint / template | **Instance** of a class |
+| Defines attributes and methods | Contains **actual attribute values** |
+| Example: `Student` | Example: `student001` |
+
+<Analogy>
+A **class** is the architect's plan for a bungalow in an estate; each **object** is an actual house built from that plan. All houses share the same design (rooms, doors), but each has its own address and its own family living inside (its state).
+</Analogy>
+
+### Attributes and Methods
+
+- **Attributes** are properties that describe an object's **state** — they answer *"What does the object **have**?"* (studentID, name, level, department).
+- **Methods** are operations that describe **what the object can do** — they answer *"What can the object **do**?"* (registerCourse(), viewResult(), payFees()).
+
+### Types of Class
+
+| Type | Meaning | Example |
+|---|---|---|
+| **Concrete class** | **Can have direct instances** — you can create objects from it | `Student`, `Lecturer` |
+| **Abstract class** | **Cannot have direct instances**, but its **descendants (subclasses) can** | `Person` — you never create a plain "Person", only Students or Lecturers |
+
+---
+
+## The Four Major Object-Oriented Principles
+
+<Tabs>
+<Tab label="Encapsulation">
+
+**Encapsulation** is **the bundling of data and the methods that operate on that data, together with controlled access to the internal data.**
+
+*Example:* a `BankAccount` keeps its `balance` **private** and provides `deposit()`, `withdraw()` and `getBalance()` methods. Nobody outside can set the balance to −₦1,000,000; they must go through `withdraw()`, which checks the rules.
+
+```text
+BankAccount
+  - balance            ← hidden (private)
+  + deposit(amount)    ← controlled access
+  + withdraw(amount)   ← checks balance >= amount first
+  + getBalance()
+```
+
+**Benefit:** data integrity and easier maintenance — the internal representation can change without breaking other code.
+
+</Tab>
+<Tab label="Inheritance">
+
+**Inheritance** allows a **subclass to acquire the attributes and behaviours of a superclass**, adding or overriding its own.
+
+*Example:* `Student` and `Lecturer` inherit **name** and **email** from `Person`; `Student` adds matricNo and level; `Lecturer` adds staffID and rank.
+
+- **Superclass / parent / base class** — the class being inherited from.
+- **Subclass / child / derived class** — the class receiving inherited features.
+
+Inheritance normally represents an **IS-A** relationship: *a Student IS-A Person*. (If the sentence sounds wrong — "a Car IS-A Engine" — inheritance is wrong.)
+
+</Tab>
+<Tab label="Polymorphism">
+
+**Polymorphism** means **"many forms"**: the **same interface or operation can have different implementations depending on the object** involved.
+
+*Example:* `Animal.makeSound()` is implemented as a bark by `Dog` and a meow by `Cat`. Code that calls `animal.makeSound()` doesn't need to know which animal it has.
+
+*University example:* `Person.getDashboard()` shows a registration page for a `Student` and a result-upload page for a `Lecturer`.
+
+</Tab>
+<Tab label="Abstraction">
+
+**Abstraction** focuses on **essential features while hiding unnecessary implementation details.**
+
+*Example:* an **ATM** exposes operations such as `withdraw()` without requiring you to understand its internal database queries, network messages and transaction processing.
+
+Abstraction decides **what** to show; encapsulation enforces **how** access is controlled.
+
+</Tab>
+</Tabs>
+
+<ExamTip>
+For each principle, examiners want **definition + example**. A reliable set: **Encapsulation** → BankAccount with private balance; **Inheritance** → Person → Student/Lecturer (IS-A); **Polymorphism** → makeSound() in Dog vs Cat; **Abstraction** → ATM withdraw().
+</ExamTip>
+
+---
+
+## Finding Classes in a Problem Statement
+
+A practical technique (commonly taught alongside OOAD) is **noun/verb analysis** of the requirements:
+
+| Look for… | They suggest… | From "A **student** **registers** for a **course**; a **lecturer** **uploads** the **result**." |
+|---|---|---|
+| **Nouns** | Candidate **classes** or attributes | Student, Course, Lecturer, Result |
+| **Verbs** | Candidate **methods** or relationships | registers, uploads |
+| **Adjectives / descriptive nouns** | Candidate **attributes** | (e.g., "course **title**", "student **level**") |
+
+Then **filter**: drop nouns that are just attributes (title), synonyms (learner = student), or outside the system's scope.
+
+**Worked example — University Course Registration:**
+- **Actors:** Student, Lecturer, Administrator
+- **Candidate classes:** Person, Student, Lecturer, Course, Registration, Result, Department
+- **Inheritance:** Person → Student; Person → Lecturer
+- **Association:** Student → Registration → Course
+- **Typical workflow:** Login → Select Course → Check Availability → Register → Confirm
+- **Typical interaction:** Student → Registration System → Course/Database → Registration System → Student
+
+---
+
+## The OOAD Process
+
+<FlowDiagram title="Simplified OOAD workflow" cycle>
+<FlowStep title="Define the problem">
+State what the system must achieve.
+</FlowStep>
+<FlowStep title="Gather requirements">
+Use the fact-finding techniques from Topic 5.
+</FlowStep>
+<FlowStep title="Identify actors & use cases">
+Who uses the system, and what can each actor do? → **Use case diagram**.
+</FlowStep>
+<FlowStep title="Identify objects/classes">
+Find candidate classes, attributes and methods (noun/verb analysis).
+</FlowStep>
+<FlowStep title="Model relationships">
+Association, inheritance, aggregation, composition → **Class diagram**.
+</FlowStep>
+<FlowStep title="Model behaviour">
+Workflows → **Activity diagram**; object interactions over time → **Sequence diagram**.
+</FlowStep>
+<FlowStep title="Design → Implement → Test → Maintain">
+Refine into a design, build it, test it and maintain it. **In practice the process is iterative** — analysts revisit earlier models as requirements change.
+</FlowStep>
+</FlowDiagram>
+
+---
+
+## Common Misconceptions
+
+| Misconception | The truth |
+|---|---|
+| A class is the same as an object | A class is a **template**; an object is an **instance** |
+| An actor must be a human | Another **system or device** can be an actor (e.g., an ATM terminal, a payment gateway) |
+| A use case is a class | A use case describes a **system function from an actor's perspective** |
+| A class diagram shows process order | It shows **static structure**, not sequence |
+| Activity and sequence diagrams are the same | Activity = **workflow**; sequence = **interaction over time** |
+| Inheritance means "has a" | Inheritance is an **IS-A** relationship |
+
+---
+
+## Practice Questions
+
+<Reveal question="Define OOAD and distinguish between OOA and OOD.">
+OOAD is a software engineering approach that analyses and designs a system in terms of **objects, their properties, behaviours and relationships**. **OOA** asks *what* the system must do — it focuses on the problem domain and identifies actors, requirements and objects. **OOD** asks *how* those requirements will be realised — it focuses on the solution and defines classes, methods and relationships.
+</Reveal>
+
+<Reveal question="State the three properties of an object, using a Course object as an example.">
+**State** — its current data (courseCode = "INS 204", title = "Systems Analysis and Design", units = 3). **Behaviour** — what it can do (addStudent(), getClassList()). **Identity** — what distinguishes this course object from every other.
+</Reveal>
+
+<Reveal question="Which represents an object's behaviour: name, studentID, registerCourse() or department?">
+**registerCourse()** — it is a method (an operation). The others are attributes (state).
+</Reveal>
+
+<Reveal question="Why might Person be made an abstract class in a university system?">
+Every real person in the system is either a Student, Lecturer or Administrator; there's no need to create a plain "Person". Making Person **abstract** lets it hold the shared attributes (name, email) and methods, which subclasses **inherit**, while preventing direct instances of Person.
+</Reveal>
+
+<Reveal question="Identify five classes for a Library Management System, with two attributes and two methods each.">
+One good answer:
+- **Member** — memberID, name; borrowBook(), returnBook()
+- **Book** — ISBN, title; getDetails(), updateStock()
+- **Copy** — copyNumber, status; checkOut(), checkIn()
+- **Loan** — loanDate, dueDate; isOverdue(), computeFine()
+- **Librarian** — staffID, name; addBook(), approveLoan()
+</Reveal>
+
+<Takeaway>
+OOAD models a system as **objects** with **identity, state and behaviour**, created from **classes** (blueprints) that define **attributes** (what an object has) and **methods** (what it can do). **OOA** captures *what* the problem requires; **OOD** decides *how* classes realise it. Its four principles are **encapsulation** (bundle data with methods, control access), **inheritance** (IS-A reuse from a superclass), **polymorphism** (one interface, many implementations) and **abstraction** (show essentials, hide details). Classes are **concrete** or **abstract**, found by noun/verb analysis, and refined through an **iterative** OOAD process that produces UML models.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Define OOAD; OOA vs OOD
+- Object vs class; attributes vs methods
+- Explain encapsulation, inheritance, polymorphism and abstraction **with examples**
+- Identify classes, attributes and methods from a scenario
+
+**Common mistakes:**
+- Describing inheritance as HAS-A (that's aggregation/composition)
+- Listing attributes as methods (e.g., "name()")
+- Thinking an actor must be a person
+
+**Likely question:**
+> "Using a University Course Registration System, identify five possible classes, their attributes and at least two methods for each, and explain encapsulation, inheritance and polymorphism with one example each." (15 marks)

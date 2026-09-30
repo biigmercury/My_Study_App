@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" width="760" height="320" font-family="Arial, Helvetica, sans-serif">
+  <rect width="760" height="320" fill="#ffffff"/>
+  <text x="380" y="30" font-size="16" font-weight="bold" text-anchor="middle" fill="#0f172a">Anatomy of a URL</text>
+  <text x="30" y="86" textLength="50" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#b91c1c">https</text>
+  <text x="80" y="86" textLength="30" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#64748b">://</text>
+  <text x="110" y="86" textLength="150" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#1d4ed8">www.example.com</text>
+  <text x="260" y="86" textLength="10" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#64748b">:</text>
+  <text x="270" y="86" textLength="30" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#7c3aed">443</text>
+  <text x="300" y="86" textLength="250" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#15803d">/courses/ift302/index.php</text>
+  <text x="550" y="86" textLength="70" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#c2410c">?week=1</text>
+  <text x="620" y="86" textLength="110" lengthAdjust="spacingAndGlyphs" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="bold" fill="#0e7490">#objectives</text>
+  <path d="M31 96 v8 h48 v-8" fill="none" stroke="#b91c1c" stroke-width="2.5"/>
+  <line x1="55.0" y1="104" x2="55.0" y2="150" stroke="#b91c1c" stroke-width="1.5"/>
+  <path d="M111 96 v8 h148 v-8" fill="none" stroke="#1d4ed8" stroke-width="2.5"/>
+  <line x1="185.0" y1="104" x2="185.0" y2="190" stroke="#1d4ed8" stroke-width="1.5"/>
+  <path d="M271 96 v8 h28 v-8" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
+  <line x1="285.0" y1="104" x2="285.0" y2="150" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M301 96 v8 h248 v-8" fill="none" stroke="#15803d" stroke-width="2.5"/>
+  <line x1="425.0" y1="104" x2="425.0" y2="190" stroke="#15803d" stroke-width="1.5"/>
+  <path d="M551 96 v8 h68 v-8" fill="none" stroke="#c2410c" stroke-width="2.5"/>
+  <line x1="585.0" y1="104" x2="585.0" y2="150" stroke="#c2410c" stroke-width="1.5"/>
+  <path d="M621 96 v8 h108 v-8" fill="none" stroke="#0e7490" stroke-width="2.5"/>
+  <line x1="675.0" y1="104" x2="675.0" y2="190" stroke="#0e7490" stroke-width="1.5"/>
+  <text x="55.0" y="168" font-size="14" font-weight="bold" text-anchor="middle" fill="#b91c1c">scheme</text>
+  <text x="55.0" y="186" font-size="13" text-anchor="middle" fill="#475569">protocol</text>
+  <text x="185.0" y="208" font-size="14" font-weight="bold" text-anchor="middle" fill="#1d4ed8">host (domain)</text>
+  <text x="185.0" y="226" font-size="13" text-anchor="middle" fill="#475569">which server — DNS finds its IP</text>
+  <text x="285.0" y="168" font-size="14" font-weight="bold" text-anchor="middle" fill="#7c3aed">port</text>
+  <text x="285.0" y="186" font-size="13" text-anchor="middle" fill="#475569">usually hidden</text>
+  <text x="425.0" y="208" font-size="14" font-weight="bold" text-anchor="middle" fill="#15803d">path</text>
+  <text x="425.0" y="226" font-size="13" text-anchor="middle" fill="#475569">which file/resource on the server</text>
+  <text x="585.0" y="168" font-size="14" font-weight="bold" text-anchor="middle" fill="#c2410c">query string</text>
+  <text x="585.0" y="186" font-size="13" text-anchor="middle" fill="#475569">name=value data</text>
+  <text x="675.0" y="208" font-size="14" font-weight="bold" text-anchor="middle" fill="#0e7490">fragment</text>
+  <text x="675.0" y="226" font-size="13" text-anchor="middle" fill="#475569">spot in the page</text>
+  <text x="380" y="286" font-size="13" text-anchor="middle" fill="#64748b">Default ports: 80 for http and 443 for https, so the browser normally hides them.</text>
+  <text x="380" y="304" font-size="13" text-anchor="middle" fill="#64748b">The fragment (#…) stays in the browser and is never sent to the server.</text>
+</svg>

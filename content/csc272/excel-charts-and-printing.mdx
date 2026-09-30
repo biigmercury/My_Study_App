@@ -1,0 +1,234 @@
+---
+title: "Excel V: Charts, Page Setup and Printing"
+description: "Choosing a chart type (column, bar, line, pie), selecting the right data, Recommended Charts, the CHART TOOLS Design and Format tabs, chart elements (titles, axis titles, legend, data labels, gridlines), chart styles, Switch Row/Column, changing the chart type, moving a chart to its own sheet, adding and removing data series, resizing and deleting charts, the exam's Range-versus-% graph, Print Preview and print settings, print areas, and the Page Setup dialog (orientation, scaling, margins, headers and footers, print titles and gridlines)."
+duration: "40 min"
+difficulty: "intermediate"
+---
+
+## Why Chart?
+
+Showing data in a **chart** makes it clearer, more interesting and easier to read, and helps you **evaluate** data and **compare** values at a glance. Creating a chart in Excel is quick: select the data, pick a chart type.
+
+### Choosing the chart type
+
+| Chart | Use it to… | Example |
+|---|---|---|
+| **Column** (vertical bars) | **Compare** values across categories | Sales of each product; students in each score range |
+| **Bar** (horizontal bars) | Compare categories with **long names**, or show a **ranking** | Population by state |
+| **Line** | Show a **trend over time** (categories in time order) | Monthly sales, yearly enrolment |
+| **Pie** / Doughnut | Show the **parts of one whole** — only **one** data series; slices are percentages of the total | Share of the budget; % of students in each grade |
+| **Scatter (XY)** | Show the **relationship** between two numeric variables | Study hours vs score |
+| **Area** | A trend with the volume underneath emphasised | Cumulative sales |
+
+Excel 2013's **Recommended Charts** (INSERT tab) looks at the selected data and previews charts that suit it — a good starting point.
+
+---
+
+## Creating a Chart
+
+1. **Select the data** to chart — **including the headings** (row and column labels become the category names and legend). For **non-adjacent** ranges, hold **Ctrl** while selecting.
+2. Click the **INSERT** tab.
+3. In the **Charts** group either
+   - choose a chart type (Column, Bar, Line, Pie…) and then the version you want from the drop-down list, **or**
+   - click **Recommended Charts** and pick one.
+4. The chart appears on the worksheet (as an object on the sheet's drawing layer), and the **CHART TOOLS** contextual tabs — **DESIGN** and **FORMAT** — appear whenever the chart is selected.
+
+### The parts of a chart
+
+| Element | What it is |
+|---|---|
+| **Chart area** | The whole chart box |
+| **Plot area** | The region inside the axes where the data is drawn |
+| **Chart title** | The heading above the chart |
+| **Axes** | **Horizontal (category) axis** — the labels; **vertical (value) axis** — the scale |
+| **Axis titles** | Labels for each axis — include the **units** (kg, %, ₦) |
+| **Data series** | One set of related values plotted in one colour (e.g. all the *January* bars) |
+| **Legend** | The key saying which colour is which series |
+| **Data labels** | The actual values written on the bars/slices |
+| **Gridlines** | Horizontal (and/or vertical) lines that help read values |
+
+### Chart tools
+
+| Tool (CHART TOOLS → DESIGN unless noted) | What it does |
+|---|---|
+| **Add Chart Element** / the **+** button beside the chart | Turn on/off and position: Axes, **Axis Titles**, **Chart Title**, **Data Labels**, Data Table, Error Bars, **Gridlines**, **Legend**, Trendline |
+| **Quick Layout** ("chart layout") | Preset arrangements — e.g. the title and legend repositioned |
+| **Chart Styles** and **Change Colors** | Change the look and the colours of the chart |
+| **Switch Row/Column** | **Swap the data over the axes**: the categories become the series and vice versa |
+| **Select Data** | Change the **data range**, add or remove a series, edit axis labels |
+| **Change Chart Type** | Try a different type if the chart doesn't represent the data well — without rebuilding it |
+| **Move Chart** ("chart location") | Move the chart to **its own chart sheet** (*New sheet*, which you can name — e.g. **Graph**) or back as an **object** on a worksheet |
+| FORMAT tab | Colours, outlines and effects of the selected element; exact size |
+
+### Try it: the post-test chart
+
+Plot the sales by month for Rice, Beans and Yam. Experiment:
+
+1. Start with **Column** — each product is a category, each month a series.
+2. Click **⇄ Switch Row/Column** — now the months are on the axis and each product is a series. Which answers "how did each product sell over the quarter" better?
+3. Change to **Line** (after switching, months on the axis) — the natural choice for a **trend over time**.
+4. Turn on **Axis Titles** — type *Month* and *Sales (kg)* — and **Data Labels**; move the **Legend**.
+5. Try **Pie** — note it can show only **one** series.
+6. Edit a number in the data table: the chart updates immediately, exactly as in Excel.
+
+<ChartBuilder title="Post-test: sales by month (kg)">
+
+```chart
+@type column
+@title Sales by Product, January to March
+@x Product
+@y Sales (kg)
+Product | January | February | March
+Rice | 5000 | 4000 | 4500
+Beans | 4000 | 4860 | 3005
+Yam | 7000 | 6000 | 4500
+```
+
+</ChartBuilder>
+
+---
+
+## Modifying a Chart
+
+**Any change to the source data is reflected in the chart automatically.**
+
+| Task | Steps |
+|---|---|
+| **Remove a data series** | Click the chart — the data it uses is outlined by **coloured lines** on the sheet. Drag the outline so it no longer covers the series (or click the series in the chart and press **Delete**, or DESIGN → Select Data → Remove) |
+| **Add a data series / row** | Type the new data **next to** the highlighted data, then drag the **coloured outline** so it includes the new cells — the chart updates (or DESIGN → Select Data → Add) |
+| **Resize** | Click the chart: a border with **sizing handles** (small dots at the corners and sides) appears. Point at one — the pointer becomes a double-headed arrow — and drag. Drag a **corner** with **Shift** held to keep the proportions |
+| **Move on the sheet** | Point at the chart area border and drag |
+| **Delete** | Click the chart (its border) and press **Delete** |
+
+---
+
+## The Exam Task: Range versus %
+
+The past question from the formulas lesson ends: *"A third sheet, labelled Graph, contains a graph that plots Range vs %."*
+
+1. On the **Summary** sheet, select **A1:A5** (Range labels), then hold **Ctrl** and select **C1:C5** (the % column) — non-adjacent ranges.
+2. INSERT → **Column** → Clustered Column.
+3. Add a **chart title** (*Distribution of scores*) and **axis titles** (*Score range*, *Students (%)*), and **data labels**.
+4. DESIGN → **Move Chart** → **New sheet** → type the name **Graph** → OK. (If a sheet called Graph already exists, either rename it first or choose **Object in: Graph** to place the chart on that worksheet.)
+
+With the 20 scores from the formulas lesson the summary is 3, 5, 7 and 5 students — 15%, 25%, 35% and 25%:
+
+<ChartBuilder title="Summary: Range vs %">
+
+```chart
+@type column
+@title Distribution of CSC 272 Scores
+@x Score range
+@y Students (%)
+Range | %
+0 to 25 | 15
+26 to 50 | 25
+51 to 75 | 35
+76 to 100 | 25
+```
+
+</ChartBuilder>
+
+Try **Pie** here too — a whole of 100% split into four ranges is exactly what a pie chart is for.
+
+<ExamTip>
+Markers check that the chart **plots the right columns** (Range on the category axis, % as the values — not the counts, not the matric numbers), has a **title** and **labelled axes with units**, and sits on a sheet **named exactly as asked**. Select the headings with the data so the axis labels are correct, and use Ctrl to pick non-adjacent columns.
+</ExamTip>
+
+---
+
+## Print Preview and Printing
+
+Always **preview before printing**. FILE → **Print** shows a preview of the sheet on the right — exactly as it will print — and the settings on the left:
+
+| Setting | Choices |
+|---|---|
+| **Printer** | Choose the printer from the drop-down |
+| **Print what** | **Print Active Sheets**, **Print Entire Workbook**, or **Print Selection** |
+| **Pages** | From … to … |
+| **Collated** | 1,2,3 1,2,3 or 1,1 2,2 3,3 |
+| **Orientation** | Portrait or **Landscape** (wide sheets) |
+| **Paper size** | A4, Letter… |
+| **Margins** | Normal, Wide, Narrow, Custom |
+| **Scaling** | No Scaling, **Fit Sheet on One Page**, Fit All Columns on One Page, Fit All Rows on One Page |
+
+**To print only part of a sheet:** go back to the sheet, **select the range**, FILE → Print → Settings → **Print Selection**.
+
+If the sheet has a defined **print area** (PAGE LAYOUT → **Print Area → Set Print Area**), Excel prints **only that area**; tick **Ignore Print Area** to print everything. Leave Print Preview by clicking a tab (e.g. HOME) or pressing **Esc**.
+
+### Page Setup
+
+If the sheet does not print the way you want, change its setup — from **Page Setup** in Print Preview, or the **PAGE LAYOUT** tab (Margins, Orientation, Scale to Fit, Sheet Options) or the Page Setup **Dialog Box Launcher**, which has four tabs:
+
+| Tab | Settings |
+|---|---|
+| **Page** | **Orientation**; **Scaling**: *Adjust to* a percentage of normal size, or *Fit to* a number of pages wide by tall (e.g. 1 page wide) regardless of how big the sheet is; paper size |
+| **Margins** | Top, bottom, left, right — leave room for headers and footers; not every printer prints to the edge. **Center on page**: Horizontally / Vertically |
+| **Header/Footer** | Choose a **built-in** header/footer (page numbers, sheet name, file name, date) or click **Custom Header / Custom Footer** to build your own (codes such as `&[Page]`, `&[Date]`, `&[Tab]`) |
+| **Sheet** | **Print area**; **Print titles** — *Rows to repeat at top* (e.g. `$1:$2` so the headings print on every page) and *Columns to repeat at left*; **Gridlines** (tick to print them — they don't print by default); row and column headings; page order |
+
+After making changes, check **Print Preview** again before printing.
+
+---
+
+## Practice Questions
+
+<MCQ question="Which chart type is most suitable for showing how monthly sales changed over a year?">
+<Option>Pie</Option>
+<Option correct>Line</Option>
+<Option>Scatter</Option>
+<Option>Doughnut</Option>
+<Explain>Line charts show trends over time — the months form the category axis in order.</Explain>
+</MCQ>
+
+<MCQ question="Your column chart has the products on the axis, but you wanted the months on the axis. What is the quickest fix?">
+<Option>Delete the chart and select the data again</Option>
+<Option correct>CHART TOOLS → DESIGN → Switch Row/Column</Option>
+<Option>Change Chart Type → Pie</Option>
+<Option>Sort the data</Option>
+<Explain>Switch Row/Column swaps which data forms the categories (axis) and which forms the series (legend).</Explain>
+</MCQ>
+
+<MCQ question="The headings in row 1 should appear at the top of every printed page of a long list. Which setting?">
+<Option>Freeze Top Row</Option>
+<Option correct>Page Setup → Sheet → Rows to repeat at top: `$1:$1`</Option>
+<Option>Print Selection</Option>
+<Option>Set Print Area</Option>
+<Explain>Freeze Panes only affects the screen. Print Titles (Rows to repeat at top) repeats rows on every printed page.</Explain>
+</MCQ>
+
+<Reveal question="1. Describe the steps to create a chart from data in a worksheet.">
+Select the data, including headings (use Ctrl for non-adjacent ranges) → INSERT tab → Charts group → choose a chart type and version (or Recommended Charts) → the chart appears with the CHART TOOLS Design and Format tabs, which you use to add titles, axis titles, labels and styles.
+</Reveal>
+
+<Reveal question="2. List any five chart tools and what each does.">
+**Chart layout / Add Chart Element** — position the title, legend, axis titles, labels; **Chart Styles** — change the look and colours; **Chart data (Select Data / Switch Row/Column)** — change the data range or swap the data over the axes; **Change Chart Type** — use a different type; **Chart location (Move Chart)** — move the chart to its own sheet or as an object to a worksheet.
+</Reveal>
+
+<Reveal question="3. How would you add a new row of data to an existing chart?">
+Type the new data beneath (or beside) the existing data, click the chart so its data is outlined by coloured lines, and drag the outline to include the new cells — the chart updates automatically. (Or DESIGN → Select Data → Add.)
+</Reveal>
+
+<Reveal question="4. How would you make a wide worksheet print on one page?">
+FILE → Print → Scaling: **Fit Sheet on One Page** (or Page Setup → Page → Fit to 1 page wide by 1 tall). Landscape orientation and narrower margins also help.
+</Reveal>
+
+<Reveal question="5. What is the difference between Print Selection and a Print Area?">
+**Print Selection** prints the cells selected at the moment you print (a one-off). A **Print Area** (PAGE LAYOUT → Print Area → Set Print Area) is saved with the sheet, so Excel prints only that area every time until you clear it or tick Ignore Print Area.
+</Reveal>
+
+<Takeaway>
+- Choose the chart for the message: **column/bar** compare, **line** = trend over time, **pie** = parts of one whole (one series), scatter = relationship.
+- Select data **with headings** (Ctrl for non-adjacent) → INSERT → chart type or **Recommended Charts**; CHART TOOLS **DESIGN/FORMAT** appear.
+- Elements: chart & axis **titles** (with units), legend, data labels, gridlines. Tools: layouts, styles, **Switch Row/Column**, Select Data, **Change Chart Type**, **Move Chart** (to a new sheet such as *Graph*).
+- Charts update when data changes; add/remove series by dragging the coloured outlines; resize with corner handles (+Shift); Delete removes.
+- FILE → **Print**: preview, printer, active sheets/workbook/**selection**, orientation, margins, **scaling**. **Print Area**, **Ignore Print Area**.
+- Page Setup: Page (orientation, scaling), Margins (centre on page), Header/Footer (built-in/custom), Sheet (print area, **rows to repeat at top**, gridlines).
+</Takeaway>
+
+## Exam Tips
+
+- "Plot a graph of X vs Y" — X goes on the **category (horizontal) axis**, Y is the **value**. Select both columns with their headings.
+- A chart without a **title and axis titles** loses easy marks; put units in the axis titles.
+- Name chart sheets **exactly** as the question says (Graph) — use **Move Chart → New sheet**.
+- Remember **gridlines don't print** unless you tick Print in Sheet Options or Page Setup → Sheet, and **Freeze Panes is for the screen** while **Print Titles** is for paper.

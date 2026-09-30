@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" width="720" height="520" font-family="Arial, Helvetica, sans-serif">
+  <rect width="720" height="520" fill="#ffffff"/>
+  <rect x="20" y="16" width="680" height="488" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+  <!-- header -->
+  <rect x="40" y="36" width="640" height="64" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="360" y="64" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e3a8a">&lt;header&gt;</text>
+  <text x="360" y="86" font-size="13" text-anchor="middle" fill="#1e3a8a">logo, site title, introductory content</text>
+  <!-- nav -->
+  <rect x="40" y="112" width="640" height="48" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="360" y="134" font-size="18" font-weight="bold" text-anchor="middle" fill="#4c1d95">&lt;nav&gt;</text>
+  <text x="360" y="152" font-size="13" text-anchor="middle" fill="#4c1d95">main navigation links: Home · Courses · About · Contact</text>
+  <!-- main -->
+  <rect x="40" y="172" width="450" height="248" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="58" y="196" font-size="18" font-weight="bold" fill="#14532d">&lt;main&gt;</text>
+  <text x="130" y="196" font-size="12.5" fill="#14532d">the page's unique, central content (one per page)</text>
+  <rect x="58" y="210" width="414" height="90" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-dasharray="6 4"/>
+  <text x="265" y="240" font-size="16" font-weight="bold" text-anchor="middle" fill="#14532d">&lt;section&gt;</text>
+  <text x="265" y="262" font-size="12.5" text-anchor="middle" fill="#14532d">a themed group of content with its own heading</text>
+  <text x="265" y="280" font-size="12.5" text-anchor="middle" fill="#14532d">e.g. "Announcements"</text>
+  <rect x="58" y="312" width="414" height="94" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-dasharray="6 4"/>
+  <text x="265" y="342" font-size="16" font-weight="bold" text-anchor="middle" fill="#14532d">&lt;article&gt;</text>
+  <text x="265" y="364" font-size="12.5" text-anchor="middle" fill="#14532d">self-contained content that makes sense on its own</text>
+  <text x="265" y="382" font-size="12.5" text-anchor="middle" fill="#14532d">e.g. a news story, blog post, product card</text>
+  <!-- aside -->
+  <rect x="502" y="172" width="178" height="248" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="591" y="262" font-size="18" font-weight="bold" text-anchor="middle" fill="#78350f">&lt;aside&gt;</text>
+  <text x="591" y="286" font-size="12.5" text-anchor="middle" fill="#78350f">related side content:</text>
+  <text x="591" y="304" font-size="12.5" text-anchor="middle" fill="#78350f">quick links, adverts,</text>
+  <text x="591" y="322" font-size="12.5" text-anchor="middle" fill="#78350f">"popular posts"</text>
+  <!-- footer -->
+  <rect x="40" y="432" width="640" height="56" rx="6" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+  <text x="360" y="456" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">&lt;footer&gt;</text>
+  <text x="360" y="476" font-size="13" text-anchor="middle" fill="#1e293b">copyright, contact details, secondary links</text>
+</svg>

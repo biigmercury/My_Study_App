@@ -69,12 +69,12 @@ Namespaces work the same way. They prevent name collisions. If your `main.py` ha
 
 ```mermaid
 flowchart LR
-    subgraph Main Namespace
-    var1[main.py: add()]
+    subgraph Main["Main Namespace"]
+    var1["main.py: add()"]
     end
     
-    subgraph Math Namespace
-    var2[math_tools.py: add()]
+    subgraph Math["Math Namespace"]
+    var2["math_tools.py: add()"]
     end
     
     var1 -.-x var2

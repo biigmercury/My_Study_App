@@ -1,0 +1,696 @@
+---
+title: "Client-Side Programming I: HTML5 and CSS3"
+description: "How HTML, CSS and JavaScript share the work in the browser; HTML5 document structure, elements, attributes, links, images, lists and semantic tags; CSS syntax, the three ways to add CSS, selectors and specificity, typography and colour, the box model with worked calculations, and Flexbox and Grid layouts — all with live, editable examples."
+duration: "50 min"
+difficulty: "beginner"
+---
+
+## Client-Side Programming
+
+**Client-side programming** is programming that is **executed on the user's device, usually inside a web browser**. It includes:
+
+- the **user interface** — everything the user sees: text, images, buttons, forms; and
+- **small changes that happen on the page** — opening a menu, showing an error alert, switching a tab — **without going back to the server**.
+
+### The Three Client-Side Languages
+
+The set of languages used to build a site is called its **development stack**. On the client side it is almost always:
+
+| Language | Role | Question it answers |
+|---|---|---|
+| **HTML** | **Structure and content** | *What is on the page?* |
+| **CSS** | **Presentation** — how it looks | *What does it look like?* |
+| **JavaScript** | **Behaviour and interactivity** | *What does it do?* |
+
+The lecture's button example shows all three working together — **run it and click the button**:
+
+<Playground title="HTML + CSS + JavaScript together">
+
+```html
+<button id="submitBtn">Submit</button>
+```
+
+```css
+button {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+}
+```
+
+```js
+const button = document.getElementById("submitBtn");
+button.onclick = function () {
+  alert("Form submitted!");
+};
+```
+
+</Playground>
+
+- **HTML creates** the button.
+- **CSS makes it look attractive.**
+- **JavaScript makes it perform an action.**
+
+Remove the CSS (clear the CSS tab and Run) and the button still works but looks plain; remove the JavaScript and it looks good but does nothing.
+
+<Analogy>
+A building: **HTML is the frame** — walls, rooms, doors. **CSS is the paint, tiles and furniture.** **JavaScript is the electricity** — lights that switch on, a gate that opens when you press the button.
+</Analogy>
+
+### Creating Your First Web Project
+
+1. Install a **code editor** (VS Code) and use a **web browser** (Chrome, Edge or Firefox).
+2. Create a folder named **`IFT302Client_side`**.
+3. Inside it, create three files: **`index.html`**, **`style.css`** and **`script.js`**.
+
+```
+IFT302Client_side/
+├── index.html     ← structure (HTML)
+├── style.css      ← presentation (CSS)
+└── script.js      ← behaviour (JavaScript)
+```
+
+---
+
+## HTML5
+
+**HTML (HyperText Markup Language)** is **the standard markup language for web pages**. It creates the **structure and content** of a page and tells the browser **what each piece of content represents** — a heading, a paragraph, a link, an image.
+
+**HTML is not a programming language**, because it contains **no programming logic** such as conditions (`if`) or loops. It *describes*; it doesn't *compute*. **HTML5** is the **latest version**.
+
+### Elements and Tags
+
+HTML uses **elements** to define the parts of a page. An element is usually **opening tag + content + closing tag**:
+
+```html
+<p>Hello World</p>
+```
+
+| Part | Here | Meaning |
+|---|---|---|
+| **Opening tag** | `<p>` | Starts the element; tags are written in **angle brackets** |
+| **Content** | `Hello World` | What the element contains |
+| **Closing tag** | `</p>` | Ends the element — note the **forward slash** |
+
+Some elements have **no content and no closing tag** — they're called **void (empty) elements**: `<img>`, `<br>`, `<hr>`, `<input>`, `<meta>`, `<link>`.
+
+**Elements can be nested**, but must close in the **reverse order** they opened:
+
+```html
+<p>This is <strong>very</strong> important.</p>     ✓ correct nesting
+<p>This is <strong>very</p> important.</strong>     ✗ overlapping tags
+```
+
+### Basic Structure of an HTML Document
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My First Web Page</title>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <p>This is my first webpage.</p>
+</body>
+</html>
+```
+
+| Part | Purpose |
+|---|---|
+| **`<!DOCTYPE html>`** | Tells the browser the document uses **HTML5** |
+| **`<html>`** | The **root element** of the page; `lang="en"` states the language (helps screen readers and search engines) |
+| **`<head>`** | Information **about** the page that is **not displayed** as page content: **title, metadata, CSS links, character encoding** |
+| **`<meta charset="UTF-8">`** | Character encoding, so symbols like ₦, é and emoji display correctly |
+| **`<meta name="viewport" …>`** | Makes the page display properly on phones (see the responsive design lesson) |
+| **`<title>`** | The title shown in the **browser tab** (and in search results and bookmarks) |
+| **`<body>`** | Contains the **visible content** of the page |
+
+<ExamTip>
+Know the **five core parts** — `<!DOCTYPE html>`, `<html>`, `<head>`, `<title>`, `<body>` — and **what each does**. A common trick question: *"Where does the page title appear?"* — in the **browser tab**, not on the page itself. The big heading on the page is the `<h1>`.
+</ExamTip>
+
+### Common HTML5 Elements
+
+| Element | Purpose | Example |
+|---|---|---|
+| **Headings** `<h1>`–`<h6>` | Six levels of headings; `<h1>` is the most important | `<h1>Main Heading</h1>` `<h2>Subheading</h2>` |
+| **Paragraph** `<p>` | A block of text | `<p>This is a paragraph.</p>` |
+| **Link** `<a>` | A hyperlink; `href` gives the destination | `<a href="https://example.com">Visit Website</a>` |
+| **Image** `<img>` | Displays an image; `src` = file, `alt` = description | `<img src="image.jpg" alt="Description">` |
+| **Ordered list** `<ol>` | Numbered list of `<li>` items | Steps, rankings |
+| **Unordered list** `<ul>` | Bulleted list of `<li>` items | Skills, menus |
+| **Line break / rule** | `<br>` new line; `<hr>` horizontal divider | — |
+| **Emphasis** | `<strong>` important (bold); `<em>` stressed (italic) | `<strong>Deadline: Friday</strong>` |
+| **Generic containers** | `<div>` (block) and `<span>` (inline) — no meaning of their own, used for styling | `<div class="card">…</div>` |
+
+**Links in more detail:**
+- **Absolute URL** — a full address to another site: `href="https://www.ui.edu.ng"`.
+- **Relative URL** — a file in your own site: `href="about.html"` or `href="pages/contact.html"`.
+- **Same-page link** — jump to an element's `id`: `href="#skills"`.
+- `target="_blank"` opens the link in a **new tab**.
+
+**Lists:**
+
+```html
+<ol>
+    <li>HTML</li>
+    <li>CSS</li>
+</ol>
+
+<ul>
+    <li>JavaScript</li>
+    <li>PHP</li>
+</ul>
+```
+
+### HTML Attributes
+
+**Attributes provide additional information about an element.** They are written **inside the opening tag** as `name="value"` pairs:
+
+```html
+<img src="photo.jpg" alt="Student photo">
+<p id="intro">Welcome!</p>
+<p class="note">Remember to save your work.</p>
+```
+
+| Attribute | Purpose |
+|---|---|
+| **`src`** | Specifies the **image location** |
+| **`alt`** | **Describes the image** — shown if it fails to load and read aloud by screen readers |
+| **`href`** | Destination of a link |
+| **`id`** | **Identifies one unique element** on the page (must not be repeated) |
+| **`class`** | Labels elements for styling — **many elements can share a class** |
+| **`style`** | Inline CSS for that element |
+
+### Semantic HTML5
+
+**Semantic HTML** uses **elements that describe the meaning or purpose of their content** — `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>` — instead of building everything from meaningless `<div>`s.
+
+![A page layout built from semantic elements: header across the top, nav below it, main in the centre containing a section and an article, an aside on the right, and footer across the bottom, each labelled with its purpose](/images/ift302/semantic-layout.svg)
+
+*Figure: A typical page built from HTML5 semantic elements.*
+
+**Semantic HTML improves:**
+- **Accessibility** — screen readers can jump straight to the `<nav>` or `<main>`
+- **Code organisation** — easier to read than a wall of `<div>`s
+- **Maintainability** — other developers instantly see the page's structure
+- **Search engine understanding** — search engines know which part is the main content
+
+The lecture's example:
+
+```html
+<header>
+    <h1>University Portal</h1>
+</header>
+<nav>
+    <a href="#">Home</a>
+    <a href="#">Courses</a>
+</nav>
+<main>
+    <section>
+        <h2>Announcements</h2>
+    </section>
+</main>
+<footer>
+    <p>Copyright 2026</p>
+</footer>
+```
+
+<MCQ question="Which element should wrap a single, self-contained news story that would still make sense if shared on its own?">
+<Option>`<section>`</Option>
+<Option correct>`<article>`</Option>
+<Option>`<aside>`</Option>
+<Option>`<div>`</Option>
+<Explain>
+An **`<article>`** is **self-contained** content — a news story, blog post or product card — that could be distributed independently. A `<section>` is a themed group within a page, `<aside>` is related side content, and `<div>` has no meaning at all.
+</Explain>
+</MCQ>
+
+### Practice 1: A Personal Portfolio Page
+
+The practical asks for a page with **your name, a short biography, your skills, a link to a website, an image, a header, a main section and a footer**. Here's a starting point — **replace the details with your own** and Run:
+
+<Playground title="Practice 1 — portfolio structure">
+
+```html
+<header>
+  <h1>Ada Obi</h1>
+  <p>Information Technology student, University of Ibadan</p>
+</header>
+
+<main>
+  <section>
+    <h2>About Me</h2>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Crect width='90' height='90' rx='45' fill='%2393c5fd'/%3E%3Ctext x='45' y='55' font-size='28' text-anchor='middle' fill='%231e3a8a'%3EAO%3C/text%3E%3C/svg%3E" alt="Ada's profile picture">
+    <p>I build simple, accessible websites and I'm learning PHP and MySQL.</p>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <ul>
+      <li>HTML5</li>
+      <li>CSS3</li>
+      <li>JavaScript (learning)</li>
+    </ul>
+  </section>
+
+  <p>Visit my university: <a href="https://www.ui.edu.ng" target="_blank">ui.edu.ng</a></p>
+</main>
+
+<footer>
+  <p>&copy; 2026 Ada Obi</p>
+</footer>
+```
+
+</Playground>
+
+---
+
+## CSS3
+
+**CSS (Cascading Style Sheets)** **controls the appearance and layout** of web pages. It allows developers to **separate presentation from content**: HTML says *what* things are, CSS says *how they look*. Change one stylesheet and an entire website's look changes.
+
+### Three Ways to Apply CSS
+
+<Tabs>
+<Tab label="Inline">
+
+**Inline CSS** is written **directly inside an HTML element** using the `style` attribute:
+
+```html
+<p style="color: red;">Welcome</p>
+```
+
+Useful for **very small examples**, but **not recommended for larger projects** — styles are scattered, repeated and hard to change.
+
+</Tab>
+<Tab label="Internal">
+
+**Internal CSS** is placed **inside a `<style>` element in the `<head>`** of the HTML file:
+
+```html
+<head>
+  <style>
+    p { color: red; }
+  </style>
+</head>
+```
+
+Good for a **single page** with unique styles, but other pages can't reuse it.
+
+</Tab>
+<Tab label="External ✓">
+
+**External CSS** is placed in a **separate `.css` file**, **linked** to the HTML in the `<head>`:
+
+```html
+<link rel="stylesheet" href="style.css">
+```
+
+and in `style.css`:
+
+```css
+p {
+  color: red;
+}
+```
+
+**External CSS is generally preferred** because **the same stylesheet can be used by multiple pages** — one change updates the whole site (consistency!), and the browser caches the file so pages load faster.
+
+</Tab>
+</Tabs>
+
+**The "cascade":** when rules conflict, the browser decides which one wins. The closer and more specific the style, the higher its priority — **inline styles beat** `<style>` and external stylesheets, and between those, **the rule that comes later wins** (when specificity is equal).
+
+### CSS Syntax
+
+A CSS **rule** consists of a **selector** and a block of **declarations**:
+
+```css
+p {
+  color: blue;
+  font-size: 18px;
+}
+```
+
+| Part | In the example | Meaning |
+|---|---|---|
+| **Selector** | `p` | **Which elements** to style |
+| **Declaration block** | `{ … }` | The styles, inside **curly braces** |
+| **Property** | `color`, `font-size` | **What** to change |
+| **Value** | `blue`, `18px` | **What to change it to** |
+| **Declaration** | `color: blue;` | A property–value pair, **ending with a semicolon** |
+
+### CSS Selectors
+
+| Selector | Syntax | Targets | Example |
+|---|---|---|---|
+| **Universal** | `*` | **Every element** on the page | `* { margin: 0px 10px; }` |
+| **Element (type)** | `p` | **All instances** of that element | `p { color: blue; }` |
+| **Class** | `.name` | All elements with `class="name"` — **reusable** | `.important { color: red; }` |
+| **ID** | `#name` | **The one element** with `id="name"` | `#main-title { color: green; }` |
+| **Grouping** | `h1, h2` | Several selectors sharing one rule | `h1, h2 { font-family: Georgia; }` |
+| **Descendant** | `nav a` | `<a>` elements **inside** a `<nav>` | `nav a { text-decoration: none; }` |
+| **Pseudo-class** | `a:hover` | An element **in a state** | `button:hover { opacity: 0.8; }` |
+
+### Specificity: Which Rule Wins?
+
+When several rules target the same element, the **more specific** selector wins:
+
+**Inline style** › **ID selector** › **class selector** › **element selector** › universal.
+
+That's why the lecture says a **class selector supersedes an element selector**, and an **ID selector supersedes a class selector**. **Predict the colour of each line, then Run:**
+
+<Playground title="Specificity — predict, then run">
+
+```html
+<p>Plain paragraph</p>
+<p class="important">Paragraph with a class</p>
+<p class="important" id="special">Paragraph with a class AND an id</p>
+<p class="important" id="special2" style="color: purple;">…plus an inline style</p>
+```
+
+```css
+/* Order doesn't save the element rule: specificity beats order */
+#special, #special2 { color: green; }
+.important          { color: red; }
+p                   { color: blue; }
+```
+
+</Playground>
+
+<Reveal question="Explain the colours you saw.">
+Line 1 matches only `p` → **blue**. Line 2 matches `p` and `.important`; the **class is more specific** → **red**. Line 3 matches element, class and ID; the **ID wins** → **green**. Line 4 also has an **inline style**, which beats all selectors → **purple**. Notice the `p` rule came *last* in the stylesheet and still lost — **order only decides between rules of equal specificity**.
+</Reveal>
+
+### Common CSS Properties
+
+**Typography:**
+
+```css
+p {
+  color: blue;
+  font-family: Arial, sans-serif;   /* fallback list: use Arial, else any sans-serif */
+  font-weight: bold;
+  font-size: 50px;
+  text-align: center;
+  line-height: 1.6;                 /* space between lines */
+}
+```
+
+**Visuals and backgrounds:** `background-color`, `background-image`, `opacity` (0 = invisible, 1 = solid), `border`, `border-radius` (rounded corners), `box-shadow`.
+
+**Ways to write colours:**
+
+| Format | Example | Notes |
+|---|---|---|
+| Name | `red`, `navy`, `teal` | About 140 named colours |
+| Hex | `#1e3a8a` | Red, green, blue in hexadecimal (00–ff each) |
+| RGB | `rgb(30, 58, 138)` | Red, green, blue from 0–255 |
+| RGBA | `rgba(30, 58, 138, 0.5)` | Adds **alpha** (transparency) |
+
+**Units:**
+
+| Unit | Relative to | Use for |
+|---|---|---|
+| `px` | Fixed pixels | Borders, small details |
+| `%` | The parent element's size | Widths in fluid layouts |
+| `em` | The element's own font size | Spacing that scales with text |
+| `rem` | The **root** (`html`) font size | Font sizes across the site |
+| `vw` / `vh` | 1% of the viewport width / height | Full-screen sections |
+
+---
+
+## The CSS Box Model
+
+**One of the most important CSS concepts is the box model.** **Every HTML element is treated as a rectangular box** made of four layers, from the inside out:
+
+![The CSS box model as nested rectangles: content in the centre (sized by width and height), surrounded by padding, then the border, then the margin on the outside](/images/ift302/css-box-model.svg)
+
+*Figure: The four layers of the CSS box model.*
+
+| Layer | What it is |
+|---|---|
+| **Content** | The text or image itself, sized by `width` and `height` |
+| **Padding** | **Space inside the element, around the content** — takes the element's background colour |
+| **Border** | The line around the padding |
+| **Margin** | **Space outside the element** — separates it from neighbouring elements; always transparent |
+
+### Worked Example: How Wide Is the Box?
+
+```css
+.card {
+  width: 300px;
+  padding: 20px;
+  border: 5px solid navy;
+  margin: 10px;
+}
+```
+
+<Step step="1" title="Visible width (content + padding + border)">
+By default (`box-sizing: content-box`), `width` sets **only the content**:
+$300 + (2 \times 20) + (2 \times 5) =$ **350 px** from border edge to border edge.
+</Step>
+
+<Step step="2" title="Total space taken (add the margin)">
+$350 + (2 \times 10) =$ **370 px** of horizontal space on the page. Each side counts **twice** — left and right.
+</Step>
+
+<Step step="3" title="With box-sizing: border-box">
+If you add `box-sizing: border-box;`, `width` includes padding and border, so the visible box is exactly **300 px** and the content shrinks to $300 - 40 - 10 =$ **250 px**. Total space with margin: **320 px**. Most developers set this on every element, because it makes sizes predictable:
+
+```css
+* { box-sizing: border-box; }
+```
+</Step>
+
+**Shorthand:** `padding: 10px 20px;` means 10 px **top and bottom**, 20 px **left and right**. With four values, the order is **top, right, bottom, left** (clockwise).
+
+<Playground title="Box model — change the numbers">
+
+```html
+<div class="box">Content</div>
+<div class="box">Another box</div>
+```
+
+```css
+.box {
+  width: 160px;
+  padding: 20px;              /* inside, takes the background */
+  border: 5px solid #1e3a8a;  /* the line */
+  margin: 16px;               /* outside, transparent gap */
+  background: #bfdbfe;
+  /* box-sizing: border-box;     try un-commenting this */
+}
+```
+
+</Playground>
+
+### Block vs Inline Elements
+
+| Block elements | Inline elements |
+|---|---|
+| Start on a **new line** and stretch to the **full available width** | Sit **within a line of text**, only as wide as their content |
+| `width`, `height`, margins all work | `width`/`height` are ignored; vertical margins don't push other lines |
+| `<div>`, `<p>`, `<h1>`, `<ul>`, `<section>` | `<span>`, `<a>`, `<strong>`, `<em>`, `<img>` (see note) |
+
+**Note:** `<img>` is inline but, unlike other inline elements, can be given a width and height. You can change any element with `display: block;`, `display: inline;` or `display: inline-block;` (inline, but accepts width and height).
+
+---
+
+## CSS Layout: Flexbox and Grid
+
+Modern CSS provides several methods for arranging elements. The two most important are **Flexbox** and **CSS Grid**.
+
+<Tabs>
+<Tab label="Flexbox">
+
+### Flexbox — one dimension
+
+**Flexbox arranges items in one dimension**: a **row** *or* a **column**. Perfect for navigation bars, rows of buttons and centring things.
+
+```css
+.container {
+  display: flex;
+  gap: 20px;
+}
+```
+
+| Property (on the container) | Controls | Common values |
+|---|---|---|
+| `flex-direction` | Row or column | `row` (default), `column` |
+| `justify-content` | Spacing **along** the main direction | `flex-start`, `center`, `space-between`, `space-around` |
+| `align-items` | Alignment **across** it | `stretch`, `center`, `flex-start` |
+| `flex-wrap` | Allow items to wrap onto new lines | `nowrap`, `wrap` |
+| `gap` | Space between items | `20px` |
+
+</Tab>
+<Tab label="Grid">
+
+### Grid — two dimensions
+
+**Grid arranges content in rows and columns** at the same time. Perfect for page layouts and card galleries.
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+```
+
+- **`fr`** means "**fraction** of the free space": `1fr 1fr` = two equal columns; `2fr 1fr` = the first is twice as wide.
+- `repeat(3, 1fr)` = three equal columns.
+- `grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))` = as many 200 px+ columns as fit — responsive with no media queries.
+
+</Tab>
+</Tabs>
+
+<Playground title="Flexbox vs Grid — edit and compare">
+
+```html
+<h4>Flexbox (one row)</h4>
+<div class="flex">
+  <div>Home</div><div>Courses</div><div>About</div><div>Contact</div>
+</div>
+
+<h4>Grid (rows and columns)</h4>
+<div class="grid">
+  <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+</div>
+```
+
+```css
+.flex {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;   /* try: center, flex-start, space-around */
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;   /* try: 1fr 1fr   or   2fr 1fr 1fr */
+  gap: 10px;
+}
+.flex div, .grid div {
+  background: #1e3a8a; color: white; padding: 12px; border-radius: 8px; text-align: center;
+}
+h4 { margin: 12px 0 6px; }
+```
+
+</Playground>
+
+<MCQ question="You need a photo gallery of 12 images in 4 columns and 3 rows. Which layout tool fits best?">
+<Option>Flexbox, because it works in one dimension.</Option>
+<Option correct>CSS Grid, because it controls rows and columns together.</Option>
+<Option>Inline CSS on each image.</Option>
+<Option>The universal selector.</Option>
+<Explain>
+**Grid** is designed for **two-dimensional** layouts: `grid-template-columns: repeat(4, 1fr)` produces the 4 columns and the rows follow automatically. Flexbox handles **one** dimension at a time (it can wrap, but it doesn't align items into true columns).
+</Explain>
+</MCQ>
+
+---
+
+## Practice 2: Style Your Portfolio
+
+The lecture's Practice 2: **link `style.css`**, then **change the background, heading colour and font**, **centre the main heading**, **add spacing around sections**, **add a border to an image or card**, and **use Flexbox or Grid**. Here's one solution — study how each rule meets a requirement, then restyle it your own way:
+
+<Playground title="Practice 2 — styled portfolio">
+
+```html
+<header>
+  <h1>Ada Obi</h1>
+  <p>Information Technology student</p>
+</header>
+<main>
+  <section class="about">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Crect width='90' height='90' fill='%2393c5fd'/%3E%3Ctext x='45' y='55' font-size='28' text-anchor='middle' fill='%231e3a8a'%3EAO%3C/text%3E%3C/svg%3E" alt="Ada's profile picture">
+    <p>I build simple, accessible websites and I'm learning PHP and MySQL.</p>
+  </section>
+  <section>
+    <h2>Skills</h2>
+    <div class="skills">
+      <div class="card">HTML5</div><div class="card">CSS3</div><div class="card">JavaScript</div>
+    </div>
+  </section>
+</main>
+<footer>&copy; 2026 Ada Obi</footer>
+```
+
+```css
+* { box-sizing: border-box; }
+body {
+  background: #f1f5f9;                 /* page background */
+  font-family: Georgia, serif;         /* font */
+  margin: 0;
+}
+header { background: #1e3a8a; color: white; padding: 20px; }
+h1 { text-align: center; margin: 0; }  /* centred main heading */
+header p { text-align: center; margin: 4px 0 0; }
+h2 { color: #1e3a8a; }                 /* heading colour */
+section { padding: 16px; margin: 12px; background: white; border-radius: 10px; }  /* spacing */
+.about { display: flex; gap: 16px; align-items: center; }                        /* flexbox */
+.about img { border: 4px solid #1e3a8a; border-radius: 50%; }                     /* image border */
+.skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }     /* grid */
+.card { border: 2px solid #93c5fd; border-radius: 8px; padding: 10px; text-align: center; }
+footer { text-align: center; padding: 14px; color: #64748b; }
+```
+
+</Playground>
+
+---
+
+## Practice Questions
+
+<Reveal question="State the roles of HTML, CSS and JavaScript, using a button as an example.">
+**HTML** provides **structure and content** — it creates the button: `<button>Submit</button>`. **CSS** provides **presentation** — it makes the button look attractive: `button { background-color: blue; color: white; }`. **JavaScript** provides **behaviour/interactivity** — it makes the button do something: `button.onclick = function () { alert("Form submitted!"); };`.
+</Reveal>
+
+<Reveal question="Why is HTML described as a markup language rather than a programming language?">
+HTML only **describes the structure and meaning of content** (headings, paragraphs, links). It has **no programming logic** — no variables, conditions or loops — so it cannot make decisions or perform calculations.
+</Reveal>
+
+<Reveal question="Describe the three ways of applying CSS and state which is preferred and why.">
+**Inline** — in the element's `style` attribute (`<p style="color:red;">`); fine for tiny examples only. **Internal** — in a `<style>` element in the `<head>`; applies to that one page. **External** — in a separate `.css` file linked with `<link rel="stylesheet" href="style.css">`. **External is preferred** because **one stylesheet can style many pages**, keeping the site consistent and easy to maintain (and it's cached by the browser).
+</Reveal>
+
+<Reveal question="Differentiate between class and ID selectors, with examples.">
+A **class selector** (`.important { color: red; }`) targets **every element** with `class="important"` — it's **reusable**. An **ID selector** (`#main-title { color: green; }`) targets **the single unique element** with `id="main-title"`. ID selectors are **more specific**, so they override class selectors, which override element selectors.
+</Reveal>
+
+<Reveal question="An element has width: 200px, padding: 15px, border: 3px and margin: 12px (content-box). Calculate its visible width and the total horizontal space it occupies.">
+Visible width = $200 + 2(15) + 2(3) = 200 + 30 + 6 =$ **236 px**. Total space = $236 + 2(12) =$ **260 px**.
+</Reveal>
+
+<Reveal question="List five HTML5 semantic elements and explain two benefits of semantic HTML.">
+`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>` (any five). Benefits (any two): **accessibility** (screen readers can navigate by landmarks), **code organisation**, **maintainability**, and **search engine understanding** of the page's main content.
+</Reveal>
+
+<Takeaway>
+**Client-side programming** runs in the browser: **HTML = structure**, **CSS = presentation**, **JavaScript = behaviour**. An HTML **element** = opening tag + content + closing tag; a document has **`<!DOCTYPE html>`, `<html>`, `<head>` (title, meta, CSS links) and `<body>`** (visible content). **Attributes** (`src`, `alt`, `href`, `id`, `class`) add information. **Semantic** elements (`header`, `nav`, `main`, `section`, `article`, `aside`, `footer`) improve accessibility, organisation, maintainability and SEO. CSS can be **inline, internal or external** (preferred). A rule = `selector { property: value; }`; specificity: **inline › ID › class › element**. Every element is a **box: content + padding + border + margin** — calculate widths carefully, and use `box-sizing: border-box`. **Flexbox** = one dimension; **Grid** = rows **and** columns.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Roles of HTML, CSS and JavaScript
+- The basic HTML document structure and what each part does
+- Common elements and attributes; semantic HTML and its benefits
+- The **three ways to apply CSS** and why external is preferred
+- CSS syntax (label **selector, property, value**) and the **selector types**
+- The **box model** — labelled diagram and width calculations
+- Flexbox vs Grid
+
+**Common mistakes:**
+- Forgetting the `.` for class selectors or `#` for ID selectors
+- Reusing the same `id` on several elements
+- Adding padding and border only **once** instead of **both sides** in box-model sums
+- Missing `alt` text on images
+
+**Likely question:**
+> "With the aid of a diagram, explain the CSS box model. An element has width 250px, padding 10px, border 2px and margin 20px; calculate the total width it occupies. Write CSS using a class selector to give all cards a 1px grey border and 12px of padding." (15 marks)

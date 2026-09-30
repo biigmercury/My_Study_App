@@ -1,0 +1,184 @@
+---
+title: "Structured vs Object-Oriented Design"
+description: "A side-by-side comparison of the two great approaches to analysis and design — how each views a system, the models each produces, how the same registration system looks in both, their strengths and weaknesses, and how to choose between them."
+duration: "30 min"
+difficulty: "intermediate"
+---
+
+## Two Ways to Look at the Same System
+
+Your course outline ends the analysis-and-design material with a **comparison of structured and object-oriented design**. You have now studied both:
+
+- **Structured (process-oriented) approach** — Topics 7–9: structured analysis, top-down decomposition, DFDs and ER diagrams.
+- **Object-oriented approach** — Topics 10–11: objects, classes, the four OO principles and UML.
+
+The core difference is **how each approach divides the system up**:
+
+| | Structured approach | Object-oriented approach |
+|---|---|---|
+| **Views the system as…** | A set of **processes (functions)** that transform **data** | A set of interacting **objects** that combine **data and behaviour** |
+| **Data and processes are…** | **Separated** — processes in DFDs, data in data stores/ERDs | **Combined** — each object holds its attributes *and* methods |
+| **Basic building block** | The **process / function** | The **object / class** |
+| **Decomposition** | **Functional decomposition** — top-down, by *what the system does* | **Object decomposition** — by the *things* in the problem domain and their responsibilities |
+
+<Analogy>
+Imagine running a restaurant. The **structured** view writes down every *task*: take order → cook food → serve → collect payment, with a separate list of *stores* (fridge, cash box). The **object-oriented** view lists the *actors and things*: a Waiter who can take orders and serve, a Chef who can cook, an Order that knows its items and total, a Till that can take payment. Same restaurant — different way of carving it up.
+</Analogy>
+
+---
+
+## Detailed Comparison
+
+| Aspect | Structured analysis & design | Object-oriented analysis & design |
+|---|---|---|
+| Era of origin | **1970s** (DeMarco, Gane & Sarson, Yourdon) | **1980s–1990s**; standardised as **UML** (OMG) |
+| Main analysis models | **Context diagram, DFDs** (process model); **ERD** (data model); data dictionary | **Use case diagram** (functions); **class diagram** (structure); activity and sequence diagrams (behaviour) |
+| Main design models | Structure charts, module specifications, database design | Refined class diagrams, sequence diagrams, component/deployment diagrams |
+| Design strategy | **Top-down**, stepwise refinement of functions | Identify classes and responsibilities; iterative refinement |
+| Key quality concepts | Cohesion, coupling, modularity | Encapsulation, inheritance, polymorphism, abstraction (plus cohesion and coupling) |
+| Life cycle usually paired with | **Waterfall**-style, sequential SDLC | **Iterative and incremental** development (e.g., Agile, RUP) |
+| Reuse | Reuse of modules/functions; limited | **High** — inheritance and self-contained classes are designed for reuse |
+| Handling change | A change to a **data structure** can ripple through **many processes** that use it | Change is **localised** — hidden inside the class that owns the data (encapsulation) |
+| Communication with users | DFDs are simple and **easy for non-technical users** to read | Use cases are user-friendly; class and sequence diagrams are more technical |
+| Implementation languages | Procedural languages: C, COBOL, Pascal | Object-oriented languages: Java, C++, C#, Python |
+
+---
+
+## The Same System, Two Ways
+
+**Case:** the University Course Registration System you modelled in Topics 8–11.
+
+<Tabs>
+<Tab label="Structured view">
+
+**Process model (DFD):**
+- External entities: Student, Lecturer, Finance/Bursary, Exam Office, Management
+- Processes: 1.0 Manage Student Registration, 2.0 Manage Course Registration, 3.0 Process Course Approval, 4.0 Process Payment, 5.0 Generate Reports
+- Data stores: D1 Student Master, D2 Course Master, D3 Registration Records, D4 Payment Records
+
+**Data model (ERD):** STUDENT, COURSE, ENROLMENT, LECTURER, DEPARTMENT with their attributes and relationships.
+
+**Design:** each process is decomposed top-down (2.0 → 2.1 … 2.6 → 2.3.1 …) into program modules; each data store becomes a database table.
+
+*The data (stores/tables) and the processing (modules) are designed separately and linked by data flows.*
+
+</Tab>
+<Tab label="Object-oriented view">
+
+**Use case model:** actors Student, Lecturer, Administrator; use cases Login, Register Course, View Result, Upload Result, Manage Courses.
+
+**Class model:** Person (abstract) → Student, Lecturer; Course, Registration, Department, Assessment — each class holding **both** its data and its operations, e.g. `Student.registerCourse()`, `Course.getClassList()`.
+
+**Behaviour models:** an activity diagram for the registration workflow; a sequence diagram showing Student → Registration System → Database messages.
+
+*Data and processing live together inside each class; the system works by objects sending messages to one another.*
+
+</Tab>
+<Tab label="How the models map">
+
+| Structured model element | Nearest OO equivalent |
+|---|---|
+| External entity (DFD) | **Actor** (use case diagram) |
+| Process (DFD) | **Use case** (at high level) or **method** (at low level) |
+| Data store (DFD) / entity (ERD) | **Class** (its data becomes attributes) |
+| Data flow | **Message** between objects (sequence diagram) |
+| Relationship (ERD) | **Association** (class diagram) |
+| Functional decomposition | Use cases refined into interactions between classes |
+
+</Tab>
+</Tabs>
+
+---
+
+## Strengths and Weaknesses
+
+<Tabs>
+<Tab label="Structured">
+
+**Strengths**
+- **Simple, well-established** notation; DFDs are easy for users and managers to understand
+- A clear **top-down** path from the whole system to detailed modules
+- Excellent for **data-processing** and transaction systems with **stable, well-understood requirements**
+- Strong **documentation** discipline; fits sequential, contract-based projects
+
+**Weaknesses**
+- **Separates data from processes**, so a change in data structure can affect many processes
+- **Less reuse** of design and code
+- Harder to adapt when **requirements change frequently**
+- The shift from DFDs (analysis) to program modules (design) can be a big conceptual jump
+
+</Tab>
+<Tab label="Object-oriented">
+
+**Strengths**
+- **Models the real world naturally** — the objects users talk about become classes
+- **Encapsulation** localises change; systems are **easier to maintain and extend**
+- **High reuse** through inheritance and class libraries
+- The **same concepts** (classes, objects) are used from analysis through design to code, so the transition is **smoother**
+- Suits **iterative, incremental** development and complex, evolving systems
+
+**Weaknesses**
+- **Steeper learning curve**; UML has many diagram types
+- Poorly designed inheritance hierarchies can become **complex and fragile**
+- Can be **overkill** for small, simple, data-processing applications
+- Class and sequence diagrams are **less accessible** to non-technical stakeholders than DFDs
+
+</Tab>
+</Tabs>
+
+---
+
+## Which Should You Choose?
+
+| Situation | Better fit |
+|---|---|
+| A payroll, billing or batch data-processing system with stable rules | **Structured** |
+| A project that must be documented and signed off phase by phase (e.g., a government contract) | **Structured** |
+| A large, interactive system (e.g., e-commerce, mobile banking) expected to grow and change | **Object-oriented** |
+| A team building in Java, C#, Python or another OO language | **Object-oriented** |
+| High reuse of components across several products | **Object-oriented** |
+
+In practice many organisations **combine** them — e.g., using **ER diagrams** for database design (a structured technique) inside an otherwise object-oriented project, or using DFDs to explain business processes to managers before building the system with OO tools.
+
+<ExamTip>
+A strong comparison answer gives **at least five points in a table**, each contrasting the two approaches on the **same aspect** (view of system, data/process separation, models used, decomposition, reuse, handling change, life cycle). Finish with **when each is appropriate** — that's where the higher marks are.
+</ExamTip>
+
+---
+
+## Practice Questions
+
+<Reveal question="State the fundamental difference between structured and object-oriented approaches.">
+The structured approach views a system as **processes (functions) that transform data**, keeping **data and processes separate** and decomposing the system **top-down by function**. The OO approach views a system as **interacting objects** that **combine data and behaviour**, decomposing it by the **things** in the problem domain.
+</Reveal>
+
+<Reveal question="Why is an object-oriented system usually easier to maintain when a data structure changes?">
+Because of **encapsulation**: the data is hidden inside the class that owns it, and other parts of the system access it only through that class's methods. A change to the data's internal structure affects only that class. In a structured system, many processes may read the data store directly, so all of them may need changing.
+</Reveal>
+
+<Reveal question="Name the main models produced by each approach during analysis.">
+**Structured:** context diagram and DFDs (process model), ERD (data model) and a data dictionary. **Object-oriented:** use case diagram, class diagram, and behaviour diagrams (activity and sequence).
+</Reveal>
+
+<Reveal question="Map three structured modelling elements to their nearest OO equivalents.">
+External entity → **actor**; data store / ER entity → **class**; data flow → **message** between objects. (Also: DFD process → use case or method; ER relationship → association.)
+</Reveal>
+
+<Takeaway>
+The **structured** approach (1970s) models a system as **functions transforming data**, keeps **data and processes separate**, decomposes **top-down**, and produces DFDs and ERDs — simple, well documented and ideal for stable data-processing systems. The **object-oriented** approach models the system as **objects that combine data and behaviour**, uses UML, and relies on **encapsulation, inheritance and polymorphism** — giving better reuse, localised change and a smooth path to OO code, at the cost of more complexity. Choose based on the system's size, stability and implementation technology; many projects combine both.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- "Compare and contrast structured and object-oriented analysis and design" (table answer)
+- Advantages and disadvantages of each
+- Which approach suits a given scenario, with justification
+
+**Common mistakes:**
+- Saying OO has no data modelling — class diagrams model data (attributes and associations)
+- Claiming structured analysis is obsolete — its ideas (decomposition, ERDs) are still widely used
+- Listing features of each approach separately instead of **contrasting them point by point**
+
+**Likely question:**
+> "Compare structured and object-oriented approaches to systems analysis and design under five headings, and recommend an approach for a bank developing a new mobile banking app." (15 marks)

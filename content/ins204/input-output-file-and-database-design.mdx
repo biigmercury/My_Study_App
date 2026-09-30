@@ -1,0 +1,483 @@
+---
+title: "Input, Output, File and Database Design"
+description: "Designing what goes into and comes out of a system and how its data is stored: designing forms and reports with prototypes, formatting and highlighting guidelines, data-entry design and input validation (with a check-digit calculator), the relational model, normalization to 3NF step by step, turning ER diagrams into tables, and physical file design — data types, integrity controls, sequential/indexed/hashed files, backup and security."
+duration: "65 min"
+difficulty: "intermediate"
+---
+
+## Where This Fits
+
+Once analysis has told us **what** the system must do, **design** decides how. Your course outline lists three design areas covered here:
+
+1. **Input and output design** — the **forms** users fill in and the **reports** they receive, designed through **prototyping and validation**.
+2. **Input validation** — stopping bad data at the door.
+3. **File and database design** — turning the ER model into well-structured tables and choosing how data is physically stored and protected.
+
+This topic follows the course textbook: Valacich, George & Hoffer, *Essentials of Systems Analysis and Design*, Chapters 8 and 9.
+
+---
+
+## Part A — Designing Forms and Reports
+
+| | Form | Report |
+|---|---|---|
+| **What it is** | A business document containing **some predefined data and areas where users enter data** | A business document containing **only predefined data** — for reading, not data entry |
+| **Direction** | **Input** (and display) | **Output** |
+| **Examples** | Course registration form, admission form, loan application screen | Result slip, class list, monthly sales report, transcript |
+
+### Five Fundamental Questions
+
+Before designing any form or report, answer:
+
+| Question | Why it matters |
+|---|---|
+| **Who** will use it? | Novice or expert? Their education and task knowledge shape format and wording |
+| **What** is its purpose? | What task is being performed and what information does it need? |
+| **When** is it needed and used? | Timing affects delivery and content (daily, end of semester…) |
+| **Where** will it be delivered and used? | Office, field, phone, printed? Online or offline? |
+| **How many** people will use or view it? | One user needs a simple design; a large audience needs more requirements work and usability testing |
+
+### Prototyping Design and Validation
+
+Forms and reports are designed by **prototyping** — building a draft, letting users evaluate it, and refining it until it is accepted.
+
+<FlowDiagram title="Designing a form or report" cycle>
+<FlowStep title="Collect requirements">
+Answer the who/what/when/where/how-many questions with the users.
+</FlowStep>
+<FlowStep title="Build a prototype">
+Structure the requirements into an **initial prototype** — often just **mock screens** made in a design tool, word processor, HTML or a development environment. The focus is **content and layout**, not the final code.
+</FlowStep>
+<FlowStep title="Users review">
+Users **evaluate** the prototype and either **accept** it or **request changes**.
+</FlowStep>
+<FlowStep title="Refine">
+Make the changes and repeat the **construct → evaluate → refine** cycle — quickly — until the design is accepted.
+</FlowStep>
+</FlowDiagram>
+
+The deliverable is a **design specification** with three sections: (1) a **narrative overview**, (2) a **sample design**, and (3) **testing and usability assessment**.
+
+### General Guidelines for Forms and Reports
+
+| Guideline | What it involves |
+|---|---|
+| **Use meaningful titles** | Clear, specific title describing content and use; a **revision date/code**; the **current date** the form/report was generated; a **valid date** showing when the data was accurate |
+| **Include meaningful information** | Show **only needed** information, in a usable form **without the user having to modify or calculate it** (e.g., show the outstanding balance — don't make users compute it) |
+| **Balance the layout** | Information balanced on the screen/page; adequate spacing and margins; **all fields clearly labelled** |
+| **Design easy navigation** | Show clearly how to move **forward and backward**, **where you are** (page 1 of 3), and when you are on the **last page** |
+
+### Highlighting Information
+
+Methods: **blinking and audible tones, colour differences, intensity differences, size differences, font differences, reverse video, boxing, underlining, ALL CAPITALS, offsetting the position of non-standard information.**
+
+Use highlighting **sparingly** — to draw users to (or away from) information, and to group related information. It is valuable for:
+- **notifying users of errors** in data entry or processing,
+- **warning** users of possible problems (unusual values, unavailable device),
+- **drawing attention** to keywords, commands, high-priority messages and out-of-range data.
+
+**Blinking and audible tones** should be reserved for **critical information needing an immediate response**, and switched off once the user responds.
+
+### Displaying Text, Tables and Lists
+
+<Tabs>
+<Tab label="Text">
+
+| Aspect | Guideline |
+|---|---|
+| Case | **Mixed upper and lower case**, conventional punctuation |
+| Spacing | Double spacing if space permits; otherwise a blank line between paragraphs |
+| Justification | **Left-justify** with a **ragged right margin** (easier to find the next line) |
+| Hyphenation | **Don't hyphenate** words between lines |
+| Abbreviations | Only when widely understood **and** significantly shorter |
+
+</Tab>
+<Tab label="Tables & lists">
+
+- **Meaningful labels** on all rows and columns, highlighted and **repeated** on every page/screen
+- **Sort** in a meaningful order; put a **blank line every five rows** in long columns
+- At least **two spaces between columns**; leave **white space** for notes on printed reports
+- Use **one typeface** (plus emphasis); avoid fancy fonts
+- **Right-justify numbers** and align them on the decimal point; **left-justify text**; keep lines to about 30–40 characters
+- Break long alphanumeric codes into **groups of 3–4 characters** (like a bank card number)
+
+</Tab>
+<Tab label="Table or graph?">
+
+- Use a **table** when the user needs to **find an individual value** in a larger set (e.g., one student's score).
+- Use a **line or bar graph** when the user needs to **analyse change over time** or **compare** groups (e.g., pass rates per department across five years).
+
+</Tab>
+</Tabs>
+
+---
+
+## Part B — Input Design and Data Validation
+
+### Guidelines for Data-Entry Fields
+
+| Guideline | Meaning / example |
+|---|---|
+| **Entry** | **Never ask for data already in the system or that can be computed** — don't ask for today's date, or a total that the system can calculate |
+| **Defaults** | Provide **default values** where appropriate (today's date, standard price, the usual state) |
+| **Units** | Make clear the **units** expected (₦, kg, dozens) |
+| **Replacement** | Use **character replacement / look-up** — auto-complete once enough characters are typed |
+| **Captioning** | Always place a **caption** next to each field |
+| **Format** | Show **formatting examples** — e.g., DD/MM/YYYY, embedded symbols |
+| **Justify** | Automatically justify entries — numbers right, text left |
+| **Help** | Provide **context-sensitive help** (e.g., F1 on the current field) |
+
+### Types of Data Errors
+
+| Error | Description | Example (entering matric number 245678) |
+|---|---|---|
+| **Appending** | **Adding** extra characters | 2456788 |
+| **Truncating** | **Losing** characters | 24567 |
+| **Transcripting** | Entering **invalid/wrong** characters | 245O78 (letter O for zero) |
+| **Transposing** | **Reversing the order** of characters | 246578 |
+
+### Validation Tests
+
+| Test | Checks that… | Example |
+|---|---|---|
+| **Class or composition** | Data are of the proper **type** | Phone number is all numeric |
+| **Combinations** | **Combinations** of fields make sense | A 100-level student isn't registering for a 400-level course |
+| **Expected values** | Data match what's **expected** | Matric number matches an existing student |
+| **Missing data** | **Every required field** has a value | Each course line has a course code |
+| **Pictures / templates** | Data follow a **standard format** | Matric number is exactly 6 digits; date is DD/MM/YYYY |
+| **Range** | Values lie within a **range** | CGPA between 0.00 and 5.00; score 0–100 |
+| **Reasonableness** | Values are **reasonable** for the situation | An hourly pay rate that is 100× higher than usual is flagged |
+| **Self-checking digits** | An extra **check digit**, computed by formula, still matches | Bank account numbers, ISBNs |
+| **Size** | There are not **too few or too many** characters | NIN is exactly 11 digits |
+| **Values** | Values come from an **allowed set** | Grade is one of A, B, C, D, E, F |
+
+### Self-Checking (Check) Digits
+
+A **check digit** is an extra digit, calculated from the other digits by a formula, **added to a number before it is entered or transmitted** and **re-checked afterwards**. The textbook's method:
+
+<Step step="1" title="Weight the digits">
+Multiply each digit by a weighting factor, alternating **1, 2, 1, 2 …** starting from the **rightmost** digit.
+</Step>
+
+<Step step="2" title="Sum the products">
+Add the weighted results.
+</Step>
+
+<Step step="3" title="Divide by the modulus">
+Divide the sum by the modulus (10) and note the **remainder**.
+</Step>
+
+<Step step="4" title="Subtract from the modulus">
+Check digit = 10 − remainder.
+</Step>
+
+<Step step="5" title="Append">
+Attach the check digit to the end of the number.
+</Step>
+
+**Worked example (from the textbook):** part number **12473**. From the right: 3×1 = 3, 7×2 = 14, 4×1 = 4, 2×2 = 4, 1×1 = 1. Sum = **26**. 26 ÷ 10 = 2 remainder **6**. Check digit = 10 − 6 = **4**. Stored value: **124734**.
+
+If a clerk later types **142734** (the 2 and 4 swapped — a transposition), recomputing gives check digit 2, not 4 — so the error is **caught before the data is saved**. Try it:
+
+<CheckDigitCalculator />
+
+### Other Input Controls
+
+- **Online vs batch:** online systems validate **as data is entered** and can prompt the user immediately; batch systems **reject invalid records into an error log** for later correction.
+- **Audit trail:** a record of the **sequence, count, time, source location and operator** of every data entry, kept in a separate **transaction log** — useful for correcting errors, audits and **backup and recovery**.
+
+---
+
+## Part C — Logical Database Design
+
+### The Relational Model
+
+> A **relation** is a **named, two-dimensional table of data** made up of named **columns** (attributes) and any number of unnamed **rows** (records). The **relational database model** represents data as a set of related tables.
+
+Shorthand: EMPLOYEE(<u>Emp_ID</u>, Name, Dept, Salary) — the **primary key is underlined**.
+
+**Properties that make a table a relation:**
+1. **Each cell holds a single value** (no lists in a cell).
+2. All entries in a column come from the **same set of values** (domain).
+3. **Each row is unique** — guaranteed by a non-empty primary key.
+4. The **order of columns** doesn't matter.
+5. The **order of rows** doesn't matter.
+
+A **well-structured relation** contains **minimum redundancy** and lets users **insert, modify and delete rows without errors or inconsistencies**.
+
+### Why Redundancy Is Dangerous: Anomalies
+
+Consider SALES(<u>Customer_ID</u>, Customer_Name, Salesperson, Region), where each salesperson covers one region:
+
+| Anomaly | Problem in SALES |
+|---|---|
+| **Insertion** | A new salesperson assigned to the North region **can't be recorded** until they have a customer (Customer_ID is the key) |
+| **Deletion** | Deleting the only customer of salesperson Hernandez **loses the fact** that Hernandez covers the East region |
+| **Update (modification)** | If Smith moves to the East region, **many rows** must be changed — miss one and the data is inconsistent |
+
+**Normalization** removes these problems.
+
+### Functional Dependency
+
+> Attribute B is **functionally dependent** on attribute A (written A → B) if **each value of A determines exactly one value of B**.
+
+- Matric_No → Name (a matric number identifies exactly one name)
+- (Matric_No, Course_Code) → Grade (a grade belongs to a student **in** a course)
+
+Functional dependency comes from **knowledge of the business rules**, not from sample data. Sample data can only *disprove* a dependency.
+
+### Normalization
+
+> **Normalization** is the process of **converting complex data structures into simple, stable data structures**.
+
+| Normal form | Rule |
+|---|---|
+| **1NF** | **No repeating groups / multivalued attributes** — every cell holds a single value (the first property of a relation) |
+| **2NF** | In 1NF, and **every non-key attribute depends on the whole primary key** (no **partial** dependencies) |
+| **3NF** | In 2NF, and **no non-key attribute depends on another non-key attribute** (no **transitive** dependencies) |
+
+> Memory line: every non-key attribute must depend on **the key (1NF), the whole key (2NF), and nothing but the key (3NF)**.
+
+**2NF is automatically satisfied if:** the primary key is a single attribute; or there are no non-key attributes; or every non-key attribute depends on the full key.
+
+### Worked Example: Normalizing Student Results
+
+Step through the normalization of a student-results record:
+
+<FlowDiagram title="Normalizing STUDENT RESULTS">
+<FlowStep title="Unnormalized (UNF)">
+
+One record per student, with a **repeating group** of courses:
+
+| Matric_No | Name | Dept_Code | Dept_Name | Courses (Code, Title, Units, Grade) |
+|---|---|---|---|---|
+| 245001 | Ada Okafor | CSC | Computer Science | CSC201, Programming I, 3, A · INS204, Systems Analysis, 3, B |
+| 245002 | Bola Ade | CSC | Computer Science | CSC201, Programming I, 3, C |
+
+The Courses cell holds **many values** — not a relation.
+
+</FlowStep>
+<FlowStep title="First normal form (1NF)">
+
+Remove the repeating group — **one row per student per course**. Key: (Matric_No, Course_Code).
+
+| Matric_No | Course_Code | Name | Dept_Code | Dept_Name | Course_Title | Units | Grade |
+|---|---|---|---|---|---|---|---|
+| 245001 | CSC201 | Ada Okafor | CSC | Computer Science | Programming I | 3 | A |
+| 245001 | INS204 | Ada Okafor | CSC | Computer Science | Systems Analysis | 3 | B |
+| 245002 | CSC201 | Bola Ade | CSC | Computer Science | Programming I | 3 | C |
+
+Now in 1NF — but Name, Dept and Course details **repeat**. Partial dependencies: Matric_No → Name, Dept_Code, Dept_Name; Course_Code → Course_Title, Units.
+
+</FlowStep>
+<FlowStep title="Second normal form (2NF)">
+
+Split off attributes that depend on **part** of the key:
+
+- STUDENT(<u>Matric_No</u>, Name, Dept_Code, Dept_Name)
+- COURSE(<u>Course_Code</u>, Course_Title, Units)
+- RESULT(<u>Matric_No, Course_Code</u>, Grade)
+
+Every non-key attribute now depends on the **whole** key of its table. But STUDENT still has Dept_Code → Dept_Name: a **transitive** dependency.
+
+</FlowStep>
+<FlowStep title="Third normal form (3NF)">
+
+Remove the transitive dependency by moving Dept_Name to its own table:
+
+- STUDENT(<u>Matric_No</u>, Name, Dept_Code\*)
+- DEPARTMENT(<u>Dept_Code</u>, Dept_Name)
+- COURSE(<u>Course_Code</u>, Course_Title, Units)
+- RESULT(<u>Matric_No\*, Course_Code\*</u>, Grade)
+
+(* = foreign key.) No redundancy: each fact is stored **once**, and insert, update and delete anomalies are gone.
+
+</FlowStep>
+</FlowDiagram>
+
+### Foreign Keys and Referential Integrity
+
+> A **foreign key** is an attribute that is a **non-key attribute in one relation and a primary key (or part of one) in another** — it links the tables. It is shown with a **dashed underline**.
+
+**Referential integrity** means the value of a foreign key must **match an existing primary-key value** in the related table (or be null where allowed). You can't record a RESULT for a Matric_No that isn't in STUDENT. It is one of the **most important principles** of the relational model.
+
+### Transforming an ER Diagram into Relations
+
+| ER structure | Relational representation |
+|---|---|
+| **Regular entity** | A relation with its **primary key** and non-key attributes |
+| **Weak entity** | A relation with a **composite key** that includes the **owner's primary key** |
+| **1:1 relationship** | Put the primary key of **either** entity into the other as a foreign key |
+| **1:M relationship** | Put the primary key of the **"one" side** as a **foreign key in the "many" side** |
+| **M:N relationship / associative entity** | A **new relation** whose key combines the **keys of both entities** (plus any extra key attributes), with the relationship's own attributes |
+
+Applying this to Topic 9's university ERD: DEPARTMENT(<u>Dept_Code</u>, …); LECTURER(<u>Staff_ID</u>, …, Dept_Code\*) — 1:M puts Dept_Code on the many side; ENROLMENT(<u>Matric_No\*, Course_Code\*, Session</u>, Score, Grade) — the M:N becomes its own table.
+
+---
+
+## Part D — Physical File and Database Design
+
+### Designing Fields and Choosing Data Types
+
+A **field** is the **smallest unit of application data** recognised by system software; one attribute may become several fields (Name → Surname, First_Name, Middle_Initial). A **data type** is a coding scheme for representing data. Choosing a data type balances **four objectives**:
+
+1. **Minimise storage space**
+2. **Represent all possible values** of the field
+3. **Improve data integrity**
+4. **Support all needed data manipulation** (e.g., date arithmetic)
+
+| Microsoft Access data type | Use |
+|---|---|
+| Text (Short Text) | Text or numbers not used in calculation (phone numbers) — up to 255 characters |
+| Memo (Long Text) | Lengthy text — up to 65,535 characters |
+| Number | Numeric data used in calculations |
+| Date/Time | Dates and times |
+| Currency | Money values, accurate to 4 decimal places |
+| AutoNumber | A unique number assigned automatically to each new record |
+| Yes/No | Two-valued fields (True/False) |
+| OLE Object | Embedded or linked objects (documents, images) |
+| Hyperlink | Web addresses |
+| Lookup Wizard | Choose a value from another table or list — used for **foreign keys** |
+
+**Calculated (derived) fields** can be defined from other fields (e.g., Total_Due). **Coding** long values (e.g., "W" for Walnut) saves space and improves integrity, but codes are harder for users to remember.
+
+### Five Data Integrity Controls
+
+<Tabs>
+<Tab label="Default value">
+The value a field takes **unless another is entered** — e.g., State defaults to "Oyo". Saves typing and prevents errors.
+</Tab>
+<Tab label="Input mask">
+A **pattern of codes** restricting the width and allowed characters in each position. Mask **L999**: first character a letter, next three digits — **M128** is accepted; 3128 and M12H are rejected.
+</Tab>
+<Tab label="Range control">
+Limits values to a **permissible range or set** — Score 0 to 100; Month JAN to DEC.
+</Tab>
+<Tab label="Referential integrity">
+A foreign key must **match an existing primary key** — an order can't be placed for a non-existent customer. It can apply within one table too: an employee's Supervisor_ID must be an existing Employee_ID (and may be null for the top boss).
+</Tab>
+<Tab label="Null value control">
+A **null** is a special value meaning **missing or unknown** — different from 0 or blank. Decide which fields may be null: a new customer's phone may be unknown at first, but **Customer_ID may never be null**.
+</Tab>
+</Tabs>
+
+### Designing Physical Tables and Denormalization
+
+A **physical table** is a named set of rows and columns specifying the fields in each row. Normalization aims at **no redundancy**; physical design aims at **efficient storage and processing speed**, so designers sometimes **denormalize** — combine normalized relations into one table — in three common situations:
+1. Two entities in a **1:1 relationship** (e.g., STUDENT and an optional SCHOLARSHIP APPLICATION).
+2. An **M:N relationship with non-key attributes** (e.g., ITEM and PRICE QUOTE) to avoid joining three tables.
+3. **Reference data** used only by one table (e.g., storage instructions copied into ITEM).
+
+Denormalization **speeds reading** but **reintroduces redundancy** and extra maintenance.
+
+### File Organizations
+
+A **file organization** is **a technique for physically arranging the records of a file** on secondary storage.
+
+<Tabs>
+<Tab label="Sequential">
+
+Rows are stored **in sequence by primary key**. To find a row, the program **scans from the beginning** — like the white pages of a phone directory.
+
+- ✅ **Very fast for sequential processing** (e.g., printing every student's result slip in matric order); no wasted space
+- ❌ **Impractical for random retrieval**; adding rows means **rewriting the file**; deleting rows wastes space; only **one sequence** can be kept
+
+</Tab>
+<Tab label="Indexed">
+
+Rows are stored sequentially or not, and an **index** (like a library card catalogue) is used to **locate rows**. Indexes can be built on indexes (hierarchical), and **several indexes** can exist on one file (author, title, subject…).
+
+- ✅ **Both random and sequential** processing are practical; **very fast multiple-key retrieval**
+- ❌ **Extra space** for indexes and **extra time** to maintain them on inserts, deletes and updates
+
+**Rules for choosing indexes:** (1) a **unique index on each primary key**; (2) an index on **foreign keys**; (3) indexes on **non-key fields used in search and sort conditions**. Use indexes generously for retrieval-heavy systems (decision support), and judiciously for update-heavy transaction systems.
+
+</Tab>
+<Tab label="Hashed">
+
+The **address of each row is computed by an algorithm** (a hash function) from its primary key. Rows are stored non-sequentially.
+
+- ✅ **Very fast random retrieval** by primary key; deleting is easy
+- ❌ **Sequential processing is impractical**; multiple-key retrieval **not possible**; extra space may be needed for additions
+
+</Tab>
+</Tabs>
+
+| Factor | Sequential | Indexed | Hashed |
+|---|---|---|---|
+| Storage space | No wasted space | Extra space for index | Extra space for additions/deletions |
+| Sequential retrieval on primary key | **Very fast** | Moderately fast | Impractical |
+| Random retrieval on primary key | Impractical | Moderately fast | **Very fast** |
+| Multiple-key retrieval | Possible, but scans whole file | **Very fast** with multiple indexes | Not possible |
+| Deleting rows | Wasted space / reorganise | Easy, but maintain indexes | **Very easy** |
+| Adding rows | Rewrite file | Easy, but maintain indexes | Very easy |
+
+### Designing Controls for Files
+
+<Tabs>
+<Tab label="Backup & recovery">
+
+Files **will** eventually be damaged by software or human error. Restoration techniques:
+- **Periodic backup copies** of the file
+- A **transaction log / audit trail** — a copy of **each change**
+- **Before- and after-images** — a copy of each row before or after it changes
+
+A backup plus a log of after-images can **rebuild** a destroyed file to its current state; before-images can **roll back** an inaccurate file to an earlier correct state, after which transactions are re-applied.
+
+</Tab>
+<Tab label="Security">
+
+- **Encrypt** the data so it can't be read without decryption
+- Require **user names and passwords**, and grant only certain actions (read, add, delete, change) to certain users on certain data
+- Make users and programs work with a **copy** of the data they're allowed to use; the original changes only after the copy's changes are validated
+
+Every control adds **overhead**, so include only those that are necessary.
+
+</Tab>
+</Tabs>
+
+---
+
+## Practice Questions
+
+<Reveal question="State the five fundamental questions to ask when designing a form or report.">
+**Who** will use it? **What** is its purpose? **When** is it needed and used? **Where** will it be delivered and used? **How many** people need to use or view it?
+</Reveal>
+
+<Reveal question="Compute the check digit for 3591 using the 1-2-1-2 method from the right.">
+From the right: 1×1 = 1, 9×2 = 18, 5×1 = 5, 3×2 = 6. Sum = 30. 30 ÷ 10 leaves remainder 0, so check digit = (10 − 0) mod 10 = **0**. Stored value: **35910**. (Check it with the calculator above.)
+</Reveal>
+
+<Reveal question="Name the validation test used in each case: (a) score must be 0–100, (b) grade must be A–F, (c) matric number must be exactly 6 digits, (d) a phone field must contain only numbers.">
+(a) **Range**; (b) **Values**; (c) **Size** (or pictures/templates); (d) **Class or composition**.
+</Reveal>
+
+<Reveal question="The relation ORDER(Order_No, Product_No, Customer_Name, Product_Desc, Qty) has key (Order_No, Product_No). Customer_Name depends on Order_No and Product_Desc on Product_No. Normalize it to 3NF.">
+It is in 1NF but not 2NF (partial dependencies). Decompose: **ORDER**(<u>Order_No</u>, Customer_Name); **PRODUCT**(<u>Product_No</u>, Product_Desc); **ORDER_LINE**(<u>Order_No\*, Product_No\*</u>, Qty). No transitive dependencies remain, so all three are in 3NF. (In practice Customer_Name would itself move to a CUSTOMER table keyed by Customer_ID.)
+</Reveal>
+
+<Reveal question="Which file organization would you choose for (a) printing all result slips in matric order at the end of semester, (b) instantly retrieving one account by account number at an ATM, (c) searching students by department and by level?">
+(a) **Sequential** — fastest for processing every record in key order. (b) **Hashed** — fastest random retrieval by primary key. (c) **Indexed** — multiple indexes allow fast multiple-key retrieval.
+</Reveal>
+
+<Takeaway>
+**Forms** (input) and **reports** (output) are designed by **prototyping**: answer who/what/when/where/how-many, build a mock-up, let users evaluate, refine. Good designs have **meaningful titles and information, balanced layout and clear navigation**, use highlighting sparingly, and follow text/table conventions. **Input design** never asks for data the system has, gives defaults and captions, and **validates** data (class, combinations, expected values, missing data, templates, range, reasonableness, **check digits**, size, values) to catch appending, truncating, transcripting and transposing errors. **Database design** builds **well-structured relations** by **normalization** (1NF no repeating groups, 2NF no partial dependencies, 3NF no transitive dependencies), links them with **foreign keys** under **referential integrity**, and maps the ERD to tables. **Physical design** chooses data types and **integrity controls** (default, input mask, range, referential integrity, null control), a **file organization** (sequential, indexed or hashed), and **backup and security** controls.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Guidelines for designing forms and reports; highlighting methods
+- Types of data errors and **validation tests** with examples
+- **Check digit** calculation
+- **Normalization** to 3NF with a worked example; anomalies; functional dependency
+- Transforming an ERD into relations
+- File organizations — compare sequential, indexed and hashed
+
+**Common mistakes:**
+- Forgetting to show the **key** of every relation at each normal form
+- Confusing partial (2NF) with transitive (3NF) dependencies
+- Weighting check digits from the **left** — the textbook starts from the **rightmost** digit
+
+**Likely question:**
+> "Explain five techniques for validating input data. Normalize the following student-course table to third normal form, showing the relations at each stage." (20 marks)

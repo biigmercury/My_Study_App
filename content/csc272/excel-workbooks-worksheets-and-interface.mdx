@@ -1,0 +1,225 @@
+---
+title: "Excel I: Workbooks, Worksheets and the Excel Window"
+description: "What a spreadsheet is, launching Excel 2013 and its Start screen, the three building blocks (workbook, worksheet, cell) with cell addresses and ranges, the twelve parts of the Excel window from the active cell and fill handle to the Name Box, formula bar and status bar, how big a worksheet is, moving around and selecting cells, the FILE tab, the seven Ribbon tabs, the Dialog Box Launcher and the Quick Access Toolbar."
+duration: "35 min"
+difficulty: "beginner"
+---
+
+## Why a Spreadsheet?
+
+Word is for **words**. When your information is mostly **numbers** that must be **calculated**, **sorted** and **charted** — scores, sales, a budget, attendance — you need a **spreadsheet**.
+
+A **spreadsheet** is a grid of **rows and columns** whose boxes (**cells**) hold values that can be manipulated mathematically, from simple addition to complex functions. **Microsoft Excel** is the spreadsheet program in Microsoft Office. It is used for statistics, finance, data management, forecasting, inventory, billing and business intelligence, and it can:
+
+- crunch numbers with formulas and hundreds of built-in functions,
+- plot charts and graphs,
+- store, import, sort and filter data,
+- manipulate text,
+- automate tasks with macros written in **VBA** (Visual Basic for Applications), and
+- exchange data with other programs.
+
+The course cannot cover everything Excel can do — the next five lessons build the core skills the exam tests.
+
+---
+
+## Launching Excel
+
+| Windows | Steps |
+|---|---|
+| **7** | **Start** → type `Excel` in *Search programs and files* → click **Excel 2013** |
+| **8** | Press the **Windows key** → type `Excel` → click **Excel 2013** under *Apps* |
+| **10 / 11** | Click **Start** (or the search box) → type `Excel` → select it |
+
+Excel 2013 opens on its **Start screen**: templates for budgets, calendars, forms and reports on the right, recent files on the left. If you already know what you want to type, click **Blank workbook**; to continue an existing file click **Open Other Workbooks**.
+
+---
+
+## Workbook, Worksheet, Cell
+
+<Tabs>
+<Tab label="Workbook">
+
+A **workbook** is the Excel **file** — just as a Word file is called a *document*. It is saved as **.xlsx** (Excel 97–2003: **.xls**; with macros: **.xlsm**; template: **.xltx**).
+
+A workbook is a **collection of one or more worksheets**. You can **add**, **delete**, **rename**, **hide** (without deleting) and **reorder** worksheets. A workbook can also contain **chart sheets** — a sheet that displays a single chart, reached by clicking its tab.
+
+</Tab>
+<Tab label="Worksheet">
+
+A **worksheet** (sheet) is one grid of cells. Each cell can contain a **value**, a **formula** or **text**. On top of the grid is an invisible **drawing layer** that holds charts, pictures and diagrams.
+
+Each worksheet is reached by clicking its **tab** at the bottom of the window. A new **Excel 2013** workbook starts with **one** sheet, *Sheet1* (Excel 2010 and earlier started with three: Sheet1, Sheet2, Sheet3; you can change this in FILE → Options → General → *Include this many sheets*).
+
+</Tab>
+<Tab label="Cell">
+
+A **cell** is the **smallest but most powerful** part of a spreadsheet — the box where a **column** and a **row** meet. You enter data by typing or pasting: text, a number, a date or a formula. You can format its size, font, colours and borders.
+
+Every cell has an **address** (cell reference): its **column letter** followed by its **row number**. The cell in **column C, row 11** is **C11**.
+
+A rectangular block of cells is a **range**, written *first cell* **:** *last cell* — **B2:D5** is the 12 cells from B2 to D5 (3 columns × 4 rows).
+
+</Tab>
+</Tabs>
+
+<Analogy>
+A workbook is an **exercise book**, each worksheet is a **page** of squared paper, and each cell is **one square** on that page. The address C11 works like a seat number in a hall: row letter and seat number together identify exactly one seat.
+</Analogy>
+
+---
+
+## The Excel Window
+
+Knowing what is where is essential before entering data. The lecture notes list twelve components:
+
+![The Excel 2013 window with numbered labels: 1 the active cell C3 with a thick green border, 2 column B, 3 row 7, 4 the fill handle at the bottom-right of the active cell, 5 the Name Box showing C3, 6 the formula bar showing =B3*2, 7 the title bar Book1 - Excel, 8 the FILE tab, 9 the Quick Access Toolbar, 10 the Ribbon tabs HOME INSERT PAGE LAYOUT FORMULAS DATA REVIEW VIEW, 11 the worksheet tab Sheet1 and the new-sheet button, 12 the status bar showing READY and AVERAGE, COUNT and SUM](/images/csc272/excel-window.svg)
+
+| # | Component | What it is and does |
+|---|---|---|
+| 1 | **Active cell** | The cell currently selected, outlined by a **thick border**; its address shows in the Name Box. Click a cell or use the arrow keys to make it active. **Double-click** it or press **F2** to edit its contents |
+| 2 | **Column** | A **vertical** set of cells. A worksheet has **16,384** columns, lettered **A** to **XFD**. Click the **column heading** (the letter) to select the whole column |
+| 3 | **Row** | A **horizontal** set of cells. A worksheet has **1,048,576** rows, numbered from **1**. Click the **row number** on the left to select the whole row |
+| 4 | **Fill handle** | The small square at the **bottom-right corner** of the active cell (or selection). Drag it to fill numbers, text series (Jan, Feb…), serial numbers or formulas into neighbouring cells |
+| 5 | **Name Box** ("address bar") | The small box at the left above the grid. Shows the **address of the active cell** (with a range selected, the first cell). Type an address or range here and press Enter to **jump** to it |
+| 6 | **Formula bar** | The long input bar below the Ribbon. Shows the **contents** of the active cell — the formula itself, not its result — and lets you type or edit there. **✕** cancels, **✓** enters, **fx** inserts a function |
+| 7 | **Title bar** | The workbook's name followed by the program name (*Book1 - Excel*) |
+| 8 | **File menu (FILE tab)** | Backstage view: New, Open, Save, Save As, Print, Share, Export, Close, Options |
+| 9 | **Quick Access Toolbar** | Always-visible favourite commands (Save, Undo, Redo); add your own; can be shown **below** the Ribbon |
+| 10 | **Ribbon tabs** | Since Excel **2007** the old menus are replaced by the Ribbon: tabs of grouped commands |
+| 11 | **Worksheet tabs** | One tab per sheet at the bottom; click to switch sheets; **⊕** adds a sheet |
+| 12 | **Status bar** | The thin bar at the bottom: the **mode** (Ready, Enter, Edit, Point), instant **Average, Count and Sum** of selected numbers, view buttons (Normal, Page Layout, Page Break Preview) and the zoom slider |
+
+A worksheet therefore has 16,384 × 1,048,576 = over **17 billion** cells — you will only ever use a tiny corner of it.
+
+### Try the window
+
+The sheet below behaves like Excel. Try each of these and watch the Name Box, formula bar and status bar:
+
+1. Click **C3** — the formula bar shows `=B3*2` while the cell shows the **result**.
+2. Click **B2**, then **Shift+click B6** — the status bar shows **Average, Count and Sum** of the selection (Excel's *AutoCalculate*).
+3. Type `F20` in the **Name Box** and press **Enter** — the grid jumps there.
+4. Click a **column letter** and a **row number** to select a whole column or row; click the **corner triangle** to select everything.
+5. Press the **arrow keys**, **Enter** (down) and **Tab** (right) to move the active cell.
+
+<ExcelSheet title="Explore the Excel window" height="260">
+
+```sheet
+[Sheet1]
+@bold A1:C1
+@select C3
+Item | Price | Double
+Pen | 150 | =B2*2
+Book | 900 | =B3*2
+Bag | 4500 | =B4*2
+Ruler | 100 | =B5*2
+Calculator | 7200 | =B6*2
+```
+
+</ExcelSheet>
+
+---
+
+## Moving Around and Selecting
+
+| Keys | Move to |
+|---|---|
+| **Arrow keys** | One cell in that direction |
+| **Enter / Shift+Enter** | Down / up one cell |
+| **Tab / Shift+Tab** | Right / left one cell |
+| **Ctrl+Home** | Cell **A1** |
+| **Ctrl+End** | The last cell that contains data |
+| **Ctrl+arrow** | The edge of the current block of data |
+| **Page Up / Page Down** | One screen up / down |
+| **Ctrl+G** or **F5** (Go To), or type in the **Name Box** | Any address |
+
+| To select… | Do this |
+|---|---|
+| A range | Drag across it, or click the first cell and **Shift+click** the last |
+| Non-adjacent cells | Hold **Ctrl** while clicking or dragging |
+| A column / a row | Click the **column letter** / **row number** |
+| The whole worksheet | Click the **Select All** button (the corner above row 1 and left of column A), or **Ctrl+A** |
+
+---
+
+## The FILE Tab, Ribbon and Toolbars
+
+**FILE tab (Backstage view):** as in Word, the FILE menu changed in 2013 but is still where you create a **New** file, **Open**, **Save**, **Save As**, **Close**, **Print** (with Print Preview), **Share**, **Export** and set **Options**. Click the ⮌ arrow or press **Esc** to return to the sheet.
+
+**The Ribbon** replaced Excel's menus and toolbars from Excel 2007. It is part of the Microsoft Office **Fluent** user interface and helps you quickly find commands: **commands** are organised in logical **groups**, collected under **tabs**, each tab relating to a type of activity. Excel 2013 has **seven standard tabs**:
+
+| Tab | Main groups | Used for |
+|---|---|---|
+| **HOME** | Clipboard, Font, Alignment, Number, Styles, Cells, Editing | Everyday formatting, inserting/deleting rows, AutoSum, sort and filter |
+| **INSERT** | Tables, Illustrations, Charts, Sparklines, Filters, Links, Text, Symbols | Charts, pictures, PivotTables, headers & footers |
+| **PAGE LAYOUT** | Themes, Page Setup, Scale to Fit, Sheet Options, Arrange | Preparing to print: margins, orientation, print area, print titles, gridlines |
+| **FORMULAS** | Function Library, Defined Names, Formula Auditing, Calculation | Functions, named ranges, Show Formulas, Calculate Now |
+| **DATA** | Get External Data, Connections, Sort & Filter, Data Tools, Outline | Importing, sorting, filtering, Data Validation, Remove Duplicates |
+| **REVIEW** | Proofing, Language, Comments, Changes | Spelling, comments, protecting sheets and workbooks |
+| **VIEW** | Workbook Views, Show, Zoom, Window, Macros | Page Layout view, gridlines, **Freeze Panes**, split, macros |
+
+Contextual tabs appear when needed — **CHART TOOLS** (Design, Format) when a chart is selected, **TABLE TOOLS** for a formatted table, **PICTURE TOOLS** for a picture.
+
+The **Dialog Box Launcher** (small diagonal arrow in the corner of a group such as Font, Alignment or Number) opens the full dialog box — for these three, the **Format Cells** dialog.
+
+The **Quick Access Toolbar** holds Save, Undo and Redo by default; click the arrow at its right end to add other commands (New, Open, Quick Print, Print Preview, Spelling, Sort…) or to show it below the Ribbon.
+
+<RibbonExplorer app="excel" />
+
+---
+
+## Practice Questions
+
+<MCQ question="What is the address of the cell in the fourth column of the tenth row?">
+<Option>10D</Option>
+<Option correct>D10</Option>
+<Option>J4</Option>
+<Option>4J</Option>
+<Explain>A cell address is the column letter followed by the row number. The fourth column is D, so the cell is D10.</Explain>
+</MCQ>
+
+<MCQ question="Cell C3 shows 1800 but the formula bar shows =B3*2. Why?">
+<Option>The cell is broken</Option>
+<Option correct>The cell displays the result; the formula bar displays the actual contents (the formula)</Option>
+<Option>The formula bar shows the previous value</Option>
+<Option>Excel is in Edit mode</Option>
+<Explain>A cell with a formula shows its calculated result. The formula bar shows what was actually typed — the formula — for the active cell.</Explain>
+</MCQ>
+
+<MCQ question="How many columns does an Excel 2013 worksheet have, and what is the last column called?">
+<Option>256, IV</Option>
+<Option>1,048,576, ZZZ</Option>
+<Option correct>16,384, XFD</Option>
+<Option>65,536, XFD</Option>
+<Explain>From Excel 2007 a worksheet has 16,384 columns (A to XFD) and 1,048,576 rows. (Excel 2003 had 256 columns, A to IV, and 65,536 rows.)</Explain>
+</MCQ>
+
+<Reveal question="1. Define workbook, worksheet and cell.">
+A **workbook** is an Excel file (.xlsx) containing one or more worksheets (and possibly chart sheets). A **worksheet** is a single grid of cells arranged in columns and rows, reached by its tab. A **cell** is the intersection of a column and a row — the smallest unit that holds a value, text or formula — identified by its address, e.g. C11.
+</Reveal>
+
+<Reveal question="2. Name and explain any six components of the Excel window.">
+Any six: **active cell** (the selected cell, thick border); **column** (vertical cells, A–XFD); **row** (horizontal cells, 1–1,048,576); **fill handle** (square at the corner of the active cell, drag to fill series or copy); **Name Box** (shows the active cell's address, jump to a cell); **formula bar** (shows/edits the active cell's contents); **title bar** (workbook and program name); **FILE menu** (Backstage: New, Open, Save, Print…); **Quick Access Toolbar**; **Ribbon tabs**; **worksheet tabs**; **status bar** (mode, Sum/Average/Count, zoom).
+</Reveal>
+
+<Reveal question="3. What is the difference between the Name Box and the formula bar?">
+The **Name Box** shows the **address** (or name) of the active cell and lets you jump to an address. The **formula bar** shows the **contents** of the active cell — including the formula behind a calculated value — and lets you edit them.
+</Reveal>
+
+<Reveal question="4. List the seven standard tabs of the Excel 2013 Ribbon.">
+**HOME, INSERT, PAGE LAYOUT, FORMULAS, DATA, REVIEW, VIEW** (plus the FILE tab, which opens Backstage view, and contextual tabs such as CHART TOOLS).
+</Reveal>
+
+<Takeaway>
+- **Excel** = spreadsheet for calculating, analysing and charting (mostly numerical) data. File = **workbook** (.xlsx) of **worksheets**; a sheet is a grid of **cells**.
+- A **cell address** = column letter + row number (C11); a **range** = first:last (B2:D5).
+- 16,384 columns (A–XFD) × 1,048,576 rows per sheet; Excel 2013 starts with **one** sheet.
+- The 12 window parts: active cell, column, row, **fill handle**, **Name Box**, **formula bar**, title bar, FILE menu, Quick Access Toolbar, Ribbon tabs, worksheet tabs, **status bar**.
+- Seven Ribbon tabs: HOME, INSERT, PAGE LAYOUT, FORMULAS, DATA, REVIEW, VIEW; Dialog Box Launchers open Format Cells and other dialogs.
+</Takeaway>
+
+## Exam Tips
+
+- "Name and explain the components of the Excel window" is a classic — learn the **twelve** and give each a one-line function.
+- Don't mix up the **Name Box** (address) and the **formula bar** (contents).
+- Quote the sheet size correctly: **1,048,576 rows × 16,384 columns (A–XFD)**.
+- The notes (written for Excel 2010) say a new workbook has three sheets; Excel 2013 has **one** — either answer with the version stated is accepted, but be precise.

@@ -184,6 +184,7 @@ export default function LessonReader({ children, frontmatter, courseCode, topicS
           prose-table:text-xs prose-table:w-full
           prose-th:bg-brand-mist dark:prose-th:bg-brand-slate prose-th:font-semibold prose-th:text-brand-navy dark:prose-th:text-white/90 prose-th:px-3 prose-th:py-2
           prose-td:px-3 prose-td:py-2 prose-td:text-brand-navy/75 dark:prose-td:text-white/70
+          [&_td_code]:[overflow-wrap:anywhere]
         ">
           {children}
         </div>

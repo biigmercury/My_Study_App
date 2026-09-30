@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 560" font-family="Segoe UI, Calibri, Arial, sans-serif">
+  <rect width="620" height="560" fill="#ffffff"/>
+  <defs>
+    <pattern id="marg" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#f3f4f6"/><path d="M0 6 L6 0" stroke="#e5e7eb"/></pattern>
+  </defs>
+  <g font-size="15" fill="#111">
+    <!-- each panel: title, margin guides, lines -->
+    <g transform="translate(10,10)">
+      <text x="0" y="16" font-weight="700">1. No indent (default)</text>
+      <rect x="0" y="26" width="290" height="80" fill="#fff" stroke="#d1d5db"/>
+      <line x1="20" y1="26" x2="20" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/><line x1="270" y1="26" x2="270" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/>
+      <g fill="#4b5563"><rect x="20" y="38" width="250" height="8"/><rect x="20" y="54" width="250" height="8"/><rect x="20" y="70" width="250" height="8"/><rect x="20" y="86" width="150" height="8"/></g>
+    </g>
+    <g transform="translate(320,10)">
+      <text x="0" y="16" font-weight="700">2. First-line indent</text>
+      <rect x="0" y="26" width="290" height="80" fill="#fff" stroke="#d1d5db"/>
+      <line x1="20" y1="26" x2="20" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/><line x1="270" y1="26" x2="270" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/>
+      <g fill="#4b5563"><rect x="60" y="38" width="210" height="8" fill="#2563eb"/><rect x="20" y="54" width="250" height="8"/><rect x="20" y="70" width="250" height="8"/><rect x="20" y="86" width="150" height="8"/></g>
+      <path d="M20 112 h40" stroke="#2563eb" stroke-width="2" marker-end="url(#a)"/>
+      <text x="66" y="124" font-size="12.5" fill="#2563eb">first line starts further in</text>
+    </g>
+    <g transform="translate(10,150)">
+      <text x="0" y="16" font-weight="700">3. Hanging indent</text>
+      <rect x="0" y="26" width="290" height="80" fill="#fff" stroke="#d1d5db"/>
+      <line x1="20" y1="26" x2="20" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/><line x1="270" y1="26" x2="270" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/>
+      <g fill="#4b5563"><rect x="20" y="38" width="250" height="8" fill="#2563eb"/><rect x="60" y="54" width="210" height="8"/><rect x="60" y="70" width="210" height="8"/><rect x="60" y="86" width="120" height="8"/></g>
+      <text x="0" y="124" font-size="12.5" fill="#2563eb">first line "hangs" out; the rest are indented</text>
+      <text x="0" y="140" font-size="12.5" fill="#6b7280">used for references, bullets and numbering</text>
+    </g>
+    <g transform="translate(320,150)">
+      <text x="0" y="16" font-weight="700">4. Left indent (whole paragraph)</text>
+      <rect x="0" y="26" width="290" height="80" fill="#fff" stroke="#d1d5db"/>
+      <line x1="20" y1="26" x2="20" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/><line x1="270" y1="26" x2="270" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/>
+      <g fill="#4b5563"><rect x="60" y="38" width="210" height="8"/><rect x="60" y="54" width="210" height="8"/><rect x="60" y="70" width="210" height="8"/><rect x="60" y="86" width="110" height="8"/></g>
+      <text x="0" y="124" font-size="12.5" fill="#6b7280">Increase Indent moves it 1.27 cm each click</text>
+    </g>
+    <g transform="translate(10,300)">
+      <text x="0" y="16" font-weight="700">5. Indented from both sides</text>
+      <rect x="0" y="26" width="290" height="80" fill="#fff" stroke="#d1d5db"/>
+      <line x1="20" y1="26" x2="20" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/><line x1="270" y1="26" x2="270" y2="106" stroke="#93c5fd" stroke-dasharray="3 3"/>
+      <g fill="#4b5563"><rect x="60" y="38" width="170" height="8"/><rect x="60" y="54" width="170" height="8"/><rect x="60" y="70" width="170" height="8"/><rect x="60" y="86" width="90" height="8"/></g>
+      <text x="0" y="124" font-size="12.5" fill="#6b7280">left and right indents — long quotations</text>
+    </g>
+    <g transform="translate(320,300)">
+      <text x="0" y="16" font-weight="700">The ruler's indent markers</text>
+      <rect x="0" y="30" width="290" height="22" fill="url(#marg)" stroke="#d1d5db"/>
+      <rect x="20" y="30" width="250" height="22" fill="#fff" stroke="#d1d5db"/>
+      <path d="M53 30 l14 0 l-7 9 z" fill="#374151"/>
+      <path d="M13 52 l14 0 l-7 -9 z" fill="#374151"/>
+      <rect x="13" y="52" width="14" height="6" fill="#374151"/>
+      <path d="M263 52 l14 0 l-7 -9 z" fill="#374151"/>
+      <g font-size="12.5" fill="#111">
+        <text x="72" y="44" fill="#2563eb">▽ First Line Indent</text>
+        <text x="0" y="78">△ Hanging Indent (lower triangle)</text>
+        <text x="0" y="96">▭ Left Indent: moves both together</text>
+        <text x="0" y="114">△ at the right: Right Indent</text>
+        <text x="0" y="136" fill="#6b7280">(here: first line at 1.27 cm)</text>
+      </g>
+    </g>
+  </g>
+  <g font-size="14" fill="#111">
+    <text x="10" y="470" font-weight="700">Paragraph dialog (HOME or PAGE LAYOUT → Paragraph ↘):</text>
+    <text x="10" y="494">Indentation — Left, Right; Special: (none), First line, Hanging; By: amount</text>
+    <text x="10" y="518">Buttons: Decrease Indent / Increase Indent move the whole paragraph</text>
+    <text x="10" y="542">to the previous / next tab stop (every 1.27 cm by default).</text>
+  </g>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2563eb"/></marker></defs>
+</svg>

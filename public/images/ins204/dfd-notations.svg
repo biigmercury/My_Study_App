@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 640" width="720" height="640" font-family="Arial, Helvetica, sans-serif">
+  <rect width="720" height="640" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1e293b"/>
+    </marker>
+  </defs>
+
+  <!-- column headings -->
+  <text x="150" y="40" font-size="20" font-weight="bold" text-anchor="middle" fill="#0f172a">Symbol</text>
+  <text x="350" y="40" font-size="20" font-weight="bold" text-anchor="middle" fill="#0f172a">Yourdon &amp; DeMarco</text>
+  <text x="590" y="40" font-size="20" font-weight="bold" text-anchor="middle" fill="#0f172a">Gane &amp; Sarson</text>
+  <line x1="20" y1="58" x2="700" y2="58" stroke="#94a3b8" stroke-width="2"/>
+
+  <!-- Row 1: Process -->
+  <text x="150" y="130" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">Process</text>
+  <text x="150" y="154" font-size="13" text-anchor="middle" fill="#475569">verb + object, numbered</text>
+  <circle cx="350" cy="135" r="58" fill="#e0f2fe" stroke="#0369a1" stroke-width="2.5"/>
+  <text x="350" y="118" font-size="15" font-weight="bold" text-anchor="middle" fill="#0f172a">2.0</text>
+  <text x="350" y="140" font-size="14" text-anchor="middle" fill="#0f172a">Manage Course</text>
+  <text x="350" y="158" font-size="14" text-anchor="middle" fill="#0f172a">Registration</text>
+  <rect x="505" y="82" width="170" height="106" rx="16" fill="#e0f2fe" stroke="#0369a1" stroke-width="2.5"/>
+  <line x1="505" y1="114" x2="675" y2="114" stroke="#0369a1" stroke-width="2"/>
+  <text x="590" y="104" font-size="15" font-weight="bold" text-anchor="middle" fill="#0f172a">2.0</text>
+  <text x="590" y="146" font-size="14" text-anchor="middle" fill="#0f172a">Manage Course</text>
+  <text x="590" y="166" font-size="14" text-anchor="middle" fill="#0f172a">Registration</text>
+
+  <line x1="20" y1="215" x2="700" y2="215" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Row 2: External entity -->
+  <text x="150" y="272" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">External entity</text>
+  <text x="150" y="296" font-size="13" text-anchor="middle" fill="#475569">noun, outside the system</text>
+  <rect x="280" y="245" width="140" height="64" fill="#fef3c7" stroke="#b45309" stroke-width="2.5"/>
+  <text x="350" y="283" font-size="16" text-anchor="middle" fill="#0f172a">Student</text>
+  <rect x="528" y="251" width="130" height="64" fill="#fcd34d" stroke="#b45309" stroke-width="1.5"/>
+  <rect x="520" y="243" width="130" height="64" fill="#fef3c7" stroke="#b45309" stroke-width="2.5"/>
+  <text x="585" y="281" font-size="16" text-anchor="middle" fill="#0f172a">Student</text>
+
+  <line x1="20" y1="340" x2="700" y2="340" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Row 3: Data store -->
+  <text x="150" y="395" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">Data store</text>
+  <text x="150" y="419" font-size="13" text-anchor="middle" fill="#475569">noun, prefixed D1, D2 …</text>
+  <line x1="270" y1="375" x2="430" y2="375" stroke="#15803d" stroke-width="2.5"/>
+  <line x1="270" y1="425" x2="430" y2="425" stroke="#15803d" stroke-width="2.5"/>
+  <text x="350" y="406" font-size="15" text-anchor="middle" fill="#0f172a">D1 Student Master</text>
+  <path d="M690,375 L510,375 L510,425 L690,425" fill="#dcfce7" stroke="#15803d" stroke-width="2.5"/>
+  <line x1="552" y1="375" x2="552" y2="425" stroke="#15803d" stroke-width="2"/>
+  <text x="531" y="406" font-size="15" font-weight="bold" text-anchor="middle" fill="#0f172a">D1</text>
+  <text x="620" y="406" font-size="15" text-anchor="middle" fill="#0f172a">Student Master</text>
+
+  <line x1="20" y1="460" x2="700" y2="460" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Row 4: Data flow -->
+  <text x="150" y="518" font-size="18" font-weight="bold" text-anchor="middle" fill="#0f172a">Data flow</text>
+  <text x="150" y="542" font-size="13" text-anchor="middle" fill="#475569">noun naming the data</text>
+  <line x1="270" y1="525" x2="428" y2="525" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="350" y="512" font-size="14" text-anchor="middle" fill="#0f172a">Course selection</text>
+  <line x1="510" y1="525" x2="668" y2="525" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="590" y="512" font-size="14" text-anchor="middle" fill="#0f172a">Course selection</text>
+
+  <line x1="20" y1="575" x2="700" y2="575" stroke="#94a3b8" stroke-width="2"/>
+  <text x="360" y="610" font-size="14" text-anchor="middle" fill="#475569">Both notations mean exactly the same thing — pick one and use it consistently.</text>
+</svg>

@@ -1,0 +1,429 @@
+---
+title: "File Handling and File Uploads in PHP"
+description: "Working with files on the server: paths and file checks, reading and writing whole files, fopen() modes with fwrite(), fgets() and fclose(), appending logs, CSV with fputcsv()/fgetcsv(), JSON storage, directories — then secure file uploads: the multipart form, the $_FILES array and error codes, move_uploaded_file(), and validating type, size, name, location and contents."
+duration: "40 min"
+difficulty: "intermediate"
+---
+
+## Why Files?
+
+Databases hold most application data, but web applications still work with **files** all the time:
+
+| Use | Example |
+|---|---|
+| **Logs** | Recording logins, errors, payments (`access.log`) |
+| **Uploads** | Profile pictures, assignment PDFs, passport photos |
+| **Exports/imports** | Downloading a class list as **CSV** for Excel; importing results |
+| **Simple storage** | A small guestbook, settings or cache in a text/JSON file |
+| **Configuration** | `config.php`, `.env` files |
+
+PHP code runs **on the server**, so every file function below reads and writes files **on the server's disk** — never on the visitor's computer. (The only way to get a file *from* the user is an **upload**.)
+
+---
+
+## Paths and File Checks
+
+| Function | Returns |
+|---|---|
+| `file_exists($path)` | `true` if a file **or** folder exists |
+| `is_file($path)` / `is_dir($path)` | `true` if it's a file / a directory |
+| `filesize($path)` | Size in **bytes** |
+| `filemtime($path)` | Last-modified time (Unix timestamp — format with `date()`) |
+| `is_readable($path)` / `is_writable($path)` | Permission checks |
+| `mkdir($path)` / `rmdir($path)` | Create / remove a folder |
+| `unlink($path)` | **Delete** a file |
+| `rename($from, $to)` / `copy($from, $to)` | Move/rename / copy |
+
+**Relative paths** (`"notes.txt"`, `"data/students.csv"`) are relative to the **current script's folder** in normal use. To be precise, build paths from **`__DIR__`** — the folder of the file the code is in: `__DIR__ . "/data/students.csv"`.
+
+---
+
+## Reading and Writing a Whole File
+
+The simplest functions read or write **everything at once**:
+
+```php
+// Write (creates the file, or REPLACES its contents)
+file_put_contents("notes.txt", "First line\n");
+
+// Append instead of replacing
+file_put_contents("notes.txt", "Another line\n", FILE_APPEND | LOCK_EX);
+
+// Read the whole file into one string
+$text = file_get_contents("notes.txt");
+
+// Read into an array — one element per line
+$lines = file("notes.txt", FILE_IGNORE_NEW_LINES);
+```
+
+**`LOCK_EX`** takes an **exclusive lock** while writing, so two visitors writing at the same moment don't mix their lines together.
+
+### Try It: A Guestbook Stored in a File
+
+Each message is **appended** to `guestbook.txt` on the server. **Sign it a few times**, then look at **"Files the script created on the server"** under the result and click the file to see its contents:
+
+<PhpPlayground title="Guestbook — appending to a text file" height="300">
+
+```php
+<?php
+$file = "guestbook.txt";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $name = trim($_POST["name"] ?? "");
+    $message = trim($_POST["message"] ?? "");
+    if ($name !== "" && $message !== "") {
+        // One line per entry: date|name|message (newlines removed so each entry stays on one line)
+        $line = date("Y-m-d H:i") . "|" . str_replace(["|", "\n", "\r"], " ", $name) . "|"
+              . str_replace(["|", "\n", "\r"], " ", $message) . "\n";
+        file_put_contents($file, $line, FILE_APPEND | LOCK_EX);
+    }
+    header("Location: index.php");   // Post/Redirect/Get
+    exit;
+}
+
+$entries = file_exists($file) ? file($file, FILE_IGNORE_NEW_LINES) : [];
+?>
+<h3>Guestbook (<?= count($entries) ?> entries)</h3>
+<form method="post">
+  <input name="name" placeholder="Your name">
+  <input name="message" placeholder="Message">
+  <button type="submit">Sign</button>
+</form>
+<?php foreach (array_reverse($entries) as $entry):
+    [$when, $who, $what] = explode("|", $entry, 3); ?>
+  <p><b><?= htmlspecialchars($who) ?></b> <small>(<?= $when ?>)</small><br><?= htmlspecialchars($what) ?></p>
+<?php endforeach; ?>
+```
+
+</PhpPlayground>
+
+Notice: the messages are **escaped with `htmlspecialchars()`** when shown (user input!), and the `|` separator is removed from input so it can't break the file format.
+
+---
+
+## Low-Level File Handling: fopen()
+
+For **large files** or **line-by-line** work, open a **file handle** with **`fopen()`**, work with it, then **`fclose()`** it.
+
+### fopen() Modes
+
+| Mode | Opens for | If the file exists | If it doesn't exist | Pointer starts at |
+|---|---|---|---|---|
+| **`r`** | **Read** only | Opens it | **Fails** (`false`) | Beginning |
+| **`r+`** | Read and write | Opens it | Fails | Beginning |
+| **`w`** | **Write** only | **Erases** its contents! | Creates it | Beginning |
+| **`w+`** | Read and write | **Erases** it | Creates it | Beginning |
+| **`a`** | **Append** (write at the end) | Keeps contents | Creates it | **End** |
+| **`a+`** | Read and append | Keeps contents | Creates it | End (for writing) |
+| **`x`** | Write — **new file only** | **Fails** | Creates it | Beginning |
+
+<ExamTip>
+The classic mistake is opening an existing file with **`"w"`** when you meant to add to it — **`w` wipes the file first**. Use **`"a"`** to append. And always check that `fopen()` didn't return `false` before using the handle.
+</ExamTip>
+
+### Writing and Reading Line by Line
+
+```php
+// Write
+$handle = fopen("log.txt", "a");          // append mode
+fwrite($handle, "User ada logged in\n");
+fclose($handle);
+
+// Read line by line
+$handle = fopen("log.txt", "r");
+if ($handle) {
+    while (($line = fgets($handle)) !== false) {   // fgets reads one line
+        echo htmlspecialchars($line) . "<br>";
+    }
+    fclose($handle);                                // always close the handle
+}
+```
+
+| Function | Does |
+|---|---|
+| `fopen($file, $mode)` | Opens a file, returns a **handle** (or `false`) |
+| `fwrite($handle, $text)` | Writes text at the pointer |
+| `fgets($handle)` | Reads **one line** (or `false` at the end) |
+| `fread($handle, $bytes)` | Reads a number of bytes |
+| `feof($handle)` | `true` at **end of file** |
+| `fclose($handle)` | **Closes** the file and frees the resource |
+
+---
+
+## CSV Files: fputcsv() and fgetcsv()
+
+**CSV (comma-separated values)** is the universal format for tables — Excel and Google Sheets open it directly. PHP handles the tricky parts (commas and quotes inside values) for you:
+
+<PhpPlayground title="Export and read back a CSV class list" height="280">
+
+```php
+<?php
+$students = [
+    ["matric_no", "name", "department", "score"],
+    ["IFT/2023/001", "Ada Obi", "Information Technology", 78],
+    ["CSC/2022/014", "Musa Bello", "Computer Science", 64],
+    ["IFT/2024/102", "Eze, Chioma", "Information Technology", 55],   // a comma inside a value
+];
+
+// WRITE: one fputcsv() call per row
+$out = fopen("results.csv", "w");
+foreach ($students as $row) {
+    fputcsv($out, $row);
+}
+fclose($out);
+echo "<p>Wrote results.csv (" . filesize("results.csv") . " bytes).</p>";
+
+// READ: fgetcsv() returns each row as an array
+$in = fopen("results.csv", "r");
+$header = fgetcsv($in);
+echo "<table border='1' cellpadding='4'><tr><th>" . implode("</th><th>", $header) . "</th></tr>";
+$total = 0;
+$count = 0;
+while (($row = fgetcsv($in)) !== false) {
+    echo "<tr><td>" . implode("</td><td>", array_map("htmlspecialchars", $row)) . "</td></tr>";
+    $total += $row[3];
+    $count++;
+}
+fclose($in);
+echo "</table><p>Average score: " . round($total / $count, 1) . "</p>";
+```
+
+</PhpPlayground>
+
+Open **results.csv** in the files panel: `"Eze, Chioma"` was written **in quotes** so its comma isn't mistaken for a column separator.
+
+## JSON Files
+
+For structured data, **`json_encode()`** turns an array into text and **`json_decode($text, true)`** turns it back:
+
+```php
+$settings = ["theme" => "dark", "items_per_page" => 20];
+file_put_contents("settings.json", json_encode($settings, JSON_PRETTY_PRINT));
+
+$loaded = json_decode(file_get_contents("settings.json"), true);
+echo $loaded["theme"];      // dark
+```
+
+## Directories
+
+```php
+mkdir("uploads", 0755, true);             // true = create parent folders too
+$files = scandir("uploads");              // includes "." and ".."
+$images = glob("uploads/*.jpg");          // pattern matching
+foreach ($images as $path) {
+    echo basename($path) . " — " . filesize($path) . " bytes<br>";
+}
+```
+
+> **Files vs a database:** files are fine for logs, exports and uploads, but for data that many users **search, update and share** at once, a **database** is safer and faster — it handles concurrent writes, indexing and queries. The guestbook above would become a table once it grows.
+
+---
+
+## File Uploads
+
+**PHP can process files uploaded through forms.** Three things are required on the form:
+
+```html
+<form method="post" action="upload.php" enctype="multipart/form-data">
+    <input type="file" name="profile_picture" accept="image/png, image/jpeg">
+    <button type="submit">Upload</button>
+</form>
+```
+
+| Requirement | Why |
+|---|---|
+| **`method="post"`** | Files can't travel in a URL |
+| **`enctype="multipart/form-data"`** | Encodes the form so binary file data can be sent. **Without it, only the file's name is sent — no content.** |
+| **`<input type="file" name="…">`** | The file picker; `name` is the key in `$_FILES` |
+| `accept="…"` *(optional)* | Filters the picker — a convenience only, **not** security |
+
+### The Upload Process
+
+<FlowDiagram title="What happens when a file is uploaded">
+<FlowStep title="1. Browser sends the file">
+The user picks a file and submits. The browser sends a **multipart** POST request containing the form fields **and the file's bytes**.
+</FlowStep>
+<FlowStep title="2. PHP stores it temporarily">
+Before your script even runs, PHP saves the uploaded file to a **temporary folder** with a random name (e.g. `C:\xampp\tmp\php3A2F.tmp`) and fills **`$_FILES`** with its details.
+</FlowStep>
+<FlowStep title="3. Your script validates it">
+Check the **error code**, **size**, **type/extension** and **contents**. Never trust the name or type the browser reported.
+</FlowStep>
+<FlowStep title="4. Move it to a permanent place">
+**`move_uploaded_file($tmp, $destination)`** moves it from the temporary folder to your uploads folder — under a **new, safe name**.
+</FlowStep>
+<FlowStep title="5. Otherwise it disappears">
+If your script doesn't move it, PHP **deletes the temporary file** automatically when the request ends.
+</FlowStep>
+</FlowDiagram>
+
+### The `$_FILES` Array
+
+**PHP receives uploaded file information through `$_FILES`.** For `<input type="file" name="profile_picture">`:
+
+| Key | Contains | Example | Trust it? |
+|---|---|---|---|
+| `$_FILES["profile_picture"]["name"]` | Original filename **from the user's computer** | `me.jpg` | ✗ Never — user-controlled |
+| `["type"]` | MIME type **claimed by the browser** | `image/jpeg` | ✗ Never — easily faked |
+| `["tmp_name"]` | Where PHP stored it temporarily | `C:\xampp\tmp\php3A2F.tmp` | ✓ Set by PHP |
+| `["error"]` | Upload **error code** (0 = OK) | `0` | ✓ Set by PHP |
+| `["size"]` | Size in **bytes** | `245760` | ✓ Measured by PHP |
+
+**Upload error codes:**
+
+| Constant | Value | Meaning |
+|---|---|---|
+| `UPLOAD_ERR_OK` | 0 | Success |
+| `UPLOAD_ERR_INI_SIZE` | 1 | Larger than **`upload_max_filesize`** in php.ini |
+| `UPLOAD_ERR_FORM_SIZE` | 2 | Larger than the form's `MAX_FILE_SIZE` |
+| `UPLOAD_ERR_PARTIAL` | 3 | Only partly uploaded (connection dropped) |
+| `UPLOAD_ERR_NO_FILE` | 4 | **No file was chosen** |
+| `UPLOAD_ERR_NO_TMP_DIR` / `UPLOAD_ERR_CANT_WRITE` | 6 / 7 | Server problem |
+
+> The maximum upload size is set in **`php.ini`** by **`upload_max_filesize`** and **`post_max_size`** (PHP's own defaults are only **2M** and **8M**; XAMPP raises them). Check yours with `phpinfo()`, and restart Apache after changing them. `post_max_size` must be at least as large as `upload_max_filesize`.
+
+### Validate Everything
+
+**File uploads require careful validation of:**
+
+| Check | How |
+|---|---|
+| **File type** | Allow a short **whitelist of extensions** (`jpg`, `jpeg`, `png`, `pdf`) **and** check the real contents (for images, `getimagesize()` must succeed; `finfo_file()` detects the true MIME type) |
+| **File size** | Compare `$_FILES[...]["size"]` with your limit (e.g. 2 MB) |
+| **File name** | **Don't reuse the user's name** — generate your own: `bin2hex(random_bytes(8)) . ".jpg"`. This stops overwrites, path tricks (`../../index.php`) and odd characters |
+| **Storage location** | A dedicated `uploads/` folder — ideally **outside the web root**, or with **PHP execution disabled** in it |
+| **File contents** | Re-check images; scan documents if possible |
+
+**Do not allow users to upload arbitrary executable files without appropriate security controls.** If an attacker uploads `shell.php` into a web-accessible folder and then visits it, **Apache runs it** — and the attacker controls your server. Checking the extension against a **whitelist** (not a blacklist) and **renaming** the file are the essential defences.
+
+### A Complete Upload Script
+
+```php
+<?php // upload.php
+$maxBytes = 2 * 1024 * 1024;                       // 2 MB
+$allowed = ["jpg" => "image/jpeg", "jpeg" => "image/jpeg", "png" => "image/png"];
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $file = $_FILES["profile_picture"] ?? null;
+
+    if (!$file || $file["error"] === UPLOAD_ERR_NO_FILE) {
+        $error = "Please choose a file.";
+    } elseif ($file["error"] !== UPLOAD_ERR_OK) {
+        $error = "Upload failed (error code {$file['error']}).";
+    } elseif ($file["size"] > $maxBytes) {
+        $error = "File is larger than 2 MB.";
+    } else {
+        $ext = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
+        $info = @getimagesize($file["tmp_name"]);            // real image check
+        if (!isset($allowed[$ext]) || $info === false || $info["mime"] !== $allowed[$ext]) {
+            $error = "Only JPG and PNG images are allowed.";
+        } else {
+            $newName = bin2hex(random_bytes(8)) . "." . $ext; // our own safe name
+            $target = __DIR__ . "/uploads/" . $newName;
+            if (move_uploaded_file($file["tmp_name"], $target)) {
+                $success = "Uploaded as $newName";
+                // Save $newName in the database against the user's record
+            } else {
+                $error = "Could not save the file.";
+            }
+        }
+    }
+}
+```
+
+**`move_uploaded_file()`** only works on files that **really arrived by HTTP upload** — PHP refuses to "move" arbitrary paths like `/etc/passwd`, which is why it's used instead of `rename()`.
+
+### Practise the Validation Logic
+
+A browser playground can't receive a real upload, so this one **fills `$_FILES` by hand** with five pretend uploads, letting you practise the checks. Change the test data and the rules, then Run:
+
+<PhpPlayground title="Upload validation practice (simulated $_FILES)" height="260">
+
+```php
+<?php
+// Pretend uploads — in a real request PHP fills $_FILES for you
+$tests = [
+    ["name" => "passport.jpg",       "type" => "image/jpeg", "size" => 180000,  "error" => UPLOAD_ERR_OK],
+    ["name" => "cv.pdf",             "type" => "application/pdf", "size" => 90000, "error" => UPLOAD_ERR_OK],
+    ["name" => "holiday.png",        "type" => "image/png",  "size" => 5200000, "error" => UPLOAD_ERR_OK],
+    ["name" => "shell.php",          "type" => "image/jpeg", "size" => 1200,    "error" => UPLOAD_ERR_OK],
+    ["name" => "",                   "type" => "",           "size" => 0,       "error" => UPLOAD_ERR_NO_FILE],
+];
+
+$maxBytes = 2 * 1024 * 1024;
+$allowedExt = ["jpg", "jpeg", "png"];
+
+function check_upload(array $f, int $maxBytes, array $allowedExt): string {
+    if ($f["error"] === UPLOAD_ERR_NO_FILE) return "✗ No file chosen";
+    if ($f["error"] !== UPLOAD_ERR_OK) return "✗ Upload error " . $f["error"];
+    if ($f["size"] > $maxBytes) return "✗ Too large (" . round($f["size"] / 1048576, 1) . " MB)";
+    $ext = strtolower(pathinfo($f["name"], PATHINFO_EXTENSION));
+    if (!in_array($ext, $allowedExt, true)) return "✗ .$ext files are not allowed";
+    $safeName = bin2hex(random_bytes(8)) . "." . $ext;
+    return "✓ Accepted — would be saved as $safeName";
+}
+
+echo "<table border='1' cellpadding='5'><tr><th>File</th><th>Claimed type</th><th>Result</th></tr>";
+foreach ($tests as $f) {
+    echo "<tr><td>" . htmlspecialchars($f["name"] ?: "(none)") . "</td><td>" . htmlspecialchars($f["type"])
+       . "</td><td>" . check_upload($f, $maxBytes, $allowedExt) . "</td></tr>";
+}
+echo "</table>";
+```
+
+</PhpPlayground>
+
+Notice **`shell.php`** claims to be `image/jpeg` — a lie the browser (or an attacker's script) can tell. The **extension whitelist** catches it; in the real script, **`getimagesize()`** on its contents would catch a renamed one too.
+
+---
+
+## Practice Questions
+
+<Reveal question="Explain the difference between the fopen() modes r, w and a.">
+**`r`** opens an **existing** file for **reading** from the beginning (fails if it doesn't exist). **`w`** opens for **writing**, **erasing** any existing contents (creates the file if needed). **`a`** opens for **appending** — writing at the **end**, keeping existing contents (creates the file if needed).
+</Reveal>
+
+<Reveal question="Write PHP that appends a line with the date and a message to log.txt, then displays all lines.">
+```php
+<?php
+file_put_contents("log.txt", date("Y-m-d H:i:s") . " User logged in\n", FILE_APPEND | LOCK_EX);
+
+foreach (file("log.txt", FILE_IGNORE_NEW_LINES) as $line) {
+    echo htmlspecialchars($line) . "<br>";
+}
+```
+</Reveal>
+
+<Reveal question="What three things must an HTML form have to upload a file?">
+**`method="post"`**, **`enctype="multipart/form-data"`**, and an **`<input type="file" name="...">`**. Without the `enctype`, only the filename is sent, not the file's contents.
+</Reveal>
+
+<Reveal question="Describe the elements of the $_FILES array and which of them can be trusted.">
+`name` — the original filename (**user-controlled, don't trust**); `type` — the MIME type claimed by the browser (**don't trust**); `tmp_name` — the temporary path where PHP saved the file (set by PHP); `error` — the upload error code, 0 = success (set by PHP); `size` — the size in bytes (measured by PHP).
+</Reveal>
+
+<Reveal question="List five checks a secure upload script should perform, and explain the danger of allowing .php uploads.">
+1) The **error code** is `UPLOAD_ERR_OK`; 2) the **size** is within the limit; 3) the **extension** is in a **whitelist**; 4) the **contents** match the type (e.g. `getimagesize()` for images); 5) save under a **new, generated filename** in a dedicated folder (outside the web root or with PHP execution disabled), using **`move_uploaded_file()`**. If a `.php` file can be uploaded into a web-accessible folder, the attacker can request it and **Apache will execute it** — giving them control of the server (a "web shell").
+</Reveal>
+
+<Takeaway>
+PHP file functions act **on the server's disk**. Check files with `file_exists`, `is_file`, `filesize`; build paths with `__DIR__`. Whole-file I/O: **`file_put_contents()`** (with `FILE_APPEND | LOCK_EX` to add), **`file_get_contents()`**, **`file()`**. Handles: **`fopen()`** modes **`r`** (read), **`w`** (**wipe** and write), **`a`** (append), `x` (new only), then **`fwrite`/`fgets`/`fclose`**. **CSV** via `fputcsv`/`fgetcsv`; **JSON** via `json_encode`/`json_decode`. **Uploads** need **POST + `enctype="multipart/form-data"` + `type="file"`**; PHP puts details in **`$_FILES`** (`name`, `type`, `tmp_name`, `error`, `size`) — **never trust `name` or `type`**. Validate **error code, size, extension whitelist, real contents**, then **`move_uploaded_file()`** under a **generated name** into a safe folder. Never let users upload runnable `.php` files.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- `fopen()` modes and the read/write/close functions
+- Writing and reading a text file; appending
+- Form requirements for uploads (`enctype`!)
+- The `$_FILES` array; `move_uploaded_file()`
+- **What to validate** in uploads — type, size, name, storage location, contents — and why
+
+**Common mistakes:**
+- Forgetting `enctype="multipart/form-data"`
+- Using `"w"` instead of `"a"` and wiping the file
+- Trusting `$_FILES[...]["type"]` or keeping the user's filename
+- Echoing file contents that came from users without `htmlspecialchars()`
+
+**Likely question:**
+> "Write an HTML form and PHP script that allow a student to upload a passport photograph. Your script should accept only JPG or PNG files not larger than 2 MB and store them with a unique name. Explain two security risks of file uploads." (15 marks)

@@ -1,0 +1,318 @@
+---
+title: "Word III: Editing, Page Layout, Proofing, Indents and Tables"
+description: "Moving and copying text with the Clipboard and drag-and-drop, Paste Options and Paste Special, Find, Replace and Go To, page orientation, vertical alignment, margins, paper size and page numbers, Word Count, the Thesaurus, Spelling and Grammar, Track Changes and comments for reviewing, paragraph indents (first-line, hanging, left, right), and creating and formatting tables — merging and splitting cells, alignment, borders, shading, table styles and =SUM(ABOVE)."
+duration: "50 min"
+difficulty: "intermediate"
+---
+
+## Moving and Copying
+
+After typing a document you often need to restructure it — move a paragraph, copy a table, reuse text from another document. You can move or copy **any element**: text, pictures, tables, or objects from other applications.
+
+| Term | Meaning |
+|---|---|
+| **Moving** | **Remove (cut)** the selected element from one place and **insert** it somewhere else |
+| **Copying** | Make a **copy** of the selected element and insert it somewhere else, **leaving the original unchanged** |
+
+The **Clipboard** is the temporary storage area that holds what you cut or copy until you paste it.
+
+### Using the Ribbon (or the keyboard)
+
+1. **Select** the element.
+2. HOME → Clipboard → **Cut** (**Ctrl+X**) to move, or **Copy** (**Ctrl+C**) to copy.
+3. Click where it should go.
+4. HOME → Clipboard → **Paste** (**Ctrl+V**).
+
+### Using drag and drop
+
+| To… | Do this |
+|---|---|
+| **Move** | Select the element, press and **hold the left mouse button** inside the selection, **drag** to the new place and release |
+| **Copy** | Select, hold **Ctrl**, then drag with the left button; release the **mouse button first**, then Ctrl — a small **+** beside the pointer shows it is a copy |
+
+### Between documents
+
+Open both documents. Cut or copy in the first, **switch** to the second (VIEW → **Switch Windows**, or click it on the taskbar — older Word had a *Window* menu), click the insertion point and **Paste**. **View Side by Side** (VIEW tab) shows both at once.
+
+### Paste Options and Paste Special
+
+After pasting, a **Paste Options** button (Ctrl) appears. The same choices are under the arrow below **Paste**:
+
+| Option | Result |
+|---|---|
+| **Keep Source Formatting** | Looks exactly as it did where you copied it |
+| **Merge Formatting** | Takes on the formatting of the text around it, keeping bold/italic |
+| **Keep Text Only** | Plain text — all formatting, pictures and tables removed |
+| **Picture** (for some objects) | Pasted as an image that can't be edited |
+
+**Paste Special** (arrow under Paste → Paste Special…, or **Ctrl+Alt+V**) lets you choose **exactly what form** the Clipboard contents take. Typical choices when pasting from Word or Excel:
+
+- **Microsoft Word Document Object** / **Microsoft Excel Worksheet Object** — an embedded object you can edit with its program
+- **Formatted Text (RTF)** — text with its formatting
+- **Unformatted Text** / Unformatted Unicode Text — plain text
+- **Picture (Enhanced Metafile)** / Bitmap — a picture of the content
+- **HTML Format**
+- and the choice between **Paste** (a copy) and **Paste link** (stays **linked** to the source file, so it updates when the source changes — e.g. an Excel chart in a Word report)
+
+<ExamTip>
+"What is **Paste Special** in a word-processing application? List any two (or four) of its options" has appeared in past papers. Answer: *Paste Special lets you choose the format in which copied content is pasted, or paste it as a link to its source.* Options: Formatted Text (RTF), Unformatted Text, Picture, HTML Format, Microsoft Word/Excel Object, Paste link.
+</ExamTip>
+
+The **Clipboard task pane** (Dialog Box Launcher on the Clipboard group) keeps up to **24** recently cut/copied items so you can paste any of them.
+
+---
+
+## Finding and Replacing
+
+**Find** searches for text — and, with the Find and Replace dialog, formats (bold, an indent), **special characters** (paragraph marks, tabs, page breaks) and elements such as footnotes and graphics. **Replace** swaps what you find for something else.
+
+### Finding text
+
+1. HOME → Editing → **Find** (**Ctrl+F**).
+2. The **Navigation pane** opens on the left.
+3. Type the word in the **Search document** box, e.g. *elections*.
+4. **Every** instance is highlighted in the document and listed in the Navigation pane (with the number of results).
+5. Click **✕** to close the pane.
+
+### Replacing text
+
+1. HOME → Editing → **Replace** (**Ctrl+H**).
+2. Type the text to look for in **Find what**.
+3. Type the new text in **Replace with**.
+4. Click **Find Next** to go to the first match and check it, then:
+
+| To… | Click |
+|---|---|
+| Replace this one and find the next | **Replace** |
+| Change **all** occurrences without confirmation | **Replace All** |
+| Leave this one unchanged and go to the next | **Find Next** |
+
+5. Word tells you when it has finished (*"Word has completed its search of the document and has made 5 replacements"*). Click **OK**, then **Close**.
+
+**More >>** reveals search options — the two that matter most:
+
+- **Match case** — `UCH` will not match `uch`.
+- **Find whole words only** — `uch` will not match inside *much* or *such*.
+
+Try it below: search for **UCH** first without the options (see *much* and *such* highlighted), then with them.
+
+<FindReplaceDemo />
+
+<ExamTip>
+Past question: *"You are writing a long document on teaching hospitals and must type 'University College Hospital, Ibadan' and other long phrases many times — how would you do it efficiently and consistently?"* Type a short code (e.g. **UCH**) every time, then use **Replace All** with **Match case** and **Find whole words only** ticked — or set up an **AutoCorrect** entry (FILE → Options → Proofing → AutoCorrect Options: *Replace* UCH *With* the full phrase) so it expands as you type.
+</ExamTip>
+
+### Navigating with Go To
+
+When you know **where** you want to go, **Go To** is faster than scrolling.
+
+1. HOME → arrow beside **Find** → **Go To** (or **Ctrl+G** / **F5**).
+2. The Find and Replace dialog opens on the **Go To** tab.
+3. Choose **what** to go to: Page, Section, Line, Bookmark, Comment, Footnote, Endnote, Field, Table, Graphic, Equation, Object, Heading.
+4. Type the number (e.g. page **12**), then **Go To** / **Next** or **Previous**.
+5. **Close** the dialog.
+
+---
+
+## Page Layout
+
+The **PAGE LAYOUT** tab has everything for the **Page Setup** of the document.
+
+| Setting | How | Notes |
+|---|---|---|
+| **Orientation** | PAGE LAYOUT → Page Setup → **Orientation** → Portrait / **Landscape** | Default is **Portrait** (tall); Landscape suits wide tables and certificates |
+| **Margins** | PAGE LAYOUT → **Margins** → a preset or **Custom Margins…** | *Normal* = 2.54 cm all round; **Narrow = 1.27 cm** top, bottom, left and right; in Custom Margins use the up/down arrows |
+| **Size** | PAGE LAYOUT → **Size** | A4, Letter, Legal, A5… |
+| **Vertical alignment** | PAGE LAYOUT → Page Setup **Dialog Box Launcher** → **Layout** tab → **Vertical alignment**: Top, **Center**, Justified, Bottom → OK | Default is **Top**. *Center* places text in the middle of the page top-to-bottom — perfect for a **title page** |
+| **Columns** | PAGE LAYOUT → **Columns** | Newspaper-style columns; for one paragraph only, select it first (covered with section breaks in the next lesson) |
+| **Breaks** | PAGE LAYOUT → **Breaks** | Page break, column break, section breaks (next lesson) |
+
+### Page numbers
+
+Word can number pages at the **top**, **bottom** or in the **margins**, with numbers in various formats — **1, 2, 3**, **a, b, c**, **A, B, C**, **i, ii, iii**, **I, II, III** or **-1-, -2-**.
+
+1. INSERT → Header & Footer → **Page Number**.
+2. Choose the position: **Top of Page**, **Bottom of Page**, **Page Margins** or **Current Position**, then a design (left, centre, right…).
+3. **Format Page Numbers…** chooses the **Number format** and **Start at**.
+
+(Older Word used a *Page Numbers* dialog with Position and Alignment drop-down lists — the same choices.) Using **different** formats in different parts of the document needs **section breaks** — the next lesson.
+
+---
+
+## Reviewing a Document
+
+The **REVIEW** tab lets you proof-read, comment and track the changes other people make.
+
+### Word Count
+
+REVIEW → Proofing → **Word Count** (or click the word count on the status bar) shows **pages, words, characters (no spaces), characters (with spaces), paragraphs and lines**. Tick **Include textboxes, footnotes and endnotes** to count those too. To count one paragraph, **select** it first — the count then covers only the selection.
+
+### Thesaurus
+
+The **Thesaurus** helps improve the precision and variety of your writing with **synonyms** — and for some words **antonyms** and related words.
+
+1. Select the word (e.g. *excess*).
+2. REVIEW → **Thesaurus** (**Shift+F7**) — the Thesaurus pane opens on the right.
+3. Point at a suggestion (e.g. *surplus*), click its arrow and choose **Insert**.
+
+### Spelling and Grammar
+
+Word checks your text against its **main dictionary**. As you type, possible **spelling** errors get a **red wavy underline** and grammar problems a **blue** (green in older Word) underline.
+
+1. REVIEW → **Spelling & Grammar** (**F7**).
+2. Word checks from the **insertion point** through the whole document; if you **selected** text it checks only the selection first, then asks whether to continue with the rest.
+3. For each flagged word ("Not in Dictionary"), choose a **suggestion** and click **Change** (or **Change All**), or **Ignore / Ignore All**, or **Add** it to the dictionary (names like *Adesuwa*). If no suggestion is right, correct it yourself and click Change.
+
+**Language** (REVIEW tab) sets the proofing language — **English (United Kingdom)** spells *colour* and *organise*; English (United States) expects *color* and *organize*.
+
+### Track Changes and comments
+
+When you send a document to someone to edit — or your supervisor sends *Project.docx* for **you** to review — use **Track Changes** (REVIEW → Tracking, **Ctrl+Shift+E**). While it is on, every insertion, deletion and formatting change is **recorded and marked** with the reviewer's name and colour instead of silently changing the text. **New Comment** adds notes in the margin without changing the text.
+
+| Tool | Purpose |
+|---|---|
+| **Display for Review** | **Simple Markup** (clean text + a red bar where things changed), **All Markup** (every change shown: insertions underlined, deletions struck through, comments in balloons), **No Markup** (what the document will look like if you accept everything), **Original** |
+| **Previous / Next** | Jump from change to change |
+| **Accept / Reject** | Keep or undo the current change (or **Accept All / Reject All Changes**) |
+| **Reviewing Pane** | A list of every change and comment |
+| **Compare** | Shows the differences between two versions of a document as tracked changes |
+
+Review the supervisor's edits below; then turn Track Changes **off** and delete a word to see the difference.
+
+<TrackChangesDemo />
+
+---
+
+## Indents
+
+When handwriting letters we often indent the first line of each paragraph. Word gives you precise control over where each line of a paragraph starts and ends.
+
+![Five paragraph diagrams: no indent; first-line indent where only the first line starts further in; hanging indent where the first line hangs out and the rest are indented, used for references and lists; left indent where the whole paragraph moves right; indented from both sides; and the ruler's markers: the top triangle is the First Line Indent, the lower triangle the Hanging Indent, the rectangle the Left Indent which moves both, and a triangle at the right the Right Indent](/images/csc272/indents.svg)
+
+**With the buttons:** select the paragraphs, then HOME (or PAGE LAYOUT) → Paragraph → **Increase Indent** (moves the paragraph to the next tab stop) or **Decrease Indent** (back to the previous one).
+
+**Precisely, with the Paragraph dialog:** HOME → Paragraph **Dialog Box Launcher** → *Indents and Spacing* tab:
+
+| Indent | Setting |
+|---|---|
+| **Whole paragraph from the left** | **Left** = the measurement (e.g. 2 cm) |
+| **From both sides** | **Left** and **Right** = the measurements (long quotations) |
+| **First line only** | **Special: First line**, **By:** e.g. 1.27 cm → OK |
+| **Hanging** (second and later lines indented) | **Special: Hanging**, **By:** e.g. 1.27 cm → OK — the standard layout for **reference lists/bibliographies** |
+
+You practised dragging the ruler markers in the formatting lab of the previous lesson — the lab is still there if you want another go.
+
+---
+
+## Tables
+
+Tables organise "objects" in a document: they line up columns of text and numbers **without tabs**, place paragraphs **side by side** (as in a CV), put text **beside pictures** (and even hold a **2 × 2 grid of labelled pictures** — a past-exam task), and **summarise data** concisely:
+
+| Monthly Sales Analysis of Cocacola | |
+|---|---|
+| **State** | **Number of Pack sold** |
+| Oyo | 20,568 |
+| Lagos | 42,153 |
+| Ogun | 10,007 |
+
+### Creating a table
+
+1. Put the insertion point where the table should go.
+2. INSERT → **Table** → **Insert Table…**
+3. Enter the **number of columns** (2) and **rows** (5).
+4. Click **OK**.
+
+*Or* INSERT → Table and **drag** over the grid to highlight the number of columns and rows. Other options: **Draw Table**, **Convert Text to Table**, **Excel Spreadsheet**, **Quick Tables**.
+
+When you click in a table, the contextual **TABLE TOOLS** appear with two tabs, **DESIGN** and **LAYOUT**. (You must click *inside* the table to see them.)
+
+| Task | Steps |
+|---|---|
+| **Merge cells** (e.g. the title row above) | Select the cells → LAYOUT → Merge → **Merge Cells** → click outside to see the result |
+| **Split cells** | Select the cell → LAYOUT → **Split Cells** → number of **columns** and **rows** → OK |
+| **Align text in cells** | Select the cells → LAYOUT → **Alignment** group → one of nine positions (e.g. Align Center) |
+| **Insert / delete rows and columns** | LAYOUT → Rows & Columns: **Insert Above / Below / Left / Right**; **Delete** → Cells, Columns, Rows, Table |
+| **Borders** | Select the table → DESIGN → Borders group: choose the **line weight** (e.g. **4½ pt**), style and colour → click **Borders** → e.g. **Bottom Border**, **All Borders**, **Outside Borders** |
+| **Shade cells** | Select the cells → DESIGN → **Shading** arrow → e.g. **White, Darker 25%** → click away |
+| **Apply a design** | Click in the table → DESIGN → **Table Styles** → pick a style (borders, fonts and shading all at once) |
+| **Add up a column** | Click the total cell → LAYOUT → Data → **Formula** → `=SUM(ABOVE)` (or `=SUM(LEFT)` for a row) → OK |
+
+A table you *draw* does not necessarily have printed borders — the faint dotted lines are only **gridlines** (LAYOUT → **View Gridlines**) that never print. Use **Borders** to make lines print.
+
+**Formula fields don't recalculate by themselves.** If you change a number, select the result and press **F9** (Update Field) — or right-click → Update Field.
+
+### Try it
+
+Load **"Post-test: food by month"** from the *Load…* menu and turn it into the lecture's post-test table: merge the title row across all columns, merge **Food item** down two rows and **Month** across **November/December**, add `=SUM(ABOVE)` in the Total row, apply borders and shading. (Check the arithmetic yourself: the printed notes show December's total as 5400, but 2300 + 8500 = **10,800** — trust the formula.)
+
+<WordTableLab />
+
+---
+
+## Practice Questions
+
+<MCQ question="Which Find and Replace option stops 'the' from also matching 'there' and 'other'?">
+<Option>Match case</Option>
+<Option correct>Find whole words only</Option>
+<Option>Use wildcards</Option>
+<Option>Replace All</Option>
+<Explain>Find whole words only matches 'the' only when it stands as a word by itself. Match case would still find 'the' inside 'there'.</Explain>
+</MCQ>
+
+<MCQ question="You want a report's title page to have its text centred between the top and bottom of the page. Which setting?">
+<Option>HOME → Center</Option>
+<Option correct>Page Setup dialog → Layout tab → Vertical alignment: Center</Option>
+<Option>PAGE LAYOUT → Orientation → Landscape</Option>
+<Option>Paragraph → Spacing Before 200 pt</Option>
+<Explain>HOME → Center centres text left-to-right. Vertical alignment (Page Setup → Layout) positions the text top-to-bottom on the page.</Explain>
+</MCQ>
+
+<MCQ question="What is a hanging indent?">
+<Option>The first line is indented more than the rest</Option>
+<Option correct>The first line starts at the margin and the following lines are indented</Option>
+<Option>The whole paragraph is indented from both margins</Option>
+<Option>A paragraph that continues onto the next page</Option>
+<Explain>In a hanging indent the second and later lines are indented, so the first line "hangs" to the left — used in reference lists and for bullets and numbering.</Explain>
+</MCQ>
+
+<Reveal question="1. Distinguish between moving and copying, and describe how to copy a block of text with drag and drop.">
+**Moving** removes the element from its original place and puts it elsewhere; **copying** puts a duplicate elsewhere and leaves the original. To copy by drag and drop: select the text, hold **Ctrl**, press the left mouse button inside the selection, drag to the new location, release the mouse button and then Ctrl.
+</Reveal>
+
+<Reveal question="2. Explain the three options available when replacing text.">
+**Replace** — replaces the current occurrence and finds the next. **Replace All** — changes every occurrence at once without asking. **Find Next** — skips the current occurrence (leaves it unchanged) and moves to the next.
+</Reveal>
+
+<Reveal question="3. How do you count the words in only one paragraph?">
+Select the paragraph, then REVIEW → Proofing → **Word Count** (or look at the status bar, which shows "x of y words"). Word counts only the selection.
+</Reveal>
+
+<Reveal question="4. Your supervisor wants to review Project.docx and see every change you make. What would you do?">
+Turn on **Track Changes** (REVIEW → Track Changes, Ctrl+Shift+E) before editing; every insertion, deletion and formatting change is marked with your name. Use **New Comment** to explain changes. The supervisor then uses **Next**, **Accept** and **Reject** (or Accept All) on the REVIEW tab, choosing All Markup to see the changes.
+</Reveal>
+
+<Reveal question="5. Describe how to create a 2-column, 5-row table and make its first row a single merged title.">
+INSERT → **Table** → **Insert Table…** → Number of columns **2**, Number of rows **5** → OK. Type the data. Select both cells of the first row → TABLE TOOLS **LAYOUT** → **Merge Cells**, type the title and centre it (Align Center).
+</Reveal>
+
+<Reveal question="6. How would you add the numbers in a Word table column, and what must you remember afterwards?">
+Click the cell under the numbers → TABLE TOOLS LAYOUT → Data → **Formula** → `=SUM(ABOVE)` → OK. The result is a **field**: if the numbers change, select it and press **F9** to update it.
+</Reveal>
+
+<Takeaway>
+- **Cut/Copy/Paste** (Ctrl+X/C/V) or **drag** (move) / **Ctrl+drag** (copy). **Paste Options**: keep source formatting, merge formatting, keep text only. **Paste Special** (Ctrl+Alt+V) chooses the pasted format or **Paste link**.
+- **Find** (Ctrl+F, Navigation pane), **Replace** (Ctrl+H: Replace, Replace All, Find Next; More → Match case, Find whole words only), **Go To** (Ctrl+G / F5).
+- PAGE LAYOUT: **orientation** (portrait default), **margins** (Narrow 1.27 cm), size, columns, breaks; **vertical alignment** via Page Setup → Layout. **Page numbers**: INSERT → Page Number, Format Page Numbers.
+- REVIEW: **Word Count**, **Thesaurus** (Shift+F7), **Spelling & Grammar** (F7), Language; **Track Changes** + comments, display modes, Accept/Reject.
+- **Indents**: Increase/Decrease Indent buttons, or Paragraph dialog Left/Right and Special **First line** / **Hanging**.
+- **Tables**: INSERT → Table; TABLE TOOLS **DESIGN** (styles, shading, borders with weight) and **LAYOUT** (insert/delete, **Merge/Split**, alignment, **=SUM(ABOVE)**); gridlines don't print, borders do.
+</Takeaway>
+
+## Exam Tips
+
+- Know **Paste Special** and at least four of its options — it is a recurring theory question.
+- The three **Replace** buttons and the **Match case / whole words** options are easy marks.
+- "Vertical alignment" is on the **Page Setup dialog → Layout tab**, not the HOME tab.
+- **Hanging indent** = the layout of bibliography entries; **first-line indent** = the start of a paragraph.
+- In a practical table task, markers look for **merged title cells**, **visible borders** (not just gridlines), **aligned numbers** and **correct totals** — use `=SUM(ABOVE)` and double-check with a calculator.
+- For "four labelled pictures in a 2 × 2 arrangement", insert a **2 × 2 table** (or 2 × 4 with caption rows), put a picture in each cell and a caption (REFERENCES → Insert Caption) under each — then remove the borders if you like.

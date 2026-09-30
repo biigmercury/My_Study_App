@@ -1,0 +1,283 @@
+---
+title: "Feasibility Study, Cost-Benefit Analysis and Risk Assessment"
+description: "How analysts decide whether a system should be built at all: the purpose and seven-step process of a feasibility study, the five types of feasibility (TELOS), categories of costs and benefits, payback, ROI and net present value with a worked example and calculator, and risk assessment."
+duration: "50 min"
+difficulty: "intermediate"
+---
+
+## What Is a Feasibility Study?
+
+> A **feasibility study** is a **formal, structured investigation carried out early in the SDLC to determine whether a proposed system is worth pursuing** before significant resources are committed to detailed design and construction. *(Hoffer, George & Valacich, 2020)*
+
+It answers the fundamental project-selection questions:
+
+| Question | Feasibility type |
+|---|---|
+| **Can we build it?** | Technical |
+| **Can we afford it?** | Economic |
+| **Will people use it?** | Operational |
+| **Are we legally permitted to build it?** | Legal |
+| **Can we build it in time?** | Schedule |
+
+### Objectives of a Feasibility Study
+
+1. Evaluate **alternative solutions** objectively.
+2. **Estimate the costs and benefits** of each alternative.
+3. **Identify major risks** before they are incurred.
+4. Give decision-makers enough evidence to **approve, modify, defer or reject** the project.
+
+Feasibility studies matter because they act as a **formal checkpoint** that stops organisations committing scarce financial, human and technical resources to projects unlikely to succeed.
+
+<Analogy>
+Before building a hostel on campus, the university asks: Is the soil suitable and do we have engineers? (**technical**) Will rents cover the construction loan? (**economic**) Will students actually want to live there? (**operational**) Do we have the building permit and land title? (**legal**) Can it be ready before the new session? (**schedule**) A "no" to any one question can sink the project, however good the others look.
+</Analogy>
+
+---
+
+## The Feasibility Study Process
+
+Most studies follow a similar sequence of steps; the depth varies with project size.
+
+<FlowDiagram title="Seven steps of a feasibility study">
+<FlowStep title="Define the problem">
+Define the **problem and the objectives** of the proposed system.
+</FlowStep>
+<FlowStep title="Identify alternatives">
+Identify and describe **alternative solutions** — always including the option of **doing nothing** (keeping the current system).
+</FlowStep>
+<FlowStep title="Assess TELOS">
+Assess each alternative against the **five feasibility dimensions**: technical, economic, operational, legal and schedule.
+</FlowStep>
+<FlowStep title="Cost-benefit analysis">
+**Estimate costs and benefits** for each alternative (payback, ROI, NPV).
+</FlowStep>
+<FlowStep title="Assess risk">
+Identify and assess the **risks** of each alternative.
+</FlowStep>
+<FlowStep title="Write the report">
+Document findings in a **feasibility report** with a clear **recommendation**.
+</FlowStep>
+<FlowStep title="Go / no-go decision">
+**Present** findings to decision-makers (a steering committee or project sponsor) for a **go/no-go decision**.
+</FlowStep>
+</FlowDiagram>
+
+### Deliverables of a Feasibility Study
+
+- A written **feasibility report** summarising findings for each dimension
+- A **cost-benefit analysis** with supporting calculations (e.g., payback period)
+- A **risk register** listing major risks and proposed mitigation strategies
+- A documented **recommendation**: **proceed**, **proceed with modification**, **defer**, or **abandon**
+
+---
+
+## The Five Types of Feasibility (TELOS)
+
+Remember them with **TELOS**: **T**echnical, **E**conomic, **L**egal, **O**perational, **S**chedule.
+
+<Tabs>
+<Tab label="Technical">
+
+**Technical feasibility** examines whether the system **can actually be built** with currently available (or reasonably obtainable) **hardware, software, network infrastructure and technical skills**, within acceptable technical risk.
+
+**Purpose:** determine whether the organisation has, or can acquire, the technology and expertise to deliver the solution, and surface technical risks such as:
+- **unreliable power supply**,
+- **bandwidth limitations**,
+- **unavailable integration interfaces** with legacy systems.
+
+*Question:* Can we build it, and can we support it afterwards?
+
+</Tab>
+<Tab label="Economic">
+
+**Economic feasibility** — also called **cost-benefit analysis at the project-selection level** — determines whether the **projected financial benefits justify the expected costs** over a defined time horizon.
+
+It gives decision-makers an **objective financial basis** — **payback period, ROI or NPV** — for funding the project relative to other uses of the same money. In short: **do lifetime benefits exceed lifetime costs?**
+
+</Tab>
+<Tab label="Operational">
+
+**Operational feasibility** assesses whether the system will **work within the organisation's day-to-day environment** — whether staff and users are **willing and able to adopt it**, and whether it fits existing **workflows, culture and management support**.
+
+Even a technically excellent system **fails if people resist it or cannot use it**. Typical questions: Will users like it? Will they use it? Will it change their work environment?
+
+</Tab>
+<Tab label="Legal">
+
+**Legal feasibility** examines whether the system **complies with laws, regulations, contracts and industry standards** — including **data protection**, **intellectual property**, labour law and sector-specific regulation.
+
+It keeps the organisation from **legal liability, regulatory sanction or contractual breach**, and identifies compliance requirements that must be **designed in from the start** rather than retrofitted. Examples: **software licensing**, IP ownership, obligations to third-party vendors. (In Nigeria, handling personal data brings in the **Nigeria Data Protection Act 2023**.)
+
+</Tab>
+<Tab label="Schedule">
+
+**Schedule feasibility** evaluates whether the system can **realistically be developed and deployed within the time frame** the business demands, given the resources, scope and dependencies.
+
+It checks whether deadlines are realistic, identifies scheduling risks and **critical dependencies** early, and lets decision-makers **adjust scope, resources or the deadline** before the project starts. (A registration portal delivered after registration week is worthless that session.)
+
+</Tab>
+</Tabs>
+
+<ExamTip>
+Lecture 2 introduced **three** feasibility aspects (technical, economic, operational). Lecture 3 expands this to **five** (adding **legal** and **schedule**). If a question says "types of feasibility", give all five — TELOS — and define each with an example.
+</ExamTip>
+
+---
+
+## Cost-Benefit Analysis (CBA)
+
+**Cost-benefit analysis** is the **quantitative technique underlying economic feasibility**. The analyst identifies and, where possible, **puts a naira value on** every cost and benefit of the proposed system, then compares them using a recognised financial metric. CBA is performed **throughout the SDLC** to check economic feasibility and to compare alternatives.
+
+### Categories of Costs and Benefits
+
+| Category | Definition | Example (course registration system) |
+|---|---|---|
+| **Tangible costs** | Can be precisely measured in money | Server hardware, software licences, developer salaries |
+| **Intangible costs** | Real but hard to quantify | Staff morale disruption during transition; temporary productivity dip |
+| **Direct costs** | Attributable specifically to the project | Payment to the software development contractor |
+| **Indirect costs** | Shared overheads allocated to the project | A share of the ICT Directorate's electricity and facility costs |
+| **Tangible benefits** | Can be precisely measured in money | Reduced overtime pay; reduced printing costs |
+| **Intangible benefits** | Real but hard to quantify | Improved student satisfaction; enhanced institutional reputation |
+
+### The Three Common CBA Methods
+
+Your notes name the three most common methods: **payback analysis, return on investment (ROI) and present value analysis**. Each treats the figures differently, but the objective is the same — **reliable information for decision-making**.
+
+**1. Payback period** — how long it takes for **cumulative net benefits to recover the initial investment**. Shorter is better.
+
+$$
+\text{Payback period} = \text{years before recovery} + \frac{\text{unrecovered cost at start of that year}}{\text{net benefit during that year}}
+$$
+
+When net benefit is the same every year, this simplifies to initial cost ÷ yearly net benefit.
+
+**2. Return on investment (ROI)** — the **percentage return** over the system's life.
+
+$$
+\text{ROI} = \frac{\text{total benefits} - \text{total costs}}{\text{total costs}} \times 100\%
+$$
+
+**3. Present value / Net present value (NPV)** — money received in the future is worth **less** than money today (it could have earned interest). Each future amount is **discounted** to today's value:
+
+$$
+PV = \frac{FV}{(1+r)^{t}} \qquad \text{NPV} = -C_0 + \sum_{t=1}^{n} \frac{B_t - C_t}{(1+r)^{t}}
+$$
+
+where $r$ is the discount rate, $t$ the year, $C_0$ the initial cost, and $B_t - C_t$ the net benefit in year $t$. **If NPV is greater than zero, the project is economically feasible.**
+
+---
+
+## Worked Example: Online Course Registration System
+
+A university plans an online registration system.
+
+| Item | Amount |
+|---|---|
+| Development cost (year 0) | ₦12,000,000 |
+| Yearly benefits (reduced overtime, printing and manual processing) | ₦6,000,000 |
+| Yearly running cost (hosting, support, maintenance) | ₦1,500,000 |
+| Evaluation period | 5 years |
+| Discount rate | 10% |
+
+**Yearly net benefit** = ₦6,000,000 − ₦1,500,000 = **₦4,500,000**
+
+**Step 1 — Payback period.**
+
+| Year | Net benefit | Cumulative position |
+|---|---|---|
+| 0 | −₦12,000,000 | −₦12,000,000 |
+| 1 | ₦4,500,000 | −₦7,500,000 |
+| 2 | ₦4,500,000 | −₦3,000,000 |
+| 3 | ₦4,500,000 | +₦1,500,000 |
+
+The cost is recovered during year 3. Payback = 2 + (3,000,000 ÷ 4,500,000) = **2.67 years (about 2 years 8 months).**
+
+**Step 2 — ROI over 5 years.**
+- Total benefits = 5 × ₦6,000,000 = ₦30,000,000
+- Total costs = ₦12,000,000 + 5 × ₦1,500,000 = ₦19,500,000
+- ROI = (30,000,000 − 19,500,000) ÷ 19,500,000 × 100 = **53.8%**
+
+**Step 3 — NPV at 10%.**
+
+| Year | Net benefit | Discount factor $1/(1.1)^t$ | Present value |
+|---|---|---|---|
+| 1 | ₦4,500,000 | 0.9091 | ₦4,090,909 |
+| 2 | ₦4,500,000 | 0.8264 | ₦3,719,008 |
+| 3 | ₦4,500,000 | 0.7513 | ₦3,380,917 |
+| 4 | ₦4,500,000 | 0.6830 | ₦3,073,561 |
+| 5 | ₦4,500,000 | 0.6209 | ₦2,794,146 |
+| | | **Total PV** | **₦17,058,540** |
+
+NPV = ₦17,058,540 − ₦12,000,000 = **₦5,058,540**. Since NPV > 0, the project is **economically feasible**.
+
+### Try It Yourself
+
+The calculator below starts with the worked example. Change the figures — for example, raise the development cost to ₦20,000,000 or the discount rate to 25% — and watch payback, ROI and NPV change.
+
+<CostBenefitCalculator />
+
+<ExamTip>
+Show your working in a table exactly like the one above — examiners award most marks for the **method** (cumulative table, discount factors), not just the final figure. Always state the **decision rule**: shorter payback is better, positive ROI is good, and **NPV > 0 means feasible**.
+</ExamTip>
+
+---
+
+## Risk Assessment
+
+A feasibility study is, at its core, **a structured exercise in risk reduction**: by examining all five dimensions before committing resources, the organisation turns **unknown risks into known, manageable ones**.
+
+| Risk category | Description | Mitigated primarily by |
+|---|---|---|
+| **Technical** | Chosen technology cannot deliver required functionality, performance or integration | Technical feasibility assessment |
+| **Organisational** | Structure, politics or culture obstruct the project | Operational feasibility assessment |
+| **Human** | Insufficient skills, staff turnover or user resistance | Operational feasibility; training planning |
+| **Financial** | Costs exceed budget or benefits fail to materialise | Economic feasibility (CBA) |
+| **Legal / compliance** | Regulatory breach, litigation or contractual default | Legal feasibility assessment |
+| **Schedule** | Project misses critical deadlines | Schedule feasibility assessment |
+
+The **risk register** (a deliverable of the study) records each risk, its likelihood and impact, and the mitigation planned.
+
+---
+
+## Practice Questions
+
+<Reveal question="List the five types of feasibility and the question each answers.">
+**Technical** — can we build it? **Economic** — can we afford it (do benefits exceed costs)? **Operational** — will people use it? **Legal** — are we permitted to build/operate it? **Schedule** — can we build it in time?
+</Reveal>
+
+<Reveal question="A system costs ₦8,000,000 to develop and yields net benefits of ₦2,000,000, ₦3,000,000, ₦3,000,000 and ₦4,000,000 in years 1–4. Find the payback period.">
+Cumulative: year 1 → −₦6,000,000; year 2 → −₦3,000,000; year 3 → ₦0. The cost is exactly recovered at the end of year 3, so **payback = 3 years**.
+</Reveal>
+
+<Reveal question="Find the present value of ₦5,000,000 received in 2 years at a 10% discount rate.">
+PV = 5,000,000 ÷ (1.1)² = 5,000,000 ÷ 1.21 = **₦4,132,231** (to the nearest naira).
+</Reveal>
+
+<Reveal question="Distinguish tangible from intangible benefits with one example each for a hospital records system.">
+**Tangible benefits** can be measured precisely in money — e.g., reduced cost of paper folders and filing staff. **Intangible benefits** are real but hard to quantify — e.g., improved patient satisfaction or fewer medical errors from misplaced files.
+</Reveal>
+
+<Reveal question="State the four possible recommendations of a feasibility report.">
+**Proceed**, **proceed with modification**, **defer**, or **abandon**.
+</Reveal>
+
+<Takeaway>
+A feasibility study is a formal early checkpoint that decides whether a system **should** be built. It follows seven steps — define problem, identify alternatives (including doing nothing), assess **TELOS**, cost-benefit analysis, risk assessment, report, go/no-go decision — and produces a report, CBA, risk register and recommendation. Economic feasibility uses **payback period**, **ROI** and **NPV**; a project with **NPV > 0** is economically feasible. Every risk category (technical, organisational, human, financial, legal, schedule) is reduced by the matching feasibility assessment.
+</Takeaway>
+
+## Exam Tips
+
+**What lecturers test:**
+- Definition, objectives and steps of a feasibility study
+- The five types of feasibility (TELOS) with examples
+- Tangible vs intangible and direct vs indirect costs/benefits
+- **Calculations**: payback period, ROI and present value/NPV
+- Risk categories and how feasibility mitigates them
+
+**Common mistakes:**
+- Forgetting the **"do nothing"** alternative
+- Computing ROI with net benefits in the numerator **and** subtracting costs again — use (total benefits − total costs) ÷ total costs
+- Discounting year 0 — the initial cost is already in today's money
+
+**Likely question:**
+> "Explain five types of feasibility. A proposed payroll system costs ₦10m to develop and ₦1m a year to run, and saves ₦4m a year. Calculate its payback period and 4-year ROI, and advise management." (20 marks)
