@@ -1,8 +1,607 @@
 ---
-title: "Logical Puzzles and Exercises in Reasoning"
-description: "Content coming soon"
+title: "Logical Puzzles and Reasoning"
+description: "Puzzles versus riddles (Bello's definition, African riddles and dilemma tales), the lion–goat–yam river crossing, a step-by-step method for logical puzzles (hidden inferences, elimination grids, assume-and-test), the textbook's seven worked puzzles and all twelve exercises — each playable on an interactive grid, with full solutions."
 duration: "45 min"
 difficulty: "advanced"
 ---
 
-Content for this topic hasn't been added yet. Drop your course materials and this page will be updated with full study notes, worked examples, and exam tips.
+## Why Solve Puzzles?
+
+**Francis Offor** begins with a claim about human nature:
+
+> The ability to **distinguish good and consistent reasoning from bad and inconsistent reasoning is natural** in humans. What training in logic does is to **sharpen this natural ability** by clearing our heads of the **"mental cobwebs"** that may be befogging our reasoning.
+
+**Logical puzzles** are **exercises** meant to develop or sharpen our natural ability to use **good arguments in resolving our problems**. The process of solving them is what the phrase **"exercise in reasoning"** means.
+
+---
+
+## Puzzles and Riddles
+
+In most societies there are sayings, proverbs and maxims that, in **Alfred North Whitehead's** phrase, **"call into play the higher faculties of the brain"** (cited in Copi). Decoding them demands **full mental alertness and concentration**. Such expressions **abound in traditional African societies**: families would **gather in their compounds at moonlight** to show off their mental prowess with puzzles and riddles.
+
+**A. G. A. Bello (2000)** defines a logical puzzle as:
+
+> a **specific question or series of questions**, accompanied by a **mass of information or propositions given as true** in the statement of the puzzle. Its solution consists in **finding answers to the questions posed**, and proffering **arguments whose premises are contained in the statement of the puzzle and whose conclusions are the answers**.
+
+| | **Logical puzzle** | **Riddle** |
+|---|---|---|
+| **Information** | Comes with **clues** — propositions given as true | Needs **no additional information** |
+| **Answer** | **One correct answer**, reached by **argument** from the clues | May have **more than one acceptable answer**, if its proponent can argue for it — even **arbitrarily** |
+| **What it trains** | Our natural ability to use **good arguments** to resolve problems | **Mental alertness** |
+| **Main value** | **Reasoning** | **Entertainment** |
+
+**A West African riddle (a "dilemma tale").** In a **Loma** tale from **Liberia** (Bascom 1972, cited by Isidore Okpewho), one man shot through a rock and killed an elephant. A second followed the shot, butchered the elephant and carried it back through the hole. A third picked a louse from his head, skinned it, and sewed up the elephant in the louse's skin. The tale is called **"Who did the biggest stunt?"** — and listeners argue about it, because **there is no single right answer**.
+
+### Try the textbook's riddles
+
+Think first, then tap to check.
+
+<Reveal question="1. A Boeing 747 with 600 passengers took off from Nigeria to South Africa but crash-landed on the border between Nigeria and Benin Republic. Where will the survivors be buried?">
+**Nowhere** — survivors are not buried!
+</Reveal>
+
+<Reveal question="2. A cock lays an egg in the middle of a roof with two slopes, one to the right and one to the left. Which side will the egg roll to?">
+**Neither** — cocks are male fowls and do not lay eggs!
+</Reveal>
+
+<Reveal question="3. Two fathers and two sons went fishing. Each caught a fish, but only three fish were counted in all. How is this possible?">
+Only **three people** went fishing: **a son, his father and his grandfather**. The father is both a father and a son.
+</Reveal>
+
+<Reveal question="4. A father and son had a fatal car accident in Ibadan. The father was taken to a hospital in Lagos; the son was rushed to a hospital in Akure. There, the doctor exclaimed: 'I can't operate on him, he is my son!' How is this possible?">
+**The doctor was the boy's mother!**
+</Reveal>
+
+<Reveal question="5. A woman in her hotel room hears a knock. A stranger at the door says, 'Oh, I'm sorry, I thought this was my room,' and walks off to the lift. She immediately phones security. Why?">
+**You don't knock on the door of your own hotel room** — but the man did.
+</Reveal>
+
+<Reveal question="6. What four-letter word can be written forward, backward or upside down and still be read from left to right?">
+**NOON.**
+</Reveal>
+
+<Reveal question="7. What belongs to you but is used by others more than by you?">
+**Your name.**
+</Reveal>
+
+<Reveal question="Revision riddles: (a) In the world of ICT, I have keys but no locks, space but no room; you can enter but can't go outside. What am I? (b) Emma is Wilson's niece but not Glory's niece, although Glory is Wilson's sister and Wilson isn't married. How is Emma related to Glory? (c) How can you stand behind your father while he stands behind you? (d) Name one thing you buy to eat but never eat.">
+(a) **A keyboard.** (b) **Emma is Glory's daughter.** (c) **You stand back to back.** (d) **A plate.**
+</Reveal>
+
+<SortingGame title="Puzzle or riddle?">
+
+```sort
+@buckets Logical puzzle | Riddle
+Given the clues about salaries and siblings, who is the cashier? => Logical puzzle :: One answer, argued from clues given as true.
+Which side of the roof will the cock's egg roll to? => Riddle :: A trick that needs no extra clues.
+Who did the biggest stunt — the shooter, the carrier or the louse-skinner? => Riddle :: A dilemma tale with more than one defensible answer.
+How can a man ferry a lion, a goat and a yam across a river without losing any? => Logical puzzle :: Clues (boat size, who eats what) lead to a solution by reasoning.
+If exactly one of each suspect's statements is false, who is the murderer? => Logical puzzle :: The answer follows from the given statements.
+What has keys but no locks? => Riddle :: Wordplay; the answer (keyboard) is not derived from clues.
+```
+
+</SortingGame>
+
+---
+
+## An African Puzzle: The Lion, the Goat and the Yam
+
+A puzzle popular among the **western and eastern peoples of southern Nigeria** (Offor 2016): a man must take **a lion, a goat and a yam tuber** across a small river. The clues:
+
+1. The boat holds **the man and only one item** at a time.
+2. **Lions are carnivores**, so they eat goats.
+3. **Goats eat yams.**
+
+Try it before reading the solution:
+
+<RiverCrossing title="Lion, goat and yam" items="lion, goat, yam" eats="lion>goat, goat>yam" />
+
+<Reveal question="Show the textbook's reasoning and solution">
+**Inferences:** if the man takes the **lion** first, the goat eats the yam. If he takes the **yam** first, the lion eats the goat. So he must take the **goat** first — the lion does not eat yams.
+
+1. Take the **goat** across; return alone.
+2. Take the **yam** across. He cannot leave it with the goat, so he **brings the goat back**.
+3. Leave the goat, take the **lion** across (the lion and the yam are safe together); return alone.
+4. Finally, take the **goat** across.
+
+**Seven crossings.** *(Beyond the textbook: taking the lion across in step 2 instead of the yam, and the yam in step 3, also works in seven crossings.)*
+
+"Our fathers didn't need any formal training in logic to be able to resolve such puzzles" — but training strengthens the ability.
+</Reveal>
+
+---
+
+## A Method for Logical Puzzles
+
+<FlowDiagram title="Solving a logical puzzle">
+<FlowStep title="1. List the clues">
+Number every clue. Treat each as **true** — puzzle clues are premises, not opinions.
+</FlowStep>
+<FlowStep title="2. Unpack hidden information">
+Most clues carry an **implied fact**. "Was an **only child**" → has no brother or sister. "Married **X's sister**" → X has a sister, and the speaker is not X. "Earns **more than** the manager" → is not the manager, and does not earn the least.
+</FlowStep>
+<FlowStep title="3. Draw a grid">
+Put the people in rows and the categories in columns — the **matrix method**. Mark ✗ for every possibility a clue **rules out**.
+</FlowStep>
+<FlowStep title="4. Eliminate">
+When a row or column has only **one blank cell left**, that cell must be ✓. A ✓ then rules out the rest of its row and column.
+</FlowStep>
+<FlowStep title="5. Assume and test">
+If you get stuck, **suppose** one possibility and follow it through. If it leads to a **contradiction**, reject it. This is a *reductio ad absurdum*, used in the murder puzzles below.
+</FlowStep>
+<FlowStep title="6. Check against every clue">
+A correct solution must satisfy **all** the clues at once.
+</FlowStep>
+</FlowDiagram>
+
+---
+
+## The Textbook's Worked Puzzles
+
+### I. The oil company
+
+<LogicGrid title="Puzzle I — who holds which post?" rows="Adeshina, Okwudili, Olusegun" cols="Position: Accountant, Manager, Cashier" answer="Adeshina: Cashier; Okwudili: Manager; Olusegun: Accountant">
+
+In an oil-prospecting company in the Niger Delta, the posts of **accountant, manager and cashier** are held by **Adeshina, Okwudili and Olusegun**, not necessarily in that order.
+
+1. The **cashier**, who was an **only child**, earns the **least**.
+2. **Olusegun**, who **married Okwudili's sister**, earns **more than the manager**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Puzzle I">
+- Olusegun earns more than the manager, so he is **not the manager**. Earning more than someone, he does not earn the least, so he is **not the cashier** either. **Olusegun is the accountant.**
+- Okwudili has a sister, so he is **not an only child**, and therefore **not the cashier**. He is not the accountant (Olusegun is). **Okwudili is the manager.**
+- By elimination, **Adeshina is the cashier.**
+</Reveal>
+
+### II. The election report
+
+An election-monitoring officer, reporting on a ward made up **only of young married couples and their children**, stated:
+
+1. There were **more parents than children**.
+2. **Every boy had a sister.**
+3. There were **more boys than girls**.
+4. There were **no childless couples**.
+
+His report was **rejected** and he was reprimanded. **Why?**
+
+<Reveal question="Solution to Puzzle II">
+Let the number of families (couples) be **F**, so there are **2F parents**.
+
+- No couple is childless (4), and every boy has a sister (2). So **every family has at least one girl** — either an only child or the sister of the family's boys. Hence **girls ≥ F**.
+- There are more boys than girls (3), so **boys > girls ≥ F**. The total number of children is **boys + girls > 2F**.
+- So there are **more children than parents**, which contradicts statement 1. The report is **inconsistent**: its four statements cannot all be true together.
+</Reveal>
+
+### III. The hotel murder
+
+**Alhaji Babangida Adebayo** was found shot dead in his hotel room, and three men were arrested. They said:
+
+| Dokunbo | Uwazuruike | Mustapha |
+|---|---|---|
+| 1. "I didn't do it." | 4. "I didn't do it." | 7. "I didn't do it." |
+| 2. "I never saw Uwazuruike before." | 5. "Dokunbo and Mustapha are both friends of mine." | 8. "Dokunbo lied when he said he'd never seen Uwazuruike before." |
+| 3. "Sure, I knew Alhaji Adebayo." | 6. "Dokunbo never killed anybody." | 9. "I don't know who did it." |
+
+**Exactly one of each man's three statements is false, and exactly one man is guilty. Who is the murderer?** Test each suspect in turn:
+
+<Tabs>
+<Tab label="Suppose Mustapha did it">
+Then 7 ("I didn't do it") is **false**, and 9 ("I don't know who did it") is **false** as well — he would know. That is **two false statements** from one man. ❌ **Impossible**, so Mustapha is innocent.
+</Tab>
+<Tab label="Suppose Dokunbo did it">
+Then 1 is false, so **2 and 3 must be true**. Also 6 ("Dokunbo never killed anybody") is false, so **4 and 5 must be true**. But 2 ("I never saw Uwazuruike") and 5 ("Dokunbo is my friend") **cannot both be true**. ❌ **Contradiction**, so Dokunbo is innocent.
+</Tab>
+<Tab label="Suppose Uwazuruike did it">
+Then 4 is false, so **5 and 6 are true**: Dokunbo is his friend. So 2 is **false**, and Dokunbo's 1 and 3 are true. Mustapha's 7 is true and 8 is true (Dokunbo did lie), so his **9 is the false one** — he knows who did it. ✅ **Every man has exactly one false statement.** **Uwazuruike is the murderer.**
+</Tab>
+</Tabs>
+
+### IV. Politicians and non-politicians
+
+In a riverine community in Delta State, **politicians never tell the truth** and **non-politicians always do**. A stranger, **Mr Don Bosco**, asks the first of three natives, **"Are you a politician?"** The **second native** reports that **the first denied being a politician**. The **third native** says that **the first is a politician**. **How many of the three are politicians?**
+
+<Tabs>
+<Tab label="Native 1">
+If he is a **politician**, he lies — so he **denies** being one. If he is **not a politician**, he tells the truth — so he **denies** being one. **Either way, native 1 denied being a politician.**
+</Tab>
+<Tab label="Native 2">
+He reported that native 1 denied being a politician — which, as we just saw, is **true**. So native 2 told the truth: he is a **non-politician**.
+</Tab>
+<Tab label="Native 3">
+He says native 1 is a politician. If native 1 **is** a politician, native 3 told the truth and is a **non-politician**. If native 1 is **not**, native 3 lied and **is** a politician. So **exactly one of natives 1 and 3** is a politician.
+</Tab>
+<Tab label="Answer">
+Native 2 is a non-politician, and exactly one of natives 1 and 3 is a politician. **There is exactly one politician among the three** — though we cannot tell which of natives 1 and 3 it is.
+</Tab>
+</Tabs>
+
+### V. The casino owner
+
+**Chief Dosumu Alakia**, who ran a casino in the Alakia area of Ibadan, was shot dead. Five suspects were arraigned. Each made **three statements: two true and one false**.
+
+| Suspect | Statements |
+|---|---|
+| **Seyi Akande** | (a) "I did not kill Chief Alakia." (b) "I never owned a revolver in all my life." (c) "Nosa Igunbor did it." |
+| **Nduka Okoye** | (a) "I did not kill Chief Alakia." (b) "I never owned a revolver." (c) "The others are all passing the buck." |
+| **Musa Yahaya** | (a) "I am innocent." (b) "I never saw Wale Akindele before." (c) "Nosa Igunbor is guilty." |
+| **Nosa Igunbor** | (a) "I am innocent." (b) "Wale Akindele is the guilty one." (c) "Seyi Akande did not tell the truth when he said I did it." |
+| **Wale Akindele** | (a) "I did not kill Chief Alakia." (b) "Nduka Okoye is the guilty one." (c) "Musa Yahaya and I are old pals." |
+
+<Reveal question="Who is guilty? (show the reasoning)">
+1. Nosa's (a) "I am innocent" and (c) "Seyi lied when he said I did it" **mean the same thing**, so they are **both true or both false**. Only one of his statements is false, so **both are true**: Nosa is innocent, and his (b) is the false one.
+2. So Musa's (c) "Nosa Igunbor is guilty" is **false**, which makes Musa's (a) and (b) **true**: Musa is innocent and **has never seen Wale**.
+3. So Wale's (c) "Musa Yahaya and I are old pals" is **false**, which makes Wale's (a) and (b) **true** — and (b) says **Nduka Okoye is the guilty one**.
+4. Check Nduka: his (a) is false, so (b) and (c) must be true. They can be — he never owned a revolver, and the others (Seyi, Musa) were indeed blaming someone else. Seyi's false statement is (c). Every suspect has exactly one false statement. ✅
+
+**Nduka Okoye is guilty.**
+</Reveal>
+
+### VI. The flight crew
+
+The textbook's clue 2 reads **"Tam, who is married to Umukoro's sister…"**. "Tam" is a **misprint**: no Tam is on the crew, and the book's own solution treats the clue as being about **Gbenga**.
+
+<LogicGrid title="Puzzle VI — pilot, co-pilot, flight engineer" rows="Osagie, Umukoro, Gbenga" cols="Position: Pilot, Co-pilot, Flight engineer" answer="Osagie: Co-pilot; Umukoro: Pilot; Gbenga: Flight engineer">
+
+On a certain flight, the positions of **pilot, co-pilot and flight engineer** are held by **Osagie, Umukoro and Gbenga**, not necessarily in that order.
+
+1. The **co-pilot**, who was an **only child**, earns the **least**.
+2. **Gbenga**, who is married to **Umukoro's sister**, earns **more than the pilot**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Puzzle VI">
+- Gbenga earns more than the pilot, so he is **not the pilot**; and since he earns more than someone, he does not earn the least, so he is **not the co-pilot**. **Gbenga is the flight engineer.**
+- The co-pilot was an only child, so he **cannot be Umukoro**, who has a sister. **Osagie is the co-pilot.**
+- By elimination, **Umukoro is the pilot.**
+</Reveal>
+
+### VII. The micro-finance company
+
+<LogicGrid title="Puzzle VII — six posts in Benin City" rows="Mr Oyeshile, Mr Nduka, Mrs Alozie, Miss Bello, Mr Okoye, Miss Idemudia" cols="Position: Manager, Assistant manager, Cashier, Accountant, Front desk officer, Clerk" answer="Mr Oyeshile: Assistant manager; Mr Nduka: Cashier; Mrs Alozie: Manager; Miss Bello: Clerk; Mr Okoye: Accountant; Miss Idemudia: Front desk officer">
+
+1. The **assistant manager** is the **manager's grandson**.
+2. The **cashier** is the **accountant's son-in-law**.
+3. **Mr Oyeshile** is a **bachelor**.
+4. **Mr Nduka** is **twenty-two** years old.
+5. **Miss Bello** is the **front desk officer's step-sister**.
+6. **Mr Okoye** is the **manager's neighbour**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Puzzle VII">
+Puzzle convention: take the titles at face value. A bachelor or a "Miss" is **unmarried**, and unmarried people are assumed to have **no children or grandchildren**.
+
+1. **Manager** (has a grandson): not Mr Nduka (22 — too young), not Mr Oyeshile (bachelor), not Mr Okoye (the manager's neighbour), not the two unmarried Misses. **Mrs Alozie is the manager.**
+2. **Accountant** (has a married daughter): not Oyeshile (unmarried), not Nduka (too young), not the Misses. **Mr Okoye is the accountant.**
+3. **Cashier** (the accountant's son-in-law, so a married man): not Oyeshile (bachelor), not the Misses. **Mr Nduka is the cashier.**
+4. **Assistant manager** (the manager's grandson): the only man left is **Mr Oyeshile**.
+5. **Front desk officer:** not Miss Bello (she is the officer's step-sister). **Miss Idemudia is the front desk officer.**
+6. **Clerk:** **Miss Bello.**
+</Reveal>
+
+---
+
+## Exercises (the textbook's twelve)
+
+The textbook prints solutions only to exercises 7–12. **All twelve are solved below** — try each grid first.
+
+### Exercise 1 — the bus crew
+
+On a luxurious bus to Kaduna, the crew are the **driver, conductor and engineer**: **Adebola, Balogun and Oladipo**. Three passengers have the same names: **Mr Adebola, Mr Balogun and Mr Oladipo**. *(The textbook slips and says "on the train" — the puzzle is adapted from Copi's famous train puzzle.)*
+
+1. Mr Balogun lives in **Lokoja**.
+2. The **driver** lives **halfway between Lokoja and Ilorin**.
+3. Mr Adebola earns exactly **₦20,000** a year.
+4. **Oladipo** once **beat the conductor** at chess.
+5. The driver's **next-door neighbour**, one of the passengers, earns **exactly three times** as much as the driver.
+6. The passenger living in **Ilorin** has **the same name as the driver**.
+
+**What is the engineer's name?**
+
+<Reveal question="Solution to Exercise 1">
+- The driver's neighbour lives **halfway** (where the driver lives). That is not Mr Balogun (Lokoja). It is not Mr Adebola either: ₦20,000 is **not exactly divisible by 3**, so it cannot be exactly three times a (whole-naira) salary. **The neighbour is Mr Oladipo.**
+- So **Mr Adebola lives in Ilorin**. The Ilorin passenger shares the driver's name, so **the driver is Adebola**.
+- Oladipo beat the conductor, so **Oladipo is not the conductor**; he is not the driver either. **Oladipo is the engineer** (and Balogun the conductor).
+</Reveal>
+
+### Exercise 2 — four professionals
+
+<LogicGrid title="Exercise 2 — occupation and dress" rows="Dupe, Ebun, Chinyere, Tolu" cols="Occupation: Doctor, Lawyer, Pilot, Professor | Dress: White, Yellow, Pink, Blue" answer="Dupe: Pilot, Yellow; Ebun: Professor, Pink; Chinyere: Lawyer, White; Tolu: Doctor, Blue">
+
+Dupe, Ebun, Chinyere and Tolu are a **doctor, lawyer, pilot and professor**, and each wore a **white, yellow, pink or blue** dress.
+
+1. The **doctor** beats **Ebun** at ludo.
+2. **Chinyere and the pilot** often played Monopoly **with the women in pink and blue**.
+3. **Dupe and the professor** envied the woman in **blue**…
+4. …but she was **not the lawyer**, who **always wore white**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 2">
+- From clue 2, Chinyere is not the pilot, and **neither Chinyere nor the pilot wears pink or blue**. So between them they wear **white and yellow**.
+- The lawyer wears white (clue 4). The pilot is not the lawyer, so **Chinyere wears white and is the lawyer**, and **the pilot wears yellow**.
+- The **doctor and the professor** wear pink and blue. The professor doesn't wear blue (clue 3), so **professor → pink, doctor → blue**.
+- Dupe is not the professor, and doesn't wear blue (so is not the doctor). **Dupe is the pilot (yellow).** Ebun is not the doctor (clue 1), so **Ebun is the professor (pink)**, and **Tolu is the doctor (blue)**.
+</Reveal>
+
+### Exercise 3 — four artistes
+
+<LogicGrid title="Exercise 3 — each man's field" rows="Abel, Babs, Chris, Dani" cols="Field: Dancer, Painter, Singer, Writer" answer="Abel: Dancer; Babs: Singer; Chris: Writer; Dani: Painter">
+
+1. Abel and Chris were **in the audience** the night the **singer** made his debut.
+2. Both **Babs and the writer** have had their portraits painted from life **by the painter**.
+3. The **writer**, whose **biography of Dani** was a bestseller, is planning to write **the biography of Abel**.
+4. **Abel has never heard of Chris.**
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 3">
+- The writer is not Babs (clue 2), not Dani or Abel (their biographer, clue 3). **Chris is the writer.**
+- The singer is not Abel or Chris (clue 1).
+- The painter is not Babs (clue 2) and not Chris (the writer). Nor is he Abel: the painter painted the writer (Chris) from life, so he knows Chris, yet Abel has **never heard of Chris** (clue 4). **Dani is the painter.**
+- So **Babs is the singer** and **Abel is the dancer**.
+</Reveal>
+
+### Exercise 4 — five war buddies
+
+<LogicGrid title="Exercise 4 — occupation and city" rows="Wole, Bola, Peju, Haruna, Nosa" cols="Occupation: Printer, Writer, Barber, Neurologist, Heating-contractor | City: Wole Plains, Bolaville, Pejuburg, Haruna Ferry, Nosaville" answer="Wole: Barber, Haruna Ferry; Bola: Neurologist, Wole Plains; Peju: Heating-contractor, Bolaville; Haruna: Printer, Nosaville; Nosa: Writer, Pejuburg">
+
+1. **No man lives in the city with a name like his**, and **no man's occupation has the same initial** as his name **or** his city.
+2. The **barber** doesn't live in **Pejuburg**.
+3. **Bola** is neither the heating-contractor nor the printer, and doesn't live in Pejuburg or Haruna Ferry.
+4. **Mr Haruna lives in Nosaville** and is neither the barber nor the writer.
+5. **Wole** does not live in Bolaville; nor does **Nosa**, who is neither a barber nor a heating-contractor.
+
+**Can you determine the city in which Nosa lives?**
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 4">
+- **Haruna** (Nosaville): not barber or writer (clue 4), not heating-contractor (H = his initial) or neurologist (N = his city's initial). **Haruna is the printer.**
+- **Bola**: not heating-contractor or printer, and not barber (B = his initial), so he is the writer or the neurologist. His city is not Bolaville, Pejuburg, Haruna Ferry or Nosaville, so **Bola lives in Wole Plains**. Then he can't be the writer (W), so **Bola is the neurologist**.
+- **Nosa**: not barber or heating-contractor; the printer and neurologist are taken. **Nosa is the writer.**
+- Bolaville can't be Wole's or Nosa's (clue 5), and Peju can't live in Pejuburg, so **Peju lives in Bolaville**. He can't be the barber (B), so **Peju is the heating-contractor**, and **Wole is the barber**.
+- The barber doesn't live in Pejuburg, so **Wole lives in Haruna Ferry**, leaving **Nosa in Pejuburg**.
+
+**Yes — Nosa lives in Pejuburg.**
+</Reveal>
+
+### Exercise 5 — who ate the apple?
+
+After someone in the Garden of Eden ate the apple, **only one resident answered every question truthfully**. The others all told some lies, **no two of them the same number**.
+
+| Speaker | (i) | (ii) | (iii) | (iv) |
+|---|---|---|---|---|
+| **Adam** | The snake ate the apple. | The snake was in the garden. | Eve has not weeded the garden. | Abel failed to do his chores. |
+| **Cain** | Abel ate the apple. | Abel doesn't always tell the truth. | Mother has always preferred Abel. | The snake never lies. |
+| **Abel** | Cain ate the apple. | The snake can't see over the hedge. | I have done my chores. | The snake ate the apple. |
+| **Snake** | I was not in the garden. | Eve ate the apple. | Cain is Eve's favourite son. | I can't see over the hedge. |
+| **Eve** | Adam ate the apple. | We are not all equally truthful. | I was out weeding the garden. | The snake lied. |
+
+<Reveal question="Solution to Exercise 5">
+Four liars with **different** numbers of lies, out of four statements each, must have told **1, 2, 3 and 4 lies**. One speaker told none.
+
+- **Cain can't be the truthful one:** he says "the snake never lies", which would make **two** truthful speakers.
+- **Abel can't be:** he says both Cain and the snake ate the apple.
+- **Adam can't be:** then Eve has 2 lies, Cain would need 3, and Abel could have only 2 or 3 — one number too few to go round.
+- **The snake can't be:** then Cain has 2 lies, Eve must have 3, and Adam and Abel can each have only 2 or 3 — again impossible.
+- **Eve is truthful**, and it works. Adam ate the apple, Eve weeded the garden, and the snake lied. The snake then has **1** lie (only "Eve ate the apple" is false). Cain has **3**: (i), (iii) and (iv) are false; (ii) is true. Adam has **4**: all false, so Abel did do his chores. Abel has **2**: (i) and (iv) are false.
+
+The counts 0, 1, 2, 3, 4 are all different. ✅ **Adam ate the apple.**
+</Reveal>
+
+### Exercise 6 — shopping at UTC Stores
+
+<LogicGrid title="Exercise 6 — what did each woman buy?" rows="Mrs Adamu, Ms Bako, Ms Dudu, Ms Emman, Ms Fika, Ms Tafi" cols="Bought: Book, Dress, Handbag, Necktie, Hat, Lamp" answer="Mrs Adamu: Book; Ms Bako: Dress; Ms Dudu: Handbag; Ms Emman: Necktie; Ms Fika: Lamp; Ms Tafi: Hat">
+
+Six women each went straight to the floor selling the one article she wanted: a **book, dress, handbag, necktie, hat or lamp**.
+
+1. **All except Mrs Adamu** entered the lift on the **first floor**; **two men** also got in.
+2. **Ms Dudu and the necktie buyer** got off at the **2nd floor**. **Dresses** are sold on the **3rd**. The **two men** got off at the **4th**.
+3. The **lamp buyer** got off at the **5th**, leaving **Ms Tafi** alone to the **6th**.
+4. Next day **Ms Bako**, who got the **handbag** as a gift from **one of the women who got off at the 2nd floor**, met her husband **returning the necktie** another woman had given him.
+5. **Books** are sold on the **1st floor**. **Ms Fika** was the **sixth person** out of the lift.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 6">
+- Mrs Adamu didn't take the lift up, so she shopped on the 1st floor: **the book**.
+- The lift carried 7 people. Leaving in order: 2 at the 2nd floor, then either one woman at the 3rd and two men at the 4th, or three at the 4th. Either way **the 6th person out is the lamp buyer** at the 5th floor. **Ms Fika bought the lamp.**
+- The handbag came from a woman who left at the 2nd floor. The necktie buyer bought the necktie, so **Ms Dudu bought the handbag**.
+- The necktie buyer also left at the 2nd floor. Bako didn't buy it (clue 4), and Fika and Tafi got off higher up. **Ms Emman bought the necktie.**
+- Ms Tafi rode alone to the 6th floor, so she didn't buy the dress (3rd floor): **Ms Tafi bought the hat**. That leaves **Ms Bako with the dress**.
+</Reveal>
+
+### Exercise 7 — three pensioners
+
+<LogicGrid title="Exercise 7 — rank, unit and year of retirement" rows="Nduka Eze, Okezie Ogbonna, Chukwumerije Okafor" cols="Rank: Sergeant, Corporal, Sergeant-Major | Unit: Royal Signals, Catering Corps, Ordnance Corps | Retired: 1967, 1968, 1970" answer="Nduka Eze: Corporal, Royal Signals, 1968; Okezie Ogbonna: Sergeant, Catering Corps, 1967; Chukwumerije Okafor: Sergeant-Major, Ordnance Corps, 1970">
+
+1. They retired in **1967, 1968 and 1970**.
+2. **Nduka Eze** served with the **Royal Signals** and **never became Sergeant-Major**.
+3. The ex-cook **Sergeant** from the **Catering Corps** retired **earlier than the Corporal**.
+4. **Okezie Ogbonna** didn't serve in the **Ordnance Corps**; **Chukwumerije Okafor** left the army in **1970**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 7">
+Nduka is in the Royal Signals; Okezie is not in Ordnance, so **Okezie is in the Catering Corps**, and Chukwumerije is in Ordnance. The Catering man is the Sergeant, so **Okezie is the Sergeant**. Nduka never became Sergeant-Major, so **Nduka is the Corporal** and **Chukwumerije the Sergeant-Major**. Chukwumerije retired in 1970. The Sergeant retired before the Corporal, so **Okezie 1967, Nduka 1968**. (This agrees with the textbook's solution.)
+</Reveal>
+
+### Exercise 8 — three couples at Christmas
+
+<LogicGrid title="Exercise 8 — wife, activity and place" rows="Bello Saheed, Amos Yakubu, Dan Okoro" cols="Wife: Grace, Shade, Bimbo | Activity: Watching films, Biking, Jogging | Place: Ventura, Agodi Gardens, University of Ibadan" answer="Bello Saheed: Bimbo, Biking, Ventura; Amos Yakubu: Grace, Jogging, University of Ibadan; Dan Okoro: Shade, Watching films, Agodi Gardens">
+
+1. **Amos and Grace Yakubu** neither went to watch films nor visited the **Ventura**.
+2. **Dan Okoro** and his wife spent their holiday in **Agodi Gardens**.
+3. One couple went **jogging at the University of Ibadan**; **Shade and her husband Dan** didn't go biking.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 8">
+Amos–Grace and Dan–Shade are couples, so **Bello–Bimbo**. Dan is at Agodi; Amos is not at the Ventura, so **Amos is at UI** and **Bello at the Ventura**. Jogging was at UI, so **Amos jogged**. Dan didn't go biking, so **Dan watched films** and **Bello went biking**. (This agrees with the textbook.)
+</Reveal>
+
+### Exercise 9 — visitors from outer space
+
+<LogicGrid title="Exercise 9 — planet, transport and first contact" rows="Chulpex, Lin-Dar, Mr Spack" cols="Planet: Jupiter, Mara 7, Typhonia | Transport: Rocket ship, Flying saucer, Transporter beam | First contact: 1974, 1982, 1990" answer="Chulpex: Typhonia, Transporter beam, 1990; Lin-Dar: Jupiter, Flying saucer, 1974; Mr Spack: Mara 7, Rocket ship, 1982">
+
+An author claims three aliens have visited him.
+
+1. The years of first contact were **1974, 1982 and 1990**; the planets are **Jupiter, Mara 7 and Typhonia**.
+2. The being from **Jupiter** first visited **eight years before Mr Spack**; **Chulpex** does not travel by **rocket ship**.
+3. **Lin-Dar** pilots a **flying saucer**; the alien who arrived by **transporter beam in 1990** was not from **Mara 7**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 9">
+Lin-Dar flies the saucer; Chulpex doesn't use the rocket, so **Chulpex uses the transporter beam (1990)** and **Spack the rocket**. Spack is not 1990, and Jupiter came eight years before Spack, so **Spack 1982, Jupiter 1974** — that is **Lin-Dar**. Chulpex is not from Mara 7, so **Chulpex is from Typhonia** and **Spack from Mara 7**. (This agrees with the textbook.)
+</Reveal>
+
+### Exercise 10 — the mail-order catalogue
+
+<LogicGrid title="Exercise 10 — item, colour and size" rows="Mrs Ajibade, Mrs Ogunlade, Mrs Aiyenuro, Mrs Ashaye" cols="Item: Shell suit, Beach dress, Wrapover dress, Casual jacket | Colour: Black, Red, White, Yellow | Size: 12, 14, 16, 18" answer="Mrs Ajibade: Shell suit, Red, 18; Mrs Ogunlade: Beach dress, Black, 14; Mrs Aiyenuro: Wrapover dress, White, 16; Mrs Ashaye: Casual jacket, Yellow, 12">
+
+1. The **size 12** garment ordered by **Mrs Ashaye** isn't the **black beach dress**; the lady who ordered a **red** item wants **size 18**.
+2. The **shell suit** that **Mrs Ajibade** wants is the **next size up from the wrapover dress**; the **white** garment **Mrs Aiyenuro** ordered isn't a **casual jacket**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 10">
+The beach dress is black, and Ashaye (size 12) didn't order it. Aiyenuro's garment is white, so it isn't the black beach dress, isn't the jacket, and isn't Ajibade's shell suit: **Aiyenuro has the white wrapover dress**. So **Ogunlade has the black beach dress** and **Ashaye the casual jacket**. Ashaye's size 12 isn't red (red is 18), black or white, so **Ashaye's is yellow** and **Ajibade's is red, size 18**. The shell suit is one size above the wrapover, so **Aiyenuro is 16**, leaving **Ogunlade 14**. (This agrees with the textbook.)
+</Reveal>
+
+### Exercise 11 — the best-selling thrillers
+
+<LogicGrid title="Exercise 11 — author, month and copies sold" rows="Because of Me, Inner Eyes, Man of War, Dark Heart" cols="Author: Samson Edigin, Frank Iyokho, John Ekore, Bola Adeshina | Month: April, June, August, November | Copies: 12 000, 15 000, 18 000, 21 000" answer="Because of Me: Samson Edigin, April, 21 000; Inner Eyes: Frank Iyokho, August, 15 000; Man of War: John Ekore, November, 18 000; Dark Heart: Bola Adeshina, June, 12 000">
+
+1. **Samson Edigin's "Because of Me"** sold **6,000 more** than **"Inner Eyes"**, which did **not** come out in **April**.
+2. In the **second half of the year**, **"Man of War"** sold **18,000**, which was different from **"Dark Heart"**.
+3. **Bola Adeshina's** book came out in **June**; **Frank Iyokho's** thriller, which sold **15,000**, wasn't a **November** book.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 11">
+Man of War sold 18,000, so Because of Me = Inner Eyes + 6,000 must be **21,000 and 15,000**, and **Dark Heart sold 12,000**. Frank's book sold 15,000, so **Frank wrote Inner Eyes**. It came out in neither April nor November, and June is Bola's, so **Inner Eyes: August**. Man of War is second-half, so **November**. Bola's June book is therefore **Dark Heart**, **John Ekore wrote Man of War**, and **Because of Me came out in April**. (This agrees with the textbook.)
+</Reveal>
+
+### Exercise 12 — the Artful Omego
+
+<LogicGrid title="Exercise 12 — where, and how much?" rows="Mr Azubuike, Mr Onyeka, Mr Osasuwa, Mr Ajayi, Mr Abu" cols="Place: Owelle Quarters, Broad Street, Nnamdi Crescent, Ojukwu Square, Okpala Square | Cash (₦): 1 000, 2 000, 4 000, 8 000, 10 000" answer="Mr Azubuike: Owelle Quarters, 8 000; Mr Onyeka: Broad Street, 2 000; Mr Osasuwa: Nnamdi Crescent, 10 000; Mr Ajayi: Ojukwu Square, 1 000; Mr Abu: Okpala Square, 4 000">
+
+A young pickpocket robbed five men in Enugu of **₦1,000, ₦2,000, ₦4,000, ₦8,000 and ₦10,000**.
+
+1. **Mr Azubuike**, robbed at **Owelle Quarters**, had **less** than **Mr Osasuwa**, who wasn't robbed at **Ojukwu Square**. The **Broad Street** victim lost **₦2,000**.
+2. One victim lost **₦8,000 and a silver pocket knife**; **Mr Abu** was carrying **less** than that.
+3. **Mr Ajayi**, not robbed in **Nnamdi Crescent**, lost a **flask of brandy** and **less than ₦10,000**.
+4. The **Okpala Square** victim lost a **lucky charm** and **twice as much cash as Mr Onyeka**, who wasn't the one who lost his **watch and chain**.
+
+</LogicGrid>
+
+<Reveal question="Solution to Exercise 12">
+The Okpala victim had twice Onyeka's cash: ₦2,000 → ₦1,000 is ruled out, because Broad Street holds the ₦2,000. ₦8,000 → ₦4,000 is ruled out, because the ₦8,000 victim lost a knife, not a charm. So **Okpala = ₦4,000 and Onyeka = ₦2,000**, making **Onyeka the Broad Street victim**. Abu and Ajayi both had under ₦8,000 and under ₦10,000, so they share **₦1,000 and ₦4,000**. Azubuike had less than Osasuwa, so **Azubuike ₦8,000, Osasuwa ₦10,000**. The Okpala victim (₦4,000, charm) isn't Ajayi (brandy), so **Abu is at Okpala with ₦4,000** and **Ajayi has ₦1,000**. Osasuwa wasn't at Ojukwu Square, so **Osasuwa: Nnamdi Crescent** and **Ajayi: Ojukwu Square**. (This agrees with the textbook.)
+</Reveal>
+
+---
+
+## Conclusion
+
+Puzzles are **more intellectually demanding than riddles** because they supply **clues** from which answers must be **argued**. Riddles challenge the intellect, but their **ultimate significance is entertainment**. Logical puzzles exercise and sharpen our natural capacity to **use good arguments in resolving our problems**. Logic clears away the **mental cobwebs** that befog our reasoning.
+
+### Looking back over GST212
+
+The textbook closes by reviewing the whole course. Philosophy is a **humanistic quest for understanding** an uncertain world. It produces **worldviews** that **critical thinking** keeps revising, for the sake of **human well-being and the good life**. Along the way we met the **branches and problems** of philosophy, its **basic concepts**, **ethics** and its **theories**, **science** and **rational inquiry**. Then came the tools of **logic**: arguments, validity and soundness; **meaning and definition**; **relations**; **fallacies**; and finally, **puzzles**. Together, the book hopes, they give you **"the required blueprint to make error-free decisions in life"**.
+
+---
+
+## Quick Check
+
+<MCQ question="According to Offor, training in logic mainly…">
+<Option>gives people an ability they naturally lack</Option>
+<Option correct>sharpens a natural ability by clearing away the 'mental cobwebs' that befog reasoning</Option>
+<Option>replaces reasoning with memorised rules</Option>
+<Option>teaches people to win arguments by any means</Option>
+<Explain>The ability to tell good from bad reasoning is natural; logic sharpens it.</Explain>
+</MCQ>
+
+<MCQ question="A logical puzzle differs from a riddle because a puzzle…">
+<Option>is purely for entertainment</Option>
+<Option>can have many equally acceptable answers</Option>
+<Option correct>supplies clues given as true, from which one answer is argued</Option>
+<Option>needs no reasoning at all</Option>
+<Explain>Bello: a puzzle is a question plus information given as true; the answer is the conclusion of an argument from those premises. A riddle may admit several arguable answers and is valued mainly for entertainment.</Explain>
+</MCQ>
+
+<MCQ question="In the lion–goat–yam puzzle, which item must the man take across first?">
+<Option>The lion</Option>
+<Option correct>The goat</Option>
+<Option>The yam</Option>
+<Option>Any of them</Option>
+<Explain>Taking the lion leaves the goat with the yam; taking the yam leaves the lion with the goat. Only the goat can go first.</Explain>
+</MCQ>
+
+<MCQ question="In the politicians puzzle, how many of the three natives are politicians?">
+<Option>None</Option>
+<Option correct>Exactly one</Option>
+<Option>Exactly two</Option>
+<Option>All three</Option>
+<Explain>Native 2 told the truth (anyone would deny being a politician), and exactly one of natives 1 and 3 must be lying.</Explain>
+</MCQ>
+
+<MCQ question="The process of elimination in a logical puzzle removes options that…">
+<Option>are too long to read</Option>
+<Option correct>contradict the established clues</Option>
+<Option>do not sound pleasant</Option>
+<Option>were proposed by other students</Option>
+<Explain>Each clue rules out possibilities; what remains must be the answer.</Explain>
+</MCQ>
+
+<MCQ question="Which tool is recommended for organising the clues of a complex logic puzzle?">
+<Option>A stopwatch</Option>
+<Option correct>A grid or matrix of the possibilities</Option>
+<Option>An emotional journal</Option>
+<Option>A dictionary</Option>
+<Explain>A grid (the matrix method) records what each clue rules out and makes forced conclusions visible.</Explain>
+</MCQ>
+
+<MCQ question="'Two fathers and two sons went fishing, but only three fish were caught, one each.' The explanation is that…">
+<Option>one fish escaped</Option>
+<Option correct>there were only three people — a grandfather, a father and a son</Option>
+<Option>one person caught nothing</Option>
+<Option>the riddle is contradictory</Option>
+<Explain>The middle man is both a father and a son.</Explain>
+</MCQ>
+
+## Practice Questions
+
+<Reveal question="1. Distinguish a logical puzzle from a riddle, with examples.">
+A logical puzzle (Bello 2000) is a question or series of questions with a mass of information given as true; the solution consists of answers supported by arguments whose premises come from the puzzle's statement (e.g. finding who is the cashier from clues about salaries and siblings). A riddle needs no extra information, may have more than one acceptable answer if its proponent can argue for it, sharpens mental alertness and is valued mainly for entertainment (e.g. "Where will the survivors be buried?"; the Loma dilemma tale "Who did the biggest stunt?").
+</Reveal>
+
+<Reveal question="2. Solve the lion–goat–yam puzzle and explain your reasoning.">
+The boat holds the man and one item; lions eat goats and goats eat yams. The goat must go first, because leaving it with either other item is fatal. Take the goat across and return; take the yam across and bring the goat back; take the lion across and return; take the goat across — seven crossings, with nothing ever eaten.
+</Reveal>
+
+<Reveal question="3. Describe a general method for solving logical puzzles.">
+List and number the clues, treating them as true. Unpack the hidden facts ("only child" means no siblings; "earns more than the manager" means neither the manager nor the lowest earner). Draw a grid of people against categories and mark the possibilities each clue rules out. Use elimination: a row or column with one blank left must be ✓. When stuck, assume one possibility and follow it through — reject it if it leads to a contradiction. Finally, check the solution against every clue.
+</Reveal>
+
+<Reveal question="4. Explain why the election officer's report (Puzzle II) was rejected.">
+With F families there are 2F parents. No childless couples and "every boy had a sister" mean every family has at least one girl, so girls ≥ F. More boys than girls means boys > girls ≥ F, so children > 2F — more children than parents, contradicting the first statement. The report is inconsistent.
+</Reveal>
+
+<Takeaway>
+- **Logic sharpens a natural ability** — it clears the **"mental cobwebs"** (Offor). Solving puzzles is **"exercise in reasoning"**.
+- **Puzzle** (Bello): questions plus **clues given as true**; one answer, **argued from the clues**. **Riddle**: no extra clues; possibly **several arguable answers**; valued for **entertainment**.
+- African tradition is rich in both: **moonlight riddle sessions**, **dilemma tales**, the **lion–goat–yam** crossing (goat first; seven crossings).
+- **Method:** list the clues → unpack hidden facts → **grid** → **eliminate** → **assume and test** (reductio) → check every clue.
+- Worked answers: the oil company (Olusegun accountant, Okwudili manager, Adeshina cashier); the election report (inconsistent); the hotel murder (**Uwazuruike**); politicians (**exactly one**); the casino (**Nduka Okoye**); the flight crew (Gbenga engineer, Osagie co-pilot, Umukoro pilot); the micro-finance company (Mrs Alozie manager).
+</Takeaway>
+
+## Exam Tips
+
+- Know **Bello's definition of a logical puzzle** and at least **three differences** between puzzles and riddles.
+- Be able to **solve the lion–goat–yam puzzle** and explain **why the goat goes first**.
+- For "who is guilty?" puzzles, use **assume and test**: suppose each suspect is guilty in turn and count the false statements.
+- **Show your reasoning.** Examiners reward the chain of inferences, not just the final answer.

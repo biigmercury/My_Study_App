@@ -1,8 +1,9 @@
 ---
 title: Combinatorial Methods
+description: "The Fundamental Counting Principle (Multiplication Principle); Factorials; Permutations: Order Matters; Combinations: Order Does NOT Matter; Permutations vs Combinations: A Decision Guide; The Binomial Theorem; Multinomial Coefficients — with worked examples."
+duration: "50 min"
+difficulty: "intermediate"
 ---
-
-# Combinatorial Methods
 
 Before you can calculate probabilities in many real-world situations, you need to be able to **count**. How many possible outcomes are there? How many ways can an event occur? Combinatorial methods give you systematic techniques to answer these questions — without having to list everything out.
 
@@ -132,7 +133,7 @@ $$P(n,r) = C(n,r) \times r! \implies C(n,r) = \frac{P(n,r)}{r!} = \frac{n!}{r!(n
 
 From a committee of 10 people, we want to select a sub-committee of 3 (no titles, just membership). How many ways?
 
-Order does not matter — {Alice, Bob, Carol} is the same committee as {Carol, Alice, Bob}.
+Order does not matter — $\{\text{Alice, Bob, Carol}\}$ is the same committee as $\{\text{Carol, Alice, Bob}\}$.
 
 $$C(10, 3) = \binom{10}{3} = \frac{10!}{3!(10-3)!} = \frac{10!}{3! \times 7!} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = \frac{720}{6} = 120 \text{ ways}$$
 
@@ -163,7 +164,7 @@ flowchart TD
 **Order does not matter (use combination) when:**
 - Selecting a group (committee, team, sample) with no roles
 - Choosing items from a menu (the order you list them doesn't change the meal)
-- Drawing cards from a deck (a hand of {A, K, Q} is the same regardless of draw order)
+- Drawing cards from a deck (a hand of $\{\text{A, K, Q}\}$ is the same regardless of draw order)
 
 ---
 

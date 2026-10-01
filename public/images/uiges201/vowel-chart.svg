@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 388" width="520" height="388" font-family="'Noto Serif', 'Times New Roman', serif">
+  <rect width="520" height="388" fill="#ffffff"/>
+  <text x="260" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#0b1f3a">The 12 pure vowels of English</text>
+  <!-- axis labels -->
+  <g font-family="Arial, sans-serif" font-size="13" fill="#4a5a70" font-weight="700">
+    <text x="128" y="50" text-anchor="middle">Front</text>
+    <text x="283" y="50" text-anchor="middle">Central</text>
+    <text x="438" y="50" text-anchor="middle">Back</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="12" fill="#4a5a70" text-anchor="end">
+    <text x="92" y="68">Close</text>
+    <text x="110" y="148">Half-close</text>
+    <text x="133" y="228">Half-open</text>
+    <text x="160" y="308">Open</text>
+  </g>
+  <!-- quadrilateral -->
+  <g stroke="#9aa8ba" stroke-width="1.5" fill="none">
+    <path d="M100 64 L440 64 L440 304 L170 304 Z"/>
+    <line x1="123" y1="144" x2="440" y2="144" stroke-dasharray="5 4"/>
+    <line x1="147" y1="224" x2="440" y2="224" stroke-dasharray="5 4"/>
+    <line x1="283" y1="64" x2="305" y2="304" stroke-dasharray="5 4"/>
+  </g>
+  <!-- vowels: spread/neutral in blue, rounded in orange -->
+  <g font-size="26" text-anchor="middle">
+    <g fill="#0b6fb3">
+      <circle cx="116" cy="78" r="4"/><text x="116" y="104">iː</text>
+      <circle cx="156" cy="122" r="4"/><text x="174" y="128">ɪ</text>
+      <circle cx="150" cy="196" r="4"/><text x="172" y="202">e</text>
+      <circle cx="190" cy="282" r="4"/><text x="212" y="290">æ</text>
+      <circle cx="292" cy="160" r="4"/><text x="312" y="166">ɜː</text>
+      <circle cx="292" cy="206" r="4"/><text x="312" y="212">ə</text>
+      <circle cx="318" cy="266" r="4"/><text x="336" y="272">ʌ</text>
+      <circle cx="426" cy="294" r="4"/><text x="400" y="296">ɑː</text>
+    </g>
+    <g fill="#c2410c">
+      <circle cx="426" cy="78" r="4"/><text x="402" y="88">uː</text>
+      <circle cx="372" cy="118" r="4"/><text x="354" y="122">ʊ</text>
+      <circle cx="426" cy="214" r="4"/><text x="402" y="216">ɔː</text>
+      <circle cx="430" cy="262" r="4"/><text x="406" y="264">ɒ</text>
+    </g>
+  </g>
+  <!-- legend -->
+  <g font-family="Arial, sans-serif" font-size="12.5" fill="#24364f">
+    <circle cx="110" cy="338" r="6" fill="#0b6fb3"/><text x="122" y="342">spread / neutral lips</text>
+    <circle cx="290" cy="338" r="6" fill="#c2410c"/><text x="302" y="342">rounded lips</text>
+    <text x="260" y="362" text-anchor="middle" fill="#4a5a70">The mark ː shows a long vowel.</text>
+    <text x="260" y="377" text-anchor="middle" fill="#4a5a70">Each dot shows where the highest part of the tongue is.</text>
+  </g>
+</svg>

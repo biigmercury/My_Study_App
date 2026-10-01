@@ -1,8 +1,9 @@
 ---
 title: Recurrence Relations
+description: "Modeling with Recurrence Relations; Solving Linear Homogeneous Recurrence Relations; What if there is only one root? — with worked examples."
+duration: "45 min"
+difficulty: "advanced"
 ---
-
-# Recurrence Relations
 
 In the Mathematical Induction topic, we explored recursively defined sequences (like the Fibonacci sequence), where a term is defined by calculating the terms that came immediately before it. 
 
@@ -19,7 +20,7 @@ If you don't provide **initial conditions** (like $a_0 = 1$), a recurrence relat
 Recurrence relations are incredibly useful for modeling real-world compounding scenarios and dynamic systems.
 
 ### Worked Example 1: Financial Modeling
-You deposit $\$10,000$ into a bank yielding $5\%$ interest compounded annually. How much money is in the account after 30 years?
+You deposit \$10,000 into a bank yielding $5\%$ interest compounded annually. How much money is in the account after 30 years?
 
 1. **Let $P_n$ be the amount after $n$ years.**
 2. **Build the Relation:** To find this year's money, we take last year's money, and add $5\%$ of last year's money to it.
@@ -33,7 +34,7 @@ $P_2 = 1.05 P_1 = 1.05(1.05 P_0) = (1.05)^2 P_0$
 $P_n = (1.05)^n P_0$
 
 Now we can bypass the recursive loop entirely. To find the money after 30 years, we just plug in $n=30$:
-$P_{30} = (1.05)^{30} \cdot 10,000 = \$43,219.42$.
+$P_{30} = (1.05)^{30} \cdot 10{,}000 \approx 43{,}219.42$, i.e. about \$43,219.42.
 
 ---
 

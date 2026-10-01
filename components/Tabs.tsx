@@ -34,7 +34,11 @@ export default function Tabs({ children }: { children: React.ReactNode }) {
           </button>
         ))}
       </div>
-      <div className="px-4 py-1 [&>*:first-child]:mt-3 [&>*:last-child]:mb-3">{tabs[active].props.children}</div>
+      {/* Keyed by tab so each panel mounts fresh — otherwise React reuses a stateful component
+          (TruthTable, RelationGraph…) across tabs and it keeps the previous tab's state. */}
+      <div key={active} className="px-4 py-1 [&>*:first-child]:mt-3 [&>*:last-child]:mb-3">
+        {tabs[active].props.children}
+      </div>
     </div>
   )
 }

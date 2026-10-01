@@ -42,6 +42,23 @@ import QueryDesignGrid from '@/components/interactive/QueryDesignGrid'
 import AccessFormReport from '@/components/interactive/AccessFormReport'
 import SortingGame from '@/components/interactive/SortingGame'
 import TruthTable from '@/components/interactive/TruthTable'
+import RelationGraph from '@/components/interactive/RelationGraph'
+import RiverCrossing from '@/components/interactive/RiverCrossing'
+import LogicGrid from '@/components/interactive/LogicGrid'
+import PhonemeChart from '@/components/interactive/PhonemeChart'
+import PronunciationList from '@/components/interactive/PronunciationList'
+import StressPicker from '@/components/interactive/StressPicker'
+import ScansionPad from '@/components/interactive/ScansionPad'
+import DocAnatomy from '@/components/interactive/DocAnatomy'
+import OrderPuzzle from '@/components/interactive/OrderPuzzle'
+import ReadingSpeed from '@/components/interactive/ReadingSpeed'
+import ErrorSpotter from '@/components/interactive/ErrorSpotter'
+import Checklist from '@/components/interactive/Checklist'
+import Timeline from '@/components/interactive/Timeline'
+import PlacementSim from '@/components/interactive/PlacementSim'
+import SiwesLetterBuilder from '@/components/interactive/SiwesLetterBuilder'
+import LogEntryCoach from '@/components/interactive/LogEntryCoach'
+import QuestionDrill from '@/components/interactive/QuestionDrill'
 
 export const mdxComponents: MDXComponents = {
   CodeBlock,
@@ -88,6 +105,23 @@ export const mdxComponents: MDXComponents = {
   AccessFormReport,
   SortingGame,
   TruthTable,
+  RelationGraph,
+  RiverCrossing,
+  LogicGrid,
+  PhonemeChart,
+  PronunciationList,
+  StressPicker,
+  ScansionPad,
+  DocAnatomy,
+  OrderPuzzle,
+  ReadingSpeed,
+  ErrorSpotter,
+  Checklist,
+  Timeline,
+  PlacementSim,
+  SiwesLetterBuilder,
+  LogEntryCoach,
+  QuestionDrill,
 
   Analogy: ({ children }: { children: React.ReactNode }) => (
     <div className="my-6 rounded-xl border-l-4 border-brand-sky bg-blue-50 dark:bg-blue-950/30 p-4">

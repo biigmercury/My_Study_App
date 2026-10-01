@@ -1,8 +1,150 @@
 ---
 title: "Managing Your Logbook"
-description: "Content coming soon"
+description: "The physical logbook and the portal's training logs, the daily flow (do it, write it the same day, type it regularly), weak versus strong entries, a live entry coach, a model week for a Computer Science student, and the weekly habits that keep you safe."
 duration: "25 min"
 difficulty: "beginner"
 ---
 
-Content for this topic hasn't been added yet. Drop your course materials and this page will be updated with full study notes, worked examples, and exam tips.
+> **Source:** *The Ultimate UI SIWES Guide*, Chapter 6. The model week and the Task–Tools–Result–Learning pattern are *beyond the guide*.
+
+"The logbook is where most students **quietly sabotage themselves**. Here is how to stay ahead."
+
+## How It Works
+
+You'll be given a **physical SIWES logbook** for your daily technical activities, and you must **also type those entries into the portal**.
+
+<FlowDiagram title="The daily flow">
+<FlowStep title="1. Do the work">
+Take notes on your phone as you go: the task, the tools, the numbers.
+</FlowStep>
+<FlowStep title="2. Write it in the physical logbook the same day">
+Neat, dated and specific. Get your supervisor's signature as required.
+</FlowStep>
+<FlowStep title="3. Type it into the portal regularly, entry by entry">
+At least **twice a week**. Never batch it for the final week.
+</FlowStep>
+</FlowDiagram>
+
+The portal's log page shows your entries **day by day, week by week** ("Week 3 of 12" in the guide's screenshot). Each entry is marked **SAVED** and can be edited or deleted. The page also has buttons to **upload your weekly scanned log** and to **chat on this week**; follow your coordinator's instruction on whether scans are required.
+
+![The portal's Daily and Weekly Scanned Logs page, showing Week 3 of 12 with saved entries for Monday 19th, Tuesday 20th and Wednesday 21st January 2026 — wiring and fittings on a 2-room project, troubleshooting loose terminals and damaged accessories, and installing chandeliers — plus buttons to upload a weekly scanned log and chat on this week](/images/csc299/portal-weekly-logs.jpg)
+
+*The guide author's own portal log during his SIWES at an electrical company (Week 3 of 12).*
+
+> 💡 **Mercury's tip.** "**Update the portal at least twice a week.** Batching everything for the final week is how portal downtime and forgetfulness wreck people."
+
+---
+
+## What a Good Entry Looks Like
+
+> **Weak:** *"Worked on the computer today."*
+>
+> **Strong:** *"Assisted in setting up the office network. Crimped RJ45 cables, tested connections with a LAN tester, and configured IP addresses on 4 workstations."*
+
+"**Name the tools, the tasks, and what you learned.** Your logbook feeds your report and your defence, so detailed entries now mean an easier life later."
+
+A simple pattern for every entry *(beyond the guide)*:
+
+| Part | Question | Example |
+|---|---|---|
+| **Task** | What did I do? | *Set up three new staff laptops* |
+| **Tools** | With what? | *Windows 11 installer, Microsoft 365, the company VPN client* |
+| **Result** | What came out of it, and how much? | *3 laptops ready; 1 driver problem fixed* |
+| **Learning** | What did I learn or understand? | *how domain accounts and group policies are applied* |
+
+<LogEntryCoach />
+
+<SortingGame title="Weak or strong entry?">
+
+```sort
+@buckets Weak | Strong
+Worked on the computer today. => Weak :: The guide's own example — no task, tool or outcome.
+Configured a TP-Link router for the accounts unit: set the SSID and WPA2 password, reserved 5 static IPs for printers. => Strong :: Tool, task, numbers.
+Did some typing in the office. => Weak :: What was typed? With what? How much?
+Cleaned and validated 1,200 customer records in Excel using TRIM, Remove Duplicates and conditional formatting; found 37 duplicates. => Strong :: Specific tools and a measurable result.
+Same as yesterday. => Weak :: It gives your report and your panel nothing.
+Debugged the login page of the company's PHP website: a missing session_start() was causing logouts; tested the fix in Chrome and Firefox. => Strong :: Problem, cause, fix, test — great defence material.
+Helped my supervisor with various tasks. => Weak :: "Various tasks" is the vaguest phrase possible.
+Observed a server back-up: learnt how the weekly full back-up and daily incremental back-ups are scheduled with Windows Server Backup. => Strong :: Observation days count too — say what you learned.
+```
+
+</SortingGame>
+
+<Reveal question="Rewrite these weak entries into strong ones: (a) 'Fixed computers.' (b) 'Worked on the website.' (c) 'Attended a meeting.'">
+**(a)** *"Troubleshot 2 desktops in the accounts unit that would not boot: reseated the RAM on one, and replaced a faulty SATA cable on the other. Both now boot normally. Learnt to use POST beep codes to diagnose hardware faults."*
+
+**(b)** *"Added a contact form to the company website using HTML and PHP, with server-side validation of email and phone fields. Tested 10 submissions, including invalid inputs."*
+
+**(c)** *"Attended the weekly IT team meeting: the team reviewed 14 open help-desk tickets and planned the migration of staff email to Microsoft 365. I was assigned to prepare a list of affected users in Excel."*
+
+Each answer states **what** was done, **with which tools**, **how much**, and **what was learned or decided**.
+</Reveal>
+
+### A model week (Computer Science, IT support placement)
+
+| Day | Entry |
+|---|---|
+| **Mon** | Orientation by the IT supervisor: toured the server room; learnt the company's network layout (1 ISP link, 2 switches, 24 workstations). Started a note of all device names and IP ranges. |
+| **Tue** | Installed Windows 11 and Microsoft 365 on 3 new staff laptops; joined them to the company domain. Learnt how group policies push settings to new machines. |
+| **Wed** | Crimped 6 RJ45 cables (T568B) for the new accounts office and tested each with a LAN tester; 1 failed and was re-crimped. |
+| **Thu** | Handled 5 help-desk tickets: 2 password resets, 2 printer-queue problems (cleared the print spooler), and 1 Outlook profile rebuild. |
+| **Fri** | Observed the weekly server back-up; documented the restore procedure in a 2-page Word guide for the IT unit. Supervisor reviewed it and asked me to add screenshots. |
+
+**Turned into a report paragraph later:** *"During the second week I was attached to the IT support unit, where I deployed three staff laptops, terminated and tested six network cables to the T568B standard, and resolved help-desk tickets…"* The logbook is literally your report's first draft.
+
+---
+
+## Weekly Habits
+
+<Checklist title="Every week of training">
+
+```check
+Physical logbook filled every working day
+Portal entries typed and up to date (at least twice this week)
+Supervisor's signature collected as required
+Photos or notes of interesting tasks saved for your report
+Photographs of this week's logbook pages taken (backup)
+```
+
+</Checklist>
+
+### Logbook FAQs (from the guide)
+
+<Reveal question="Can I fill my logbook at the end instead of daily?">
+"Some students try. **You'll forget details**, the entries will read as **generic**, and any **portal issue in the final week becomes a crisis**. Log daily, type regularly."
+</Reveal>
+
+<Reveal question="What if I lose my logbook?">
+"**Report immediately to your department and the SIWES unit.** This is also why you **photograph your entries as you go**, so you can reconstruct them."
+</Reveal>
+
+<MCQ question="According to the guide, how often should you update the portal logs?">
+<Option>Once, at the end of training</Option>
+<Option>Once a month</Option>
+<Option correct>At least twice a week</Option>
+<Option>Only when your supervisor asks</Option>
+<Explain>Batching for the final week is "how portal downtime and forgetfulness wreck people".</Explain>
+</MCQ>
+
+<MCQ question="A strong logbook entry names…">
+<Option>only the date</Option>
+<Option correct>the tools, the tasks and what you learned</Option>
+<Option>your feelings about the day</Option>
+<Option>the company's profit</Option>
+<Explain>Detail now means an easier report and defence later.</Explain>
+</MCQ>
+
+<MCQ question="Why photograph your logbook pages each week?">
+<Option>To post them on social media</Option>
+<Option correct>So you can reconstruct the entries if the logbook is lost</Option>
+<Option>Because the portal requires selfies</Option>
+<Option>To skip writing in it</Option>
+<Explain>The guide's advice for the "lost logbook" problem.</Explain>
+</MCQ>
+
+<Takeaway>
+- **Two records:** the **physical logbook** (written the **same day**) and the **portal training logs** (typed **at least twice a week**).
+- **Strong entries** name the **task, tools, result (with numbers) and learning**. "Worked on the computer today" gives your report nothing.
+- **Weekly:** logbook full, portal up to date, **signatures collected**, photos and notes saved, pages photographed.
+- The logbook is your **report's first draft** and your **defence's evidence** — write it for the person who will read it later: you.
+</Takeaway>
